@@ -2,11 +2,16 @@ package com.example.budgetcircle
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityMainBinding
+import com.example.budgetcircle.fragments.*
+import com.example.budgetcircle.viewmodel.BudgetData
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    private val budgetdata: BudgetData by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -16,24 +21,35 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, BudgetFragment()).commit()
 
         binding.navigationMenu.setOnItemSelectedListener {
-            when (it.itemId) {
+            openFragment(when (it.itemId) {
                 R.id.earnings -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, EarningsFragment()).commit()
+                    EarningsFragment()
                 }
                 R.id.expenses -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, ExpensesFragment()).commit()
+                    ExpensesFragment()
                 }
                 R.id.budget -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, BudgetFragment()).commit()
+                    BudgetFragment()
                 }
                 R.id.history -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, HistoryFragment()).commit()
+                    HistoryFragment()
                 }
                 R.id.settings -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, SettingsFragment()).commit()
+                    SettingsFragment()
                 }
-            }
+                else -> {
+                    BudgetFragment()
+                }
+            })
             true
         }
+
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentPanel, fragment)
+            .commit()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.budgetcircle
+package com.example.budgetcircle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
