@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Budget Circle</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="budget_fragment">Budget</string>
+    <string name="expenses_fragment">Expenses</string>
 </resources>
