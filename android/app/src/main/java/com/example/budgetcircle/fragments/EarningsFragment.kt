@@ -6,19 +6,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.budgetcircle.R
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
+import com.example.budgetcircle.settings.PieChartSetter
 
 class EarningsFragment : Fragment() {
     lateinit var binding: FragmentEarningsBinding
-    val budgetData: BudgetData by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEarningsBinding.inflate(inflater)
+        setChart()
         return binding.root
+    }
+
+    private fun setChart() {
+        val values = arrayListOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
+        /*val values = arrayListOf(0f, 0f, 0f)*/
+        var i: Float = 0f
+        for(n in values) {
+            i += n
+        }
+        val titles = resources.getStringArray(R.array.earning_titles).toCollection(ArrayList())
+        val colors = resources.getIntArray(R.array.earning_colors).toCollection(ArrayList())
+        if (i > 0)
+            PieChartSetter.setChart(titles, values, colors, binding.earningsPieChart)
+        else
+            PieChartSetter.setChart(arrayListOf("No entries"), arrayListOf(100f),
+                arrayListOf(resources.getColor(R.color.no_money_op)), binding.earningsPieChart)
     }
 
     companion object {

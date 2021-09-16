@@ -7,4 +7,42 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="no_money_op">#D0CDCD</color>
+
+    <!-- Expense colors -->
+    <color name="expenses_first">#F70606</color>
+    <color name="expenses_second">#A10202</color>
+    <color name="expenses_third">#C91212</color>
+    <color name="expenses_fourth">#691111</color>
+    <color name="expenses_fifth">#E95757</color>
+    <color name="expenses_sixth">#C01A1A</color>
+    <color name="expenses_seventh">#823333</color>
+    <color name="red_button">#A32121</color>
+    <color name="red_switch_main">#A32121</color>
+    <color name="red_switch_secondary">#E34D6E</color>
+
+    <!-- Earnings colors -->
+    <color name="earnings_first">#1147F7</color>
+    <color name="earnings_second">#5175ED</color>
+    <color name="earnings_third">#18348F</color>
+    <color name="earnings_fourth">#465CA6</color>
+    <color name="earnings_fifth">#023BFA</color>
+    <color name="earnings_sixth">#6B89ED</color>
+    <color name="earnings_seventh">#152A70</color>
+    <color name="blue_button">#031CFC</color>
+    <color name="blue_switch_main">#031CFC</color>
+    <color name="blue_switch_secondary">#5768FF</color>
+
+    <!-- Budget colors -->
+    <color name="budget_first">#0C6E13</color>
+    <color name="budget_second">#47C950</color>
+    <color name="budget_third">#216126</color>
+    <color name="budget_fourth">#5DB064</color>
+    <color name="budget_fifth">#08520E</color>
+    <color name="budget_sixth">#1BD12A</color>
+    <color name="budget_seventh">#2A632F</color>
+    <color name="green_button">#1B6614</color>
+    <color name="green_switch_main">#1B6614</color>
+    <color name="green_switch_secondary">#56C24C</color>
 </resources>

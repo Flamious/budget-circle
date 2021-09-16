@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Budget Circle</string>
+
+    <!-- Fragments' titles -->
     <string name="budget_fragment">Budget</string>
     <string name="expenses_fragment">Expenses</string>
+    <string name="earnings_fragment">Earnings</string>
+    <string name="history_fragment">History</string>
+    <string name="settings_fragment">Settings</string>
+
+    <!-- Text on fragments -->
+    <string name="total">Total</string>
+    <string name="week">This week</string>
+    <string name="show_repetitive_operations_switch">Show repetitive operations</string>
 </resources>

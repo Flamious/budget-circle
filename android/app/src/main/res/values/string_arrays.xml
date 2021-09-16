@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Earnings -->
+    <string-array name="earning_titles">
+        <item name="salary">Salary</item>
+        <item name="pensions">Pensions and scholarship</item>
+        <item name="realEstate">Real estate</item>
+        <item name="investments">Investments</item>
+        <item name="business">Business</item>
+        <item name="prizes">Prizes</item>
+        <item name="other">Other</item>
+    </string-array>
+
+    <!-- Expenses -->
+    <string-array name="expense_titles">
+        <item name="home">Home</item>
+        <item name="food">Food</item>
+        <item name="debts">Debts</item>
+        <item name="transport">Transport</item>
+        <item name="bills">Bills and services</item>
+        <item name="personalExpenses">Personal expenses</item>
+        <item name="other">Other</item>
+    </string-array>
+
+    <!-- Budget -->
+    <string-array name="budget_titles">
+        <item name="stocks">Stocks</item>
+        <item name="bank">Bank</item>
+        <item name="card_1">Card 1</item>
+        <item name="card_2">Card 2</item>
+        <item name="cash">Cash</item>
+    </string-array>
+</resources>

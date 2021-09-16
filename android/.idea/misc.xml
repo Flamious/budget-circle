@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/GHRepositories/budget-circle/android/app/src/main/res/layout/activity_main.xml" value="0.22447916666666667" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_expenses.xml" value="0.23489583333333333" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_budget.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_earnings.xml" value="0.38697916666666665" />
-        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_expenses.xml" value="0.24319629415170815" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_expenses.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_history.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_settings.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/menu/navigation.xml" value="0.38697916666666665" />
