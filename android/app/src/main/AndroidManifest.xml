@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetCircle">
         <activity
+            android:name=".ExpensesFormActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

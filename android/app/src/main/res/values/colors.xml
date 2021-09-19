@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="no_money_op">#D0CDCD</color>
+    <color name="text_secondary">#BEBEBE</color>
+    <color name="text_primary">#474242</color>
 
     <!-- Expense colors -->
     <color name="expenses_first">#F70606</color>
@@ -45,4 +47,12 @@
     <color name="green_button">#1B6614</color>
     <color name="green_switch_main">#1B6614</color>
     <color name="green_switch_secondary">#56C24C</color>
+
+    <!-- Settings colors -->
+    <color name="purple_button">#3C1463</color>
+    <color name="purple_switch_main">#3C1463</color>
+    <color name="purple_switch_secondary">#9C42BC</color>
+
+    <!-- History colors -->
+    <color name="orange_button">#CC670E</color>
 </resources>

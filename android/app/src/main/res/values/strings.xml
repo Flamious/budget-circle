@@ -10,6 +10,50 @@
 
     <!-- Text on fragments -->
     <string name="total">Total</string>
-    <string name="week">This week</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="all_time">All time</string>
+
     <string name="show_repetitive_operations_switch">Show repetitive operations</string>
+
+    <!-- Settings -->
+    <string name="language">Language</string>
+    <string name="mode">Theme</string>
+    <string name="other">Other</string>
+    <string name="system_language">Use system language</string>
+    <string name="system_theme">Use system theme</string>
+    <string name="always_show_rep_op">Always show repetitive operations</string>
+    <string name="currency">Currency</string>
+
+    <!-- History -->
+    <string name="date">Date:</string>
+    <string name="period">Period:</string>
+    <string name="type">Type:</string>
+    <string name="rep_op">Operations:</string>
+    <string name="exp_type">Expenses</string>
+    <string name="earn_type">Earnings</string>
+    <string name="tr_type">Transactions</string>
+    <string name="repetitive_op">Repetitive</string>
+    <string name="non_repetitive_op">Non-repetitive</string>
+    <string name="all">All</string>
+
+    <!-- Forms -->
+    <string name="new_expense">New expense</string>
+    <string name="kind">Kind</string>
+    <string name="is_repetitive">Repetitive</string>
+    <string name="sum">Sum</string>
+    <string name="op_date">Date</string>
+    <string name="add_exp">Add expensive</string>
+    <string name="comment">Commentary</string>
+
+    <!-- Expenses kinds -->
+    <string name="home">Home</string>
+    <string name="food">Food</string>
+    <string name="debts">Debts</string>
+    <string name="transport">Transport</string>
+    <string name="bills">Bills and services</string>
+    <string name="personalExpenses">Personal expenses</string>
+    <string name="exp_other">Other</string>
 </resources>

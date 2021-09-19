@@ -32,4 +32,5 @@
         <item name="budget_sixth">@color/budget_sixth</item>
         <item name="budget_seventh">@color/budget_seventh</item>
     </array>
+
 </resources>

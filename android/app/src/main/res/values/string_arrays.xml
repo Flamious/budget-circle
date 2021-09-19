@@ -13,13 +13,13 @@
 
     <!-- Expenses -->
     <string-array name="expense_titles">
-        <item name="home">Home</item>
-        <item name="food">Food</item>
-        <item name="debts">Debts</item>
-        <item name="transport">Transport</item>
-        <item name="bills">Bills and services</item>
-        <item name="personalExpenses">Personal expenses</item>
-        <item name="other">Other</item>
+        <item>@string/home</item>
+        <item>@string/food</item>
+        <item>@string/debts</item>
+        <item>@string/transport</item>
+        <item>@string/bills</item>
+        <item>@string/personalExpenses</item>
+        <item>@string/other</item>
     </string-array>
 
     <!-- Budget -->
@@ -29,5 +29,20 @@
         <item name="card_1">Card 1</item>
         <item name="card_2">Card 2</item>
         <item name="cash">Cash</item>
+    </string-array>
+
+    <!-- Settings -->
+    <string-array name="language">
+        <item name="en">English</item>
+        <item name="ru">Russian</item>
+    </string-array>
+    <string-array name="themes">
+        <item name="dark">Dark</item>
+        <item name="light">Light</item>
+    </string-array>
+    <string-array name="currencies">
+        <item name="ruble">₽</item>
+        <item name="dollar">$</item>
+        <item name="euro">€</item>
     </string-array>
 </resources>

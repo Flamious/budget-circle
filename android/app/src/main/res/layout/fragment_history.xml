@@ -10,14 +10,105 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="History"
+            android:layout_marginTop="16dp"
+            android:text="@string/history_fragment"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/typeText"
+            android:theme="@style/orangeEdgeEffect"/>
+
+        <TextView
+            android:id="@+id/typeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/all"
+            android:textColor="@color/text_primary"
+            app:layout_constraintStart_toEndOf="@+id/historyTypeTitle"
+            app:layout_constraintTop_toTopOf="@+id/historyTypeTitle" />
+
+        <TextView
+            android:id="@+id/historyTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/type"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Title"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/historyopTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="@string/rep_op"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintEnd_toStartOf="@+id/opText"
+            app:layout_constraintTop_toTopOf="@+id/opText"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/opText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/all"
+            android:textColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Title"
+            app:autoSizeTextType="uniform" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/historyopTitle"
+            app:layout_constraintStart_toEndOf="@+id/typeText"
+            app:layout_constraintTop_toTopOf="@+id/historyopTitle">
+
+            <TextView
+                android:id="@+id/historyPeriodTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/period"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/periodText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/year"
+                android:textColor="@color/text_primary"
+                app:layout_constraintStart_toEndOf="@+id/historyPeriodTitle"
+                app:layout_constraintTop_toTopOf="@+id/historyPeriodTitle"
+                app:autoSizeTextType="uniform" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
