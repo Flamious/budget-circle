@@ -1,23 +1,22 @@
-package com.example.budgetcircle
+package com.example.budgetcircle.forms
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
+import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
 
-class ExpensesFormActivity : AppCompatActivity() {
-    lateinit var binding: ActivityExpensesFormBinding
+class BudgetFormActivity : AppCompatActivity() {
+    lateinit var binding: ActivityBudgetFormBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityExpensesFormBinding.inflate(layoutInflater)
+        binding = ActivityBudgetFormBinding.inflate(layoutInflater)
         setButtons()
         setContentView(binding.root)
     }
 
     private fun setButtons() {
-        binding.expAddButton.setOnClickListener() {
+        binding.budgetAddButton.setOnClickListener() {
             add()
         }
         binding.backButton.setOnClickListener() {

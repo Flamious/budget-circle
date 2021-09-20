@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forms.BudgetFormActivity">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/new_account"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/sumTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/acc_sum"
+        android:textColor="@color/text_secondary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetSum"
+        app:layout_constraintStart_toStartOf="@+id/accNameTitle"
+        app:layout_constraintTop_toTopOf="@+id/budgetSum" />
+
+    <TextView
+        android:id="@+id/accNameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/acc_name"
+        android:textColor="@color/text_secondary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/accName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/accName" />
+
+
+    <EditText
+        android:id="@+id/budgetSum"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/green_switch_main"
+        android:ems="10"
+        android:hint="@string/acc_sum"
+        android:inputType="number"
+        android:textColorHighlight="@color/green_switch_main"
+        android:textColorLink="@color/green_switch_secondary"
+        android:textCursorDrawable="@color/green_switch_main"
+        android:textSize="20sp"
+        android:theme="@style/blueControlCursor"
+        app:layout_constraintEnd_toEndOf="@+id/accName"
+        app:layout_constraintStart_toStartOf="@+id/accName"
+        app:layout_constraintTop_toBottomOf="@+id/accName" />
+
+    <EditText
+        android:id="@+id/accName"
+        android:layout_width="144dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/green_switch_main"
+        android:ems="10"
+        android:hint="@string/acc_name"
+        android:inputType="text"
+        android:textColorHighlight="@color/green_switch_main"
+        android:textColorLink="@color/green_switch_secondary"
+        android:textCursorDrawable="@color/green_switch_main"
+        android:textSize="20sp"
+        android:theme="@style/blueControlCursor"
+        app:layout_constraintEnd_toEndOf="@+id/Title"
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
+
+    <Button
+        android:id="@+id/budgetAddButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green_button"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/add_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:background="@android:color/transparent"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:layout_constraintBottom_toBottomOf="@+id/Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Title"
+        app:srcCompat="@drawable/ic_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

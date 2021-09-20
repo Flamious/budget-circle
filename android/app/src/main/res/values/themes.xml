@@ -25,4 +25,8 @@
     <style name="redControlCursor" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorControlActivated">@color/red_button</item>
     </style>
+
+    <style name="blueControlCursor" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorControlActivated">@color/blue_button</item>
+    </style>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".forms.ExpensesFormActivity">
+    tools:context=".forms.EarningsFormActivity">
 
     <TextView
         android:id="@+id/Title"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/new_expense"
+        android:text="@string/new_earning"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,27 +28,27 @@
         android:text="@string/sum"
         android:textColor="@color/text_secondary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/expSum"
+        app:layout_constraintBottom_toBottomOf="@+id/earnSum"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/expSum" />
+        app:layout_constraintTop_toTopOf="@+id/earnSum" />
 
     <EditText
-        android:id="@+id/expSum"
+        android:id="@+id/earnSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/red_switch_main"
+        android:backgroundTint="@color/blue_switch_main"
         android:ems="10"
         android:hint="@string/sum"
         android:inputType="number"
-        android:textColorHighlight="@color/red_switch_main"
-        android:textColorLink="@color/red_switch_secondary"
-        android:textCursorDrawable="@color/red_switch_main"
+        android:textColorHighlight="@color/blue_switch_main"
+        android:textColorLink="@color/blue_switch_secondary"
+        android:textCursorDrawable="@color/blue_switch_main"
         android:textSize="20sp"
+        android:theme="@style/blueControlCursor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Title"
-        android:theme="@style/redControlCursor" />
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <TextView
         android:id="@+id/textView3"
@@ -58,8 +58,8 @@
         android:text="@string/food"
         android:textColor="@color/text_primary"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/expSum"
-        app:layout_constraintTop_toBottomOf="@+id/expSum" />
+        app:layout_constraintEnd_toEndOf="@+id/earnSum"
+        app:layout_constraintTop_toBottomOf="@+id/earnSum" />
 
     <TextView
         android:id="@+id/textView7"
@@ -85,11 +85,11 @@
         app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <Switch
-        android:id="@+id/expRepSwitch"
+        android:id="@+id/earnRepSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:theme="@style/RedSwitch"
+        android:theme="@style/BlueSwitch"
         app:layout_constraintEnd_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -101,12 +101,12 @@
         android:text="@string/is_repetitive"
         android:textColor="@color/text_secondary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/expRepSwitch"
+        app:layout_constraintBottom_toBottomOf="@+id/earnRepSwitch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/expRepSwitch" />
+        app:layout_constraintTop_toTopOf="@+id/earnRepSwitch" />
 
     <TextView
-        android:id="@+id/expDateTitle"
+        android:id="@+id/earnDateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -118,16 +118,16 @@
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
     <Button
-        android:id="@+id/expAddButton"
+        android:id="@+id/earnAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/add_exp"
+        android:text="@string/add_earn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:backgroundTint="@color/red_button"/>
+        android:backgroundTint="@color/blue_button"/>
 
     <ImageButton
         android:id="@+id/backButton"
@@ -149,16 +149,15 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/red_switch_main"
+        android:backgroundTint="@color/blue_switch_main"
         android:ems="10"
         android:hint="@string/comment"
         android:inputType="textMultiLine"
-        android:textColorHighlight="@color/red_switch_main"
-        android:textColorLink="@color/red_switch_secondary"
-        android:textCursorDrawable="@color/red_switch_main"
+        android:textColorHighlight="@color/blue_switch_main"
+        android:textColorLink="@color/blue_switch_secondary"
+        android:textCursorDrawable="@color/blue_switch_main"
+        android:theme="@style/blueControlCursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expRepSwitch"
-        android:theme="@style/redControlCursor"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/earnRepSwitch" />
 </androidx.constraintlayout.widget.ConstraintLayout>

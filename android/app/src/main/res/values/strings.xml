@@ -41,12 +41,18 @@
 
     <!-- Forms -->
     <string name="new_expense">New expense</string>
+    <string name="new_earning">New earning</string>
+    <string name="new_account">New account</string>
     <string name="kind">Kind</string>
     <string name="is_repetitive">Repetitive</string>
     <string name="sum">Sum</string>
     <string name="op_date">Date</string>
     <string name="add_exp">Add expensive</string>
+    <string name="add_earn">Add earning</string>
+    <string name="add_account">Add account</string>
     <string name="comment">Commentary</string>
+    <string name="acc_name">Account name</string>
+    <string name="acc_sum">Start sum</string>
 
     <!-- Expenses kinds -->
     <string name="home">Home</string>
@@ -56,4 +62,13 @@
     <string name="bills">Bills and services</string>
     <string name="personalExpenses">Personal expenses</string>
     <string name="exp_other">Other</string>
+
+    <!-- Earnings kinds -->
+    <string name="salary">Salary</string>
+    <string name="pensions">Pensions and scholarship</string>
+    <string name="realEstate">Real estate</string>
+    <string name="investments">Investments</string>
+    <string name="business">Business</string>
+    <string name="prizes">Prizes</string>
+    <string name="earn_other">Other</string>
 </resources>

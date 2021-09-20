@@ -2,13 +2,13 @@
 <resources>
     <!-- Earnings -->
     <string-array name="earning_titles">
-        <item name="salary">Salary</item>
-        <item name="pensions">Pensions and scholarship</item>
-        <item name="realEstate">Real estate</item>
-        <item name="investments">Investments</item>
-        <item name="business">Business</item>
-        <item name="prizes">Prizes</item>
-        <item name="other">Other</item>
+        <item>@string/salary</item>
+        <item>@string/pensions</item>
+        <item>@string/realEstate</item>
+        <item>@string/investments</item>
+        <item>@string/business</item>
+        <item>@string/prizes</item>
+        <item>@string/earn_other</item>
     </string-array>
 
     <!-- Expenses -->

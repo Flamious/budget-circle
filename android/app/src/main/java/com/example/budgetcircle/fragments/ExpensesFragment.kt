@@ -3,7 +3,6 @@ package com.example.budgetcircle.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.budgetcircle.ExpensesFormActivity
+import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
-import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.settings.PieChartSetter
 
@@ -29,6 +27,7 @@ class ExpensesFragment : Fragment() {
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
