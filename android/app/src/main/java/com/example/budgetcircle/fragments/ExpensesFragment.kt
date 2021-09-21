@@ -21,11 +21,16 @@ class ExpensesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                Toast.makeText(activity, result.data?.getStringExtra("Ha").toString(), Toast.LENGTH_LONG).show()
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(
+                        activity,
+                        result.data?.getStringExtra("Ha").toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
-        }
     }
 
     override fun onCreateView(
@@ -39,7 +44,7 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.addButton.setOnClickListener() {
+        binding.addExpenseButton.setOnClickListener() {
             addExpense()
         }
     }
@@ -48,16 +53,18 @@ class ExpensesFragment : Fragment() {
         val values = arrayListOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
         /*val values = arrayListOf(0f, 0f, 0f)*/
         var i: Float = 0f
-        for(n in values) {
-          i += n
+        for (n in values) {
+            i += n
         }
         val titles = resources.getStringArray(R.array.expense_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.expense_colors).toCollection(ArrayList())
         if (i > 0)
             PieChartSetter.setChart(titles, values, colors, binding.expensesPieChart)
         else
-            PieChartSetter.setChart(arrayListOf("No entries"), arrayListOf(100f),
-                arrayListOf(resources.getColor(R.color.no_money_op)), binding.expensesPieChart)
+            PieChartSetter.setChart(
+                arrayListOf("No entries"), arrayListOf(100f),
+                arrayListOf(resources.getColor(R.color.no_money_op)), binding.expensesPieChart
+            )
     }
 
     private fun addExpense() {

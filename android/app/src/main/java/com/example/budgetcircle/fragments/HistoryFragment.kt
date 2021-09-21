@@ -34,22 +34,27 @@ class HistoryFragment : Fragment() {
             historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
             historyList.adapter = adapter
         }
-        for(i in 1..33) {
-            adapter.addItem(HistoryItem(
-                i,
-                i * 1000 + 33 * (i - 1) - 100 * (i + 2),
-                "Operation $i",
-                "type ${i % 5}",
-                Date(),
-                resources.getColor(
-                    when(i % 3) {
-                        0 -> R.color.red_button
-                        1 -> R.color.blue_button
-                        else -> R.color.green_button
-                    }),
-                i % 5 == 0))
+        for (i in 1..33) {
+            adapter.addItem(
+                HistoryItem(
+                    i,
+                    i * 1000 + 33 * (i - 1) - 100 * (i + 2),
+                    "Operation $i",
+                    "type ${i % 5}",
+                    Date(),
+                    resources.getColor(
+                        when (i % 3) {
+                            0 -> R.color.red_button
+                            1 -> R.color.blue_button
+                            else -> R.color.green_button
+                        }
+                    ),
+                    i % 5 == 0
+                )
+            )
         }
     }
+
     companion object {
         @JvmStatic
         fun newInstance() = HistoryFragment()

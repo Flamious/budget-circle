@@ -12,16 +12,64 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addButton"
+            android:id="@+id/addAccountButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            android:visibility="gone"
+            app:borderWidth="2dp"
+            android:backgroundTint="@color/green_button_secondary"
+            app:backgroundTint="@color/green_button"
+            app:layout_constraintBottom_toTopOf="@+id/repetitiveOpListButton"
+            app:layout_constraintEnd_toEndOf="@+id/repetitiveOpListButton"
+            app:layout_constraintStart_toStartOf="@+id/repetitiveOpListButton"
+            app:tint="@color/white"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/exchangeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_exchange"
             app:backgroundTint="@color/green_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/repetitiveOpListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:src="@drawable/ic_history"
+            android:visibility="gone"
+            app:borderWidth="2dp"
+            android:backgroundTint="@color/green_button_secondary"
+            app:backgroundTint="@color/green_button"
+            app:layout_constraintBottom_toTopOf="@+id/stocksListButton"
+            app:layout_constraintEnd_toEndOf="@+id/stocksListButton"
+            app:layout_constraintStart_toStartOf="@+id/stocksListButton"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/stocksListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:src="@drawable/ic_stocks"
+            android:visibility="gone"
+            app:borderWidth="2dp"
+            android:backgroundTint="@color/green_button_secondary"
+            app:backgroundTint="@color/green_button"
+            app:layout_constraintBottom_toTopOf="@+id/listButton"
+            app:layout_constraintEnd_toEndOf="@+id/listButton"
+            app:layout_constraintStart_toStartOf="@+id/listButton"
             app:tint="@color/white" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,7 +79,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_exchange"
+            android:src="@drawable/ic_more"
             app:backgroundTint="@color/green_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="-16dp"
-            app:layout_constraintBottom_toTopOf="@+id/addButton"
+            app:layout_constraintBottom_toTopOf="@+id/exchangeButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repetitiveOperationsSwitch">
@@ -52,8 +100,8 @@
                 android:id="@+id/budgetPieChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="72dp">
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="16dp">
 
             </com.github.mikephil.charting.charts.PieChart>
 
@@ -63,9 +111,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="16069.25  ₽"
+                android:textColor="@color/text_primary"
                 android:textSize="34sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -23,11 +23,16 @@ class EarningsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                Toast.makeText(activity, result.data?.getStringExtra("Ha").toString(), Toast.LENGTH_LONG).show()
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(
+                        activity,
+                        result.data?.getStringExtra("Ha").toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
-        }
     }
 
     override fun onCreateView(
@@ -41,7 +46,7 @@ class EarningsFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.addButton.setOnClickListener() {
+        binding.addEarningButton.setOnClickListener() {
             addEarning()
         }
     }
@@ -50,7 +55,7 @@ class EarningsFragment : Fragment() {
         val values = arrayListOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
         /*val values = arrayListOf(0f, 0f, 0f)*/
         var i: Float = 0f
-        for(n in values) {
+        for (n in values) {
             i += n
         }
         val titles = resources.getStringArray(R.array.earning_titles).toCollection(ArrayList())
@@ -58,8 +63,10 @@ class EarningsFragment : Fragment() {
         if (i > 0)
             PieChartSetter.setChart(titles, values, colors, binding.earningsPieChart)
         else
-            PieChartSetter.setChart(arrayListOf("No entries"), arrayListOf(100f),
-                arrayListOf(resources.getColor(R.color.no_money_op)), binding.earningsPieChart)
+            PieChartSetter.setChart(
+                arrayListOf("No entries"), arrayListOf(100f),
+                arrayListOf(resources.getColor(R.color.no_money_op)), binding.earningsPieChart
+            )
     }
 
     private fun addEarning() {

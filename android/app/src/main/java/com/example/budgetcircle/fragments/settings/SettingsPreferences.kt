@@ -8,7 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentSettingsBinding
 
-class SettingsPreferances : PreferenceFragmentCompat() {
+class SettingsPreferences : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)

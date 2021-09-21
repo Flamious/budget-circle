@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetCircle">
         <activity
+            android:name=".forms.BudgetExchangeActivity"
+            android:exported="true" />
+        <activity
             android:name=".forms.BudgetFormActivity"
             android:exported="true" />
         <activity
