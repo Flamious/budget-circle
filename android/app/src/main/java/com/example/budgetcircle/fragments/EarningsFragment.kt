@@ -10,24 +10,50 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.items.HistoryItem
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EarningsFragment : Fragment() {
     lateinit var binding: FragmentEarningsBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
+    private val budgetData: BudgetData by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        budgetData.earningsSum.observe(this, {
+            binding.sumText.text = "%.2f".format(it)
+        })
+
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+
+                    budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))
+
+                    budgetData.addToOperationList(
+                        HistoryItem(
+                        1,
+                        result.data?.getFloatExtra("sum", 0f)!!,
+                        "Lya",
+                        result.data?.getStringExtra("type")!!,
+                        Date(),
+                        resources.getColor(R.color.blue_button),
+                        result.data?.getBooleanExtra("isRep", false)!!)
+                    )
+
                     Toast.makeText(
                         activity,
-                        result.data?.getStringExtra("Ha").toString(),
-                        Toast.LENGTH_LONG
+                        "Added",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             }

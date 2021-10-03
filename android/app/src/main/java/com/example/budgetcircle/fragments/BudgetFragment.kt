@@ -13,11 +13,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.viewmodel.BudgetData
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -25,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
+    private val budgetData: BudgetData by activityViewModels()
 
     /* Animations */
     private val rotateOpen: Animation by lazy {
@@ -56,6 +60,11 @@ class BudgetFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        budgetData.totalSum.observe(this, {
+            binding.sumText.text = "%.2f".format(it)
+        })
+
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {

@@ -26,7 +26,9 @@ class EarningsFormActivity : AppCompatActivity() {
 
     private fun add() {
         val intent = Intent()
-        intent.putExtra("Ha", "Hi! I'm just a little toast")
+        intent.putExtra("sum", binding.earnSum.text.toString().toFloat())
+        intent.putExtra("type", "Business")
+        intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
         setResult(RESULT_OK, intent)
         finish()
     }
