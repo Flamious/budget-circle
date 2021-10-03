@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Earnings -->
+    <string-array name="earning_titles">
+        <item>@string/salary</item>
+        <item>@string/pensions</item>
+        <item>@string/realEstate</item>
+        <item>@string/investments</item>
+        <item>@string/business</item>
+        <item>@string/prizes</item>
+        <item>@string/earn_other</item>
+    </string-array>
+
+    <!-- Expenses -->
+    <string-array name="expense_titles">
+        <item>@string/home</item>
+        <item>@string/food</item>
+        <item>@string/debts</item>
+        <item>@string/transport</item>
+        <item>@string/bills</item>
+        <item>@string/personalExpenses</item>
+        <item>@string/other</item>
+    </string-array>
+
+    <!-- Budget -->
+    <string-array name="budget_titles">
+        <item name="stocks">Stocks</item>
+        <item name="bank">Bank</item>
+        <item name="card_1">Card 1</item>
+        <item name="card_2">Card 2</item>
+        <item name="cash">Cash</item>
+    </string-array>
+
+    <!-- Settings -->
+    <string-array name="language">
+        <item name="en">English</item>
+        <item name="ru">Russian</item>
+    </string-array>
+    <string-array name="themes">
+        <item name="dark">Dark</item>
+        <item name="light">Light</item>
+    </string-array>
+    <string-array name="currencies">
+        <item name="ruble">₽</item>
+        <item name="dollar">$</item>
+        <item name="euro">€</item>
+    </string-array>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Expenses -->
+    <array name="expense_colors">
+        <item name="expenses_first">@color/expenses_first</item>
+        <item name="expenses_second">@color/expenses_second</item>
+        <item name="expenses_third">@color/expenses_third</item>
+        <item name="expenses_fourth">@color/expenses_fourth</item>
+        <item name="expenses_fifth">@color/expenses_fifth</item>
+        <item name="expenses_sixth">@color/expenses_sixth</item>
+        <item name="expenses_seventh">@color/expenses_seventh</item>
+    </array>
+
+    <!-- Earnings -->
+    <array name="earning_colors">
+        <item name="earnings_first">@color/earnings_first</item>
+        <item name="earnings_second">@color/earnings_second</item>
+        <item name="earnings_third">@color/earnings_third</item>
+        <item name="earnings_fourth">@color/earnings_fourth</item>
+        <item name="earnings_fifth">@color/earnings_fifth</item>
+        <item name="earnings_sixth">@color/earnings_sixth</item>
+        <item name="earnings_seventh">@color/earnings_seventh</item>
+    </array>
+
+    <!-- Budget -->
+    <array name="budget_colors">
+        <item name="budget_first">@color/budget_first</item>
+        <item name="budget_second">@color/budget_second</item>
+        <item name="budget_third">@color/budget_third</item>
+        <item name="budget_fourth">@color/budget_fourth</item>
+        <item name="budget_fifth">@color/budget_fifth</item>
+        <item name="budget_sixth">@color/budget_sixth</item>
+        <item name="budget_seventh">@color/budget_seventh</item>
+    </array>
+
+</resources>

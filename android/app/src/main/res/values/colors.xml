@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="no_money_op">#D0CDCD</color>
+    <color name="text_secondary">#BEBEBE</color>
+    <color name="text_primary">#474242</color>
+
+    <!-- Expense colors -->
+    <color name="expenses_first">#F70606</color>
+    <color name="expenses_second">#A10202</color>
+    <color name="expenses_third">#C91212</color>
+    <color name="expenses_fourth">#691111</color>
+    <color name="expenses_fifth">#E95757</color>
+    <color name="expenses_sixth">#C01A1A</color>
+    <color name="expenses_seventh">#823333</color>
+    <color name="red_button">#A32121</color>
+    <color name="red_switch_main">#A32121</color>
+    <color name="red_switch_secondary">#E34D6E</color>
+
+    <!-- Earnings colors -->
+    <color name="earnings_first">#1147F7</color>
+    <color name="earnings_second">#5175ED</color>
+    <color name="earnings_third">#18348F</color>
+    <color name="earnings_fourth">#465CA6</color>
+    <color name="earnings_fifth">#023BFA</color>
+    <color name="earnings_sixth">#6B89ED</color>
+    <color name="earnings_seventh">#152A70</color>
+    <color name="blue_button">#031CFC</color>
+    <color name="blue_switch_main">#031CFC</color>
+    <color name="blue_switch_secondary">#5768FF</color>
+
+    <!-- Budget colors -->
+    <color name="budget_first">#0C6E13</color>
+    <color name="budget_second">#47C950</color>
+    <color name="budget_third">#216126</color>
+    <color name="budget_fourth">#5DB064</color>
+    <color name="budget_fifth">#08520E</color>
+    <color name="budget_sixth">#1BD12A</color>
+    <color name="budget_seventh">#2A632F</color>
+    <color name="green_button">#1B6614</color>
+    <color name="green_button_secondary">#56C24C</color>
+    <color name="green_switch_main">#1B6614</color>
+    <color name="green_switch_secondary">#56C24C</color>
+
+    <!-- Settings colors -->
+    <color name="purple_button">#3C1463</color>
+    <color name="purple_switch_main">#3C1463</color>
+    <color name="purple_switch_secondary">#9C42BC</color>
+
+    <!-- History colors -->
+    <color name="orange_button">#CC670E</color>
 </resources>

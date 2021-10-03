@@ -1,39 +1,77 @@
 package com.example.budgetcircle
 
+import android.app.Activity
+import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.databinding.ActivityMainBinding
+import com.example.budgetcircle.fragments.*
+import com.example.budgetcircle.fragments.settings.SettingsFragment
+import com.example.budgetcircle.viewmodel.BudgetData
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.navigationMenu.selectedItemId = R.id.budget
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, BudgetFragment()).commit()
+        setNavColor(R.color.nav_green_selector)
+        openFragment(BudgetFragment())
 
         binding.navigationMenu.setOnItemSelectedListener {
-            when (it.itemId) {
+            openFragment(when (it.itemId) {
                 R.id.earnings -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, EarningsFragment()).commit()
+                    setNavColor(R.color.nav_blue_selector)
+                    EarningsFragment()
                 }
                 R.id.expenses -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, ExpensesFragment()).commit()
+                    setNavColor(R.color.nav_red_selector)
+                    ExpensesFragment()
                 }
                 R.id.budget -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, BudgetFragment()).commit()
+                    setNavColor(R.color.nav_green_selector)
+                    BudgetFragment()
                 }
                 R.id.history -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, HistoryFragment()).commit()
+                    setNavColor(R.color.nav_orange_selector)
+                    HistoryFragment()
                 }
                 R.id.settings -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fragmentPanel, SettingsFragment()).commit()
+                    setNavColor(R.color.nav_purple_selector)
+                    SettingsFragment()
                 }
-            }
+
+                else -> {
+                    setNavColor(R.color.nav_green_selector)
+                    BudgetFragment()
+                }
+            })
             true
         }
+
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentPanel, fragment)
+            .commit()
+    }
+
+    private fun setNavColor(color: Int) {
+        val color = ColorStateList.valueOf(ContextCompat.getColor(this, color))
+        binding.navigationMenu.itemTextColor = color
+        binding.navigationMenu.itemIconTintList = color
+
     }
 }
