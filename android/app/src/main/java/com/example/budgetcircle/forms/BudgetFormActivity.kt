@@ -16,10 +16,10 @@ class BudgetFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.budgetAddButton.setOnClickListener() {
+        binding.budgetAddButton.setOnClickListener {
             add()
         }
-        binding.backButton.setOnClickListener() {
+        binding.backButton.setOnClickListener {
             exit()
         }
     }

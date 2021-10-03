@@ -3,7 +3,6 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 
 class ExpensesFormActivity : AppCompatActivity() {
@@ -17,10 +16,10 @@ class ExpensesFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.expAddButton.setOnClickListener() {
+        binding.expAddButton.setOnClickListener {
             add()
         }
-        binding.backButton.setOnClickListener() {
+        binding.backButton.setOnClickListener {
             exit()
         }
     }

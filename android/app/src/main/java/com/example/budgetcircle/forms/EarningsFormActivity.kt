@@ -3,7 +3,6 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityEarningsFormBinding
 
 class EarningsFormActivity : AppCompatActivity() {
@@ -17,10 +16,10 @@ class EarningsFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.earnAddButton.setOnClickListener() {
+        binding.earnAddButton.setOnClickListener {
             add()
         }
-        binding.backButton.setOnClickListener() {
+        binding.backButton.setOnClickListener {
             exit()
         }
     }

@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
-import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
@@ -46,7 +44,7 @@ class EarningsFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.addEarningButton.setOnClickListener() {
+        binding.addEarningButton.setOnClickListener {
             addEarning()
         }
     }
@@ -54,7 +52,7 @@ class EarningsFragment : Fragment() {
     private fun setChart() {
         val values = arrayListOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
         /*val values = arrayListOf(0f, 0f, 0f)*/
-        var i: Float = 0f
+        var i = 0f
         for (n in values) {
             i += n
         }

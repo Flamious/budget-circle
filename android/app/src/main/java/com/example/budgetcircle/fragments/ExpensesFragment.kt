@@ -44,7 +44,7 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.addExpenseButton.setOnClickListener() {
+        binding.addExpenseButton.setOnClickListener {
             addExpense()
         }
     }
@@ -52,7 +52,7 @@ class ExpensesFragment : Fragment() {
     private fun setChart() {
         val values = arrayListOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
         /*val values = arrayListOf(0f, 0f, 0f)*/
-        var i: Float = 0f
+        var i = 0f
         for (n in values) {
             i += n
         }

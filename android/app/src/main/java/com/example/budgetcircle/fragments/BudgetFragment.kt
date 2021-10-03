@@ -2,8 +2,6 @@ package com.example.budgetcircle.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,18 +12,13 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.activityViewModels
-import com.example.budgetcircle.viewmodel.BudgetData
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
-import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.data.PieData
 
-import com.github.mikephil.charting.data.PieDataSet
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -60,8 +53,6 @@ class BudgetFragment : Fragment() {
     }
     private var isClicked = false
 
-    val budgetData: BudgetData by activityViewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,31 +79,37 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.addAccountButton.setOnClickListener() {
+        binding.addAccountButton.setOnClickListener {
             addAccount()
+            showHiddenButtons()
         }
-        binding.listButton.setOnClickListener() {
-            binding.apply {
-
-                setAnimation(
-                    isClicked,
-                    listButton,
-                    addAccountButton,
-                    repetitiveOpListButton,
-                    stocksListButton
-                )
-            }
-            isClicked = !isClicked
+        binding.listButton.setOnClickListener {
+            showHiddenButtons()
         }
-        binding.exchangeButton.setOnClickListener() {
+        binding.exchangeButton.setOnClickListener {
             addExchange()
         }
+    }
+
+    private fun showHiddenButtons() {
+        binding.apply {
+            setAnimation(
+                isClicked,
+                listButton,
+                hiddenButtonsLayout,
+                addAccountButton,
+                categoryListButton,
+                repetitiveOpListButton,
+                stocksListButton
+            )
+        }
+        isClicked = !isClicked
     }
 
     private fun setChart() {
         val values = arrayListOf(12f, 20f, 45f, 62f, 15f)
         /*val values = arrayListOf(0f, 0f, 0f)*/
-        var i: Float = 0f
+        var i = 0f
         for (n in values) {
             i += n
         }
@@ -140,12 +137,12 @@ class BudgetFragment : Fragment() {
     private fun setAnimation(
         isClicked: Boolean,
         listButton: FloatingActionButton,
+        hiddenButtonsLayout: ConstraintLayout,
         vararg buttons: FloatingActionButton
     ) {
+        hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
+        hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
         for (button in buttons) {
-            button.startAnimation(if (isClicked) toBottom else fromBottom)
-            /*button.visibility = if (isClicked) View.GONE else View.VISIBLE*/
-            button.visibility = View.VISIBLE
             button.isClickable = !isClicked
         }
         listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)

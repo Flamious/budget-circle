@@ -16,10 +16,10 @@ class BudgetExchangeActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.budgetExchangeAddButton.setOnClickListener() {
+        binding.budgetExchangeAddButton.setOnClickListener {
             add()
         }
-        binding.backButton.setOnClickListener() {
+        binding.backButton.setOnClickListener {
             exit()
         }
     }
