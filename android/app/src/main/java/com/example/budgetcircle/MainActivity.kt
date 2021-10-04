@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
@@ -18,6 +19,7 @@ import com.example.budgetcircle.viewmodel.BudgetData
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    val budgetData: BudgetData by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

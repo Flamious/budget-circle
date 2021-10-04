@@ -1,6 +1,5 @@
-package com.example.budgetcircle.viewmodel
+package com.example.budgetcircle.viewmodel.items
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-data class HistoryItem(val id: Int, val sum: Int, val title: String, val type: String, val date: Date, val color: Int, val isRepetitive: Boolean)
+data class HistoryItem(val id: Int, val sum: Float, val title: String, val type: String, val date: Date, val color: Int, val isRepetitive: Boolean)
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
-    val itemList = ArrayList<HistoryItem>()
+    private var itemList = ArrayList<HistoryItem>()
 
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
@@ -39,6 +38,15 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun setList(list: MutableList<HistoryItem>)
+    {
+        itemList.clear()
+        for (item in list.reversed()) {
+            itemList.add(item)
+        }
+        notifyDataSetChanged()
     }
 
     fun addItem(item: HistoryItem) {

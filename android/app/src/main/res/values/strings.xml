@@ -58,6 +58,7 @@
     <string name="acc_sum">Start sum</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="title">Title</string>
 
     <!-- Expenses kinds -->
     <string name="home">Home</string>

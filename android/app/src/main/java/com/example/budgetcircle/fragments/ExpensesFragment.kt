@@ -10,24 +10,50 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.items.HistoryItem
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ExpensesFragment : Fragment() {
     lateinit var binding: FragmentExpensesBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
+    private val budgetData: BudgetData by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        budgetData.expensesSum.observe(this, {
+            binding.sumText.text = "%.2f".format(it)
+        })
+
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+
+                    budgetData.addExpense(result.data?.getFloatExtra("sum", 0f))
+
+                    budgetData.addToOperationList(
+                        HistoryItem(
+                        1,
+                        result.data?.getFloatExtra("sum", 0f)!!,
+                        result.data?.getStringExtra("title")!!,
+                        result.data?.getStringExtra("type")!!,
+                        SimpleDateFormat("dd.MM.yyyy").parse(result.data?.getStringExtra("date")!!),
+                        resources.getColor(R.color.red_button),
+                        result.data?.getBooleanExtra("isRep", false)!!))
+
                     Toast.makeText(
                         activity,
-                        result.data?.getStringExtra("Ha").toString(),
-                        Toast.LENGTH_LONG
+                        "Added",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -51,7 +77,6 @@ class ExpensesFragment : Fragment() {
 
     private fun setChart() {
         val values = arrayListOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
-        /*val values = arrayListOf(0f, 0f, 0f)*/
         var i = 0f
         for (n in values) {
             i += n
