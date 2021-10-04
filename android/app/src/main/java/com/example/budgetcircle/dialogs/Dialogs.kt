@@ -29,16 +29,16 @@ class Dialogs() {
 
     fun pickDate(context: Context, view: TextView, theme: Int) {
         val calendar = Calendar.getInstance()
-        val Year = calendar[Calendar.YEAR]
-        val Month = calendar[Calendar.MONTH]
-        val Day = calendar[Calendar.DAY_OF_MONTH]
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH]
+        val day = calendar[Calendar.DAY_OF_MONTH]
         DatePickerDialog(
             context,
             theme,
             OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 val editTextDateParam = dayOfMonth.toString() + "." + (monthOfYear + 1) + "." + year
                 view.text = editTextDateParam
-            }, Year, Month, Day
+            }, year, month, day
         )
             .show()
 

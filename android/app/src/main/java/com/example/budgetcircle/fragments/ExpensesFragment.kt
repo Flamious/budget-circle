@@ -40,7 +40,8 @@ class ExpensesFragment : Fragment() {
 
                     budgetData.addExpense(result.data?.getFloatExtra("sum", 0f))
 
-                    budgetData.addToOperationList(HistoryItem(
+                    budgetData.addToOperationList(
+                        HistoryItem(
                         1,
                         result.data?.getFloatExtra("sum", 0f)!!,
                         result.data?.getStringExtra("title")!!,

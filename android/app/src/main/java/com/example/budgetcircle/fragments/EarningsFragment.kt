@@ -18,6 +18,7 @@ import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -41,14 +42,13 @@ class EarningsFragment : Fragment() {
 
                     budgetData.addToOperationList(
                         HistoryItem(
-                        1,
-                        result.data?.getFloatExtra("sum", 0f)!!,
-                        "Lya",
-                        result.data?.getStringExtra("type")!!,
-                        Date(),
-                        resources.getColor(R.color.blue_button),
-                        result.data?.getBooleanExtra("isRep", false)!!)
-                    )
+                            1,
+                            result.data?.getFloatExtra("sum", 0f)!!,
+                            result.data?.getStringExtra("title")!!,
+                            result.data?.getStringExtra("type")!!,
+                            SimpleDateFormat("dd.MM.yyyy").parse(result.data?.getStringExtra("date")!!),
+                            resources.getColor(R.color.blue_button),
+                            result.data?.getBooleanExtra("isRep", false)!!))
 
                     Toast.makeText(
                         activity,

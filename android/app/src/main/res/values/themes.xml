@@ -39,4 +39,14 @@
     <style name="redColorDatePicker.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/red_switch_main</item>
     </style>
+
+    <style name="blueColorDatePicker" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/blue_switch_main</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/blueColorDatePicker.buttons</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/blueColorDatePicker.buttons</item>
+    </style>
+
+    <style name="blueColorDatePicker.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue_switch_main</item>
+    </style>
 </resources>

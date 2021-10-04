@@ -25,19 +25,19 @@ class ExpensesFormActivity : AppCompatActivity() {
         binding.expTitle.doOnTextChanged { _, _, _, _ ->
             check()
         }
-        binding.dateLayout.setOnClickListener {
+        binding.expDateLayout.setOnClickListener {
             Dialogs().pickDate(
                 this,
                 binding.expDate,
                 R.style.redColorDatePicker
             )
         }
-        binding.kindLayout.setOnClickListener {
+        binding.expKindLayout.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.kind),
                 resources.getStringArray(R.array.expense_titles),
-                binding.selectKind
+                binding.expSelectKind
             )
         }
         binding.expAddButton.setOnClickListener {
@@ -50,21 +50,14 @@ class ExpensesFormActivity : AppCompatActivity() {
 
     private fun check() {
         var sum = binding.expSum.text.toString().toFloatOrNull()
-        if (sum == null || sum <= 0f || binding.expTitle.text.isNullOrBlank()) {
-            binding.expAddButton.apply {
-                isEnabled = false
-            }
-        } else {
-            binding.expAddButton.apply {
-                isEnabled = true
-            }
-        }
+        binding.expAddButton.isEnabled =
+            !(sum == null || sum <= 0f || binding.expTitle.text.isNullOrBlank())
     }
 
     private fun add() {
         val intent = Intent()
         intent.putExtra("sum", binding.expSum.text.toString().toFloat())
-        intent.putExtra("type", binding.selectKind.text.toString())
+        intent.putExtra("type", binding.expSelectKind.text.toString())
         intent.putExtra("isRep", binding.expRepSwitch.isChecked)
         intent.putExtra("date", binding.expDate.text.toString())
         intent.putExtra("title", binding.expTitle.text.toString())

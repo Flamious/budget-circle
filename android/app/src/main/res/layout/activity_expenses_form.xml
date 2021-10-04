@@ -86,8 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:theme="@style/RedSwitch"
-        app:layout_constraintEnd_toEndOf="@+id/dateLayout"
-        app:layout_constraintTop_toBottomOf="@+id/dateLayout" />
+        app:layout_constraintEnd_toEndOf="@+id/expDateLayout"
+        app:layout_constraintTop_toBottomOf="@+id/expDateLayout" />
 
     <TextView
         android:id="@+id/repTitle"
@@ -147,7 +147,7 @@
         app:layout_constraintTop_toBottomOf="@+id/expRepSwitch" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/kindLayout"
+        android:id="@+id/expKindLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -157,10 +157,10 @@
         app:layout_constraintTop_toBottomOf="@+id/expSum">
 
         <TextView
-            android:id="@+id/selectKind"
+            android:id="@+id/expSelectKind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/food"
+            android:text="@string/exp_other"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -173,19 +173,19 @@
             android:text="@string/kind"
             android:textColor="@color/text_secondary"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/selectKind"
+            app:layout_constraintEnd_toStartOf="@+id/expSelectKind"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dateLayout"
+        android:id="@+id/expDateLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/kindLayout"
-        app:layout_constraintStart_toStartOf="@+id/kindLayout"
-        app:layout_constraintTop_toBottomOf="@+id/kindLayout">
+        app:layout_constraintEnd_toEndOf="@+id/expKindLayout"
+        app:layout_constraintStart_toStartOf="@+id/expKindLayout"
+        app:layout_constraintTop_toBottomOf="@+id/expKindLayout">
 
         <TextView
             android:id="@+id/expDate"
