@@ -66,6 +66,7 @@ class ExpensesFormActivity : AppCompatActivity() {
         intent.putExtra("sum", binding.expSum.text.toString().toFloat())
         intent.putExtra("type", binding.selectKind.text.toString())
         intent.putExtra("isRep", binding.expRepSwitch.isChecked)
+        intent.putExtra("date", binding.expDate.text.toString())
         intent.putExtra("title", binding.expTitle.text.toString())
         setResult(RESULT_OK, intent)
         finish()

@@ -18,6 +18,7 @@ import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -44,7 +45,7 @@ class ExpensesFragment : Fragment() {
                         result.data?.getFloatExtra("sum", 0f)!!,
                         result.data?.getStringExtra("title")!!,
                         result.data?.getStringExtra("type")!!,
-                        Date(),
+                        SimpleDateFormat("dd.MM.yyyy").parse(result.data?.getStringExtra("date")!!),
                         resources.getColor(R.color.red_button),
                         result.data?.getBooleanExtra("isRep", false)!!))
 
