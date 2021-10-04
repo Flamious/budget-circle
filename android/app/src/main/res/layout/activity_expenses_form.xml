@@ -32,12 +32,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/expSum" />
 
+    <TextView
+        android:id="@+id/expTitleTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/title"
+        android:textColor="@color/text_secondary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/expTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/expTitle" />
+
     <EditText
         android:id="@+id/expSum"
         android:layout_width="150dp"
         android:layout_height="45dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/red_switch_main"
         android:clickable="false"
         android:ems="10"
@@ -48,42 +59,26 @@
         android:textCursorDrawable="@color/red_switch_main"
         android:textSize="20sp"
         android:theme="@style/redControlCursor"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/expTitle"
+        app:layout_constraintTop_toBottomOf="@+id/expTitle" />
+
+    <EditText
+        android:id="@+id/expTitle"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/red_switch_main"
+        android:clickable="false"
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:textColorHighlight="@color/red_switch_main"
+        android:textColorLink="@color/red_switch_secondary"
+        android:textCursorDrawable="@color/red_switch_main"
+        android:textSize="20sp"
+        android:theme="@style/redControlCursor"
+        app:layout_constraintEnd_toEndOf="@+id/Title"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/food"
-        android:textColor="@color/text_primary"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/expSum"
-        app:layout_constraintTop_toBottomOf="@+id/expSum" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="24.01.2021"
-        android:textColor="@color/text_primary"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/kindTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/kind"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <Switch
         android:id="@+id/expRepSwitch"
@@ -91,8 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:theme="@style/RedSwitch"
-        app:layout_constraintEnd_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintEnd_toEndOf="@+id/dateLayout"
+        app:layout_constraintTop_toBottomOf="@+id/dateLayout" />
 
     <TextView
         android:id="@+id/repTitle"
@@ -105,18 +100,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/expRepSwitch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/expRepSwitch" />
-
-    <TextView
-        android:id="@+id/expDateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/op_date"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
 
     <Button
         android:id="@+id/expAddButton"
@@ -162,5 +145,67 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expRepSwitch" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/kindLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/expSum"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/sumTitle"
+        app:layout_constraintTop_toBottomOf="@+id/expSum">
+
+        <TextView
+            android:id="@+id/selectKind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/food"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/kindTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/kind"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/selectKind"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dateLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/kindLayout"
+        app:layout_constraintStart_toStartOf="@+id/kindLayout"
+        app:layout_constraintTop_toBottomOf="@+id/kindLayout">
+
+        <TextView
+            android:id="@+id/expDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24.01.2021"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/expDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/op_date"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

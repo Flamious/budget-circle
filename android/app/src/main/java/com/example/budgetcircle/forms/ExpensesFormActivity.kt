@@ -3,12 +3,10 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
-import com.example.budgetcircle.viewmodel.items.HistoryItem
-import java.util.*
+import com.example.budgetcircle.dialogs.Dialogs
 
 class ExpensesFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityExpensesFormBinding
@@ -21,17 +19,26 @@ class ExpensesFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.expSum.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().toFloatOrNull() == null) {
-                binding.expAddButton.apply {
-                    isEnabled = false
-                }
-            }
-            else {
-                binding.expAddButton.apply {
-                    isEnabled = true
-                }
-            }
+        binding.expSum.doOnTextChanged { _, _, _, _ ->
+            check()
+        }
+        binding.expTitle.doOnTextChanged { _, _, _, _ ->
+            check()
+        }
+        binding.dateLayout.setOnClickListener {
+            Dialogs().pickDate(
+                this,
+                binding.expDate,
+                R.style.redColorDatePicker
+            )
+        }
+        binding.kindLayout.setOnClickListener {
+            Dialogs().chooseOne(
+                this,
+                resources.getString(R.string.kind),
+                resources.getStringArray(R.array.expense_titles),
+                binding.selectKind
+            )
         }
         binding.expAddButton.setOnClickListener {
             add()
@@ -41,11 +48,25 @@ class ExpensesFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun check() {
+        var sum = binding.expSum.text.toString().toFloatOrNull()
+        if (sum == null || sum <= 0f || binding.expTitle.text.isNullOrBlank()) {
+            binding.expAddButton.apply {
+                isEnabled = false
+            }
+        } else {
+            binding.expAddButton.apply {
+                isEnabled = true
+            }
+        }
+    }
+
     private fun add() {
         val intent = Intent()
         intent.putExtra("sum", binding.expSum.text.toString().toFloat())
-        intent.putExtra("type", "Food")
+        intent.putExtra("type", binding.selectKind.text.toString())
         intent.putExtra("isRep", binding.expRepSwitch.isChecked)
+        intent.putExtra("title", binding.expTitle.text.toString())
         setResult(RESULT_OK, intent)
         finish()
     }

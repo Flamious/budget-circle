@@ -42,7 +42,7 @@ class ExpensesFragment : Fragment() {
                     budgetData.addToOperationList(HistoryItem(
                         1,
                         result.data?.getFloatExtra("sum", 0f)!!,
-                        "Lya",
+                        result.data?.getStringExtra("title")!!,
                         result.data?.getStringExtra("type")!!,
                         Date(),
                         resources.getColor(R.color.red_button),
@@ -75,7 +75,6 @@ class ExpensesFragment : Fragment() {
 
     private fun setChart() {
         val values = arrayListOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
-        /*val values = arrayListOf(0f, 0f, 0f)*/
         var i = 0f
         for (n in values) {
             i += n
