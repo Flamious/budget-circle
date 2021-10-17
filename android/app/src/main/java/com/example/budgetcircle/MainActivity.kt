@@ -72,8 +72,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNavColor(color: Int) {
         val color = ColorStateList.valueOf(ContextCompat.getColor(this, color))
+        val colorSecondary = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.no_money_op))
         binding.navigationMenu.itemTextColor = color
         binding.navigationMenu.itemIconTintList = color
-
+        binding.navigationMenu.itemRippleColor = colorSecondary
     }
 }

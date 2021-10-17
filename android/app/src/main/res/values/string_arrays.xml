@@ -26,8 +26,6 @@
     <string-array name="budget_titles">
         <item name="stocks">Stocks</item>
         <item name="bank">Bank</item>
-        <item name="card_1">Card 1</item>
-        <item name="card_2">Card 2</item>
         <item name="cash">Cash</item>
     </string-array>
 
