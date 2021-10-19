@@ -52,7 +52,7 @@ class ExpensesFragment : Fragment() {
 
                     Toast.makeText(
                         activity,
-                        "Added",
+                        "Added " + result.data?.getIntExtra("budgetTypeId", 0)!!,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -94,6 +94,7 @@ class ExpensesFragment : Fragment() {
 
     private fun addExpense() {
         val intent = Intent(activity, ExpensesFormActivity::class.java)
+        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
         launcher?.launch(intent)
     }
 

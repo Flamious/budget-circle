@@ -2,7 +2,6 @@ package com.example.budgetcircle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.budgetcircle.R
 import com.example.budgetcircle.viewmodel.items.BudgetType
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 
@@ -25,10 +24,10 @@ open class BudgetData : ViewModel() {
 
     val budgetTypes: MutableLiveData<MutableList<BudgetType>> = MutableLiveData<MutableList<BudgetType>>().apply {
         value = mutableListOf()
-        value?.add(BudgetType(0, 0f, "Cash", false))
-        /*value?.add(BudgetType(1, 0f, "Bank", false))
-        value?.add(BudgetType(2, 0f, "Stocks", false))
-        value?.add(BudgetType(3, 0f, "Card", true))*/
+        value?.add(BudgetType(0, 0f, "Cash0", false))
+        value?.add(BudgetType(1, 0f, "Cash1", false))
+        value?.add(BudgetType(2, 0f, "Cash2", false))
+        value?.add(BudgetType(3, 0f, "Cash3", false))
     }
 
     fun addToOperationList(item: HistoryItem) {

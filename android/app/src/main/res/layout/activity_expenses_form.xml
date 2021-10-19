@@ -6,6 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".forms.ExpensesFormActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expBudgetTypesLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/expSum"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/sumTitle"
+        app:layout_constraintTop_toBottomOf="@+id/expSum">
+
+        <TextView
+            android:id="@+id/expSelectBudgetType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/budgetTypeTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/account"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/expSelectBudgetType"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -151,10 +182,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/expSum"
+        app:layout_constraintEnd_toEndOf="@+id/expBudgetTypesLayout"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/sumTitle"
-        app:layout_constraintTop_toBottomOf="@+id/expSum">
+        app:layout_constraintStart_toStartOf="@+id/expBudgetTypesLayout"
+        app:layout_constraintTop_toBottomOf="@+id/expBudgetTypesLayout">
 
         <TextView
             android:id="@+id/expSelectKind"

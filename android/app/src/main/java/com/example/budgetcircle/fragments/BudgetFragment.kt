@@ -90,7 +90,7 @@ class BudgetFragment : Fragment() {
                                     HistoryItem(
                                         1,
                                         sum,
-                                        "New account: ",
+                                        "New account: $name",
                                         "Other",
                                         Date(),
                                         resources.getColor(R.color.blue_button),

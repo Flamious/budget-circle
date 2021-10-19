@@ -1,15 +1,45 @@
 package com.example.budgetcircle.viewmodel.items
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
-import java.util.*
 import kotlin.collections.ArrayList
 
-data class BudgetType(val id: Int, val sum: Float, val title: String, val isDeletable: Boolean)
+data class BudgetType(var id: Int, var sum: Float, var title: String?, var isDeletable: Boolean) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readFloat(),
+        parcel.readString(),
+        parcel.readByte() != 0.toByte()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeFloat(sum)
+        parcel.writeString(title)
+        parcel.writeByte(if (isDeletable) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<BudgetType> {
+        override fun createFromParcel(parcel: Parcel): BudgetType {
+            return BudgetType(parcel)
+        }
+
+        override fun newArray(size: Int): Array<BudgetType?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<BudgetType>()

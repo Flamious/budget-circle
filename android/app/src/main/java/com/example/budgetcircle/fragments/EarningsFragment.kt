@@ -52,7 +52,7 @@ class EarningsFragment : Fragment() {
 
                     Toast.makeText(
                         activity,
-                        "Added",
+                        "Added " + result.data?.getIntExtra("budgetTypeId", 0)!!,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -95,6 +95,7 @@ class EarningsFragment : Fragment() {
 
     private fun addEarning() {
         val intent = Intent(activity, EarningsFormActivity::class.java)
+        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
         launcher?.launch(intent)
     }
 
