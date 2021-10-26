@@ -3,6 +3,7 @@ package com.example.budgetcircle.dialogs
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
+import android.content.DialogInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
 import com.example.budgetcircle.MainActivity
@@ -12,7 +13,7 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.viewmodel.items.BudgetType
 
 
-class Dialogs() {
+class Dialogs {
     fun chooseOne(context: Context, title: String, list: Array<String>, view: TextView) {
         if (list.isNotEmpty()) {
             MaterialAlertDialogBuilder(context)

@@ -1,6 +1,7 @@
 package com.example.budgetcircle.lists
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,18 +12,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
+import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.BudgetType
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 class BudgetTypeListFragment : Fragment() {
@@ -70,6 +74,9 @@ class BudgetTypeListFragment : Fragment() {
         adapter.onEditClick = {
             editBudgetType(it)
         }
+        adapter.onDeleteClick = {
+            deleteBudgetType(it)
+        }
     }
 
     private fun init() {
@@ -86,6 +93,28 @@ class BudgetTypeListFragment : Fragment() {
         intent.putExtra("accountName", item.title)
         intent.putExtra("newAccountBudget", item.sum)
         launcher?.launch(intent)
+    }
+
+    private fun deleteBudgetType(item: BudgetType) {
+        var dialog = MaterialAlertDialogBuilder(this.requireContext(), R.style.greenButtonsDialog)
+            .setTitle(resources.getString(R.string.delete) + " " + item.title)
+            .setMessage(resources.getString(R.string.r_u_sure))
+            .setPositiveButton(
+                resources.getString(R.string.yes)
+            ) { dialogInterface, _ ->
+                run {
+                    budgetData.deleteBudgetType(item.id)
+                    dialogInterface.dismiss()
+                }
+            }
+            .setNegativeButton(
+                resources.getString(R.string.no)
+            ) { dialogInterface, _ -> dialogInterface.dismiss() }
+            .show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_switch_main))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_switch_main))
     }
 
     private fun exit() {

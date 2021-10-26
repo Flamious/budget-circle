@@ -22,6 +22,7 @@ class BudgetFormActivity : AppCompatActivity() {
                 accName.setText(intent.getStringExtra("accountName")!!)
                 budgetSum.setText(intent.getFloatExtra("newAccountBudget", 0f).toString())
                 budgetAddButton.text = resources.getText(R.string.edit_account)
+                budgetFormTitle.text = resources.getText(R.string.edit_account)
             }
         }
 

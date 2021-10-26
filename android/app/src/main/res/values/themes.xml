@@ -40,6 +40,14 @@
         <item name="android:buttonBarNegativeButtonStyle">@style/redColorDatePicker.buttons</item>
     </style>
 
+    <style name="greenButtonsDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/green_switch_main</item>
+    </style>
+
+    <style name="greenButtonsDialog.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/green_switch_main</item>
+    </style>
+
     <style name="redColorDatePicker.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/red_switch_main</item>
     </style>

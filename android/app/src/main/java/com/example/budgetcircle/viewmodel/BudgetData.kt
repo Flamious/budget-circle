@@ -30,13 +30,21 @@ open class BudgetData : ViewModel() {
             value?.add(BudgetType(0, 0f, "Cash0", false))
             value?.add(BudgetType(1, 0f, "Cash1", false))
             value?.add(BudgetType(2, 0f, "Cash2", false))
-            value?.add(BudgetType(3, 0f, "Cash3", false))
+            value?.add(BudgetType(3, 0f, "Cash3", true))
         }
 
     fun editBudgetType(item: BudgetType) {
         budgetTypes.value?.let { value ->
             val index = value.indexOfFirst { it.id == item.id }
             value[index] = item.copy()
+            budgetTypes.postValue(budgetTypes.value)
+        }
+    }
+
+    fun deleteBudgetType(id: Int) {
+        budgetTypes.value?.let { value ->
+            val index = value.indexOfFirst { it.id == id }
+            budgetTypes.value?.removeAt(index)
             budgetTypes.postValue(budgetTypes.value)
         }
     }
