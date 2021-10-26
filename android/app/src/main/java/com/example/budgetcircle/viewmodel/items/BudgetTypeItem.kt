@@ -16,8 +16,7 @@ data class BudgetType(var id: Int, var sum: Float, var title: String?, var isDel
         parcel.readFloat(),
         parcel.readString(),
         parcel.readByte() != 0.toByte()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
@@ -43,13 +42,21 @@ data class BudgetType(var id: Int, var sum: Float, var title: String?, var isDel
 
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<BudgetType>()
+    var onEditClick: ((item: BudgetType) -> Unit)? = null
+    var onDeleteClick: ((item: BudgetType) -> Unit)? = null
 
-    class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = BudgetTypeItemBinding.bind(view)
         fun bind(item: BudgetType) = binding.apply {
             budgetTypeSum.text = item.sum.toString() + "₽"
             typeTitle.text = item.title
             budgetTypeDeleteButton.isEnabled = item.isDeletable
+            budgetTypeEditButton.setOnClickListener {
+                onEditClick?.invoke(item)
+            }
+            budgetTypeDeleteButton.setOnClickListener {
+                onDeleteClick?.invoke(item)
+            }
         }
     }
 

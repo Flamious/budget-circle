@@ -59,7 +59,7 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="title">Title</string>
-
+    <string name="edit_account">Edit account</string>
     <!-- Lists -->
     <string name="budgetTypes">Budget Types</string>
 

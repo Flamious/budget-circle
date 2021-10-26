@@ -79,7 +79,7 @@ class BudgetFragment : Fragment() {
                             budgetData.addEarning(sum)
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
-                                    5,
+                                    budgetData.budgetTypes.value?.last()?.id!! + 1,
                                     sum,
                                     name,
                                     true
@@ -160,7 +160,6 @@ class BudgetFragment : Fragment() {
 
     private fun setChart() {
         val values = arrayListOf(12f, 20f, 45f, 62f, 15f)
-        /*val values = arrayListOf(0f, 0f, 0f)*/
         var i = 0f
         for (n in values) {
             i += n
