@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
 import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.items.BudgetType
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import java.util.*

@@ -14,15 +14,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
+import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.items.BudgetType
+import com.example.budgetcircle.viewmodel.items.HistoryItem
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BudgetFragment : Fragment() {
@@ -68,11 +72,47 @@ class BudgetFragment : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(
-                        activity,
-                        result.data?.getStringExtra("Ha").toString(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    when (result.data?.getStringExtra("type").toString()) {
+                        "newAccount" -> {
+                            val sum: Float = result.data?.getFloatExtra("newAccountBudget", 0f)!!
+                            val name: String = result.data?.getStringExtra("newAccountName")!!
+                            budgetData.addEarning(sum)
+                            budgetData.addToBudgetTypesList(
+                                BudgetType(
+                                    budgetData.budgetTypes.value?.last()?.id!! + 1,
+                                    sum,
+                                    name,
+                                    true
+                                )
+                            )
+                            if (sum > 0f) {
+                                budgetData.addToOperationList(
+                                    HistoryItem(
+                                        1,
+                                        sum,
+                                        "New account: $name",
+                                        "Other",
+                                        Date(),
+                                        resources.getColor(R.color.blue_button),
+                                        false
+                                    )
+                                )
+                            }
+
+                            Toast.makeText(
+                                activity,
+                                "Added",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                activity,
+                                "Toast",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 }
             }
     }
@@ -98,6 +138,9 @@ class BudgetFragment : Fragment() {
         binding.exchangeButton.setOnClickListener {
             addExchange()
         }
+        binding.typeListButton.setOnClickListener {
+            openBudgetTypeList()
+        }
     }
 
     private fun showHiddenButtons() {
@@ -107,7 +150,7 @@ class BudgetFragment : Fragment() {
                 listButton,
                 hiddenButtonsLayout,
                 addAccountButton,
-                categoryListButton,
+                typeListButton,
                 repetitiveOpListButton,
                 stocksListButton
             )
@@ -117,7 +160,6 @@ class BudgetFragment : Fragment() {
 
     private fun setChart() {
         val values = arrayListOf(12f, 20f, 45f, 62f, 15f)
-        /*val values = arrayListOf(0f, 0f, 0f)*/
         var i = 0f
         for (n in values) {
             i += n
@@ -140,7 +182,16 @@ class BudgetFragment : Fragment() {
 
     private fun addExchange() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
+        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
         launcher?.launch(intent)
+    }
+
+    private fun openBudgetTypeList() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, BudgetTypeListFragment())
+            ?.commit()
     }
 
     private fun setAnimation(

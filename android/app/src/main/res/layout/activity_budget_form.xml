@@ -7,7 +7,7 @@
     tools:context=".forms.BudgetFormActivity">
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/budgetFormTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -24,7 +24,7 @@
         android:id="@+id/sumTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/acc_sum"
+        android:text="@string/sum"
         android:textColor="@color/text_secondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/budgetSum"
@@ -51,13 +51,13 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/green_switch_main"
         android:ems="10"
-        android:hint="@string/acc_sum"
+        android:hint="@string/sum"
         android:inputType="number"
         android:textColorHighlight="@color/green_switch_main"
         android:textColorLink="@color/green_switch_secondary"
         android:textCursorDrawable="@color/green_switch_main"
         android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
+        android:theme="@style/greenControlCursor"
         app:layout_constraintEnd_toEndOf="@+id/accName"
         app:layout_constraintStart_toStartOf="@+id/accName"
         app:layout_constraintTop_toBottomOf="@+id/accName" />
@@ -75,9 +75,9 @@
         android:textColorLink="@color/green_switch_secondary"
         android:textCursorDrawable="@color/green_switch_main"
         android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/Title"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        android:theme="@style/greenControlCursor"
+        app:layout_constraintEnd_toEndOf="@+id/budgetFormTitle"
+        app:layout_constraintTop_toBottomOf="@+id/budgetFormTitle" />
 
     <Button
         android:id="@+id/budgetAddButton"
@@ -99,9 +99,9 @@
         android:background="@android:color/transparent"
         android:scaleX="1"
         android:scaleY="1"
-        app:layout_constraintBottom_toBottomOf="@+id/Title"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetFormTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Title"
+        app:layout_constraintTop_toTopOf="@+id/budgetFormTitle"
         app:srcCompat="@drawable/ic_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

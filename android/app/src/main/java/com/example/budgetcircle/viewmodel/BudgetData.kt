@@ -2,6 +2,8 @@ package com.example.budgetcircle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.budgetcircle.viewmodel.items.BudgetType
+import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 
 open class BudgetData : ViewModel() {
@@ -17,12 +19,42 @@ open class BudgetData : ViewModel() {
         value = 0f
     }
 
-    val operations: MutableLiveData<MutableList<HistoryItem>> = MutableLiveData<MutableList<HistoryItem>>().apply {
-        value = mutableListOf()
+    val operations: MutableLiveData<MutableList<HistoryItem>> =
+        MutableLiveData<MutableList<HistoryItem>>().apply {
+            value = mutableListOf()
+        }
+
+    val budgetTypes: MutableLiveData<MutableList<BudgetType>> =
+        MutableLiveData<MutableList<BudgetType>>().apply {
+            value = mutableListOf()
+            value?.add(BudgetType(0, 0f, "Cash0", false))
+            value?.add(BudgetType(1, 0f, "Cash1", false))
+            value?.add(BudgetType(2, 0f, "Cash2", false))
+            value?.add(BudgetType(3, 0f, "Cash3", true))
+        }
+
+    fun editBudgetType(item: BudgetType) {
+        budgetTypes.value?.let { value ->
+            val index = value.indexOfFirst { it.id == item.id }
+            value[index] = item.copy()
+            budgetTypes.postValue(budgetTypes.value)
+        }
     }
 
-    fun addToOperationList(expense: HistoryItem) {
-        operations.value?.add(expense)
+    fun deleteBudgetType(id: Int) {
+        budgetTypes.value?.let { value ->
+            val index = value.indexOfFirst { it.id == id }
+            budgetTypes.value?.removeAt(index)
+            budgetTypes.postValue(budgetTypes.value)
+        }
+    }
+
+    fun addToOperationList(item: HistoryItem) {
+        operations.value?.add(item)
+    }
+
+    fun addToBudgetTypesList(type: BudgetType) {
+        budgetTypes.value?.add(type)
     }
 
     fun addExpense(sum: Float?) {

@@ -6,6 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".forms.EarningsFormActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/earnBudgetTypeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/earnSum"
+        app:layout_constraintStart_toStartOf="@+id/sumTitle"
+        app:layout_constraintTop_toBottomOf="@+id/earnSum">
+
+        <TextView
+            android:id="@+id/earnSelectBudgetType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/budgetTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -104,7 +133,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue_button"
-        android:enabled="true"
+        android:enabled="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/add_earn"
@@ -149,9 +178,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/earnSum"
+        app:layout_constraintEnd_toEndOf="@+id/earnBudgetTypeLayout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sumTitle"
-        app:layout_constraintTop_toBottomOf="@+id/earnSum">
+        app:layout_constraintTop_toBottomOf="@+id/earnBudgetTypeLayout">
 
         <TextView
             android:id="@+id/earnSelectKind"

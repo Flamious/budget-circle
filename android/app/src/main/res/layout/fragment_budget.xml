@@ -163,7 +163,7 @@
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/categoryListButton"
+                android:id="@+id/typeListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -189,9 +189,9 @@
                 app:backgroundTint="@color/green_button"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/categoryListButton"
+                app:layout_constraintBottom_toTopOf="@+id/typeListButton"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/categoryListButton"
+                app:layout_constraintStart_toStartOf="@+id/typeListButton"
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

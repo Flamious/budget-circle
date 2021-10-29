@@ -7,13 +7,18 @@ import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.viewmodel.items.BudgetType
 
 class ExpensesFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityExpensesFormBinding
-
+    lateinit var budgetTypes: Array<BudgetType>
+    lateinit var chosenBudgetType: BudgetType
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesFormBinding.inflate(layoutInflater)
+        budgetTypes = intent.extras?.getParcelableArray("types")?.filterIsInstance<BudgetType>()?.toTypedArray()!!
+        chosenBudgetType = budgetTypes[0].copy()
+        binding.expSelectBudgetType.text = chosenBudgetType.title
         setButtons()
         setContentView(binding.root)
     }
@@ -30,6 +35,15 @@ class ExpensesFormActivity : AppCompatActivity() {
                 this,
                 binding.expDate,
                 R.style.redColorDatePicker
+            )
+        }
+        binding.expSelectBudgetType.setOnClickListener {
+            Dialogs().chooseOneBudgetType(
+                this,
+                "Account",
+                budgetTypes,
+                chosenBudgetType,
+                binding.expSelectBudgetType
             )
         }
         binding.expKindLayout.setOnClickListener {
@@ -61,6 +75,7 @@ class ExpensesFormActivity : AppCompatActivity() {
         intent.putExtra("isRep", binding.expRepSwitch.isChecked)
         intent.putExtra("date", binding.expDate.text.toString())
         intent.putExtra("title", binding.expTitle.text.toString())
+        intent.putExtra("budgetTypeId", chosenBudgetType.id)
         setResult(RESULT_OK, intent)
         finish()
     }
