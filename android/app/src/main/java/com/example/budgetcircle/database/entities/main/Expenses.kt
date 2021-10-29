@@ -9,5 +9,5 @@ data class Expense (
     @PrimaryKey (autoGenerate = true) val id: Int,
     val sum: Float,
     val date: Date,
-    val typeNumber: Int
+    val typeId: Int
 )

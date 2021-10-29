@@ -9,5 +9,5 @@ data class Earning (
     @PrimaryKey (autoGenerate = true) val id: Int,
     val sum: Float,
     val date: Date,
-    val typeNumber: Int
+    val typeId: Int
 )

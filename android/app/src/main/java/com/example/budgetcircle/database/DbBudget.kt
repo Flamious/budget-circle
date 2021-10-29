@@ -6,22 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.budgetcircle.database.dao.main.EarningsDAO
 import com.example.budgetcircle.database.dao.main.ExpensesDAO
-import com.example.budgetcircle.database.dao.main.SavingsDAO
-import com.example.budgetcircle.database.dao.types.SavingTypesDAO
-import com.example.budgetcircle.database.entities.main.BudgetSaving
+import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
+import com.example.budgetcircle.database.dao.types.EarningTypesDAO
+import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
 import com.example.budgetcircle.database.entities.main.Earning
 import com.example.budgetcircle.database.entities.main.Expense
-import com.example.budgetcircle.database.entities.types.SavingType
+import com.example.budgetcircle.database.entities.types.BudgetType
 
 @Database(entities = [
-    BudgetSaving::class, SavingType::class,
+    BudgetType::class,
     Earning::class, Expense::class
 ], version = 1, exportSchema = false)
 abstract class DbBudget : RoomDatabase() {
     abstract fun EarningsDAO() : EarningsDAO
     abstract fun ExpensesDAO() : ExpensesDAO
-    abstract fun SavingsDAO() : SavingsDAO
-    abstract fun SavingTypesDAO() : SavingTypesDAO
+    abstract fun BudgetTypesDAO() : BudgetTypesDAO
+    abstract fun ExpenseTypesDAO() : ExpenseTypesDAO
+    abstract fun EarningTypesDAO() : EarningTypesDAO
 
     companion object {
         @Volatile
