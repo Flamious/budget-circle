@@ -57,7 +57,7 @@
         android:textColorLink="@color/green_switch_secondary"
         android:textCursorDrawable="@color/green_switch_main"
         android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
+        android:theme="@style/greenControlCursor"
         app:layout_constraintEnd_toEndOf="@+id/accName"
         app:layout_constraintStart_toStartOf="@+id/accName"
         app:layout_constraintTop_toBottomOf="@+id/accName" />
@@ -75,7 +75,7 @@
         android:textColorLink="@color/green_switch_secondary"
         android:textCursorDrawable="@color/green_switch_main"
         android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
+        android:theme="@style/greenControlCursor"
         app:layout_constraintEnd_toEndOf="@+id/budgetFormTitle"
         app:layout_constraintTop_toBottomOf="@+id/budgetFormTitle" />
 

@@ -55,6 +55,41 @@ class Dialogs {
         }
     }
 
+    fun chooseOneBudgetType(
+        context: Context,
+        title: String,
+        list: Array<BudgetType>,
+        chosenTypeMain: BudgetType,
+        chosenTypeSecondary: BudgetType,
+        viewMain: TextView,
+        viewSecondary: TextView
+    ) {
+        if (list.isNotEmpty()) {
+            val typesNames: Array<String> = Array(list.size) { index -> list[index].title!! }
+            MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setItems(typesNames) { _, which ->
+                    run {
+                        chosenTypeMain.id = list[which].id
+                        chosenTypeMain.title = list[which].title
+                        chosenTypeMain.sum = list[which].sum
+                        chosenTypeMain.isDeletable = list[which].isDeletable
+                        viewMain.text = list[which].title
+
+                        var id: Int = if(which == 0) 1 else 0
+                        chosenTypeSecondary.id = list[id].id
+                        chosenTypeSecondary.title = list[id].title
+                        chosenTypeSecondary.sum = list[id].sum
+                        chosenTypeSecondary.isDeletable = list[id].isDeletable
+                        viewSecondary.text = list[id].title
+                    }
+                }
+                .show()
+        } else {
+            viewMain.text = null
+        }
+    }
+
     fun pickDate(context: Context, view: TextView, theme: Int) {
         val calendar = Calendar.getInstance()
         val year = calendar[Calendar.YEAR]

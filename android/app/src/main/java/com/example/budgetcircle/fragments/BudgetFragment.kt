@@ -182,6 +182,7 @@ class BudgetFragment : Fragment() {
 
     private fun addExchange() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
+        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
         launcher?.launch(intent)
     }
 

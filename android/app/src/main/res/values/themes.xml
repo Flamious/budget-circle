@@ -34,6 +34,10 @@
         <item name="android:colorControlActivated">@color/blue_button</item>
     </style>
 
+    <style name="greenControlCursor" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorControlActivated">@color/green_button</item>
+    </style>
+
     <style name="redColorDatePicker" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/red_switch_main</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/redColorDatePicker.buttons</item>
