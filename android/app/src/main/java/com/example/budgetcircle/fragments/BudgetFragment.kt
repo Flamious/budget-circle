@@ -15,13 +15,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
-import com.example.budgetcircle.viewmodel.items.BudgetType
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -79,9 +80,8 @@ class BudgetFragment : Fragment() {
                             budgetData.addEarning(sum)
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
-                                    budgetData.budgetTypes.value?.last()?.id!! + 1,
-                                    sum,
                                     name,
+                                    sum,
                                     true
                                 )
                             )

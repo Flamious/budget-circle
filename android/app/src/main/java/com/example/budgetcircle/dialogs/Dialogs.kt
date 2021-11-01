@@ -10,7 +10,7 @@ import com.example.budgetcircle.MainActivity
 import java.util.*
 import android.widget.DatePicker
 import com.example.budgetcircle.R
-import com.example.budgetcircle.viewmodel.items.BudgetType
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
 
 class Dialogs {
@@ -29,7 +29,7 @@ class Dialogs {
         }
     }
 
-    fun chooseOneBudgetType(
+    /*fun chooseOneBudgetType(
         context: Context,
         title: String,
         list: Array<BudgetType>,
@@ -53,9 +53,9 @@ class Dialogs {
         } else {
             view.text = null
         }
-    }
+    }*/
 
-    fun chooseOneBudgetType(
+    /*fun chooseOneBudgetType(
         context: Context,
         title: String,
         list: Array<BudgetType>,
@@ -88,7 +88,7 @@ class Dialogs {
         } else {
             viewMain.text = null
         }
-    }
+    }*/
 
     fun pickDate(context: Context, view: TextView, theme: Int) {
         val calendar = Calendar.getInstance()

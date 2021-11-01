@@ -6,14 +6,23 @@ import com.example.budgetcircle.database.entities.types.BudgetType
 
 @Dao
 interface BudgetTypesDAO {
+    @Query("SELECT * FROM budget_types WHERE id = :id")
+    fun getById(id: Int): BudgetType
+
     @Insert
-    suspend fun insert(types: BudgetType)
+    fun insert(types: BudgetType)
+
+    @Insert
+    fun insertAll(vararg types: BudgetType)
 
     @Update
-    suspend fun update(types: BudgetType)
+    fun update(types: BudgetType)
 
     @Query("DELETE FROM budget_types WHERE id = :id AND isDeletable")
-    suspend fun delete(id: Int)
+    fun delete(id: Int)
+
+    @Query("DELETE FROM budget_types")
+    fun deleteAll()
 
     @Query("SELECT * FROM budget_types")
     fun getAll(): LiveData<List<BudgetType>>

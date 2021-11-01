@@ -6,8 +6,10 @@ import java.util.*
 
 @Entity (tableName = "earnings")
 data class Earning (
-    @PrimaryKey (autoGenerate = true) val id: Int,
     val sum: Float,
     val date: Date,
     val typeId: Int
-)
+) {
+    @PrimaryKey (autoGenerate = true)
+    var id: Int = 0
+}

@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
 import kotlin.collections.ArrayList
+/*
 
 data class BudgetType(var id: Int, var sum: Float, var title: String?, var isDeletable: Boolean) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -39,6 +41,7 @@ data class BudgetType(var id: Int, var sum: Float, var title: String?, var isDel
         }
     }
 }
+*/
 
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<BudgetType>()
@@ -73,7 +76,7 @@ class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
         return itemList.size
     }
 
-    fun setList(list: MutableList<BudgetType>)
+    fun setList(list: List<BudgetType>)
     {
         itemList.clear()
         itemList = ArrayList(list)

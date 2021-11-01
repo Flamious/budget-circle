@@ -7,18 +7,18 @@ import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.viewmodel.items.BudgetType
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
 class ExpensesFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityExpensesFormBinding
-    lateinit var budgetTypes: Array<BudgetType>
-    lateinit var chosenBudgetType: BudgetType
+/*    lateinit var budgetTypes: Array<BudgetType>
+    lateinit var chosenBudgetType: BudgetType*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesFormBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getParcelableArray("types")?.filterIsInstance<BudgetType>()?.toTypedArray()!!
+        /*budgetTypes = intent.extras?.getParcelableArray("types")?.filterIsInstance<BudgetType>()?.toTypedArray()!!
         chosenBudgetType = budgetTypes[0].copy()
-        binding.expSelectBudgetType.text = chosenBudgetType.title
+        binding.expSelectBudgetType.text = chosenBudgetType.title*/
         setButtons()
         setContentView(binding.root)
     }
@@ -37,7 +37,7 @@ class ExpensesFormActivity : AppCompatActivity() {
                 R.style.redColorDatePicker
             )
         }
-        binding.expSelectBudgetType.setOnClickListener {
+        /*binding.expSelectBudgetType.setOnClickListener {
             Dialogs().chooseOneBudgetType(
                 this,
                 "Account",
@@ -45,7 +45,7 @@ class ExpensesFormActivity : AppCompatActivity() {
                 chosenBudgetType,
                 binding.expSelectBudgetType
             )
-        }
+        }*/
         binding.expKindLayout.setOnClickListener {
             Dialogs().chooseOne(
                 this,
@@ -54,9 +54,9 @@ class ExpensesFormActivity : AppCompatActivity() {
                 binding.expSelectKind
             )
         }
-        binding.expAddButton.setOnClickListener {
+        /*binding.expAddButton.setOnClickListener {
             add()
-        }
+        }*/
         binding.backButton.setOnClickListener {
             exit()
         }
@@ -67,7 +67,7 @@ class ExpensesFormActivity : AppCompatActivity() {
         binding.expAddButton.isEnabled =
             !(sum == null || sum <= 0f || binding.expTitle.text.isNullOrBlank())
     }
-
+/*
     private fun add() {
         val intent = Intent()
         intent.putExtra("sum", binding.expSum.text.toString().toFloat())
@@ -78,7 +78,7 @@ class ExpensesFormActivity : AppCompatActivity() {
         intent.putExtra("budgetTypeId", chosenBudgetType.id)
         setResult(RESULT_OK, intent)
         finish()
-    }
+    }*/
 
     private fun exit() {
         val intent = Intent()

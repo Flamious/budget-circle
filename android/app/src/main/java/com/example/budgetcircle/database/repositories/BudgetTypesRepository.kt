@@ -11,11 +11,14 @@ class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
         BudgetTypesDAO.insert(item)
     }
 
-    suspend fun updateSaving(item: BudgetType) {
-        BudgetTypesDAO.update(item)
+    suspend fun updateBudgetType(id: Int, newItem: BudgetType) {
+        val previousItem = BudgetTypesDAO.getById(id)
+        previousItem.title = newItem.title
+        previousItem.sum = newItem.sum
+        BudgetTypesDAO.update(previousItem)
     }
 
-    suspend fun deleteSaving(id: Int) {
+    suspend fun deleteBudgetType(id: Int) {
         BudgetTypesDAO.delete(id)
     }
 }
