@@ -10,10 +10,32 @@ import com.example.budgetcircle.MainActivity
 import java.util.*
 import android.widget.DatePicker
 import com.example.budgetcircle.R
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
+data class Index(var value: Int)
 
 class Dialogs {
+    fun chooseOne(
+        context: Context,
+        title: String,
+        list: Array<String>,
+        view: TextView,
+        index: Index
+    ) {
+        if (list.isNotEmpty()) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setItems(list) { _, which ->
+                    run {
+                        view.text = list[which]
+                        index.value = which
+                    }
+                }
+                .show()
+        } else {
+            view.text = null
+        }
+    }
+
     fun chooseOne(context: Context, title: String, list: Array<String>, view: TextView) {
         if (list.isNotEmpty()) {
             MaterialAlertDialogBuilder(context)

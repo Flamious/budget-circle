@@ -5,7 +5,10 @@ import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.entities.types.EarningType
 
 class EarningTypesRepository (private val EarningTypesDAO: EarningTypesDAO) {
-    val getAllEarningTypes: LiveData<List<EarningType>> = EarningTypesDAO.getAll()
+
+    suspend fun getAllEarningType(): List<EarningType> {
+        return EarningTypesDAO.getAll()
+    }
 
     suspend fun addEarningType(item: EarningType) {
         EarningTypesDAO.insert(item)

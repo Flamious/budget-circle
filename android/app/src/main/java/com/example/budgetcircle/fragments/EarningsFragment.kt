@@ -38,9 +38,15 @@ class EarningsFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
 
-                    budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))
-
-                    budgetData.addToOperationList(
+                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
+                    val earningTypeIndex = result.data?.getIntExtra("earningTypeIndex", 0)!!
+                    /*budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))*/
+                    budgetData.addEarning(
+                        result.data?.getFloatExtra("sum", 0f)!!,
+                        budgetData.earningTypes[earningTypeIndex].id,
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id
+                    )
+                    /*budgetData.addToOperationList(
                         HistoryItem(
                             1,
                             result.data?.getFloatExtra("sum", 0f)!!,
@@ -48,11 +54,13 @@ class EarningsFragment : Fragment() {
                             result.data?.getStringExtra("type")!!,
                             SimpleDateFormat("dd.MM.yyyy").parse(result.data?.getStringExtra("date")!!),
                             resources.getColor(R.color.blue_button),
-                            result.data?.getBooleanExtra("isRep", false)!!))
+                            result.data?.getBooleanExtra("isRep", false)!!
+                        )
+                    )*/
 
                     Toast.makeText(
                         activity,
-                        "Added " + result.data?.getIntExtra("budgetTypeId", 0)!!,
+                        "Added",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -95,7 +103,14 @@ class EarningsFragment : Fragment() {
 
     private fun addEarning() {
         val intent = Intent(activity, EarningsFormActivity::class.java)
-        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
+        val a: Int = budgetData.budgetTypes.value!!.size
+        intent.putExtra(
+            "budgetTypes",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+            /*Array(budgetData.budgetTypes.value!!.size) {index -> "a"})*/
+        intent.putExtra(
+            "earningTypes",
+            Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
         launcher?.launch(intent)
     }
 

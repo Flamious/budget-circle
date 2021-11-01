@@ -80,10 +80,6 @@ abstract class DbBudget : RoomDatabase() {
             expenseTypesDAO: ExpenseTypesDAO,
             budgetTypesDAO: BudgetTypesDAO
         ) {
-            earningTypesDAO.deleteAll()
-            expenseTypesDAO.deleteAll()
-            budgetTypesDAO.deleteAll()
-
             expenseTypesDAO.insert(
                 ExpenseType("Home"),
                 ExpenseType("Food"),

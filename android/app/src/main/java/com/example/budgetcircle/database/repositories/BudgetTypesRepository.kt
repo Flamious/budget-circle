@@ -5,7 +5,15 @@ import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.entities.types.BudgetType
 
 class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
-    val getAllSavings: LiveData<List<BudgetType>> = BudgetTypesDAO.getAll()
+    val getAllBudgetTypes: LiveData<List<BudgetType>> = BudgetTypesDAO.getAll()
+
+    suspend fun getTotalSum(): Float {
+        var sum = 0f
+        for (i in BudgetTypesDAO.getSums()) {
+            sum += i
+        }
+        return sum
+    }
 
     suspend fun addBudgetType(item: BudgetType) {
         BudgetTypesDAO.insert(item)
@@ -16,6 +24,12 @@ class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
         previousItem.title = newItem.title
         previousItem.sum = newItem.sum
         BudgetTypesDAO.update(previousItem)
+    }
+
+    suspend fun addSum(id: Int, sum: Float) {
+        val item = BudgetTypesDAO.getById(id)
+        item.sum += sum
+        BudgetTypesDAO.update(item)
     }
 
     suspend fun deleteBudgetType(id: Int) {

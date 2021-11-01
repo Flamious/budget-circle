@@ -19,5 +19,5 @@ interface ExpenseTypesDAO {
     fun deleteAll()
 
     @Query("SELECT * FROM budget_types")
-    fun getAll(): LiveData<List<ExpenseType>>
+    fun getAll(): List<ExpenseType>
 }

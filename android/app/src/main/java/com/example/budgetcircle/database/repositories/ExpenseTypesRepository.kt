@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
 import com.example.budgetcircle.database.entities.types.ExpenseType
 
-class ExpenseTypesRepository (private val ExpenseTypesDAO: ExpenseTypesDAO) {
-    val getAllEarningTypes: LiveData<List<ExpenseType>> = ExpenseTypesDAO.getAll()
+class ExpenseTypesRepository(private val ExpenseTypesDAO: ExpenseTypesDAO) {
+    suspend fun getAllEarningTypes(): List<ExpenseType> {
+        return ExpenseTypesDAO.getAll()
+    }
 
     suspend fun addEarningType(item: ExpenseType) {
         ExpenseTypesDAO.insert(item)

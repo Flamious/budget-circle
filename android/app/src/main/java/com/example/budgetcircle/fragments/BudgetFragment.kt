@@ -69,7 +69,7 @@ class BudgetFragment : Fragment() {
         budgetData.totalSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-
+        budgetData.updateSum()
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -77,7 +77,7 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Float = result.data?.getFloatExtra("newAccountBudget", 0f)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetData.addEarning(sum)
+                            /*budgetData.addEarning(sum)*/
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
                                     name,
