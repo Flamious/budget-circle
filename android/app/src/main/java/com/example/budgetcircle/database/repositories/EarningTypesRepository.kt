@@ -5,7 +5,6 @@ import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.entities.types.EarningType
 
 class EarningTypesRepository (private val EarningTypesDAO: EarningTypesDAO) {
-
     suspend fun getAllEarningType(): List<EarningType> {
         return EarningTypesDAO.getAll()
     }

@@ -18,7 +18,6 @@ interface EarningTypesDAO {
     @Query("DELETE FROM earning_types")
     fun deleteAll()
 
-
     @Query("SELECT * FROM earning_types")
     fun getAll(): List<EarningType>
 }

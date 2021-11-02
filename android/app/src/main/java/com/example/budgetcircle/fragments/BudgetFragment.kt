@@ -69,7 +69,6 @@ class BudgetFragment : Fragment() {
         budgetData.totalSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-        budgetData.updateSum()
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {

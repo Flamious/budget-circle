@@ -37,8 +37,15 @@ class ExpensesFragment : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-
-                    budgetData.addExpense(result.data?.getFloatExtra("sum", 0f))
+                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
+                    val expenseTypeIndex = result.data?.getIntExtra("isRep", 0)!!
+                    /*budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))*/
+                    budgetData.addExpense(
+                        result.data?.getFloatExtra("sum", 0f)!!,
+                        budgetData.expenseTypes[expenseTypeIndex].id,
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id
+                    )
+                    /*budgetData.addExpense(result.data?.getFloatExtra("sum", 0f))
 
                     budgetData.addToOperationList(
                         HistoryItem(
@@ -48,11 +55,11 @@ class ExpensesFragment : Fragment() {
                         result.data?.getStringExtra("type")!!,
                         SimpleDateFormat("dd.MM.yyyy").parse(result.data?.getStringExtra("date")!!),
                         resources.getColor(R.color.red_button),
-                        result.data?.getBooleanExtra("isRep", false)!!))
+                        result.data?.getBooleanExtra("isRep", false)!!))*/
 
                     Toast.makeText(
                         activity,
-                        "Added " + result.data?.getIntExtra("budgetTypeId", 0)!!,
+                        "Added",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -94,7 +101,12 @@ class ExpensesFragment : Fragment() {
 
     private fun addExpense() {
         val intent = Intent(activity, ExpensesFormActivity::class.java)
-        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
+        intent.putExtra(
+            "budgetTypes",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+        intent.putExtra(
+            "expenseTypes",
+            Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
         launcher?.launch(intent)
     }
 

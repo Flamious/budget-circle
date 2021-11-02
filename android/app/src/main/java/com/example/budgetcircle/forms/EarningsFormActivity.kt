@@ -17,6 +17,7 @@ class EarningsFormActivity : AppCompatActivity() {
     var chosenEarningType: Index = Index(0)
     lateinit var budgetTypes: Array<String>
     lateinit var earningTypes: Array<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEarningsFormBinding.inflate(layoutInflater)
@@ -58,13 +59,7 @@ class EarningsFormActivity : AppCompatActivity() {
                 earningTypes,
                 binding.earnSelectKind,
                 chosenEarningType
-            )/*
-            Dialogs().chooseOne(
-                this,
-                resources.getString(R.string.kind),
-                resources.getStringArray(R.array.earning_titles),
-                binding.earnSelectKind
-            )*/
+            )
         }
         binding.earnAddButton.setOnClickListener {
             add()

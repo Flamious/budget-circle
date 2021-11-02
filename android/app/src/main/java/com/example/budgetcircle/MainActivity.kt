@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        budgetData.updateSum()
         binding.navigationMenu.selectedItemId = R.id.budget
         setNavColor(R.color.nav_green_selector)
         openFragment(BudgetFragment())

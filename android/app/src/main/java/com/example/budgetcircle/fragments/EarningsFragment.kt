@@ -107,7 +107,6 @@ class EarningsFragment : Fragment() {
         intent.putExtra(
             "budgetTypes",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-            /*Array(budgetData.budgetTypes.value!!.size) {index -> "a"})*/
         intent.putExtra(
             "earningTypes",
             Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })

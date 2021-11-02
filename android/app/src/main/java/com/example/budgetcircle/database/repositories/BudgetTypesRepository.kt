@@ -5,8 +5,6 @@ import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.entities.types.BudgetType
 
 class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
-    val getAllBudgetTypes: LiveData<List<BudgetType>> = BudgetTypesDAO.getAll()
-
     suspend fun getTotalSum(): Float {
         var sum = 0f
         for (i in BudgetTypesDAO.getSums()) {

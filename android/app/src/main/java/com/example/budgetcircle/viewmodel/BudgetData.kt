@@ -9,8 +9,10 @@ import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
 import com.example.budgetcircle.database.entities.main.Earning
+import com.example.budgetcircle.database.entities.main.Expense
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
+import com.example.budgetcircle.database.entities.types.ExpenseType
 import com.example.budgetcircle.database.repositories.*
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
@@ -22,10 +24,12 @@ import java.util.*
 open class BudgetData(application: Application) : AndroidViewModel(application) {
     private val budgetTypesRepository: BudgetTypesRepository
     private val earningTypesRepository: EarningTypesRepository
+    private val expenseTypesRepository: ExpenseTypesRepository
     private val earningsRepository: EarningsRepository
     private val expensesRepository: ExpensesRepository
     val budgetTypes: LiveData<List<BudgetType>>
     val earningTypes: List<EarningType>
+    val expenseTypes: List<ExpenseType>
 
     init {
         val budgetTypesDAO: BudgetTypesDAO =
@@ -35,6 +39,10 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         val earningTypesDAO: EarningTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).EarningTypesDAO()
         earningTypesRepository = EarningTypesRepository(earningTypesDAO)
+
+        val expenseTypesDAO: ExpenseTypesDAO =
+            DbBudget.getDatabase(application, viewModelScope).ExpenseTypesDAO()
+        expenseTypesRepository = ExpenseTypesRepository(expenseTypesDAO)
 
         val earningsDAO: EarningsDAO =
             DbBudget.getDatabase(application, viewModelScope).EarningsDAO()
@@ -46,6 +54,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
 
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
+        expenseTypes = expenseTypesDAO.getAll()
     }
 
     val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
@@ -68,37 +77,33 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     fun initSums() = viewModelScope.launch(Dispatchers.IO) {
         totalSum.postValue(budgetTypesRepository.getTotalSum())
         earningsSum.postValue(earningsRepository.getTotalSum())
-    }
-    fun updateSum() = viewModelScope.launch(Dispatchers.IO) {
-        totalSum.postValue(budgetTypesRepository.getTotalSum())
+        expensesSum.postValue(expensesRepository.getTotalSum())
     }
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.addBudgetType(item)
-        updateSum()
+        totalSum.postValue(totalSum.value!! + item.sum)
     }
 
     fun editBudgetType(id: Int, item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.updateBudgetType(id, item)
-        updateSum()
     }
 
     fun deleteBudgetType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         earningsRepository.deleteByBudgetTypeId(id)
+        expensesRepository.deleteByBudgetTypeId(id)
         budgetTypesRepository.deleteBudgetType(id)
-        updateSum()
+        initSums()
     }
 
     fun addToOperationList(item: HistoryItem) {
         operations.value?.add(item)
     }
 
-    fun addExpense(sum: Float?) {
-        totalSum.value?.let { tSum ->
-            totalSum.value = tSum - sum!!
-        }
-        expensesSum.value?.let { expSum ->
-            expensesSum.value = expSum + sum!!
-        }
+    fun addExpense(sum: Float, type: Int, budgetTypeId: Int) = viewModelScope.launch (Dispatchers.IO) {
+        totalSum.postValue(totalSum.value!! - sum)
+        expensesSum.postValue(expensesSum.value!! + sum)
+        budgetTypesRepository.addSum(budgetTypeId, -sum)
+        expensesRepository.addExpense(Expense(sum, Date(), type, budgetTypeId))
     }
 
     fun addEarning(sum: Float, type: Int, budgetTypeId: Int) = viewModelScope.launch (Dispatchers.IO) {

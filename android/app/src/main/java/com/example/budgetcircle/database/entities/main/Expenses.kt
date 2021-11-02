@@ -8,7 +8,8 @@ import java.util.*
 data class Expense (
     val sum: Float,
     val date: Date,
-    val typeId: Int
+    val typeId: Int,
+    val budgetTypeId: Int
 ) {
     @PrimaryKey (autoGenerate = true)
     var id: Int = 0

@@ -18,7 +18,6 @@ import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
 import com.example.budgetcircle.database.entities.types.ExpenseType
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
@@ -26,7 +25,7 @@ import kotlinx.coroutines.launch
         BudgetType::class,
         Earning::class, Expense::class,
         ExpenseType::class, EarningType::class
-    ], version = 1, exportSchema = false
+    ], version = 3, exportSchema = false
 )
 @TypeConverters(DateConverter::class)
 abstract class DbBudget : RoomDatabase() {
@@ -64,48 +63,30 @@ abstract class DbBudget : RoomDatabase() {
     private class BudgetDbCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { database ->
+            INSTANCE?.let {
                 scope.launch {
-                    populateDb(
-                        database.EarningTypesDAO(),
-                        database.ExpenseTypesDAO(),
-                        database.BudgetTypesDAO()
-                    )
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Cash', 0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Bank', 0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 1', 0, true)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 2', 0, true)")
+
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Home')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Food')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Debts')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Transport')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Bills and services')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Personal expenses')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Other')")
+
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Salary')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Pensions and scholarship')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Real estate')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Investments')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Business')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Prizes')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Other')")
                 }
             }
         }
-
-        fun populateDb(
-            earningTypesDAO: EarningTypesDAO,
-            expenseTypesDAO: ExpenseTypesDAO,
-            budgetTypesDAO: BudgetTypesDAO
-        ) {
-            expenseTypesDAO.insert(
-                ExpenseType("Home"),
-                ExpenseType("Food"),
-                ExpenseType("Debts"),
-                ExpenseType("Transport"),
-                ExpenseType("Bills and services"),
-                ExpenseType("Personal expenses"),
-                ExpenseType("Other")
-            )
-            earningTypesDAO.insert(
-                EarningType("Salary"),
-                EarningType("Pensions and scholarship"),
-                EarningType("Real estate"),
-                EarningType("Investments"),
-                EarningType("Business"),
-                EarningType("Prizes"),
-                EarningType("Other")
-            )
-            budgetTypesDAO.insertAll(
-                BudgetType("Cash", 0f, false),
-                BudgetType("Bank", 0f, false),
-                BudgetType("Card 1", 0f, true),
-                BudgetType("Card 2", 0f, true)
-            )
-        }
     }
-
-
 }

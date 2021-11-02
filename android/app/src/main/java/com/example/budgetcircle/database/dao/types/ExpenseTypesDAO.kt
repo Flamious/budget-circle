@@ -1,6 +1,5 @@
 package com.example.budgetcircle.database.dao.types
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.budgetcircle.database.entities.types.ExpenseType
 
@@ -18,6 +17,6 @@ interface ExpenseTypesDAO {
     @Query("DELETE FROM expenses_types")
     fun deleteAll()
 
-    @Query("SELECT * FROM budget_types")
+    @Query("SELECT * FROM expenses_types")
     fun getAll(): List<ExpenseType>
 }
