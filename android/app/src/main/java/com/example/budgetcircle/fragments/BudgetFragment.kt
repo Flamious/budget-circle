@@ -84,7 +84,7 @@ class BudgetFragment : Fragment() {
                                     true
                                 )
                             )
-                            if (sum > 0f) {
+                           /* if (sum > 0f) {
                                 budgetData.addToOperationList(
                                     HistoryItem(
                                         1,
@@ -96,13 +96,30 @@ class BudgetFragment : Fragment() {
                                         false
                                     )
                                 )
-                            }
+                            }*/
 
                             Toast.makeText(
                                 activity,
                                 "Added",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
+                        "exchange" -> {
+                            val sum: Float = result.data?.getFloatExtra("sum", 0f)!!
+                            val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
+                            val to: Int = result.data?.getIntExtra("toIndex", 0)!!
+
+                            budgetData.addExpense(
+                                sum,
+                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
+                                budgetData.budgetTypes.value!![from].id
+                            )
+
+                            budgetData.addEarning(
+                                sum,
+                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
+                                budgetData.budgetTypes.value!![to].id
+                            )
                         }
                         else -> {
                             Toast.makeText(
@@ -181,7 +198,9 @@ class BudgetFragment : Fragment() {
 
     private fun addExchange() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
-        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
+        intent.putExtra(
+            "budgetTypes",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
         launcher?.launch(intent)
     }
 

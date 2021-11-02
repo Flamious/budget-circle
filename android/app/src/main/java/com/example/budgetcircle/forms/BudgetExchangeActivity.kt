@@ -6,68 +6,66 @@ import android.os.Bundle
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetExchangeBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.dialogs.Index
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BudgetExchangeActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetExchangeBinding
-    /*lateinit var budgetTypes: Array<BudgetType>
-    lateinit var chosenBudgetTypeFrom: BudgetType
-    lateinit var chosenBudgetTypeTo: BudgetType*/
+    var chosenBudgetTypeFrom: Index = Index(0)
+    var chosenBudgetTypeTo: Index = Index(0)
+    lateinit var budgetTypes: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBudgetExchangeBinding.inflate(layoutInflater)
-        /*budgetTypes = intent.extras?.getParcelableArray("types")?.filterIsInstance<BudgetType>()
-            ?.toTypedArray()!!
-        chosenBudgetTypeFrom = budgetTypes[0].copy()
-        chosenBudgetTypeTo = budgetTypes[1].copy()
-        binding.listTo.text = chosenBudgetTypeTo.title
-        binding.listFrom.text = chosenBudgetTypeFrom.title*/
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        binding.listTo.text = budgetTypes[0]
+        binding.listFrom.text = budgetTypes[1]
         setButtons()
         setContentView(binding.root)
     }
 
     private fun setButtons() {
-        /*binding.budgetExchangeAddButton.setOnClickListener {
+        binding.budgetExchangeAddButton.setOnClickListener {
             add()
-        }*/
+        }
         binding.backButton.setOnClickListener {
             exit()
         }
-        /*binding.listFrom.setOnClickListener {
-            Dialogs().chooseOneBudgetType(
+        binding.listFrom.setOnClickListener {
+            Dialogs().chooseTwoWithNoRepeat(
                 this,
                 resources.getString(R.string.account),
                 budgetTypes,
-                chosenBudgetTypeFrom,
-                chosenBudgetTypeTo,
                 binding.listFrom,
-                binding.listTo
+                binding.listTo,
+                chosenBudgetTypeFrom,
+                chosenBudgetTypeTo
             )
-        }*/
-        /*binding.listTo.setOnClickListener {
+        }
+        binding.listTo.setOnClickListener {
             val budgetTypesCut = budgetTypes.toMutableList()
-            budgetTypesCut.removeAt(budgetTypes.indexOfFirst { it.id == chosenBudgetTypeFrom.id })
-            Dialogs().chooseOneBudgetType(
+            budgetTypesCut.removeAt(chosenBudgetTypeFrom.value)
+            Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
                 budgetTypesCut.toTypedArray(),
-                chosenBudgetTypeTo,
-                binding.listTo
+                binding.listTo,
+                chosenBudgetTypeTo
             )
-        }*/
+        }
     }
 
-    /*private fun add() {
+    private fun add() {
         val intent = Intent()
         intent.putExtra("type", "exchange")
         intent.putExtra("sum", binding.budgetSum.text.toString().toFloat())
-        intent.putExtra("from", chosenBudgetTypeFrom.id)
-        intent.putExtra("to", chosenBudgetTypeTo.id)
+        intent.putExtra("fromIndex", chosenBudgetTypeFrom.value)
+        intent.putExtra("toIndex", chosenBudgetTypeTo.value)
         setResult(RESULT_OK, intent)
         finish()
-    }*/
+    }
 
     private fun exit() {
         val intent = Intent()

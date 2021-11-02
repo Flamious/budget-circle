@@ -103,7 +103,6 @@ class EarningsFragment : Fragment() {
 
     private fun addEarning() {
         val intent = Intent(activity, EarningsFormActivity::class.java)
-        val a: Int = budgetData.budgetTypes.value!!.size
         intent.putExtra(
             "budgetTypes",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
