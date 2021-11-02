@@ -5,7 +5,13 @@ import com.example.budgetcircle.database.dao.main.ExpensesDAO
 import com.example.budgetcircle.database.entities.main.Expense
 
 class ExpensesRepository(private val expensesDAO: ExpensesDAO) {
-    val getAllExpenses: LiveData<List<Expense>> = expensesDAO.getAll()
+    suspend fun getTotalSum(): Float {
+        var sum = 0f
+        for (i in expensesDAO.getSums()) {
+            sum += i
+        }
+        return sum
+    }
 
     suspend fun addExpense(item: Expense) {
         expensesDAO.insert(item)
@@ -13,6 +19,10 @@ class ExpensesRepository(private val expensesDAO: ExpensesDAO) {
 
     suspend fun updateExpense(item: Expense) {
         expensesDAO.update(item)
+    }
+
+    suspend fun deleteByBudgetTypeId(id: Int) {
+        expensesDAO.deleteByBudgetTypeId(id)
     }
 
     suspend fun deleteExpense(id: Int) {

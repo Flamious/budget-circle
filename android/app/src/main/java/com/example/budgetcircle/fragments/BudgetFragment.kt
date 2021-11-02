@@ -15,13 +15,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
-import com.example.budgetcircle.viewmodel.items.BudgetType
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -68,7 +69,6 @@ class BudgetFragment : Fragment() {
         budgetData.totalSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -76,16 +76,15 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Float = result.data?.getFloatExtra("newAccountBudget", 0f)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetData.addEarning(sum)
+                            /*budgetData.addEarning(sum)*/
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
-                                    budgetData.budgetTypes.value?.last()?.id!! + 1,
-                                    sum,
                                     name,
+                                    sum,
                                     true
                                 )
                             )
-                            if (sum > 0f) {
+                           /* if (sum > 0f) {
                                 budgetData.addToOperationList(
                                     HistoryItem(
                                         1,
@@ -97,13 +96,30 @@ class BudgetFragment : Fragment() {
                                         false
                                     )
                                 )
-                            }
+                            }*/
 
                             Toast.makeText(
                                 activity,
                                 "Added",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
+                        "exchange" -> {
+                            val sum: Float = result.data?.getFloatExtra("sum", 0f)!!
+                            val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
+                            val to: Int = result.data?.getIntExtra("toIndex", 0)!!
+
+                            budgetData.addExpense(
+                                sum,
+                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
+                                budgetData.budgetTypes.value!![from].id
+                            )
+
+                            budgetData.addEarning(
+                                sum,
+                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
+                                budgetData.budgetTypes.value!![to].id
+                            )
                         }
                         else -> {
                             Toast.makeText(
@@ -182,7 +198,9 @@ class BudgetFragment : Fragment() {
 
     private fun addExchange() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
-        intent.putExtra("types", budgetData.budgetTypes.value?.toTypedArray())
+        intent.putExtra(
+            "budgetTypes",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
         launcher?.launch(intent)
     }
 

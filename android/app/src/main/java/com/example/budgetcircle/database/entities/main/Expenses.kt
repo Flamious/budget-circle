@@ -6,8 +6,11 @@ import java.util.*
 
 @Entity (tableName = "expenses")
 data class Expense (
-    @PrimaryKey (autoGenerate = true) val id: Int,
     val sum: Float,
     val date: Date,
-    val typeNumber: Int
-)
+    val typeId: Int,
+    val budgetTypeId: Int
+) {
+    @PrimaryKey (autoGenerate = true)
+    var id: Int = 0
+}

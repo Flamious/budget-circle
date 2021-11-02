@@ -22,42 +22,46 @@ class MainActivity : AppCompatActivity() {
     val budgetData: BudgetData by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.navigationMenu.selectedItemId = R.id.budget
         setNavColor(R.color.nav_green_selector)
         openFragment(BudgetFragment())
 
+        budgetData.initSums()
+        budgetData.budgetTypes.observe(this, { }) //TODO убрать костыль, для инициализации списка счетов
         binding.navigationMenu.setOnItemSelectedListener {
-            openFragment(when (it.itemId) {
-                R.id.earnings -> {
-                    setNavColor(R.color.nav_blue_selector)
-                    EarningsFragment()
-                }
-                R.id.expenses -> {
-                    setNavColor(R.color.nav_red_selector)
-                    ExpensesFragment()
-                }
-                R.id.budget -> {
-                    setNavColor(R.color.nav_green_selector)
-                    BudgetFragment()
-                }
-                R.id.history -> {
-                    setNavColor(R.color.nav_orange_selector)
-                    HistoryFragment()
-                }
-                R.id.settings -> {
-                    setNavColor(R.color.nav_purple_selector)
-                    SettingsFragment()
-                }
+            openFragment(
+                when (it.itemId) {
+                    R.id.earnings -> {
+                        setNavColor(R.color.nav_blue_selector)
+                        EarningsFragment()
+                    }
+                    R.id.expenses -> {
+                        setNavColor(R.color.nav_red_selector)
+                        ExpensesFragment()
+                    }
+                    R.id.budget -> {
+                        setNavColor(R.color.nav_green_selector)
+                        BudgetFragment()
+                    }
+                    R.id.history -> {
+                        setNavColor(R.color.nav_orange_selector)
+                        HistoryFragment()
+                    }
+                    R.id.settings -> {
+                        setNavColor(R.color.nav_purple_selector)
+                        SettingsFragment()
+                    }
 
-                else -> {
-                    setNavColor(R.color.nav_green_selector)
-                    BudgetFragment()
+                    else -> {
+                        setNavColor(R.color.nav_green_selector)
+                        BudgetFragment()
+                    }
                 }
-            })
+            )
             true
         }
 
@@ -72,7 +76,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNavColor(color: Int) {
         val color = ColorStateList.valueOf(ContextCompat.getColor(this, color))
-        val colorSecondary = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.no_money_op))
+        val colorSecondary =
+            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.no_money_op))
         binding.navigationMenu.itemTextColor = color
         binding.navigationMenu.itemIconTintList = color
         binding.navigationMenu.itemRippleColor = colorSecondary

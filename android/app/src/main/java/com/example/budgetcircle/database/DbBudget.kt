@@ -4,42 +4,88 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.budgetcircle.database.converters.DateConverter
 import com.example.budgetcircle.database.dao.main.EarningsDAO
 import com.example.budgetcircle.database.dao.main.ExpensesDAO
-import com.example.budgetcircle.database.dao.main.SavingsDAO
-import com.example.budgetcircle.database.dao.types.SavingTypesDAO
-import com.example.budgetcircle.database.entities.main.BudgetSaving
+import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
+import com.example.budgetcircle.database.dao.types.EarningTypesDAO
+import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
 import com.example.budgetcircle.database.entities.main.Earning
 import com.example.budgetcircle.database.entities.main.Expense
-import com.example.budgetcircle.database.entities.types.SavingType
+import com.example.budgetcircle.database.entities.types.BudgetType
+import com.example.budgetcircle.database.entities.types.EarningType
+import com.example.budgetcircle.database.entities.types.ExpenseType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-@Database(entities = [
-    BudgetSaving::class, SavingType::class,
-    Earning::class, Expense::class
-], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        BudgetType::class,
+        Earning::class, Expense::class,
+        ExpenseType::class, EarningType::class
+    ], version = 3, exportSchema = false
+)
+@TypeConverters(DateConverter::class)
 abstract class DbBudget : RoomDatabase() {
-    abstract fun EarningsDAO() : EarningsDAO
-    abstract fun ExpensesDAO() : ExpensesDAO
-    abstract fun SavingsDAO() : SavingsDAO
-    abstract fun SavingTypesDAO() : SavingTypesDAO
+    abstract fun EarningsDAO(): EarningsDAO
+    abstract fun ExpensesDAO(): ExpensesDAO
+    abstract fun BudgetTypesDAO(): BudgetTypesDAO
+    abstract fun ExpenseTypesDAO(): ExpenseTypesDAO
+    abstract fun EarningTypesDAO(): EarningTypesDAO
 
     companion object {
         @Volatile
         private var INSTANCE: DbBudget? = null
 
-        fun getDatabase(context: Context) : DbBudget {
+        fun getDatabase(context: Context, scope: CoroutineScope): DbBudget {
             val tempInstance = INSTANCE
-            if (tempInstance != null){
+            if (tempInstance != null) {
                 return tempInstance
             }
-            synchronized(this){
+            synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     DbBudget::class.java,
                     "budget_database",
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .addCallback(BudgetDbCallback(scope))
+                    .allowMainThreadQueries()
+                    .build()
                 INSTANCE = instance
                 return instance
+            }
+        }
+    }
+
+    private class BudgetDbCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            INSTANCE?.let {
+                scope.launch {
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Cash', 0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Bank', 0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 1', 0, true)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 2', 0, true)")
+
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Home')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Food')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Debts')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Transport')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Bills and services')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Personal expenses')")
+                    db.execSQL("INSERT INTO expenses_types (title) VALUES ('Other')")
+
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Salary')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Pensions and scholarship')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Real estate')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Investments')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Business')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Prizes')")
+                    db.execSQL("INSERT INTO earning_types (title) VALUES ('Other')")
+                }
             }
         }
     }

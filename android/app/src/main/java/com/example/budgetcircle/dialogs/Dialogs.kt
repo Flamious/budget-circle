@@ -10,17 +10,24 @@ import com.example.budgetcircle.MainActivity
 import java.util.*
 import android.widget.DatePicker
 import com.example.budgetcircle.R
-import com.example.budgetcircle.viewmodel.items.BudgetType
 
+data class Index(var value: Int)
 
 class Dialogs {
-    fun chooseOne(context: Context, title: String, list: Array<String>, view: TextView) {
+    fun chooseOne(
+        context: Context,
+        title: String,
+        list: Array<String>,
+        view: TextView,
+        index: Index
+    ) {
         if (list.isNotEmpty()) {
             MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setItems(list) { _, which ->
                     run {
                         view.text = list[which]
+                        index.value = which
                     }
                 }
                 .show()
@@ -29,64 +36,31 @@ class Dialogs {
         }
     }
 
-    fun chooseOneBudgetType(
+    fun chooseTwoWithNoRepeat(
         context: Context,
         title: String,
-        list: Array<BudgetType>,
-        chosenType: BudgetType,
-        view: TextView
-    ) {
-        if (list.isNotEmpty()) {
-            val typesNames: Array<String> = Array(list.size) { index -> list[index].title!! }
-            MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setItems(typesNames) { _, which ->
-                    run {
-                        chosenType.id = list[which].id
-                        chosenType.title = list[which].title
-                        chosenType.sum = list[which].sum
-                        chosenType.isDeletable = list[which].isDeletable
-                        view.text = list[which].title
-                    }
-                }
-                .show()
-        } else {
-            view.text = null
-        }
-    }
-
-    fun chooseOneBudgetType(
-        context: Context,
-        title: String,
-        list: Array<BudgetType>,
-        chosenTypeMain: BudgetType,
-        chosenTypeSecondary: BudgetType,
+        list: Array<String>,
         viewMain: TextView,
-        viewSecondary: TextView
+        viewSecondary: TextView,
+        chosenTypeMain: Index,
+        chosenTypeSecondary: Index
     ) {
         if (list.isNotEmpty()) {
-            val typesNames: Array<String> = Array(list.size) { index -> list[index].title!! }
             MaterialAlertDialogBuilder(context)
                 .setTitle(title)
-                .setItems(typesNames) { _, which ->
+                .setItems(list) { _, which ->
                     run {
-                        chosenTypeMain.id = list[which].id
-                        chosenTypeMain.title = list[which].title
-                        chosenTypeMain.sum = list[which].sum
-                        chosenTypeMain.isDeletable = list[which].isDeletable
-                        viewMain.text = list[which].title
+                        chosenTypeMain.value = which
+                        viewMain.text = list[chosenTypeMain.value]
 
-                        var id: Int = if(which == 0) 1 else 0
-                        chosenTypeSecondary.id = list[id].id
-                        chosenTypeSecondary.title = list[id].title
-                        chosenTypeSecondary.sum = list[id].sum
-                        chosenTypeSecondary.isDeletable = list[id].isDeletable
-                        viewSecondary.text = list[id].title
+                        chosenTypeSecondary.value = if(which == 0) 1 else 0
+                        viewSecondary.text = list[chosenTypeSecondary.value]
                     }
                 }
                 .show()
         } else {
-            viewMain.text = null
+            viewMain.text  = null
+            viewSecondary.text = null
         }
     }
 

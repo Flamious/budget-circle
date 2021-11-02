@@ -7,18 +7,24 @@ import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityEarningsFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.viewmodel.items.BudgetType
+import com.example.budgetcircle.dialogs.Index
+
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
 class EarningsFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityEarningsFormBinding
-    lateinit var budgetTypes: Array<BudgetType>
-    lateinit var chosenBudgetType: BudgetType
+    var chosenBudgetType: Index = Index(0)
+    var chosenEarningType: Index = Index(0)
+    lateinit var budgetTypes: Array<String>
+    lateinit var earningTypes: Array<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEarningsFormBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getParcelableArray("types")?.filterIsInstance<BudgetType>()?.toTypedArray()!!
-        chosenBudgetType = budgetTypes[0].copy()
-        binding.earnSelectBudgetType.text = chosenBudgetType.title
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        earningTypes = intent.extras?.getStringArray("earningTypes")!!
+        binding.earnSelectBudgetType.text = budgetTypes[0]
+        binding.earnSelectKind.text = earningTypes[0]
         setButtons()
         setContentView(binding.root)
     }
@@ -38,20 +44,21 @@ class EarningsFormActivity : AppCompatActivity() {
             )
         }
         binding.earnSelectBudgetType.setOnClickListener {
-            Dialogs().chooseOneBudgetType(
+            Dialogs().chooseOne(
                 this,
-                "Account",
+                resources.getString(R.string.account),
                 budgetTypes,
-                chosenBudgetType,
-                binding.earnSelectBudgetType
+                binding.earnSelectBudgetType,
+                chosenBudgetType
             )
         }
         binding.earnKindLayout.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.kind),
-                resources.getStringArray(R.array.earning_titles),
-                binding.earnSelectKind
+                earningTypes,
+                binding.earnSelectKind,
+                chosenEarningType
             )
         }
         binding.earnAddButton.setOnClickListener {
@@ -71,15 +78,14 @@ class EarningsFormActivity : AppCompatActivity() {
     private fun add() {
         val intent = Intent()
         intent.putExtra("sum", binding.earnSum.text.toString().toFloat())
-        intent.putExtra("type", binding.earnSelectKind.text.toString())
+        intent.putExtra("earningTypeIndex", chosenEarningType.value)
         intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
         intent.putExtra("date", binding.earnDate.text.toString())
         intent.putExtra("title", binding.earnTitle.text.toString())
-        intent.putExtra("budgetTypeId", chosenBudgetType.id)
+        intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
         setResult(RESULT_OK, intent)
         finish()
     }
-
     private fun exit() {
         val intent = Intent()
         setResult(RESULT_CANCELED, intent)

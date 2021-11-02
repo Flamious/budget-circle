@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
@@ -23,7 +24,7 @@ import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
-import com.example.budgetcircle.viewmodel.items.BudgetType
+/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -51,10 +52,10 @@ class BudgetTypeListFragment : Fragment() {
                     var name = result.data?.getStringExtra("newAccountName")!!
                     var sum = result.data?.getFloatExtra("newAccountBudget", 0f)!!
                     budgetData.editBudgetType(
+                        lastTypeId,
                         BudgetType(
-                            lastTypeId,
-                            sum,
                             name,
+                            sum,
                             true
                         )
                     )
