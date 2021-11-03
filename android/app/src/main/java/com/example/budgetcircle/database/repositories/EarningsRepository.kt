@@ -3,9 +3,9 @@ package com.example.budgetcircle.database.repositories
 import androidx.lifecycle.LiveData
 import com.example.budgetcircle.database.dao.main.EarningsDAO
 import com.example.budgetcircle.database.entities.main.Earning
+import java.util.*
 
-class EarningsRepository(private val earningsDAO: EarningsDAO) {
-    suspend fun getTotalSum(): Float {
+class EarningsRepository(private val earningsDAO: EarningsDAO) {suspend fun getTotalSum(): Float {
         var sum = 0f
         for (i in earningsDAO.getSums()) {
             sum += i

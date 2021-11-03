@@ -16,6 +16,7 @@
     <string name="year">Year</string>
     <string name="all_time">All time</string>
     <string name="no_entries">No entries</string>
+    <string name="choosingPeriod">Period</string>
     <string name="show_repetitive_operations_switch">Show repetitive operations</string>
 
     <!-- Settings -->
