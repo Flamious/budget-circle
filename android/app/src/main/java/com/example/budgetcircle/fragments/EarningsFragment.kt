@@ -32,7 +32,9 @@ class EarningsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        budgetData.earningsDateString.observe(this, {
+            binding.periodText.text = it
+        })
         budgetData.earningsSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
@@ -91,7 +93,7 @@ class EarningsFragment : Fragment() {
                 resources.getString(R.string.choosingPeriod),
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                binding.periodText,
+                budgetData.earningsDateString,
                 budgetData.earningsDate
             )
         }

@@ -39,7 +39,7 @@ class Dialogs {
         title: String,
         list: Array<String>,
         values: Array<Int>,
-        view: TextView,
+        mutableDataString: MutableLiveData<String>,
         mutableDataInt: MutableLiveData<Int>
     ) {
         if (list.isNotEmpty() && values.isNotEmpty()) {
@@ -47,15 +47,12 @@ class Dialogs {
                 .setTitle(title)
                 .setItems(list) { _, which ->
                     run {
-                        view.text = list[which]
+                        mutableDataString.postValue(list[which])
                         mutableDataInt.postValue(values[which])
                     }
                 }
                 .show()
-        } else {
-            view.text = null
         }
-
     }
 
     fun chooseTwoWithNoRepeat(

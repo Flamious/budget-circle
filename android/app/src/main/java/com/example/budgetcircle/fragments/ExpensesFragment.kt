@@ -17,6 +17,7 @@ import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
+import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
@@ -31,11 +32,13 @@ class ExpensesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        budgetData.expensesDateString.observe(this, {
+            binding.periodText.text = it
+        })
         budgetData.expensesSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-        budgetData.expenseSums.observe(this, {
+        budgetData.expenseSumByDate.observe(this, {
             setChart(it)
         })
         launcher =
@@ -81,6 +84,16 @@ class ExpensesFragment : Fragment() {
     private fun setButtons() {
         binding.addExpenseButton.setOnClickListener {
             addExpense()
+        }
+        binding.periodText.setOnClickListener {
+            Dialogs().chooseOne(
+                this.requireContext(),
+                resources.getString(R.string.choosingPeriod),
+                resources.getStringArray(R.array.periodsString),
+                resources.getIntArray(R.array.periodsInt).toTypedArray(),
+                budgetData.expensesDateString,
+                budgetData.expensesDate
+            )
         }
     }
 

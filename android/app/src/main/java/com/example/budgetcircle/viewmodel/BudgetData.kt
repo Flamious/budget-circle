@@ -29,15 +29,19 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     private val earningsRepository: EarningsRepository
     private val expensesRepository: ExpensesRepository
     val budgetTypes: LiveData<List<BudgetType>>
-    val expenseSums: LiveData<List<OperationSum>>
     val earningTypes: List<EarningType>
     val expenseTypes: List<ExpenseType>
 
     var earningSumByDate: LiveData<List<OperationSum>>
+    var expenseSumByDate: LiveData<List<OperationSum>>
     val earningsDate: MutableLiveData<Int> = MutableLiveData<Int>().apply {
         value = 7 //use week at start
     }
-
+    val expensesDate: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 7 //use week at start
+    }
+    val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
+    val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
     init {
         val budgetTypesDAO: BudgetTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).BudgetTypesDAO()
@@ -69,10 +73,19 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             }
         }
 
+        expenseSumByDate = Transformations.switchMap(expensesDate) { param ->
+            if (param > 0) {
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.DAY_OF_YEAR, -param)
+                expensesDAO.getAllByDate(calendar.time)
+            } else {
+                expensesDAO.getAll()
+            }
+        }
+
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
         expenseTypes = expenseTypesDAO.getAll()
-        expenseSums = expensesDAO.getAll()
     }
 
     val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {

@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         openFragment(BudgetFragment())
 
         budgetData.initSums()
+        budgetData.expensesDateString.postValue(resources.getString(R.string.week))
+        budgetData.earningsDateString.postValue(resources.getString(R.string.week))
         budgetData.budgetTypes.observe(this, { }) //TODO убрать костыль, для инициализации списка счетов
         binding.navigationMenu.setOnItemSelectedListener {
             openFragment(
