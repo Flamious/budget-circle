@@ -84,8 +84,8 @@ class EarningsFragment : Fragment() {
     }
 
     private fun setChart() {
-        val values = arrayListOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
-        /*val values = arrayListOf(0f, 0f, 0f)*/
+        /*val values = arrayOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
+        *//*val values = arrayListOf(0f, 0f, 0f)*//*
         var i = 0f
         for (n in values) {
             i += n
@@ -93,12 +93,12 @@ class EarningsFragment : Fragment() {
         val titles = resources.getStringArray(R.array.earning_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.earning_colors).toCollection(ArrayList())
         if (i > 0)
-            PieChartSetter.setChart(titles, values, colors, binding.earningsPieChart)
+            PieChartSetter.setChart(titles.toTypedArray(), values, colors, binding.earningsPieChart)
         else
             PieChartSetter.setChart(
-                arrayListOf("No entries"), arrayListOf(100f),
+                arrayOf("No entries"), arrayOf(100f),
                 arrayListOf(resources.getColor(R.color.no_money_op)), binding.earningsPieChart
-            )
+            )*/
     }
 
     private fun addEarning() {

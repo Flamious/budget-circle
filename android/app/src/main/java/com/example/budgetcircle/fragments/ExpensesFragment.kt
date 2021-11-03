@@ -83,7 +83,7 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun setChart() {
-        val values = arrayListOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
+        /*val values = arrayOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
         var i = 0f
         for (n in values) {
             i += n
@@ -91,12 +91,12 @@ class ExpensesFragment : Fragment() {
         val titles = resources.getStringArray(R.array.expense_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.expense_colors).toCollection(ArrayList())
         if (i > 0)
-            PieChartSetter.setChart(titles, values, colors, binding.expensesPieChart)
+            PieChartSetter.setChart(titles.toTypedArray(), values, colors, binding.expensesPieChart)
         else
             PieChartSetter.setChart(
-                arrayListOf("No entries"), arrayListOf(100f),
+                arrayOf("No entries"), arrayOf(100f),
                 arrayListOf(resources.getColor(R.color.no_money_op)), binding.expensesPieChart
-            )
+            )*/
     }
 
     private fun addExpense() {
