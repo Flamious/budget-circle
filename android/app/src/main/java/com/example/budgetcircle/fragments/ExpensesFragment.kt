@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
@@ -33,13 +35,14 @@ class ExpensesFragment : Fragment() {
         budgetData.expensesSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-
+        budgetData.expenseSums.observe(this, {
+            setChart(it)
+        })
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
-                    val expenseTypeIndex = result.data?.getIntExtra("isRep", 0)!!
-                    /*budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))*/
+                    val expenseTypeIndex = result.data?.getIntExtra("expenseTypeIndex", 0)!!
                     budgetData.addExpense(
                         result.data?.getFloatExtra("sum", 0f)!!,
                         budgetData.expenseTypes[expenseTypeIndex].id,
@@ -71,7 +74,6 @@ class ExpensesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentExpensesBinding.inflate(inflater)
-        setChart()
         setButtons()
         return binding.root
     }
@@ -82,21 +84,37 @@ class ExpensesFragment : Fragment() {
         }
     }
 
-    private fun setChart() {
-        /*val values = arrayOf(50f, 20f, 15f, 10f, 5f, 92f, 11f, 3f)
-        var i = 0f
+    private fun setChart(expenseSums: List<OperationSum>) {
+        val values = Array(expenseSums.size) { index -> expenseSums[index].sum }
+        val titles = Array(expenseSums.size) { index -> expenseSums[index].title }
+        var sum = 0f
         for (n in values) {
-            i += n
+            sum += n
         }
-        val titles = resources.getStringArray(R.array.expense_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.expense_colors).toCollection(ArrayList())
-        if (i > 0)
-            PieChartSetter.setChart(titles.toTypedArray(), values, colors, binding.expensesPieChart)
+        if (sum > 0)
+            PieChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                resources.getString(R.string.total),
+                binding.expensesPieChart,
+                binding.sumText,
+                binding.kindText
+            )
         else
             PieChartSetter.setChart(
-                arrayOf("No entries"), arrayOf(100f),
-                arrayListOf(resources.getColor(R.color.no_money_op)), binding.expensesPieChart
-            )*/
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(100f),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                resources.getString(R.string.no_entries),
+                binding.expensesPieChart,
+                binding.sumText,
+                binding.kindText,
+                true
+            )
     }
 
     private fun addExpense() {
@@ -106,7 +124,7 @@ class ExpensesFragment : Fragment() {
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
         intent.putExtra(
             "expenseTypes",
-            Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+            Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
         launcher?.launch(intent)
     }
 

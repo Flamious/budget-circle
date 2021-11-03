@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
@@ -33,7 +35,9 @@ class EarningsFragment : Fragment() {
         budgetData.earningsSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-
+        budgetData.earningSums.observe(this, {
+            setChart(it)
+        })
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -72,7 +76,6 @@ class EarningsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEarningsBinding.inflate(inflater)
-        setChart()
         setButtons()
         return binding.root
     }
@@ -83,22 +86,37 @@ class EarningsFragment : Fragment() {
         }
     }
 
-    private fun setChart() {
-        /*val values = arrayOf(12f, 20f, 15f, 62f, 15f, 92f, 11f, 3f)
-        *//*val values = arrayListOf(0f, 0f, 0f)*//*
-        var i = 0f
+    private fun setChart(earningSums: List<OperationSum>) {
+        val values = Array(earningSums.size) { index -> earningSums[index].sum }
+        val titles = Array(earningSums.size) { index -> earningSums[index].title }
+        var sum = 0f
         for (n in values) {
-            i += n
+            sum += n
         }
-        val titles = resources.getStringArray(R.array.earning_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.earning_colors).toCollection(ArrayList())
-        if (i > 0)
-            PieChartSetter.setChart(titles.toTypedArray(), values, colors, binding.earningsPieChart)
+        if (sum > 0)
+            PieChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                resources.getString(R.string.total),
+                binding.earningsPieChart,
+                binding.sumText,
+                binding.kindText
+            )
         else
             PieChartSetter.setChart(
-                arrayOf("No entries"), arrayOf(100f),
-                arrayListOf(resources.getColor(R.color.no_money_op)), binding.earningsPieChart
-            )*/
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(100f),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                resources.getString(R.string.no_entries),
+                binding.earningsPieChart,
+                binding.sumText,
+                binding.kindText,
+                true
+            )
     }
 
     private fun addEarning() {
