@@ -10,12 +10,17 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.MPPointF
 
 import android.graphics.RectF
+import android.widget.TextView
 
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
 
 import com.github.mikephil.charting.utils.ViewPortHandler
 
 import com.github.mikephil.charting.animation.ChartAnimator
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 import com.github.mikephil.charting.renderer.PieChartRenderer
 import com.github.mikephil.charting.utils.Utils
@@ -26,15 +31,18 @@ class PieChartSetter {
         private var sliceSpace = 3f
         private var holeRadius = 90f
 
-        private fun applyData(titles: ArrayList<String>, values: ArrayList<Float>,
-                      colors: ArrayList<Int>, chart: PieChart) {
+        private fun applyData(
+            titles: Array<String>,
+            values: Array<Float>,
+            colors: ArrayList<Int>,
+            chart: PieChart
+        ) {
             val pieEntries: ArrayList<PieEntry> = ArrayList()
-            val label = ""
 
-            for (i in 0 until titles.size) {
+            for (i in titles.indices) {
                 pieEntries.add(PieEntry(values[i], titles[i]))
             }
-            val pieDataSet = PieDataSet(pieEntries, label)
+            val pieDataSet = PieDataSet(pieEntries, "")
             pieDataSet.colors = colors
             pieDataSet.sliceSpace = sliceSpace
 
@@ -42,24 +50,56 @@ class PieChartSetter {
             pieData.setDrawValues(false)
 
             chart.data = pieData
+
         }
 
-        fun setChart(titles: ArrayList<String>, values: ArrayList<Float>,
-                     colors: ArrayList<Int>, chart: PieChart) {
+        fun setChart(
+            titles: Array<String>,
+            values: Array<Float>,
+            colors: ArrayList<Int>,
+            sum: Float,
+            label: String,
+            chart: PieChart,
+            sumTextView: TextView,
+            labelTextView: TextView,
+            noEntries: Boolean = false
+        ) {
             applyData(titles, values, colors, chart)
 
+            chart.setTouchEnabled(!noEntries)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.holeRadius = holeRadius
             chart.setDrawEntryLabels(false)
+            chart.setOnChartValueSelectedListener(
+                ChartListener(
+                    sumTextView,
+                    labelTextView,
+                    sum,
+                    label
+                )
+            )
             chart.invalidate()
 
         }
 
-        fun changeData(titles: ArrayList<String>, values: ArrayList<Float>,
-                       colors: ArrayList<Int>, chart: PieChart) {
-            applyData(titles, values, colors, chart)
-            chart.invalidate()
+        private class ChartListener(
+            val sumTextView: TextView,
+            val labelTextView: TextView,
+            val sum: Float,
+            val label: String
+        ) : OnChartValueSelectedListener {
+
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                sumTextView.text = e?.y.toString()
+                labelTextView.text = (e as PieEntry).label
+            }
+
+            override fun onNothingSelected() {
+                sumTextView.text = sum.toString()
+                labelTextView.text = label
+            }
+
         }
     }
 }

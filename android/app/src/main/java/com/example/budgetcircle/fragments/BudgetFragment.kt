@@ -3,16 +3,19 @@ package com.example.budgetcircle.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.service.autofill.Dataset
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
@@ -24,6 +27,11 @@ import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryItem
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.listener.OnChartGestureListener
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
@@ -69,6 +77,10 @@ class BudgetFragment : Fragment() {
         budgetData.totalSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
+        budgetData.budgetTypes.observe(this, {
+            setChart(it)
+        })
+
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -76,7 +88,6 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Float = result.data?.getFloatExtra("newAccountBudget", 0f)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            /*budgetData.addEarning(sum)*/
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
                                     name,
@@ -84,19 +95,6 @@ class BudgetFragment : Fragment() {
                                     true
                                 )
                             )
-                           /* if (sum > 0f) {
-                                budgetData.addToOperationList(
-                                    HistoryItem(
-                                        1,
-                                        sum,
-                                        "New account: $name",
-                                        "Other",
-                                        Date(),
-                                        resources.getColor(R.color.blue_button),
-                                        false
-                                    )
-                                )
-                            }*/
 
                             Toast.makeText(
                                 activity,
@@ -138,7 +136,6 @@ class BudgetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBudgetBinding.inflate(inflater)
-        setChart()
         setButtons()
         return binding.root
     }
@@ -174,22 +171,39 @@ class BudgetFragment : Fragment() {
         isClicked = !isClicked
     }
 
-    private fun setChart() {
-        val values = arrayListOf(12f, 20f, 45f, 62f, 15f)
-        var i = 0f
+    private fun setChart(budgetTypes: List<BudgetType>) {
+        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
+        var sum = 0f
         for (n in values) {
-            i += n
+            sum += n
         }
-        val titles = resources.getStringArray(R.array.budget_titles).toCollection(ArrayList())
         val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
-        if (i > 0)
-            PieChartSetter.setChart(titles, values, colors, binding.budgetPieChart)
+        if (sum > 0)
+            PieChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                resources.getString(R.string.total),
+                binding.budgetPieChart,
+                binding.sumText,
+                binding.kindText
+            )
         else
             PieChartSetter.setChart(
-                arrayListOf("No entries"), arrayListOf(100f),
-                arrayListOf(resources.getColor(R.color.no_money_op)), binding.budgetPieChart
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(100f),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                resources.getString(R.string.no_entries),
+                binding.budgetPieChart,
+                binding.sumText,
+                binding.kindText,
+                true
             )
     }
+
 
     private fun addAccount() {
         val intent = Intent(activity, BudgetFormActivity::class.java)

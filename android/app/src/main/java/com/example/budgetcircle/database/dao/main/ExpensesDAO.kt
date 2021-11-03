@@ -3,6 +3,7 @@ package com.example.budgetcircle.database.dao.main
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.budgetcircle.database.entities.main.Expense
+import com.example.budgetcircle.database.entities.main.OperationSum
 
 @Dao
 interface ExpensesDAO {
@@ -21,6 +22,6 @@ interface ExpensesDAO {
     @Query("DELETE FROM expenses WHERE budgetTypeId = :id")
     fun deleteByBudgetTypeId(id: Int)
 
-    @Query("SELECT * FROM expenses")
-    fun getAll(): LiveData<List<Expense>>
+    @Query("SELECT types.title, SUM(e.sum) as sum FROM expenses AS e JOIN expenses_types AS types ON e.typeId == types.id GROUP BY types.title")
+    fun getAll(): LiveData<List<OperationSum>>
 }

@@ -9,6 +9,7 @@ import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
 import com.example.budgetcircle.database.entities.main.Earning
+import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.database.entities.main.Expense
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
@@ -28,6 +29,8 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     private val earningsRepository: EarningsRepository
     private val expensesRepository: ExpensesRepository
     val budgetTypes: LiveData<List<BudgetType>>
+    val earningSums: LiveData<List<OperationSum>>
+    val expenseSums: LiveData<List<OperationSum>>
     val earningTypes: List<EarningType>
     val expenseTypes: List<ExpenseType>
 
@@ -55,6 +58,8 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
         expenseTypes = expenseTypesDAO.getAll()
+        earningSums = earningsDAO.getAll()
+        expenseSums = expensesDAO.getAll()
     }
 
     val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
