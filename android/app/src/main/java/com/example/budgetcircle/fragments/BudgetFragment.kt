@@ -213,6 +213,9 @@ class BudgetFragment : Fragment() {
         intent.putExtra(
             "budgetTypes",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+        intent.putExtra(
+            "budgetTypesSums",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })
         launcher?.launch(intent)
     }
 

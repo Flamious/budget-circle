@@ -72,8 +72,11 @@ class Dialogs {
                         chosenTypeMain.value = which
                         viewMain.text = list[chosenTypeMain.value]
 
-                        chosenTypeSecondary.value = if(which == 0) 1 else 0
-                        viewSecondary.text = list[chosenTypeSecondary.value]
+
+                        if(chosenTypeSecondary.value == chosenTypeMain.value) {
+                            chosenTypeSecondary.value = if (which == 0) 1 else 0
+                            viewSecondary.text = list[chosenTypeSecondary.value]
+                        }
                     }
                 }
                 .show()

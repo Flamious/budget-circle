@@ -137,7 +137,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/red_button"
-        android:enabled="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/add_exp"
