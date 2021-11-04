@@ -84,7 +84,7 @@
         android:clickable="false"
         android:ems="10"
         android:hint="@string/sum"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal"
         android:textColorHighlight="@color/red_switch_main"
         android:textColorLink="@color/red_switch_secondary"
         android:textCursorDrawable="@color/red_switch_main"

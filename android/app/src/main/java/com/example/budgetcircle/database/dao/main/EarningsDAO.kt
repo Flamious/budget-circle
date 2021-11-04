@@ -9,7 +9,7 @@ import java.util.*
 @Dao
 interface EarningsDAO {
     @Query("SELECT sum FROM earnings")
-    fun getSums(): List<Float>
+    fun getSums(): List<Double>
 
     @Insert
     suspend fun insert(item: Earning)

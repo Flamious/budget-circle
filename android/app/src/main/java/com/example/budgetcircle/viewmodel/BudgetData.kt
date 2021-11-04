@@ -88,16 +88,16 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         expenseTypes = expenseTypesDAO.getAll()
     }
 
-    val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
+    val totalSum: MutableLiveData<Double> = MutableLiveData<Double>().apply {
+        value = 0.0
     }
 
-    val expensesSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
+    val expensesSum: MutableLiveData<Double> = MutableLiveData<Double>().apply {
+        value = 0.0
     }
 
-    val earningsSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
+    val earningsSum: MutableLiveData<Double> = MutableLiveData<Double>().apply {
+        value = 0.0
     }
 
     val operations: MutableLiveData<MutableList<HistoryItem>> =
@@ -131,7 +131,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         operations.value?.add(item)
     }
 
-    fun addExpense(sum: Float, type: Int, budgetTypeId: Int) =
+    fun addExpense(sum: Double, type: Int, budgetTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             totalSum.postValue(totalSum.value!! - sum)
             expensesSum.postValue(expensesSum.value!! + sum)
@@ -139,7 +139,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             expensesRepository.addExpense(Expense(sum, getCurrentDate(), type, budgetTypeId))
         }
 
-    fun addEarning(sum: Float, type: Int, budgetTypeId: Int) =
+    fun addEarning(sum: Double, type: Int, budgetTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             totalSum.postValue(totalSum.value!! + sum)
             earningsSum.postValue(earningsSum.value!! + sum)

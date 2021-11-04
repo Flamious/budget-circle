@@ -73,10 +73,6 @@ class BudgetFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        budgetData.totalSum.observe(this, {
-            binding.sumText.text = "%.2f".format(it)
-        })
         budgetData.budgetTypes.observe(this, {
             setChart(it)
         })
@@ -86,7 +82,7 @@ class BudgetFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     when (result.data?.getStringExtra("type").toString()) {
                         "newAccount" -> {
-                            val sum: Float = result.data?.getFloatExtra("newAccountBudget", 0f)!!
+                            val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
@@ -103,7 +99,7 @@ class BudgetFragment : Fragment() {
                             ).show()
                         }
                         "exchange" -> {
-                            val sum: Float = result.data?.getFloatExtra("sum", 0f)!!
+                            val sum: Double = result.data?.getDoubleExtra("sum", 0.0)!!
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
@@ -174,7 +170,7 @@ class BudgetFragment : Fragment() {
     private fun setChart(budgetTypes: List<BudgetType>) {
         val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
         val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
-        var sum = 0f
+        var sum = 0.0
         for (n in values) {
             sum += n
         }
@@ -193,7 +189,7 @@ class BudgetFragment : Fragment() {
         else
             PieChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
-                arrayOf(100f),
+                arrayOf(100.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
                 sum,
                 resources.getString(R.string.no_entries),

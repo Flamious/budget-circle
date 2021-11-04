@@ -10,7 +10,7 @@ interface BudgetTypesDAO {
     fun getById(id: Int): BudgetType
 
     @Query("SELECT sum FROM budget_types")
-    fun getSums(): List<Float>
+    fun getSums(): List<Double>
 
     @Insert
     fun insert(types: BudgetType)

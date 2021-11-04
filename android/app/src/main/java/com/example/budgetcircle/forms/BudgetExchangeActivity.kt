@@ -60,7 +60,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
     private fun add() {
         val intent = Intent()
         intent.putExtra("type", "exchange")
-        intent.putExtra("sum", binding.budgetSum.text.toString().toFloat())
+        intent.putExtra("sum", binding.budgetSum.text.toString().toDouble())
         intent.putExtra("fromIndex", chosenBudgetTypeFrom.value)
         intent.putExtra("toIndex", chosenBudgetTypeTo.value)
         setResult(RESULT_OK, intent)

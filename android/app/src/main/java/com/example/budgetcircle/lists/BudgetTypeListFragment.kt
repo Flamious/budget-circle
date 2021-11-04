@@ -50,7 +50,7 @@ class BudgetTypeListFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     var name = result.data?.getStringExtra("newAccountName")!!
-                    var sum = result.data?.getFloatExtra("newAccountBudget", 0f)!!
+                    var sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                     budgetData.editBudgetType(
                         lastTypeId,
                         BudgetType(

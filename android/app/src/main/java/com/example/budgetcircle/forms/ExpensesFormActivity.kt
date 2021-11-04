@@ -77,7 +77,7 @@ class ExpensesFormActivity : AppCompatActivity() {
 
     private fun add() {
         val intent = Intent()
-        intent.putExtra("sum", binding.expSum.text.toString().toFloat())
+        intent.putExtra("sum", binding.expSum.text.toString().toDouble())
         intent.putExtra("expenseTypeIndex", chosenExpenseType.value)
         intent.putExtra("isRep", binding.expRepSwitch.isChecked)
         intent.putExtra("date", binding.expDate.text.toString())

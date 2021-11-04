@@ -8,6 +8,11 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityEarningsFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.settings.SumInputFilter
+import android.text.InputFilter
+
+
+
 
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
@@ -25,6 +30,7 @@ class EarningsFormActivity : AppCompatActivity() {
         earningTypes = intent.extras?.getStringArray("earningTypes")!!
         binding.earnSelectBudgetType.text = budgetTypes[0]
         binding.earnSelectKind.text = earningTypes[0]
+        binding.earnSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
     }
@@ -70,14 +76,14 @@ class EarningsFormActivity : AppCompatActivity() {
     }
 
     private fun check() {
-        var sum = binding.earnSum.text.toString().toFloatOrNull()
+        var sum = binding.earnSum.text.toString().toDoubleOrNull()
         binding.earnAddButton.isEnabled =
             !(sum == null || sum <= 0f || binding.earnTitle.text.isNullOrBlank())
     }
 
     private fun add() {
         val intent = Intent()
-        intent.putExtra("sum", binding.earnSum.text.toString().toFloat())
+        intent.putExtra("sum", binding.earnSum.text.toString().toDouble())
         intent.putExtra("earningTypeIndex", chosenEarningType.value)
         intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
         intent.putExtra("date", binding.earnDate.text.toString())
@@ -86,6 +92,7 @@ class EarningsFormActivity : AppCompatActivity() {
         setResult(RESULT_OK, intent)
         finish()
     }
+
     private fun exit() {
         val intent = Intent()
         setResult(RESULT_CANCELED, intent)

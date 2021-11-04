@@ -3,14 +3,15 @@ package com.example.budgetcircle.database.repositories
 import androidx.lifecycle.LiveData
 import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.entities.types.BudgetType
+import com.example.budgetcircle.settings.DoubleFormatter
 
 class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
-    suspend fun getTotalSum(): Float {
-        var sum = 0f
+    suspend fun getTotalSum(): Double {
+        var sum = 0.0
         for (i in BudgetTypesDAO.getSums()) {
             sum += i
         }
-        return sum
+        return DoubleFormatter.format(sum)
     }
 
     suspend fun addBudgetType(item: BudgetType) {
@@ -20,13 +21,13 @@ class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
     suspend fun updateBudgetType(id: Int, newItem: BudgetType) {
         val previousItem = BudgetTypesDAO.getById(id)
         previousItem.title = newItem.title
-        previousItem.sum = newItem.sum
+        previousItem.sum = DoubleFormatter.format(newItem.sum)
         BudgetTypesDAO.update(previousItem)
     }
 
-    suspend fun addSum(id: Int, sum: Float) {
+    suspend fun addSum(id: Int, sum: Double) {
         val item = BudgetTypesDAO.getById(id)
-        item.sum += sum
+        item.sum = DoubleFormatter.format(item.sum + sum)
         BudgetTypesDAO.update(item)
     }
 

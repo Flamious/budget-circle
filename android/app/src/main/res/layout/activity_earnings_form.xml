@@ -81,7 +81,7 @@
         android:backgroundTint="@color/blue_switch_main"
         android:ems="10"
         android:hint="@string/sum"
-        android:inputType="number"
+        android:inputType="number|numberDecimal"
         android:textColorHighlight="@color/blue_switch_main"
         android:textColorLink="@color/blue_switch_secondary"
         android:textCursorDrawable="@color/blue_switch_main"

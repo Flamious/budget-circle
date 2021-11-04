@@ -20,7 +20,7 @@ class BudgetFormActivity : AppCompatActivity() {
         if (isEdit) {
             binding.apply {
                 accName.setText(intent.getStringExtra("accountName")!!)
-                budgetSum.setText(intent.getFloatExtra("newAccountBudget", 0f).toString())
+                budgetSum.setText(intent.getDoubleExtra("newAccountBudget", 0.0).toString())
                 budgetAddButton.text = resources.getText(R.string.edit_account)
                 budgetFormTitle.text = resources.getText(R.string.edit_account)
             }
@@ -45,7 +45,7 @@ class BudgetFormActivity : AppCompatActivity() {
     }
 
     private fun check() {
-        var sum = binding.budgetSum.text.toString().toFloatOrNull()
+        var sum = binding.budgetSum.text.toString().toDoubleOrNull()
         binding.budgetAddButton.isEnabled =
             !(sum == null || sum <= 0f || binding.accName.text.isNullOrBlank())
     }
@@ -54,7 +54,7 @@ class BudgetFormActivity : AppCompatActivity() {
         val intent = Intent()
         intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")
         intent.putExtra("newAccountName", binding.accName.text.toString())
-        intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toFloat())
+        intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toDouble())
         setResult(RESULT_OK, intent)
         finish()
     }
