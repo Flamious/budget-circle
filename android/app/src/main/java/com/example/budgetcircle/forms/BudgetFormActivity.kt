@@ -33,12 +33,6 @@ class BudgetFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.accName.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
-        binding.budgetSum.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
         binding.budgetAddButton.setOnClickListener {
             add()
         }
@@ -47,19 +41,36 @@ class BudgetFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun check() {
+    private fun checkFields(): Boolean {
         var sum = binding.budgetSum.text.toString().toDoubleOrNull()
-        binding.budgetAddButton.isEnabled =
-            !(sum == null || sum <= 0f || binding.accName.text.isNullOrBlank())
+        var isValid = true
+        binding.budgetSum.apply {
+            error = null
+            if (sum == null) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+        binding.accName.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
     }
 
     private fun add() {
-        val intent = Intent()
-        intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")
-        intent.putExtra("newAccountName", binding.accName.text.toString())
-        intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toDouble())
-        setResult(RESULT_OK, intent)
-        finish()
+        if (checkFields()) {
+            val intent = Intent()
+            intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")
+            intent.putExtra("newAccountName", binding.accName.text.toString())
+            intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toDouble())
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
 
     private fun exit() {

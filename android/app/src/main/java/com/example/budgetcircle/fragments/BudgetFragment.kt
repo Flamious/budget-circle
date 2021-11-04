@@ -23,6 +23,7 @@ import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
+import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
@@ -174,6 +175,7 @@ class BudgetFragment : Fragment() {
         for (n in values) {
             sum += n
         }
+        sum = DoubleFormatter.format(sum)
         val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
         if (sum > 0)
             PieChartSetter.setChart(
