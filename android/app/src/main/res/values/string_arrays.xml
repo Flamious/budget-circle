@@ -43,4 +43,13 @@
         <item name="dollar">$</item>
         <item name="euro">€</item>
     </string-array>
+
+    <!-- Periods -->
+    <string-array name="periodsString">
+        <item>@string/all_time</item>
+        <item>@string/day</item>
+        <item>@string/week</item>
+        <item>@string/month</item>
+        <item>@string/year</item>
+    </string-array>
 </resources>

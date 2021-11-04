@@ -71,6 +71,9 @@ class PieChartSetter {
             chart.legend.isEnabled = false
             chart.holeRadius = holeRadius
             chart.setDrawEntryLabels(false)
+            sumTextView.text = sum.toString()
+            labelTextView.text = label
+            chart.highlightValues(null)
             chart.setOnChartValueSelectedListener(
                 ChartListener(
                     sumTextView,

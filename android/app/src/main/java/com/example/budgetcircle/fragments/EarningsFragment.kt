@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
+import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
@@ -31,11 +32,13 @@ class EarningsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        budgetData.earningsDateString.observe(this, {
+            binding.periodText.text = it
+        })
         budgetData.earningsSum.observe(this, {
             binding.sumText.text = "%.2f".format(it)
         })
-        budgetData.earningSums.observe(this, {
+        budgetData.earningSumByDate.observe(this, {
             setChart(it)
         })
         launcher =
@@ -83,6 +86,16 @@ class EarningsFragment : Fragment() {
     private fun setButtons() {
         binding.addEarningButton.setOnClickListener {
             addEarning()
+        }
+        binding.periodText.setOnClickListener() {
+            Dialogs().chooseOne(
+                this.requireContext(),
+                resources.getString(R.string.choosingPeriod),
+                resources.getStringArray(R.array.periodsString),
+                resources.getIntArray(R.array.periodsInt).toTypedArray(),
+                budgetData.earningsDateString,
+                budgetData.earningsDate
+            )
         }
     }
 

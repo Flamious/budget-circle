@@ -3,13 +3,11 @@ package com.example.budgetcircle.dialogs
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
-import android.content.DialogInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
-import com.example.budgetcircle.MainActivity
 import java.util.*
-import android.widget.DatePicker
-import com.example.budgetcircle.R
+import androidx.lifecycle.MutableLiveData
+
 
 data class Index(var value: Int)
 
@@ -33,6 +31,27 @@ class Dialogs {
                 .show()
         } else {
             view.text = null
+        }
+    }
+
+    fun chooseOne(
+        context: Context,
+        title: String,
+        list: Array<String>,
+        values: Array<Int>,
+        mutableDataString: MutableLiveData<String>,
+        mutableDataInt: MutableLiveData<Int>
+    ) {
+        if (list.isNotEmpty() && values.isNotEmpty()) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setItems(list) { _, which ->
+                    run {
+                        mutableDataString.postValue(list[which])
+                        mutableDataInt.postValue(values[which])
+                    }
+                }
+                .show()
         }
     }
 

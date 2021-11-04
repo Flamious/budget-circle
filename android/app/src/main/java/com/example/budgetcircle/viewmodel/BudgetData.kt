@@ -29,11 +29,19 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     private val earningsRepository: EarningsRepository
     private val expensesRepository: ExpensesRepository
     val budgetTypes: LiveData<List<BudgetType>>
-    val earningSums: LiveData<List<OperationSum>>
-    val expenseSums: LiveData<List<OperationSum>>
     val earningTypes: List<EarningType>
     val expenseTypes: List<ExpenseType>
 
+    var earningSumByDate: LiveData<List<OperationSum>>
+    var expenseSumByDate: LiveData<List<OperationSum>>
+    val earningsDate: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 7 //use week at start
+    }
+    val expensesDate: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 7 //use week at start
+    }
+    val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
+    val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
     init {
         val budgetTypesDAO: BudgetTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).BudgetTypesDAO()
@@ -55,11 +63,29 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             DbBudget.getDatabase(application, viewModelScope).ExpensesDAO()
         expensesRepository = ExpensesRepository(expensesDAO)
 
+        earningSumByDate = Transformations.switchMap(earningsDate) { param ->
+            if (param > 0) {
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.DAY_OF_YEAR, -param)
+                earningsDAO.getAllByDate(calendar.time)
+            } else {
+                earningsDAO.getAll()
+            }
+        }
+
+        expenseSumByDate = Transformations.switchMap(expensesDate) { param ->
+            if (param > 0) {
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.DAY_OF_YEAR, -param)
+                expensesDAO.getAllByDate(calendar.time)
+            } else {
+                expensesDAO.getAll()
+            }
+        }
+
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
         expenseTypes = expenseTypesDAO.getAll()
-        earningSums = earningsDAO.getAll()
-        expenseSums = expensesDAO.getAll()
     }
 
     val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
@@ -84,6 +110,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         earningsSum.postValue(earningsRepository.getTotalSum())
         expensesSum.postValue(expensesRepository.getTotalSum())
     }
+
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.addBudgetType(item)
         totalSum.postValue(totalSum.value!! + item.sum)
@@ -104,17 +131,29 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         operations.value?.add(item)
     }
 
-    fun addExpense(sum: Float, type: Int, budgetTypeId: Int) = viewModelScope.launch (Dispatchers.IO) {
-        totalSum.postValue(totalSum.value!! - sum)
-        expensesSum.postValue(expensesSum.value!! + sum)
-        budgetTypesRepository.addSum(budgetTypeId, -sum)
-        expensesRepository.addExpense(Expense(sum, Date(), type, budgetTypeId))
-    }
+    fun addExpense(sum: Float, type: Int, budgetTypeId: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            totalSum.postValue(totalSum.value!! - sum)
+            expensesSum.postValue(expensesSum.value!! + sum)
+            budgetTypesRepository.addSum(budgetTypeId, -sum)
+            expensesRepository.addExpense(Expense(sum, getCurrentDate(), type, budgetTypeId))
+        }
 
-    fun addEarning(sum: Float, type: Int, budgetTypeId: Int) = viewModelScope.launch (Dispatchers.IO) {
-        totalSum.postValue(totalSum.value!! + sum)
-        earningsSum.postValue(earningsSum.value!! + sum)
-        budgetTypesRepository.addSum(budgetTypeId, sum)
-        earningsRepository.addEarning(Earning(sum, Date(), type, budgetTypeId))
+    fun addEarning(sum: Float, type: Int, budgetTypeId: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            totalSum.postValue(totalSum.value!! + sum)
+            earningsSum.postValue(earningsSum.value!! + sum)
+            budgetTypesRepository.addSum(budgetTypeId, sum)
+            earningsRepository.addEarning(Earning(sum, Date(), type, budgetTypeId))
+        }
+
+    private fun getCurrentDate(): Date {
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.time
     }
 }
