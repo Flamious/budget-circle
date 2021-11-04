@@ -3,10 +3,12 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetExchangeBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.settings.SumInputFilter
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -22,6 +24,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
         binding.listTo.text = budgetTypes[0]
         binding.listFrom.text = budgetTypes[1]
+        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
     }

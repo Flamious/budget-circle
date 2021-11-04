@@ -3,11 +3,13 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.settings.SumInputFilter
 
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
@@ -25,6 +27,7 @@ class ExpensesFormActivity : AppCompatActivity() {
         expenseTypes = intent.extras?.getStringArray("expenseTypes")!!
         binding.expSelectBudgetType.text = budgetTypes[0]
         binding.expSelectKind.text = expenseTypes[0]
+        binding.expSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
     }

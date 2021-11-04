@@ -3,9 +3,11 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
+import com.example.budgetcircle.settings.SumInputFilter
 
 class BudgetFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetFormBinding
@@ -17,6 +19,7 @@ class BudgetFormActivity : AppCompatActivity() {
         setButtons()
 
         isEdit = intent.getStringExtra("edit") != null
+        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
         if (isEdit) {
             binding.apply {
                 accName.setText(intent.getStringExtra("accountName")!!)
