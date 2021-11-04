@@ -3,9 +3,11 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
+import com.example.budgetcircle.settings.SumInputFilter
 
 class BudgetFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetFormBinding
@@ -17,10 +19,11 @@ class BudgetFormActivity : AppCompatActivity() {
         setButtons()
 
         isEdit = intent.getStringExtra("edit") != null
+        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
         if (isEdit) {
             binding.apply {
                 accName.setText(intent.getStringExtra("accountName")!!)
-                budgetSum.setText(intent.getFloatExtra("newAccountBudget", 0f).toString())
+                budgetSum.setText(intent.getDoubleExtra("newAccountBudget", 0.0).toString())
                 budgetAddButton.text = resources.getText(R.string.edit_account)
                 budgetFormTitle.text = resources.getText(R.string.edit_account)
             }
@@ -30,12 +33,6 @@ class BudgetFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.accName.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
-        binding.budgetSum.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
         binding.budgetAddButton.setOnClickListener {
             add()
         }
@@ -44,19 +41,36 @@ class BudgetFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun check() {
-        var sum = binding.budgetSum.text.toString().toFloatOrNull()
-        binding.budgetAddButton.isEnabled =
-            !(sum == null || sum <= 0f || binding.accName.text.isNullOrBlank())
+    private fun checkFields(): Boolean {
+        var sum = binding.budgetSum.text.toString().toDoubleOrNull()
+        var isValid = true
+        binding.budgetSum.apply {
+            error = null
+            if (sum == null) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+        binding.accName.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
     }
 
     private fun add() {
-        val intent = Intent()
-        intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")
-        intent.putExtra("newAccountName", binding.accName.text.toString())
-        intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toFloat())
-        setResult(RESULT_OK, intent)
-        finish()
+        if (checkFields()) {
+            val intent = Intent()
+            intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")
+            intent.putExtra("newAccountName", binding.accName.text.toString())
+            intent.putExtra("newAccountBudget", binding.budgetSum.text.toString().toDouble())
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
 
     private fun exit() {

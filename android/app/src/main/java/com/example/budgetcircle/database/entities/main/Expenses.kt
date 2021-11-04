@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity (tableName = "expenses")
 data class Expense (
-    val sum: Float,
+    val sum: Double,
     val date: Date,
     val typeId: Int,
     val budgetTypeId: Int

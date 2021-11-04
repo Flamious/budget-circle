@@ -88,32 +88,13 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         expenseTypes = expenseTypesDAO.getAll()
     }
 
-    val totalSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
-    }
-
-    val expensesSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
-    }
-
-    val earningsSum: MutableLiveData<Float> = MutableLiveData<Float>().apply {
-        value = 0f
-    }
-
     val operations: MutableLiveData<MutableList<HistoryItem>> =
         MutableLiveData<MutableList<HistoryItem>>().apply {
             value = mutableListOf()
         }
 
-    fun initSums() = viewModelScope.launch(Dispatchers.IO) {
-        totalSum.postValue(budgetTypesRepository.getTotalSum())
-        earningsSum.postValue(earningsRepository.getTotalSum())
-        expensesSum.postValue(expensesRepository.getTotalSum())
-    }
-
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.addBudgetType(item)
-        totalSum.postValue(totalSum.value!! + item.sum)
     }
 
     fun editBudgetType(id: Int, item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
@@ -124,25 +105,20 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         earningsRepository.deleteByBudgetTypeId(id)
         expensesRepository.deleteByBudgetTypeId(id)
         budgetTypesRepository.deleteBudgetType(id)
-        initSums()
     }
 
     fun addToOperationList(item: HistoryItem) {
         operations.value?.add(item)
     }
 
-    fun addExpense(sum: Float, type: Int, budgetTypeId: Int) =
+    fun addExpense(sum: Double, type: Int, budgetTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            totalSum.postValue(totalSum.value!! - sum)
-            expensesSum.postValue(expensesSum.value!! + sum)
             budgetTypesRepository.addSum(budgetTypeId, -sum)
             expensesRepository.addExpense(Expense(sum, getCurrentDate(), type, budgetTypeId))
         }
 
-    fun addEarning(sum: Float, type: Int, budgetTypeId: Int) =
+    fun addEarning(sum: Double, type: Int, budgetTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            totalSum.postValue(totalSum.value!! + sum)
-            earningsSum.postValue(earningsSum.value!! + sum)
             budgetTypesRepository.addSum(budgetTypeId, sum)
             earningsRepository.addEarning(Earning(sum, Date(), type, budgetTypeId))
         }

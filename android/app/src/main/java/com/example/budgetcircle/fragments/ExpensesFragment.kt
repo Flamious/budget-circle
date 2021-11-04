@@ -18,6 +18,7 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
@@ -35,9 +36,6 @@ class ExpensesFragment : Fragment() {
         budgetData.expensesDateString.observe(this, {
             binding.periodText.text = it
         })
-        budgetData.expensesSum.observe(this, {
-            binding.sumText.text = "%.2f".format(it)
-        })
         budgetData.expenseSumByDate.observe(this, {
             setChart(it)
         })
@@ -47,7 +45,7 @@ class ExpensesFragment : Fragment() {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
                     val expenseTypeIndex = result.data?.getIntExtra("expenseTypeIndex", 0)!!
                     budgetData.addExpense(
-                        result.data?.getFloatExtra("sum", 0f)!!,
+                        result.data?.getDoubleExtra("sum", 0.0)!!,
                         budgetData.expenseTypes[expenseTypeIndex].id,
                         budgetData.budgetTypes.value!![budgetTypeIndex].id
                     )
@@ -100,10 +98,11 @@ class ExpensesFragment : Fragment() {
     private fun setChart(expenseSums: List<OperationSum>) {
         val values = Array(expenseSums.size) { index -> expenseSums[index].sum }
         val titles = Array(expenseSums.size) { index -> expenseSums[index].title }
-        var sum = 0f
+        var sum = 0.0
         for (n in values) {
             sum += n
         }
+        sum = DoubleFormatter.format(sum)
         val colors = resources.getIntArray(R.array.expense_colors).toCollection(ArrayList())
         if (sum > 0)
             PieChartSetter.setChart(
@@ -119,7 +118,7 @@ class ExpensesFragment : Fragment() {
         else
             PieChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
-                arrayOf(100f),
+                arrayOf(100.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
                 sum,
                 resources.getString(R.string.no_entries),
@@ -135,6 +134,9 @@ class ExpensesFragment : Fragment() {
         intent.putExtra(
             "budgetTypes",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+        intent.putExtra(
+            "budgetTypesSums",
+            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })
         intent.putExtra(
             "expenseTypes",
             Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })

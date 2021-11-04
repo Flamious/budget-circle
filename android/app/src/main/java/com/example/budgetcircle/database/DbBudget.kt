@@ -65,10 +65,10 @@ abstract class DbBudget : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let {
                 scope.launch {
-                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Cash', 0, false)")
-                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Bank', 0, false)")
-                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 1', 0, true)")
-                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 2', 0, true)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Cash', 0.0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Bank', 0.0, false)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 1', 0.0, true)")
+                    db.execSQL("INSERT INTO budget_types (title, sum, isDeletable) VALUES ('Card 2', 0.0, true)")
 
                     db.execSQL("INSERT INTO expenses_types (title) VALUES ('Home')")
                     db.execSQL("INSERT INTO expenses_types (title) VALUES ('Food')")

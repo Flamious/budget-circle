@@ -60,6 +60,9 @@
     <string name="to">To</string>
     <string name="title">Title</string>
     <string name="edit_account">Edit account</string>
+    <string name="empty_field">Field cannot be empty</string>
+    <string name="zero_sum">Sum must be greater than 0</string>
+    <string name="insufficient_funds">Insufficient funds on the account</string>
 
     <!-- Lists -->
     <string name="budgetTypes">Budget Types</string>

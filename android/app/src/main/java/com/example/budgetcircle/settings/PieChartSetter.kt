@@ -33,14 +33,14 @@ class PieChartSetter {
 
         private fun applyData(
             titles: Array<String>,
-            values: Array<Float>,
+            values: Array<Double>,
             colors: ArrayList<Int>,
             chart: PieChart
         ) {
             val pieEntries: ArrayList<PieEntry> = ArrayList()
 
             for (i in titles.indices) {
-                pieEntries.add(PieEntry(values[i], titles[i]))
+                pieEntries.add(PieEntry(values[i].toFloat(), titles[i]))
             }
             val pieDataSet = PieDataSet(pieEntries, "")
             pieDataSet.colors = colors
@@ -55,9 +55,9 @@ class PieChartSetter {
 
         fun setChart(
             titles: Array<String>,
-            values: Array<Float>,
+            values: Array<Double>,
             colors: ArrayList<Int>,
-            sum: Float,
+            sum: Double,
             label: String,
             chart: PieChart,
             sumTextView: TextView,
@@ -89,7 +89,7 @@ class PieChartSetter {
         private class ChartListener(
             val sumTextView: TextView,
             val labelTextView: TextView,
-            val sum: Float,
+            val sum: Double,
             val label: String
         ) : OnChartValueSelectedListener {
 

@@ -8,6 +8,9 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityEarningsFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.settings.SumInputFilter
+import android.text.InputFilter
+
 
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 
@@ -25,17 +28,12 @@ class EarningsFormActivity : AppCompatActivity() {
         earningTypes = intent.extras?.getStringArray("earningTypes")!!
         binding.earnSelectBudgetType.text = budgetTypes[0]
         binding.earnSelectKind.text = earningTypes[0]
+        binding.earnSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
     }
 
     private fun setButtons() {
-        binding.earnSum.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
-        binding.earnTitle.doOnTextChanged { _, _, _, _ ->
-            check()
-        }
         binding.earnDateLayout.setOnClickListener {
             Dialogs().pickDate(
                 this,
@@ -69,23 +67,44 @@ class EarningsFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun check() {
-        var sum = binding.earnSum.text.toString().toFloatOrNull()
-        binding.earnAddButton.isEnabled =
-            !(sum == null || sum <= 0f || binding.earnTitle.text.isNullOrBlank())
+    private fun checkFields(): Boolean {
+        var sum = binding.earnSum.text.toString().toDoubleOrNull()
+        var isValid = true
+        binding.earnSum.apply {
+            error = null
+            if (sum == null) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            } else if (sum <= 0.0) {
+                error = resources.getString(R.string.zero_sum)
+                isValid = false
+            }
+        }
+        binding.earnTitle.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
     }
 
     private fun add() {
-        val intent = Intent()
-        intent.putExtra("sum", binding.earnSum.text.toString().toFloat())
-        intent.putExtra("earningTypeIndex", chosenEarningType.value)
-        intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
-        intent.putExtra("date", binding.earnDate.text.toString())
-        intent.putExtra("title", binding.earnTitle.text.toString())
-        intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
-        setResult(RESULT_OK, intent)
-        finish()
+        if (checkFields()) {
+            val intent = Intent()
+            intent.putExtra("sum", binding.earnSum.text.toString().toDouble())
+            intent.putExtra("earningTypeIndex", chosenEarningType.value)
+            intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
+            intent.putExtra("date", binding.earnDate.text.toString())
+            intent.putExtra("title", binding.earnTitle.text.toString())
+            intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
+
     private fun exit() {
         val intent = Intent()
         setResult(RESULT_CANCELED, intent)
