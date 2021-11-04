@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         setNavColor(R.color.nav_green_selector)
         openFragment(BudgetFragment())
 
-        budgetData.initSums()
         budgetData.expensesDateString.postValue(resources.getString(R.string.week))
         budgetData.earningsDateString.postValue(resources.getString(R.string.week))
         budgetData.budgetTypes.observe(this, { }) //TODO убрать костыль, для инициализации списка счетов
