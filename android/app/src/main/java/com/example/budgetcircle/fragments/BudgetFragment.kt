@@ -92,7 +92,6 @@ class BudgetFragment : Fragment() {
                                     true
                                 )
                             )
-
                             Toast.makeText(
                                 activity,
                                 "Added",

@@ -14,8 +14,9 @@ class BudgetTypesRepository (private val BudgetTypesDAO: BudgetTypesDAO) {
         return DoubleFormatter.format(sum)
     }
 
-    suspend fun addBudgetType(item: BudgetType) {
+    suspend fun addBudgetType(item: BudgetType): Int {
         BudgetTypesDAO.insert(item)
+        return  BudgetTypesDAO.getLastItem().id
     }
 
     suspend fun updateBudgetType(id: Int, newItem: BudgetType) {

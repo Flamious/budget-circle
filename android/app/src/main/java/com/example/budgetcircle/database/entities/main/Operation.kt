@@ -2,16 +2,16 @@ package com.example.budgetcircle.database.entities.main
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.budgetcircle.database.entities.types.BudgetType
 import java.util.*
 
-@Entity (tableName = "earnings")
-data class Earning (
+@Entity(tableName = "operations")
+data class Operation(
     val sum: Double,
     val date: Date,
     val typeId: Int,
-    val budgetTypeId: Int
+    val budgetTypeId: Int,
+    val isExpense: Boolean
 ) {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }

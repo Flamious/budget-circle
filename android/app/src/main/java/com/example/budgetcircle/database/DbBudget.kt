@@ -7,13 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.budgetcircle.database.converters.DateConverter
-import com.example.budgetcircle.database.dao.main.EarningsDAO
-import com.example.budgetcircle.database.dao.main.ExpensesDAO
+import com.example.budgetcircle.database.dao.main.OperationsDAO
 import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
-import com.example.budgetcircle.database.entities.main.Earning
-import com.example.budgetcircle.database.entities.main.Expense
+import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
 import com.example.budgetcircle.database.entities.types.ExpenseType
@@ -23,17 +21,16 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         BudgetType::class,
-        Earning::class, Expense::class,
-        ExpenseType::class, EarningType::class
-    ], version = 3, exportSchema = false
+        ExpenseType::class, EarningType::class,
+        Operation::class
+    ], version = 5, exportSchema = false
 )
 @TypeConverters(DateConverter::class)
 abstract class DbBudget : RoomDatabase() {
-    abstract fun EarningsDAO(): EarningsDAO
-    abstract fun ExpensesDAO(): ExpensesDAO
     abstract fun BudgetTypesDAO(): BudgetTypesDAO
     abstract fun ExpenseTypesDAO(): ExpenseTypesDAO
     abstract fun EarningTypesDAO(): EarningTypesDAO
+    abstract fun OperationsDAO(): OperationsDAO
 
     companion object {
         @Volatile
