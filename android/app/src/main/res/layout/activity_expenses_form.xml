@@ -158,7 +158,7 @@
         app:srcCompat="@drawable/ic_back" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/expCommentaryField"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"

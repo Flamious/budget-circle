@@ -2,6 +2,7 @@ package com.example.budgetcircle.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.budgetcircle.R
 import com.example.budgetcircle.database.DbBudget
 import com.example.budgetcircle.database.dao.main.OperationsDAO
 import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
@@ -37,6 +38,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
     val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
     val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
+
     init {
         val budgetTypesDAO: BudgetTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).BudgetTypesDAO()
@@ -86,8 +88,19 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
 
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         val id = budgetTypesRepository.addBudgetType(item)
-        if(item.sum > 0.0) {
-            operationsRepository.addOperation(Operation(item.sum, getCurrentDate(), earningTypes[earningTypes.lastIndex].id, id, false))
+        if (item.sum > 0.0) {
+            operationsRepository.addOperation(
+                Operation(
+                    "${getApplication<Application>().resources.getString(R.string.new_account)}: ${item.title}",
+                    item.sum,
+                    getCurrentDate(),
+                    earningTypes[earningTypes.lastIndex].id,
+                    id,
+                    "",
+                    wasRepetitive = false,
+                    isExpense = false
+                )
+            )
         }
     }
 
@@ -104,16 +117,38 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         operations.value?.add(item)
     }
 
-    fun addExpense(sum: Double, type: Int, budgetTypeId: Int) =
+    fun addExpense(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypesRepository.addSum(budgetTypeId, -sum)
-            operationsRepository.addOperation(Operation(sum, getCurrentDate(), type, budgetTypeId, true))
+            operationsRepository.addOperation(
+                Operation(
+                    title,
+                    sum,
+                    getCurrentDate(),
+                    type,
+                    budgetTypeId,
+                    commentary,
+                    wasRepetitive = false,
+                    isExpense = true
+                )
+            )
         }
 
-    fun addEarning(sum: Double, type: Int, budgetTypeId: Int) =
+    fun addEarning(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypesRepository.addSum(budgetTypeId, sum)
-            operationsRepository.addOperation(Operation(sum, getCurrentDate(), type, budgetTypeId, false))
+            operationsRepository.addOperation(
+                Operation(
+                    title,
+                    sum,
+                    getCurrentDate(),
+                    type,
+                    budgetTypeId,
+                    commentary,
+                    wasRepetitive = false,
+                    isExpense = false
+                )
+            )
         }
 
     private fun getCurrentDate(): Date {

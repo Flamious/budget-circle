@@ -6,10 +6,13 @@ import java.util.*
 
 @Entity(tableName = "operations")
 data class Operation(
+    val title: String,
     val sum: Double,
     val date: Date,
     val typeId: Int,
     val budgetTypeId: Int,
+    val commentary: String,
+    val wasRepetitive: Boolean,
     val isExpense: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)

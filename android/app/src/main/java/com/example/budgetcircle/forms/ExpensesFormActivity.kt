@@ -109,6 +109,7 @@ class ExpensesFormActivity : AppCompatActivity() {
             intent.putExtra("date", binding.expDate.text.toString())
             intent.putExtra("title", binding.expTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
+            intent.putExtra("commentary", binding.expCommentaryField.text.toString())
             setResult(RESULT_OK, intent)
             finish()
         }

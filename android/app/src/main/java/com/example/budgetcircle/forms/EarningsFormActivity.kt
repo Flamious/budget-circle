@@ -100,6 +100,7 @@ class EarningsFormActivity : AppCompatActivity() {
             intent.putExtra("date", binding.earnDate.text.toString())
             intent.putExtra("title", binding.earnTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
+            intent.putExtra("commentary", binding.earnCommentaryField.text.toString())
             setResult(RESULT_OK, intent)
             finish()
         }

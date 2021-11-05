@@ -21,9 +21,10 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         BudgetType::class,
-        ExpenseType::class, EarningType::class,
+        ExpenseType::class,
+        EarningType::class,
         Operation::class
-    ], version = 5, exportSchema = false
+    ], version = 10, exportSchema = false
 )
 @TypeConverters(DateConverter::class)
 abstract class DbBudget : RoomDatabase() {
