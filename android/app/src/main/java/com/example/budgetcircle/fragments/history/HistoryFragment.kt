@@ -1,10 +1,11 @@
-package com.example.budgetcircle.fragments
+package com.example.budgetcircle.fragments.history
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
@@ -27,8 +28,27 @@ class HistoryFragment : Fragment() {
         binding = FragmentHistoryBinding.inflate(inflater)
         init()
 
-        budgetData.operations.observe(this.viewLifecycleOwner, {
-            adapter.setList(it)
+        budgetData.historyItems.observe(this.viewLifecycleOwner, {
+            val list: Array<HistoryItem> = Array(it.size) { index ->
+
+                HistoryItem(
+                    it[index].id,
+                    it[index].title,
+                    it[index].sum,
+                    it[index].date,
+                    if (it[index].isExpense) budgetData.expenseTypes.first { type -> type.id == it[index].typeId }.title else budgetData.earningTypes.first { type -> type.id == it[index].typeId }.title,
+                    budgetData.budgetTypes.value!!.first { type -> type.id == it[index].budgetTypeId }.title,
+                    it[index].commentary,
+                    it[index].isRepetitive,
+                    it[index].isExpense,
+                    ContextCompat.getColor(
+                        this.requireContext(),
+                        if (it[index].isExpense) R.color.red_switch_main else R.color.blue_switch_main
+                    )
+                )
+
+            }
+            adapter.setList(list)
         })
         return binding.root
     }

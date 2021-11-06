@@ -11,12 +11,6 @@ import java.util.*
 
 @Dao
 interface OperationsDAO {
-    @Query("SELECT sum FROM operations WHERE NOT isExpense")
-    fun getEarningsSums(): List<Double>
-
-    @Query("SELECT sum FROM operations WHERE isExpense")
-    fun getExpensesSums(): List<Double>
-
     @Insert
     suspend fun insert(item: Operation)
 
@@ -40,4 +34,13 @@ interface OperationsDAO {
 
     @Query("SELECT types.title, SUM(e.sum) as sum FROM operations AS e JOIN expenses_types AS types ON e.typeId == types.id AND e.date >= :date AND e.isExpense GROUP BY types.title")
     fun getAllExpensesByDate(date: Date): LiveData<List<OperationSum>>
+
+    @Query("SELECT * FROM operations")
+    fun getAllHistoryItems(): LiveData<List<Operation>>
+
+    @Query("SELECT sum FROM operations WHERE NOT isExpense")
+    fun getEarningsSums(): List<Double>
+
+    @Query("SELECT sum FROM operations WHERE isExpense")
+    fun getExpensesSums(): List<Double>
 }

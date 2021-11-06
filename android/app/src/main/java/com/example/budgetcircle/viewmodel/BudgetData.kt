@@ -25,6 +25,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     private val expenseTypesRepository: ExpenseTypesRepository
     private val operationsRepository: OperationsRepository
     val budgetTypes: LiveData<List<BudgetType>>
+    val historyItems: LiveData<List<Operation>>
     val earningTypes: List<EarningType>
     val expenseTypes: List<ExpenseType>
 
@@ -38,6 +39,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
     val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
     val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
+    var chosenHistoryItem: HistoryItem? = null
 
     init {
         val budgetTypesDAO: BudgetTypesDAO =
@@ -79,12 +81,8 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
         expenseTypes = expenseTypesDAO.getAll()
+        historyItems = operationsDAO.getAllHistoryItems()
     }
-
-    val operations: MutableLiveData<MutableList<HistoryItem>> =
-        MutableLiveData<MutableList<HistoryItem>>().apply {
-            value = mutableListOf()
-        }
 
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         val id = budgetTypesRepository.addBudgetType(item)
@@ -97,7 +95,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
                     earningTypes[earningTypes.lastIndex].id,
                     id,
                     "",
-                    wasRepetitive = false,
+                    isRepetitive = false,
                     isExpense = false
                 )
             )
@@ -113,10 +111,6 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         budgetTypesRepository.deleteBudgetType(id)
     }
 
-    fun addToOperationList(item: HistoryItem) {
-        operations.value?.add(item)
-    }
-
     fun addExpense(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypesRepository.addSum(budgetTypeId, -sum)
@@ -128,7 +122,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
                     type,
                     budgetTypeId,
                     commentary,
-                    wasRepetitive = false,
+                    isRepetitive = false,
                     isExpense = true
                 )
             )
@@ -145,7 +139,7 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
                     type,
                     budgetTypeId,
                     commentary,
-                    wasRepetitive = false,
+                    isRepetitive = false,
                     isExpense = false
                 )
             )

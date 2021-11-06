@@ -12,7 +12,7 @@ data class Operation(
     val typeId: Int,
     val budgetTypeId: Int,
     val commentary: String,
-    val wasRepetitive: Boolean,
+    val isRepetitive: Boolean,
     val isExpense: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)

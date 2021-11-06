@@ -10,7 +10,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-data class HistoryItem(val id: Int, val sum: Float, val title: String, val type: String, val date: Date, val color: Int, val isRepetitive: Boolean)
+data class HistoryItem(
+    val id: Int,
+    val title: String,
+    val sum: Double,
+    val date: Date,
+    val type: String,
+    val budgetType: String,
+    val commentary: String,
+    val isRepetitive: Boolean,
+    val isExpense: Boolean,
+    val color: Int
+)
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
@@ -18,7 +29,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
         fun bind(item: HistoryItem) = binding.apply {
-            itemTitle.text = item.sum.toString() + "₽"
+            itemTitle.text = item.sum.toString()
             opColor.setBackgroundColor(item.color)
             operationTitle.text = item.title
             imageRepititive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
@@ -40,7 +51,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
         return itemList.size
     }
 
-    fun setList(list: MutableList<HistoryItem>)
+    fun setList(list: Array<HistoryItem>)
     {
         itemList.clear()
         for (item in list.reversed()) {
