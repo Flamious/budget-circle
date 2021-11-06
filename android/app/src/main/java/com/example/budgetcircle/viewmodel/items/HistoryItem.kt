@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
+import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.HistoryItemBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,8 +26,9 @@ data class HistoryItem(
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
+    var onItemClick: ((item: HistoryItem) -> Unit)? = null
 
-    class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
         fun bind(item: HistoryItem) = binding.apply {
             itemTitle.text = item.sum.toString()
@@ -35,6 +37,9 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
             imageRepititive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
             itemType.text = item.type
             itemDate.text = SimpleDateFormat("dd.MM.yyy", Locale.getDefault()).format(item.date)
+            itemLayout.setOnClickListener {
+                onItemClick?.invoke(item)
+            }
         }
     }
 

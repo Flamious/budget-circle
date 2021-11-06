@@ -39,7 +39,9 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
     val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
     val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
-    var chosenHistoryItem: HistoryItem? = null
+    var chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
+        value = null
+    }
 
     init {
         val budgetTypesDAO: BudgetTypesDAO =
@@ -109,6 +111,11 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     fun deleteBudgetType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         operationsRepository.deleteByBudgetTypeId(id)
         budgetTypesRepository.deleteBudgetType(id)
+    }
+
+    fun makeExchange(idFrom: Int, idTo: Int, sum: Double) = viewModelScope.launch(Dispatchers.IO) {
+        budgetTypesRepository.addSum(idFrom, -sum)
+        budgetTypesRepository.addSum(idTo, sum)
     }
 
     fun addExpense(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =

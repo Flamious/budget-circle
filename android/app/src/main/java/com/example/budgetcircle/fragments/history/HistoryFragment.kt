@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
+import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.viewmodel.BudgetData
 /*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
@@ -27,7 +28,7 @@ class HistoryFragment : Fragment() {
     ): View? {
         binding = FragmentHistoryBinding.inflate(inflater)
         init()
-
+        setButtons()
         budgetData.historyItems.observe(this.viewLifecycleOwner, {
             val list: Array<HistoryItem> = Array(it.size) { index ->
 
@@ -50,7 +51,24 @@ class HistoryFragment : Fragment() {
             }
             adapter.setList(list)
         })
+
+
         return binding.root
+    }
+
+    private fun setButtons() {
+        adapter.onItemClick = {
+            budgetData.chosenHistoryItem.value = it
+            openInfo()
+        }
+    }
+
+    private fun openInfo() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, OperationInfoFragment())
+            ?.commit()
     }
 
     private fun init() {
