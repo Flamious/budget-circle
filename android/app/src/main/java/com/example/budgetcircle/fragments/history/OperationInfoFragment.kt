@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
@@ -29,13 +30,22 @@ class OperationInfoFragment : Fragment() {
             it?.let {
                 binding.apply {
                     infoOpTitle.text = it.title
-                    if(it.isExpense) {
+                    if (it.isExpense) {
                         sumInfo.text = "-${it.sum}"
-                        sumInfo.setTextColor(ContextCompat.getColor(this@OperationInfoFragment.requireContext(), R.color.red_switch_main))
-                    }
-                    else {
+                        sumInfo.setTextColor(
+                            ContextCompat.getColor(
+                                this@OperationInfoFragment.requireContext(),
+                                R.color.red_switch_main
+                            )
+                        )
+                    } else {
                         sumInfo.text = "+${it.sum}"
-                        sumInfo.setTextColor(ContextCompat.getColor(this@OperationInfoFragment.requireContext(), R.color.green_button))
+                        sumInfo.setTextColor(
+                            ContextCompat.getColor(
+                                this@OperationInfoFragment.requireContext(),
+                                R.color.green_button
+                            )
+                        )
                     }
                     accountInfo.text = it.budgetType
                     kindInfo.text = it.type
@@ -50,9 +60,25 @@ class OperationInfoFragment : Fragment() {
         binding.infoBackButton.setOnClickListener {
             exit()
         }
+        binding.opDeleteButton.setOnClickListener {
+            val isDeleted = budgetData.chosenHistoryItem.value.let {
+                budgetData.deleteOperation(it!!)
+            }
+            if (!isDeleted) {
+                Toast.makeText(this.requireContext(), resources.getText(R.string.insufficient_funds), Toast.LENGTH_LONG).show()
+            } else {
+                budgetData.chosenHistoryItemIndex.let {
+                    if (it.value == 0 || it.value == null) it.postValue(null)
+                    else it.postValue(it.value!! - 1)
+                    Toast.makeText(this.requireContext(), resources.getText(R.string.deleted), Toast.LENGTH_SHORT).show()
+                }
+                exit()
+            }
+        }
     }
 
     private fun exit() {
+        budgetData.chosenHistoryItem.postValue(null)
         activity
             ?.supportFragmentManager
             ?.beginTransaction()

@@ -57,8 +57,9 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setButtons() {
-        adapter.onItemClick = {
-            budgetData.chosenHistoryItem.value = it
+        adapter.onItemClick = { item, index ->
+            budgetData.chosenHistoryItem.value = item
+            budgetData.chosenHistoryItemIndex.value = index
             openInfo()
         }
     }
@@ -75,6 +76,12 @@ class HistoryFragment : Fragment() {
         binding.apply {
             historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
             historyList.adapter = adapter
+            if (budgetData.chosenHistoryItemIndex.value != null) {
+                historyList.scrollToPosition(
+                    budgetData.chosenHistoryItemIndex.value!!
+                )
+                budgetData.chosenHistoryItemIndex.postValue(null)
+            }
         }
     }
 

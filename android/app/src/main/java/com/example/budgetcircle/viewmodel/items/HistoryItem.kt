@@ -26,7 +26,7 @@ data class HistoryItem(
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
-    var onItemClick: ((item: HistoryItem) -> Unit)? = null
+    var onItemClick: ((item: HistoryItem, index: Int) -> Unit)? = null
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
@@ -38,7 +38,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
             itemType.text = item.type
             itemDate.text = SimpleDateFormat("dd.MM.yyy", Locale.getDefault()).format(item.date)
             itemLayout.setOnClickListener {
-                onItemClick?.invoke(item)
+                onItemClick?.invoke(item, itemList.indexOfFirst { op -> op.id == item.id  })
             }
         }
     }

@@ -39,7 +39,10 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
     val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
     val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
-    var chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
+    val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
+        value = null
+    }
+    val chosenHistoryItemIndex: MutableLiveData<Int?> = MutableLiveData<Int?>().apply {
         value = null
     }
 
@@ -151,6 +154,25 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
                 )
             )
         }
+
+    fun deleteOperation(operation: HistoryItem): Boolean {
+        val budgetType: BudgetType = budgetTypes.value!!.first { it.title == operation.budgetType }
+        if (!operation.isExpense) {
+            if (budgetType.sum < operation.sum) return false
+            viewModelScope.launch(Dispatchers.IO) {
+                budgetTypesRepository.addSum(budgetType.id, -operation.sum)
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                budgetTypesRepository.addSum(budgetType.id, operation.sum)
+            }
+
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationsRepository.deleteOperation(operation.id)
+        }
+        return true
+    }
 
     private fun getCurrentDate(): Date {
         val calendar: Calendar = Calendar.getInstance()
