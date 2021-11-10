@@ -1,5 +1,6 @@
 package com.example.budgetcircle.fragments.history
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.budgetcircle.databinding.FragmentHistoryBinding
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class OperationInfoFragment : Fragment() {
     lateinit var binding: FragmentOperationInfoBinding
@@ -61,22 +63,43 @@ class OperationInfoFragment : Fragment() {
             exit()
         }
         binding.opDeleteButton.setOnClickListener {
-            val isDeleted = budgetData.chosenHistoryItem.value.let {
-                budgetData.deleteOperation(it!!)
-            }
-            if (!isDeleted) {
-                Toast.makeText(this.requireContext(), resources.getText(R.string.insufficient_funds), Toast.LENGTH_LONG).show()
-            } else {
-                budgetData.chosenHistoryItemIndex.let {
-                    if (it.value == 0 || it.value == null) it.postValue(null)
-                    else it.postValue(it.value!! - 1)
-                    Toast.makeText(this.requireContext(), resources.getText(R.string.deleted), Toast.LENGTH_SHORT).show()
+            var dialog = MaterialAlertDialogBuilder(this.requireContext(), R.style.orangeButtonsDialog)
+                .setTitle(resources.getString(R.string.delete))
+                .setMessage(resources.getString(R.string.r_u_sure))
+                .setPositiveButton(
+                    resources.getString(R.string.yes)
+                ) { dialogInterface, _ ->
+                    run {
+                        deleteOperation()
+                        dialogInterface.dismiss()
+                    }
                 }
-                exit()
-            }
+                .setNegativeButton(
+                    resources.getString(R.string.no)
+                ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                .show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_button))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_button))
         }
     }
 
+    private fun deleteOperation() {
+        val isDeleted = budgetData.chosenHistoryItem.value.let {
+            budgetData.deleteOperation(it!!)
+        }
+        if (!isDeleted) {
+            Toast.makeText(this.requireContext(), resources.getText(R.string.insufficient_funds), Toast.LENGTH_LONG).show()
+        } else {
+            budgetData.chosenHistoryItemIndex.let {
+                if (it.value == 0 || it.value == null) it.postValue(null)
+                else it.postValue(it.value!! - 1)
+                Toast.makeText(this.requireContext(), resources.getText(R.string.deleted), Toast.LENGTH_SHORT).show()
+            }
+            exit()
+        }
+    }
     private fun exit() {
         budgetData.chosenHistoryItem.postValue(null)
         activity

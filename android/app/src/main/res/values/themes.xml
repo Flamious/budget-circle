@@ -52,6 +52,14 @@
         <item name="android:textColor">@color/green_switch_main</item>
     </style>
 
+    <style name="orangeButtonsDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/orange_button</item>
+    </style>
+
+    <style name="orangeButtonsDialog.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/orange_button</item>
+    </style>
+
     <style name="redColorDatePicker.buttons" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/red_switch_main</item>
     </style>
