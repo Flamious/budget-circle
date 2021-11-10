@@ -38,7 +38,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/expenseFormTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -108,8 +108,8 @@
         android:textCursorDrawable="@color/red_switch_main"
         android:textSize="20sp"
         android:theme="@style/redControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/Title"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        app:layout_constraintEnd_toEndOf="@+id/expenseFormTitle"
+        app:layout_constraintTop_toBottomOf="@+id/expenseFormTitle" />
 
     <Switch
         android:id="@+id/expRepSwitch"
@@ -152,9 +152,9 @@
         android:background="@android:color/transparent"
         android:scaleX="1"
         android:scaleY="1"
-        app:layout_constraintBottom_toBottomOf="@+id/Title"
+        app:layout_constraintBottom_toBottomOf="@+id/expenseFormTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Title"
+        app:layout_constraintTop_toTopOf="@+id/expenseFormTitle"
         app:srcCompat="@drawable/ic_back" />
 
     <EditText

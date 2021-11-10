@@ -19,7 +19,7 @@ import java.util.*
 
 class HistoryFragment : Fragment() {
     lateinit var binding: FragmentHistoryBinding
-    private val adapter = HistoryAdapter()
+    private lateinit var adapter: HistoryAdapter
     private val budgetData: BudgetData by activityViewModels()
 
     override fun onCreateView(
@@ -27,18 +27,22 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHistoryBinding.inflate(inflater)
+        adapter = HistoryAdapter(
+            budgetData.budgetTypes.value!!.toTypedArray(),
+            budgetData.earningTypes.toTypedArray(),
+            budgetData.expenseTypes.toTypedArray()
+        )
         init()
         setButtons()
         budgetData.historyItems.observe(this.viewLifecycleOwner, {
             val list: Array<HistoryItem> = Array(it.size) { index ->
-
                 HistoryItem(
                     it[index].id,
                     it[index].title,
                     it[index].sum,
                     it[index].date,
-                    if (it[index].isExpense) budgetData.expenseTypes.first { type -> type.id == it[index].typeId }.title else budgetData.earningTypes.first { type -> type.id == it[index].typeId }.title,
-                    budgetData.budgetTypes.value!!.first { type -> type.id == it[index].budgetTypeId }.title,
+                    it[index].typeId,
+                    it[index].budgetTypeId,
                     it[index].commentary,
                     it[index].isRepetitive,
                     it[index].isExpense,

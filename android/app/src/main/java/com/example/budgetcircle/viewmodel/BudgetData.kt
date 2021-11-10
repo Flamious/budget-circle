@@ -155,8 +155,64 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             )
         }
 
+    fun editOperation(oldOperation: HistoryItem, newOperation: Operation): Boolean {
+        if (oldOperation.isExpense) {
+            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                val newBudgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                if (newBudgetType.sum < newOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, oldOperation.sum)
+                        budgetTypesRepository.addSum(newOperation.budgetTypeId, -newOperation.sum)
+                    }
+                }
+            } else {
+                val budgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (budgetType.sum < newOperation.sum - oldOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(
+                            oldOperation.budgetTypeId,
+                            -(newOperation.sum - oldOperation.sum)
+                        )
+                    }
+                }
+            }
+        } else {
+            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                val oldBudgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (oldBudgetType.sum < oldOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, -oldOperation.sum)
+                        budgetTypesRepository.addSum(newOperation.budgetTypeId, newOperation.sum)
+                    }
+                }
+            } else {
+                val budgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (budgetType.sum < oldOperation.sum - newOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(
+                            oldOperation.budgetTypeId,
+                            -(oldOperation.sum - newOperation.sum)
+                        )
+                    }
+                }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationsRepository.updateOperation(oldOperation.id, newOperation)
+        }
+        return true
+    }
+
     fun deleteOperation(operation: HistoryItem): Boolean {
-        val budgetType: BudgetType = budgetTypes.value!!.first { it.title == operation.budgetType }
+        val budgetType: BudgetType = budgetTypes.value!!.first { it.id == operation.budgetTypeId }
         if (!operation.isExpense) {
             if (budgetType.sum < operation.sum) return false
             viewModelScope.launch(Dispatchers.IO) {

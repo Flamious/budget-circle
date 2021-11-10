@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.database.entities.main.OperationSum
+import com.example.budgetcircle.database.entities.types.BudgetType
 import java.util.*
 
 @Dao
@@ -43,4 +44,8 @@ interface OperationsDAO {
 
     @Query("SELECT sum FROM operations WHERE isExpense")
     fun getExpensesSums(): List<Double>
+
+    @Query("SELECT * FROM operations WHERE id = :id")
+    fun getById(id: Int): Operation
+
 }
