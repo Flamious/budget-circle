@@ -92,7 +92,6 @@ class BudgetFragment : Fragment() {
                                     true
                                 )
                             )
-
                             Toast.makeText(
                                 activity,
                                 "Added",
@@ -104,7 +103,8 @@ class BudgetFragment : Fragment() {
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetData.addExpense(
+                            budgetData.makeExchange(from, to, sum)
+                            /*budgetData.addExpense(
                                 sum,
                                 budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
                                 budgetData.budgetTypes.value!![from].id
@@ -114,7 +114,7 @@ class BudgetFragment : Fragment() {
                                 sum,
                                 budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
                                 budgetData.budgetTypes.value!![to].id
-                            )
+                            )*/
                         }
                         else -> {
                             Toast.makeText(

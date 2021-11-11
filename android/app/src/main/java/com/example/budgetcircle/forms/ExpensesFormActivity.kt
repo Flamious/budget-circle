@@ -20,15 +20,20 @@ class ExpensesFormActivity : AppCompatActivity() {
     lateinit var budgetTypes: Array<String>
     lateinit var budgetTypesSums: Array<Double>
     lateinit var expenseTypes: Array<String>
-
+    var isEdit = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesFormBinding.inflate(layoutInflater)
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<Double>)
         expenseTypes = intent.extras?.getStringArray("expenseTypes")!!
-        binding.expSelectBudgetType.text = budgetTypes[0]
-        binding.expSelectKind.text = expenseTypes[0]
+        if (intent.extras?.getBoolean("isEdit", false) == false) {
+            budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<Double>)
+            binding.expSelectBudgetType.text = budgetTypes[0]
+            binding.expSelectKind.text = expenseTypes[0]
+        } else {
+            setEditPage()
+            budgetTypesSums = arrayOf()
+        }
         binding.expSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
@@ -82,13 +87,18 @@ class ExpensesFormActivity : AppCompatActivity() {
                     error = resources.getString(R.string.zero_sum)
                     isValid = false
                 }
-                sum > budgetTypesSums[chosenBudgetType.value] -> {
-                    error =
-                        "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetType.value]})"
-                    isValid = false
+                else -> {
+                    if (!isEdit) {
+                        if (sum > budgetTypesSums[chosenBudgetType.value]) {
+                            error =
+                                "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetType.value]})"
+                            isValid = false
+                        }
+                    }
                 }
             }
         }
+
         binding.expTitle.apply {
             error = null
             if (text.isNullOrBlank()) {
@@ -100,15 +110,30 @@ class ExpensesFormActivity : AppCompatActivity() {
         return isValid
     }
 
+    private fun setEditPage() {
+        binding.expenseFormTitle.text = resources.getText(R.string.edit_earn)
+        binding.expAddButton.text = resources.getText(R.string.edit_earn)
+        binding.expTitle.setText(intent.extras?.getString("title")!!)
+        binding.expSum.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.expCommentaryField.setText(intent.extras?.getString("commentary")!!)
+        binding.expRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
+        binding.expRepSwitch.isEnabled = false
+        chosenExpenseType.value = intent.extras?.getInt("typeIndex")!!
+        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
+        binding.expSelectKind.text = expenseTypes[chosenExpenseType.value]
+        binding.expSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
+        isEdit = true
+    }
+
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
             intent.putExtra("sum", binding.expSum.text.toString().toDouble())
-            intent.putExtra("expenseTypeIndex", chosenExpenseType.value)
+            intent.putExtra("typeIndex", chosenExpenseType.value)
             intent.putExtra("isRep", binding.expRepSwitch.isChecked)
-            intent.putExtra("date", binding.expDate.text.toString())
             intent.putExtra("title", binding.expTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
+            intent.putExtra("commentary", binding.expCommentaryField.text.toString())
             setResult(RESULT_OK, intent)
             finish()
         }

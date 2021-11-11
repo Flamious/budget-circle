@@ -18,6 +18,9 @@
     <string name="no_entries">No entries</string>
     <string name="choosingPeriod">Period</string>
     <string name="show_repetitive_operations_switch">Show repetitive operations</string>
+    <string name="added">Added</string>
+    <string name="deleted">Deleted</string>
+    <string name="back">Back</string>
 
     <!-- Settings -->
     <string name="language">Language</string>
@@ -53,6 +56,7 @@
     <string name="add_exp">Add expensive</string>
     <string name="add_earn">Add earning</string>
     <string name="add_account">Add account</string>
+    <string name="edit_earn">Edit account</string>
     <string name="add_exchange">Exchange</string>
     <string name="comment">Commentary</string>
     <string name="acc_name">Account name</string>

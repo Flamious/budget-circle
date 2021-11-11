@@ -43,11 +43,15 @@ class ExpensesFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
-                    val expenseTypeIndex = result.data?.getIntExtra("expenseTypeIndex", 0)!!
+                    val expenseTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
+                    val expenseTitle = result.data?.getStringExtra("title")!!
+                    val expenseCommentary = result.data?.getStringExtra("commentary")!!
                     budgetData.addExpense(
+                        expenseTitle,
                         result.data?.getDoubleExtra("sum", 0.0)!!,
                         budgetData.expenseTypes[expenseTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
+                        expenseCommentary
                     )
                     /*budgetData.addExpense(result.data?.getFloatExtra("sum", 0f))
 

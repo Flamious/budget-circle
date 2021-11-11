@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
+import com.example.budgetcircle.fragments.history.HistoryFragment
 import com.example.budgetcircle.fragments.settings.SettingsFragment
 import com.example.budgetcircle.viewmodel.BudgetData
 

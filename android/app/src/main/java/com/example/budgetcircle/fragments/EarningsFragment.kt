@@ -44,12 +44,16 @@ class EarningsFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
 
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
-                    val earningTypeIndex = result.data?.getIntExtra("earningTypeIndex", 0)!!
+                    val earningTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
+                    val earningTitle = result.data?.getStringExtra("title")!!
+                    val earningCommentary = result.data?.getStringExtra("commentary")!!
                     /*budgetData.addEarning(result.data?.getFloatExtra("sum", 0f))*/
                     budgetData.addEarning(
+                        earningTitle,
                         result.data?.getDoubleExtra("sum", 0.0)!!,
                         budgetData.earningTypes[earningTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
+                        earningCommentary
                     )
                     /*budgetData.addToOperationList(
                         HistoryItem(

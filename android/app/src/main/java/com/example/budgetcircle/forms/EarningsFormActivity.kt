@@ -11,9 +11,6 @@ import com.example.budgetcircle.dialogs.Index
 import com.example.budgetcircle.settings.SumInputFilter
 import android.text.InputFilter
 
-
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-
 class EarningsFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityEarningsFormBinding
     var chosenBudgetType: Index = Index(0)
@@ -26,8 +23,13 @@ class EarningsFormActivity : AppCompatActivity() {
         binding = ActivityEarningsFormBinding.inflate(layoutInflater)
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
         earningTypes = intent.extras?.getStringArray("earningTypes")!!
-        binding.earnSelectBudgetType.text = budgetTypes[0]
-        binding.earnSelectKind.text = earningTypes[0]
+        if(intent.extras?.getBoolean("isEdit", false) == false){
+            binding.earnSelectBudgetType.text = budgetTypes[0]
+            binding.earnSelectKind.text = earningTypes[0]
+        }
+        else {
+            setEditPage()
+        }
         binding.earnSum.filters = arrayOf<InputFilter>(SumInputFilter())
         setButtons()
         setContentView(binding.root)
@@ -91,15 +93,31 @@ class EarningsFormActivity : AppCompatActivity() {
         return isValid
     }
 
+    private fun setEditPage() {
+        val a = intent.extras?.getInt("typeIndex")!!
+        val b = intent.extras?.getInt("budgetTypeIndex")!!
+        binding.earningFromTitle.text = resources.getText(R.string.edit_earn)
+        binding.earnAddButton.text = resources.getText(R.string.edit_earn)
+        binding.earnTitle.setText(intent.extras?.getString("title")!!)
+        binding.earnSum.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.earnCommentaryField.setText(intent.extras?.getString("commentary")!!)
+        binding.earnRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
+        binding.earnRepSwitch.isEnabled = false
+        chosenEarningType.value = intent.extras?.getInt("typeIndex")!!
+        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
+        binding.earnSelectKind.text = earningTypes[chosenEarningType.value]
+        binding.earnSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
+    }
+
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
             intent.putExtra("sum", binding.earnSum.text.toString().toDouble())
-            intent.putExtra("earningTypeIndex", chosenEarningType.value)
+            intent.putExtra("typeIndex", chosenEarningType.value)
             intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
-            intent.putExtra("date", binding.earnDate.text.toString())
             intent.putExtra("title", binding.earnTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
+            intent.putExtra("commentary", binding.earnCommentaryField.text.toString())
             setResult(RESULT_OK, intent)
             finish()
         }

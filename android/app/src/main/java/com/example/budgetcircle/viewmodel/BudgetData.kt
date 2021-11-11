@@ -2,21 +2,18 @@ package com.example.budgetcircle.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.budgetcircle.R
 import com.example.budgetcircle.database.DbBudget
-import com.example.budgetcircle.database.dao.main.EarningsDAO
-import com.example.budgetcircle.database.dao.main.ExpensesDAO
+import com.example.budgetcircle.database.dao.main.OperationsDAO
 import com.example.budgetcircle.database.dao.types.BudgetTypesDAO
 import com.example.budgetcircle.database.dao.types.EarningTypesDAO
 import com.example.budgetcircle.database.dao.types.ExpenseTypesDAO
-import com.example.budgetcircle.database.entities.main.Earning
 import com.example.budgetcircle.database.entities.main.OperationSum
-import com.example.budgetcircle.database.entities.main.Expense
+import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
 import com.example.budgetcircle.database.entities.types.ExpenseType
 import com.example.budgetcircle.database.repositories.*
-import com.example.budgetcircle.forms.EarningsFormActivity
-import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,9 +23,9 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     private val budgetTypesRepository: BudgetTypesRepository
     private val earningTypesRepository: EarningTypesRepository
     private val expenseTypesRepository: ExpenseTypesRepository
-    private val earningsRepository: EarningsRepository
-    private val expensesRepository: ExpensesRepository
+    private val operationsRepository: OperationsRepository
     val budgetTypes: LiveData<List<BudgetType>>
+    val historyItems: LiveData<List<Operation>>
     val earningTypes: List<EarningType>
     val expenseTypes: List<ExpenseType>
 
@@ -42,10 +39,21 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
     val earningsDateString: MutableLiveData<String> = MutableLiveData<String>()
     val expensesDateString: MutableLiveData<String> = MutableLiveData<String>()
+    val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
+        value = null
+    }
+    val chosenHistoryItemIndex: MutableLiveData<Int?> = MutableLiveData<Int?>().apply {
+        value = null
+    }
+
     init {
         val budgetTypesDAO: BudgetTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).BudgetTypesDAO()
         budgetTypesRepository = BudgetTypesRepository(budgetTypesDAO)
+
+        val operationsDAO: OperationsDAO =
+            DbBudget.getDatabase(application, viewModelScope).OperationsDAO()
+        operationsRepository = OperationsRepository(operationsDAO)
 
         val earningTypesDAO: EarningTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).EarningTypesDAO()
@@ -55,21 +63,13 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             DbBudget.getDatabase(application, viewModelScope).ExpenseTypesDAO()
         expenseTypesRepository = ExpenseTypesRepository(expenseTypesDAO)
 
-        val earningsDAO: EarningsDAO =
-            DbBudget.getDatabase(application, viewModelScope).EarningsDAO()
-        earningsRepository = EarningsRepository(earningsDAO)
-
-        val expensesDAO: ExpensesDAO =
-            DbBudget.getDatabase(application, viewModelScope).ExpensesDAO()
-        expensesRepository = ExpensesRepository(expensesDAO)
-
         earningSumByDate = Transformations.switchMap(earningsDate) { param ->
             if (param > 0) {
                 val calendar = Calendar.getInstance()
                 calendar.add(Calendar.DAY_OF_YEAR, -param)
-                earningsDAO.getAllByDate(calendar.time)
+                operationsDAO.getAllEarningsByDate(calendar.time)
             } else {
-                earningsDAO.getAll()
+                operationsDAO.getAllEarnings()
             }
         }
 
@@ -77,24 +77,34 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
             if (param > 0) {
                 val calendar = Calendar.getInstance()
                 calendar.add(Calendar.DAY_OF_YEAR, -param)
-                expensesDAO.getAllByDate(calendar.time)
+                operationsDAO.getAllExpensesByDate(calendar.time)
             } else {
-                expensesDAO.getAll()
+                operationsDAO.getAllExpenses()
             }
         }
 
         budgetTypes = budgetTypesDAO.getAll()
         earningTypes = earningTypesDAO.getAll()
         expenseTypes = expenseTypesDAO.getAll()
+        historyItems = operationsDAO.getAllHistoryItems()
     }
 
-    val operations: MutableLiveData<MutableList<HistoryItem>> =
-        MutableLiveData<MutableList<HistoryItem>>().apply {
-            value = mutableListOf()
-        }
-
     fun addToBudgetTypesList(item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
-        budgetTypesRepository.addBudgetType(item)
+        val id = budgetTypesRepository.addBudgetType(item)
+        if (item.sum > 0.0) {
+            operationsRepository.addOperation(
+                Operation(
+                    "${getApplication<Application>().resources.getString(R.string.new_account)}: ${item.title}",
+                    item.sum,
+                    getCurrentDate(),
+                    earningTypes[earningTypes.lastIndex].id,
+                    id,
+                    "",
+                    isRepetitive = false,
+                    isExpense = false
+                )
+            )
+        }
     }
 
     fun editBudgetType(id: Int, item: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
@@ -102,26 +112,123 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
 
     fun deleteBudgetType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-        earningsRepository.deleteByBudgetTypeId(id)
-        expensesRepository.deleteByBudgetTypeId(id)
+        operationsRepository.deleteByBudgetTypeId(id)
         budgetTypesRepository.deleteBudgetType(id)
     }
 
-    fun addToOperationList(item: HistoryItem) {
-        operations.value?.add(item)
+    fun makeExchange(idFrom: Int, idTo: Int, sum: Double) = viewModelScope.launch(Dispatchers.IO) {
+        budgetTypesRepository.addSum(idFrom, -sum)
+        budgetTypesRepository.addSum(idTo, sum)
     }
 
-    fun addExpense(sum: Double, type: Int, budgetTypeId: Int) =
+    fun addExpense(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypesRepository.addSum(budgetTypeId, -sum)
-            expensesRepository.addExpense(Expense(sum, getCurrentDate(), type, budgetTypeId))
+            operationsRepository.addOperation(
+                Operation(
+                    title,
+                    sum,
+                    getCurrentDate(),
+                    type,
+                    budgetTypeId,
+                    commentary,
+                    isRepetitive = false,
+                    isExpense = true
+                )
+            )
         }
 
-    fun addEarning(sum: Double, type: Int, budgetTypeId: Int) =
+    fun addEarning(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypesRepository.addSum(budgetTypeId, sum)
-            earningsRepository.addEarning(Earning(sum, Date(), type, budgetTypeId))
+            operationsRepository.addOperation(
+                Operation(
+                    title,
+                    sum,
+                    getCurrentDate(),
+                    type,
+                    budgetTypeId,
+                    commentary,
+                    isRepetitive = false,
+                    isExpense = false
+                )
+            )
         }
+
+    fun editOperation(oldOperation: HistoryItem, newOperation: Operation): Boolean {
+        if (oldOperation.isExpense) {
+            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                val newBudgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                if (newBudgetType.sum < newOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, oldOperation.sum)
+                        budgetTypesRepository.addSum(newOperation.budgetTypeId, -newOperation.sum)
+                    }
+                }
+            } else {
+                val budgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (budgetType.sum < newOperation.sum - oldOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(
+                            oldOperation.budgetTypeId,
+                            -(newOperation.sum - oldOperation.sum)
+                        )
+                    }
+                }
+            }
+        } else {
+            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                val oldBudgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (oldBudgetType.sum < oldOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, -oldOperation.sum)
+                        budgetTypesRepository.addSum(newOperation.budgetTypeId, newOperation.sum)
+                    }
+                }
+            } else {
+                val budgetType: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                if (budgetType.sum < oldOperation.sum - newOperation.sum) return false
+                else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        budgetTypesRepository.addSum(
+                            oldOperation.budgetTypeId,
+                            -(oldOperation.sum - newOperation.sum)
+                        )
+                    }
+                }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationsRepository.updateOperation(oldOperation.id, newOperation)
+        }
+        return true
+    }
+
+    fun deleteOperation(operation: HistoryItem): Boolean {
+        val budgetType: BudgetType = budgetTypes.value!!.first { it.id == operation.budgetTypeId }
+        if (!operation.isExpense) {
+            if (budgetType.sum < operation.sum) return false
+            viewModelScope.launch(Dispatchers.IO) {
+                budgetTypesRepository.addSum(budgetType.id, -operation.sum)
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                budgetTypesRepository.addSum(budgetType.id, operation.sum)
+            }
+
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationsRepository.deleteOperation(operation.id)
+        }
+        return true
+    }
 
     private fun getCurrentDate(): Date {
         val calendar: Calendar = Calendar.getInstance()
