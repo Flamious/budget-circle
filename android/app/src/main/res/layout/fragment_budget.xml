@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="16069.25  ₽"
                 android:textColor="@color/text_primary"
                 android:textSize="34sp"
                 android:textStyle="bold"

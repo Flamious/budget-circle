@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".forms.BudgetFormActivity">
 
+
     <TextView
         android:id="@+id/budgetFormTitle"
         android:layout_width="wrap_content"
@@ -19,65 +20,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/sumTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sum"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/budgetSum"
-        app:layout_constraintStart_toStartOf="@+id/accNameTitle"
-        app:layout_constraintTop_toTopOf="@+id/budgetSum" />
-
-    <TextView
-        android:id="@+id/accNameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/acc_name"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/accName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/accName" />
-
-
-    <EditText
-        android:id="@+id/budgetSum"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/green_switch_main"
-        android:ems="10"
-        android:hint="@string/sum"
-        android:inputType="number|numberDecimal"
-        android:textColorHighlight="@color/green_switch_main"
-        android:textColorLink="@color/green_switch_secondary"
-        android:textCursorDrawable="@color/green_switch_main"
-        android:textSize="20sp"
-        android:theme="@style/greenControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/accName"
-        app:layout_constraintStart_toStartOf="@+id/accName"
-        app:layout_constraintTop_toBottomOf="@+id/accName" />
-
-    <EditText
-        android:id="@+id/accName"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/green_switch_main"
-        android:ems="10"
-        android:hint="@string/acc_name"
-        android:inputType="text"
-        android:textColorHighlight="@color/green_switch_main"
-        android:textColorLink="@color/green_switch_secondary"
-        android:textCursorDrawable="@color/green_switch_main"
-        android:textSize="20sp"
-        android:theme="@style/greenControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/budgetFormTitle"
-        app:layout_constraintTop_toBottomOf="@+id/budgetFormTitle" />
 
     <Button
         android:id="@+id/budgetAddButton"
@@ -95,13 +37,98 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:scaleX="1"
         android:scaleY="1"
         app:layout_constraintBottom_toBottomOf="@+id/budgetFormTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/budgetFormTitle"
         app:srcCompat="@drawable/ic_back" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border"
+        android:theme="@style/greenEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/budgetAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/budgetSum"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/green_switch_main"
+                    android:ems="10"
+                    android:hint="@string/sum"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/green_switch_main"
+                    android:textColorLink="@color/green_switch_secondary"
+                    android:textCursorDrawable="@color/green_switch_main"
+                    android:textSize="20sp"
+                    android:theme="@style/greenControlCursor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/accName"
+                    app:layout_constraintTop_toBottomOf="@+id/accName" />
+
+                <TextView
+                    android:id="@+id/accNameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/acc_name"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/accName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/accName" />
+
+                <TextView
+                    android:id="@+id/sumTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sum"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/budgetSum"
+                    app:layout_constraintStart_toStartOf="@+id/accNameTitle"
+                    app:layout_constraintTop_toTopOf="@+id/budgetSum" />
+
+                <EditText
+                    android:id="@+id/accName"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/green_switch_main"
+                    android:ems="10"
+                    android:hint="@string/acc_name"
+                    android:inputType="text"
+                    android:textColorHighlight="@color/green_switch_main"
+                    android:textColorLink="@color/green_switch_secondary"
+                    android:textCursorDrawable="@color/green_switch_main"
+                    android:textSize="20sp"
+                    android:theme="@style/greenControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

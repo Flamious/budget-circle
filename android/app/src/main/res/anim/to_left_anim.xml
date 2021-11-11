@@ -3,14 +3,14 @@
     android:fillAfter="true">
     <translate
         android:duration="300"
-        android:fromYDelta="0%"
-        android:toYDelta="75%" />
+        android:fromXDelta="0%"
+        android:toXDelta="-75%" />
 
     <scale
         android:fromXScale="1"
         android:fromYScale="1"
-        android:pivotX="50%"
-        android:pivotY="100%"
+        android:pivotY="50%"
+        android:pivotX="0%"
         android:toXScale="0"
         android:toYScale="0"
         android:duration="300" />

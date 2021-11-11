@@ -2,6 +2,7 @@ package com.example.budgetcircle.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -85,6 +86,11 @@ class EarningsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        changeOrientation()
+    }
+
     private fun setButtons() {
         binding.addEarningButton.setOnClickListener {
             addEarning()
@@ -119,7 +125,8 @@ class EarningsFragment : Fragment() {
                 resources.getString(R.string.total),
                 binding.earningsPieChart,
                 binding.sumText,
-                binding.kindText
+                binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
             PieChartSetter.setChart(
@@ -131,8 +138,17 @@ class EarningsFragment : Fragment() {
                 binding.earningsPieChart,
                 binding.sumText,
                 binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )
+    }
+
+    private fun changeOrientation() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, EarningsFragment())
+            ?.commit()
     }
 
     private fun addEarning() {

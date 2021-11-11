@@ -6,127 +6,184 @@
     android:layout_height="match_parent"
     tools:context=".forms.EarningsFormActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/earnBudgetTypeLayout"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/earnSum"
-        app:layout_constraintStart_toStartOf="@+id/sumTitle"
-        app:layout_constraintTop_toBottomOf="@+id/earnSum">
-
-        <TextView
-            android:id="@+id/earnSelectBudgetType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/budgetTypeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/account"
-            android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/earningFromTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/new_earning"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border"
+        android:theme="@style/blueEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/earnAddButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/sumTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/sum"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/earnSum"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/earnSum" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
 
-    <TextView
-        android:id="@+id/earnTitleTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/title"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/earnTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/earnTitle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/earnSum"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/blue_switch_main"
-        android:ems="10"
-        android:hint="@string/sum"
-        android:inputType="number|numberDecimal"
-        android:textColorHighlight="@color/blue_switch_main"
-        android:textColorLink="@color/blue_switch_secondary"
-        android:textCursorDrawable="@color/blue_switch_main"
-        android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/earnTitle"
-        app:layout_constraintTop_toBottomOf="@+id/earnTitle" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/earnTitle"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/blue_switch_main"
-        android:ems="10"
-        android:hint="@string/title"
-        android:inputType="text"
-        android:textColorHighlight="@color/blue_switch_main"
-        android:textColorLink="@color/blue_switch_secondary"
-        android:textCursorDrawable="@color/blue_switch_main"
-        android:textSize="20sp"
-        android:theme="@style/blueControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/earningFromTitle"
-        app:layout_constraintTop_toBottomOf="@+id/earningFromTitle" />
+                <EditText
+                    android:id="@+id/earnCommentaryField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="@color/blue_switch_main"
+                    android:ems="10"
+                    android:hint="@string/comment"
+                    android:inputType="textMultiLine"
+                    android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorLink="@color/blue_switch_secondary"
+                    android:textCursorDrawable="@color/blue_switch_main"
+                    android:theme="@style/blueControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/earnRepSwitch"
+                    app:layout_constraintStart_toStartOf="@+id/repTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/earnRepSwitch" />
 
-    <Switch
-        android:id="@+id/earnRepSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:theme="@style/BlueSwitch"
-        app:layout_constraintEnd_toEndOf="@+id/earnDateLayout"
-        app:layout_constraintTop_toBottomOf="@+id/earnDateLayout" />
+                <TextView
+                    android:id="@+id/repTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/is_repetitive"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/earnRepSwitch"
+                    app:layout_constraintStart_toStartOf="@+id/earnKindLayout"
+                    app:layout_constraintTop_toTopOf="@+id/earnRepSwitch" />
 
-    <TextView
-        android:id="@+id/repTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="@string/is_repetitive"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/earnRepSwitch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/earnRepSwitch" />
+                <EditText
+                    android:id="@+id/earnSum"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/blue_switch_main"
+                    android:ems="10"
+                    android:hint="@string/sum"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorLink="@color/blue_switch_secondary"
+                    android:textCursorDrawable="@color/blue_switch_main"
+                    android:textSize="20sp"
+                    android:theme="@style/blueControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/earnTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/earnTitle" />
+
+                <EditText
+                    android:id="@+id/earnTitle"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/blue_switch_main"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorLink="@color/blue_switch_secondary"
+                    android:textCursorDrawable="@color/blue_switch_main"
+                    android:textSize="20sp"
+                    android:theme="@style/blueControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/earnRepSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:theme="@style/BlueSwitch"
+                    app:layout_constraintEnd_toEndOf="@+id/earnKindLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/earnKindLayout" />
+
+                <TextView
+                    android:id="@+id/earnTitleTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/title"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/earnTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/earnTitle" />
+
+                <TextView
+                    android:id="@+id/sumTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sum"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/earnSum"
+                    app:layout_constraintStart_toStartOf="@+id/earnTitleTitle"
+                    app:layout_constraintTop_toTopOf="@+id/earnSum" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/earnBudgetTypeLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/earnSum"
+                    app:layout_constraintStart_toStartOf="@+id/sumTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/earnSum">
+
+                    <TextView
+                        android:id="@+id/earnSelectBudgetType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/budgetTypeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/earnKindLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="@+id/earnBudgetTypeLayout"
+                    app:layout_constraintStart_toStartOf="@+id/earnBudgetTypeLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/earnBudgetTypeLayout">
+
+                    <TextView
+                        android:id="@+id/earnSelectKind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/earn_other"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/kindTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/kind"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/earnAddButton"
@@ -144,8 +201,11 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:scaleX="1"
         android:scaleY="1"
         app:layout_constraintBottom_toBottomOf="@+id/earningFromTitle"
@@ -153,83 +213,17 @@
         app:layout_constraintTop_toTopOf="@+id/earningFromTitle"
         app:srcCompat="@drawable/ic_back" />
 
-    <EditText
-        android:id="@+id/earnCommentaryField"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="32dp"
+    <TextView
+        android:id="@+id/earningFromTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/blue_switch_main"
-        android:ems="10"
-        android:hint="@string/comment"
-        android:inputType="textMultiLine"
-        android:textColorHighlight="@color/blue_switch_main"
-        android:textColorLink="@color/blue_switch_secondary"
-        android:textCursorDrawable="@color/blue_switch_main"
-        android:theme="@style/blueControlCursor"
+        android:text="@string/new_earning"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/earnRepSwitch" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/earnKindLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/earnBudgetTypeLayout"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/sumTitle"
-        app:layout_constraintTop_toBottomOf="@+id/earnBudgetTypeLayout">
-
-        <TextView
-            android:id="@+id/earnSelectKind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/earn_other"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/kindTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kind"
-            android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/earnDateLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/earnKindLayout"
-        app:layout_constraintStart_toStartOf="@+id/earnKindLayout"
-        app:layout_constraintTop_toBottomOf="@+id/earnKindLayout">
-
-        <TextView
-            android:id="@+id/earnDateTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/op_date"
-            android:textColor="@color/text_secondary"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/earnDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="24.01.2021"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.budgetcircle.dialogs
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
+import android.content.res.Resources
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
 import java.util.*
@@ -17,18 +18,21 @@ class Dialogs {
         title: String,
         list: Array<String>,
         view: TextView,
-        index: Index
+        index: Index,
+        theme: Int = -1
     ) {
         if (list.isNotEmpty()) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setItems(list) { _, which ->
-                    run {
-                        view.text = list[which]
-                        index.value = which
-                    }
+            var dialog = MaterialAlertDialogBuilder(context)
+            dialog.setTitle(title)
+            dialog.setItems(list) { _, which ->
+                run {
+                    view.text = list[which]
+                    index.value = which
                 }
-                .show()
+            }
+
+            if (theme >= 0) dialog.context.setTheme(theme)
+            dialog.show()
         } else {
             view.text = null
         }
@@ -40,18 +44,20 @@ class Dialogs {
         list: Array<String>,
         values: Array<Int>,
         mutableDataString: MutableLiveData<String>,
-        mutableDataInt: MutableLiveData<Int>
+        mutableDataInt: MutableLiveData<Int>,
+        theme: Int = -1
     ) {
         if (list.isNotEmpty() && values.isNotEmpty()) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setItems(list) { _, which ->
-                    run {
-                        mutableDataString.postValue(list[which])
-                        mutableDataInt.postValue(values[which])
-                    }
+            var dialog = MaterialAlertDialogBuilder(context)
+            dialog.setTitle(title)
+            dialog.setItems(list) { _, which ->
+                run {
+                    mutableDataString.postValue(list[which])
+                    mutableDataInt.postValue(values[which])
                 }
-                .show()
+            }
+            if (theme >= 0) dialog.context.setTheme(theme)
+            dialog.show()
         }
     }
 
@@ -62,26 +68,28 @@ class Dialogs {
         viewMain: TextView,
         viewSecondary: TextView,
         chosenTypeMain: Index,
-        chosenTypeSecondary: Index
+        chosenTypeSecondary: Index,
+        theme: Int = -1
     ) {
         if (list.isNotEmpty()) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setItems(list) { _, which ->
-                    run {
-                        chosenTypeMain.value = which
-                        viewMain.text = list[chosenTypeMain.value]
+            val dialog = MaterialAlertDialogBuilder(context)
+            dialog.setTitle(title)
+            dialog.setItems(list) { _, which ->
+                run {
+                    chosenTypeMain.value = which
+                    viewMain.text = list[chosenTypeMain.value]
 
 
-                        if(chosenTypeSecondary.value == chosenTypeMain.value) {
-                            chosenTypeSecondary.value = if (which == 0) 1 else 0
-                            viewSecondary.text = list[chosenTypeSecondary.value]
-                        }
+                    if (chosenTypeSecondary.value == chosenTypeMain.value) {
+                        chosenTypeSecondary.value = if (which == 0) 1 else 0
+                        viewSecondary.text = list[chosenTypeSecondary.value]
                     }
                 }
-                .show()
+            }
+            if (theme >= 0) dialog.context.setTheme(theme)
+            dialog.show()
         } else {
-            viewMain.text  = null
+            viewMain.text = null
             viewSecondary.text = null
         }
     }
