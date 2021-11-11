@@ -116,7 +116,7 @@ class BudgetFragment : Fragment() {
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetData.makeExchange(from, to, sum)
+                            budgetData.makeExchange(budgetData.budgetTypes.value!![from].id, budgetData.budgetTypes.value!![to].id, sum)
                             /*budgetData.addExpense(
                                 sum,
                                 budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other

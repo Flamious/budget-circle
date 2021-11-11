@@ -74,7 +74,7 @@ class PieChartSetter {
             chart.legend.isEnabled = false
             chart.holeRadius = if(!isFull) holeRadius else 0f
             chart.setDrawEntryLabels(false)
-            chart.setTransparentCircleColor(0)
+            chart.setTransparentCircleAlpha(0)
             sumTextView.text = sum.toString()
             labelTextView.text = label
             chart.highlightValues(null)
