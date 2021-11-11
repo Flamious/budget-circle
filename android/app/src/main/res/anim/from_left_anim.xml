@@ -3,12 +3,12 @@
     android:fillAfter="true">
     <translate
         android:duration="300"
-        android:fromYDelta="100%"
-        android:toYDelta="0%" />
+        android:fromXDelta="-100%"
+        android:toXDelta="0%" />
 
     <scale
-        android:pivotX="50%"
-        android:pivotY="100%"
+        android:pivotY="50%"
+        android:pivotX="0%"
         android:toXScale="1"
         android:toYScale="1"
         android:fromXScale="0"

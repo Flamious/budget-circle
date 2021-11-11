@@ -2,6 +2,7 @@ package com.example.budgetcircle.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.service.autofill.Dataset
 import androidx.fragment.app.Fragment
@@ -67,6 +68,18 @@ class BudgetFragment : Fragment() {
         AnimationUtils.loadAnimation(
             this.context,
             R.anim.to_bottom_anim
+        )
+    }
+    private val fromLeft: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.from_left_anim
+        )
+    }
+    private val toLeft: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.to_left_anim
         )
     }
     private var isClicked = false
@@ -137,6 +150,11 @@ class BudgetFragment : Fragment() {
         return binding.root
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        changeOrientation()
+    }
+
     private fun setButtons() {
         binding.addAccountButton.setOnClickListener {
             addAccount()
@@ -186,7 +204,8 @@ class BudgetFragment : Fragment() {
                 resources.getString(R.string.total),
                 binding.budgetPieChart,
                 binding.sumText,
-                binding.kindText
+                binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
             PieChartSetter.setChart(
@@ -198,6 +217,7 @@ class BudgetFragment : Fragment() {
                 binding.budgetPieChart,
                 binding.sumText,
                 binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )
     }
@@ -227,13 +247,24 @@ class BudgetFragment : Fragment() {
             ?.commit()
     }
 
+    private fun changeOrientation() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, BudgetFragment())
+            ?.commit()
+    }
+
     private fun setAnimation(
         isClicked: Boolean,
         listButton: FloatingActionButton,
         hiddenButtonsLayout: ConstraintLayout,
         vararg buttons: FloatingActionButton
     ) {
-        hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
+        else
+            hiddenButtonsLayout.startAnimation(if (isClicked) toLeft else fromLeft)
         hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
         for (button in buttons) {
             button.isClickable = !isClicked

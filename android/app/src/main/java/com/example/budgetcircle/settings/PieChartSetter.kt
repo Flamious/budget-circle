@@ -31,11 +31,13 @@ class PieChartSetter {
         private var sliceSpace = 3f
         private var holeRadius = 90f
 
+
         private fun applyData(
             titles: Array<String>,
             values: Array<Double>,
             colors: ArrayList<Int>,
-            chart: PieChart
+            chart: PieChart,
+            isFull: Boolean
         ) {
             val pieEntries: ArrayList<PieEntry> = ArrayList()
 
@@ -44,7 +46,7 @@ class PieChartSetter {
             }
             val pieDataSet = PieDataSet(pieEntries, "")
             pieDataSet.colors = colors
-            pieDataSet.sliceSpace = sliceSpace
+            pieDataSet.sliceSpace = if(!isFull) sliceSpace else 0f
 
             val pieData = PieData(pieDataSet)
             pieData.setDrawValues(false)
@@ -62,15 +64,17 @@ class PieChartSetter {
             chart: PieChart,
             sumTextView: TextView,
             labelTextView: TextView,
+            isFull: Boolean = false,
             noEntries: Boolean = false
         ) {
-            applyData(titles, values, colors, chart)
+            applyData(titles, values, colors, chart, isFull)
 
             chart.setTouchEnabled(!noEntries)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
-            chart.holeRadius = holeRadius
+            chart.holeRadius = if(!isFull) holeRadius else 0f
             chart.setDrawEntryLabels(false)
+            chart.setTransparentCircleColor(0)
             sumTextView.text = sum.toString()
             labelTextView.text = label
             chart.highlightValues(null)

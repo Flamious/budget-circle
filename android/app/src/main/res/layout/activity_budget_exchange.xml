@@ -21,22 +21,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/sumTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sum"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/budgetSum"
-        app:layout_constraintStart_toStartOf="@+id/titleFrom"
-        app:layout_constraintTop_toTopOf="@+id/budgetSum" />
-
 
     <EditText
         android:id="@+id/budgetSum"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/green_switch_main"
         android:ems="10"
@@ -47,8 +36,9 @@
         android:textCursorDrawable="@color/green_switch_main"
         android:textSize="20sp"
         android:theme="@style/greenControlCursor"
-        app:layout_constraintEnd_toEndOf="@+id/Title"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
+        app:layout_constraintEnd_toEndOf="@+id/listTo"
+        app:layout_constraintStart_toStartOf="@+id/titleTo"
+        app:layout_constraintTop_toBottomOf="@+id/listTo" />
 
     <Button
         android:id="@+id/budgetExchangeAddButton"
@@ -68,6 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:background="@android:color/transparent"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:scaleX="1"
         android:scaleY="1"
         app:layout_constraintBottom_toBottomOf="@+id/Title"
@@ -79,22 +71,21 @@
         android:id="@+id/listFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:textColor="@color/text_primary"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/budgetSum"
-        app:layout_constraintTop_toBottomOf="@+id/budgetSum" />
+        app:layout_constraintEnd_toEndOf="@+id/Title"
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <TextView
         android:id="@+id/titleFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
         android:text="@string/from"
         android:textColor="@color/text_secondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/listFrom"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="@+id/listFrom"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -114,7 +105,7 @@
         android:id="@+id/listTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/text_primary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/listFrom"
