@@ -56,7 +56,7 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
         android:minWidth="48dp"
         android:minHeight="48dp"
@@ -81,11 +81,12 @@
         android:id="@+id/titleFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:text="@string/from"
         android:textColor="@color/text_secondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/listFrom"
-        app:layout_constraintStart_toStartOf="@+id/backButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/listFrom"
         app:layout_constraintVertical_bias="0.0" />
 

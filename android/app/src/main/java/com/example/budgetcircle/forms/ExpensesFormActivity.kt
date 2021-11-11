@@ -40,13 +40,6 @@ class ExpensesFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.expDateLayout.setOnClickListener {
-            Dialogs().pickDate(
-                this,
-                binding.expDate,
-                R.style.redColorDatePicker
-            )
-        }
         binding.expSelectBudgetType.setOnClickListener {
             Dialogs().chooseOne(
                 this,
