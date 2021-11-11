@@ -46,7 +46,8 @@ class ExpensesFormActivity : AppCompatActivity() {
                 resources.getString(R.string.account),
                 budgetTypes,
                 binding.expSelectBudgetType,
-                chosenBudgetType
+                chosenBudgetType,
+                R.style.redEdgeEffect
             )
         }
         binding.expKindLayout.setOnClickListener {
@@ -55,7 +56,8 @@ class ExpensesFormActivity : AppCompatActivity() {
                 resources.getString(R.string.kind),
                 expenseTypes,
                 binding.expSelectKind,
-                chosenExpenseType
+                chosenExpenseType,
+                R.style.redEdgeEffect
             )
         }
         binding.expAddButton.setOnClickListener {

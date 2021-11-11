@@ -46,7 +46,8 @@ class BudgetExchangeActivity : AppCompatActivity() {
                 binding.listFrom,
                 binding.listTo,
                 chosenBudgetTypeFrom,
-                chosenBudgetTypeTo
+                chosenBudgetTypeTo,
+                R.style.greenEdgeEffect
             )
         }
         binding.listTo.setOnClickListener {
@@ -57,7 +58,8 @@ class BudgetExchangeActivity : AppCompatActivity() {
                 resources.getString(R.string.account),
                 budgetTypesCut.toTypedArray(),
                 binding.listTo,
-                chosenBudgetTypeTo
+                chosenBudgetTypeTo,
+                R.style.greenEdgeEffect
             )
         }
     }

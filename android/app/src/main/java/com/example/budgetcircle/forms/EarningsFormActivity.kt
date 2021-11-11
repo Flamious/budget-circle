@@ -10,6 +10,7 @@ import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
 import com.example.budgetcircle.settings.SumInputFilter
 import android.text.InputFilter
+import android.view.ContextThemeWrapper
 
 class EarningsFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityEarningsFormBinding
@@ -42,7 +43,8 @@ class EarningsFormActivity : AppCompatActivity() {
                 resources.getString(R.string.account),
                 budgetTypes,
                 binding.earnSelectBudgetType,
-                chosenBudgetType
+                chosenBudgetType,
+                R.style.blueEdgeEffect
             )
         }
         binding.earnKindLayout.setOnClickListener {
@@ -51,7 +53,8 @@ class EarningsFormActivity : AppCompatActivity() {
                 resources.getString(R.string.kind),
                 earningTypes,
                 binding.earnSelectKind,
-                chosenEarningType
+                chosenEarningType,
+                R.style.blueEdgeEffect
             )
         }
         binding.earnAddButton.setOnClickListener {
