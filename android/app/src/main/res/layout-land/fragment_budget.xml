@@ -28,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="16069.25  ₽"
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/textView"
@@ -100,7 +99,7 @@
             android:id="@+id/listButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:src="@drawable/ic_more"
@@ -189,7 +188,8 @@
             android:textColor="@color/text_secondary"
             android:textSize="24sp"
             android:theme="@style/GreenSwitch"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/budgetPieChart"

@@ -36,13 +36,6 @@ class EarningsFormActivity : AppCompatActivity() {
     }
 
     private fun setButtons() {
-        binding.earnDateLayout.setOnClickListener {
-            Dialogs().pickDate(
-                this,
-                binding.earnDate,
-                R.style.blueColorDatePicker
-            )
-        }
         binding.earnSelectBudgetType.setOnClickListener {
             Dialogs().chooseOne(
                 this,
