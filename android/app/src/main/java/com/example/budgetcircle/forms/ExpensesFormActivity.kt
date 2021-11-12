@@ -4,30 +4,30 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
 import com.example.budgetcircle.settings.SumInputFilter
 
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-
 class ExpensesFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityExpensesFormBinding
-    var chosenBudgetType: Index = Index(0)
-    var chosenExpenseType: Index = Index(0)
+    private var chosenBudgetType: Index = Index(0)
+    private var chosenExpenseType: Index = Index(0)
     lateinit var budgetTypes: Array<String>
-    lateinit var budgetTypesSums: Array<Double>
-    lateinit var expenseTypes: Array<String>
-    var isEdit = false
+    private lateinit var budgetTypesSums: Array<Double>
+    private lateinit var expenseTypes: Array<String>
+    private var isEdit = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesFormBinding.inflate(layoutInflater)
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
         expenseTypes = intent.extras?.getStringArray("expenseTypes")!!
         if (intent.extras?.getBoolean("isEdit", false) == false) {
-            budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<Double>)
+            budgetTypesSums =
+                (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
+                    .toTypedArray()
             binding.expSelectBudgetType.text = budgetTypes[0]
             binding.expSelectKind.text = expenseTypes[0]
         } else {
@@ -69,7 +69,7 @@ class ExpensesFormActivity : AppCompatActivity() {
     }
 
     private fun checkFields(): Boolean {
-        var sum = binding.expSum.text.toString().toDoubleOrNull()
+        val sum = binding.expSum.text.toString().toDoubleOrNull()
         var isValid = true
         binding.expSum.apply {
             error = null

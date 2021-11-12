@@ -1,14 +1,9 @@
 package com.example.budgetcircle.dialogs
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
-import android.content.res.Resources
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
-import java.util.*
 import androidx.lifecycle.MutableLiveData
-
 
 data class Index(var value: Int)
 
@@ -22,7 +17,7 @@ class Dialogs {
         theme: Int = -1
     ) {
         if (list.isNotEmpty()) {
-            var dialog = MaterialAlertDialogBuilder(context)
+            val dialog = MaterialAlertDialogBuilder(context)
             dialog.setTitle(title)
             dialog.setItems(list) { _, which ->
                 run {
@@ -48,7 +43,7 @@ class Dialogs {
         theme: Int = -1
     ) {
         if (list.isNotEmpty() && values.isNotEmpty()) {
-            var dialog = MaterialAlertDialogBuilder(context)
+            val dialog = MaterialAlertDialogBuilder(context)
             dialog.setTitle(title)
             dialog.setItems(list) { _, which ->
                 run {
@@ -92,22 +87,5 @@ class Dialogs {
             viewMain.text = null
             viewSecondary.text = null
         }
-    }
-
-    fun pickDate(context: Context, view: TextView, theme: Int) {
-        val calendar = Calendar.getInstance()
-        val year = calendar[Calendar.YEAR]
-        val month = calendar[Calendar.MONTH]
-        val day = calendar[Calendar.DAY_OF_MONTH]
-        DatePickerDialog(
-            context,
-            theme,
-            OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                val editTextDateParam = dayOfMonth.toString() + "." + (monthOfYear + 1) + "." + year
-                view.text = editTextDateParam
-            }, year, month, day
-        )
-            .show()
-
     }
 }

@@ -1,30 +1,13 @@
 package com.example.budgetcircle.settings
 
-import android.graphics.Canvas
-import android.graphics.Path
-import com.example.budgetcircle.R
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.MPPointF
-
-import android.graphics.RectF
 import android.widget.TextView
-
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
-
-import com.github.mikephil.charting.utils.ViewPortHandler
-
-import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-
-import com.github.mikephil.charting.renderer.PieChartRenderer
-import com.github.mikephil.charting.utils.Utils
-
 
 class PieChartSetter {
     companion object {
@@ -46,7 +29,7 @@ class PieChartSetter {
             }
             val pieDataSet = PieDataSet(pieEntries, "")
             pieDataSet.colors = colors
-            pieDataSet.sliceSpace = if(!isFull) sliceSpace else 0f
+            pieDataSet.sliceSpace = if (!isFull) sliceSpace else 0f
 
             val pieData = PieData(pieDataSet)
             pieData.setDrawValues(false)
@@ -72,7 +55,7 @@ class PieChartSetter {
             chart.setTouchEnabled(!noEntries)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
-            chart.holeRadius = if(!isFull) holeRadius else 0f
+            chart.holeRadius = if (!isFull) holeRadius else 0f
             chart.setDrawEntryLabels(false)
             chart.setTransparentCircleAlpha(0)
             sumTextView.text = sum.toString()

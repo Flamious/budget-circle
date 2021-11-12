@@ -4,14 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
 import com.example.budgetcircle.settings.SumInputFilter
 
 class BudgetFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetFormBinding
-    var isEdit: Boolean = false
+    private var isEdit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +41,7 @@ class BudgetFormActivity : AppCompatActivity() {
     }
 
     private fun checkFields(): Boolean {
-        var sum = binding.budgetSum.text.toString().toDoubleOrNull()
+        val sum = binding.budgetSum.text.toString().toDoubleOrNull()
         var isValid = true
         binding.budgetSum.apply {
             error = null

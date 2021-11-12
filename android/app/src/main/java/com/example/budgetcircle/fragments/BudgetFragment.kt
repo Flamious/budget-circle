@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.service.autofill.Dataset
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,16 +25,7 @@ import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-import com.example.budgetcircle.viewmodel.items.HistoryItem
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.listener.OnChartGestureListener
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -116,18 +105,11 @@ class BudgetFragment : Fragment() {
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetData.makeExchange(budgetData.budgetTypes.value!![from].id, budgetData.budgetTypes.value!![to].id, sum)
-                            /*budgetData.addExpense(
-                                sum,
-                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
-                                budgetData.budgetTypes.value!![from].id
+                            budgetData.makeExchange(
+                                budgetData.budgetTypes.value!![from].id,
+                                budgetData.budgetTypes.value!![to].id,
+                                sum
                             )
-
-                            budgetData.addEarning(
-                                sum,
-                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
-                                budgetData.budgetTypes.value!![to].id
-                            )*/
                         }
                         else -> {
                             Toast.makeText(
@@ -144,7 +126,7 @@ class BudgetFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBudgetBinding.inflate(inflater)
         setButtons()
         return binding.root
@@ -270,10 +252,5 @@ class BudgetFragment : Fragment() {
             button.isClickable = !isClicked
         }
         listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = BudgetFragment()
     }
 }

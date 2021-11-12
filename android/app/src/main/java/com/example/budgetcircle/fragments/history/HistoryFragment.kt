@@ -10,9 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
-import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.viewmodel.BudgetData
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import java.util.*
@@ -25,7 +23,7 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHistoryBinding.inflate(inflater)
         adapter = HistoryAdapter(
             budgetData.budgetTypes.value!!.toTypedArray(),
@@ -87,10 +85,5 @@ class HistoryFragment : Fragment() {
                 budgetData.chosenHistoryItemIndex.postValue(null)
             }
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HistoryFragment()
     }
 }

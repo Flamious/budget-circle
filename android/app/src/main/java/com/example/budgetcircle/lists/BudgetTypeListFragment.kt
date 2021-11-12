@@ -8,25 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
-import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
-import com.example.budgetcircle.databinding.FragmentEarningsBinding
-import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
-import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
@@ -41,7 +34,7 @@ class BudgetTypeListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBudgetTypeListBinding.inflate(inflater)
         setButtons()
         init()
@@ -49,8 +42,8 @@ class BudgetTypeListFragment : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    var name = result.data?.getStringExtra("newAccountName")!!
-                    var sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
+                    val name = result.data?.getStringExtra("newAccountName")!!
+                    val sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                     budgetData.editBudgetType(
                         lastTypeId,
                         BudgetType(
@@ -97,7 +90,7 @@ class BudgetTypeListFragment : Fragment() {
     }
 
     private fun deleteBudgetType(item: BudgetType) {
-        var dialog = MaterialAlertDialogBuilder(this.requireContext(), R.style.greenButtonsDialog)
+        val dialog = MaterialAlertDialogBuilder(this.requireContext(), R.style.greenButtonsDialog)
             .setTitle(resources.getString(R.string.delete) + " " + item.title)
             .setMessage(resources.getString(R.string.r_u_sure))
             .setPositiveButton(
@@ -125,10 +118,5 @@ class BudgetTypeListFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, BudgetFragment())
             ?.disallowAddToBackStack()
             ?.commit()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = BudgetTypeListFragment()
     }
 }

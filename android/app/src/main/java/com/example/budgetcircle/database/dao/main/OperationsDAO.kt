@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.database.entities.main.OperationSum
-import com.example.budgetcircle.database.entities.types.BudgetType
 import java.util.*
 
 @Dao

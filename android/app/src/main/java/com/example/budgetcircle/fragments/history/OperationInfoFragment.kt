@@ -15,12 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.Operation
-import com.example.budgetcircle.database.entities.types.BudgetType
-import com.example.budgetcircle.databinding.FragmentHistoryBinding
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.forms.ExpensesFormActivity
-import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,8 +31,7 @@ class OperationInfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         binding = FragmentOperationInfoBinding.inflate(inflater)
 
         setButtons()
@@ -86,7 +82,7 @@ class OperationInfoFragment : Fragment() {
                                     this.value!!.isRepetitive,
                                     this.value!!.isExpense,
                                     this.value!!.color,
-                                    )
+                                )
                             )
                         }
                     }
@@ -119,7 +115,7 @@ class OperationInfoFragment : Fragment() {
             updateOperation()
         }
         binding.opDeleteButton.setOnClickListener {
-            var dialog =
+            val dialog =
                 MaterialAlertDialogBuilder(this.requireContext(), R.style.orangeButtonsDialog)
                     .setTitle(resources.getString(R.string.delete))
                     .setMessage(resources.getString(R.string.r_u_sure))
@@ -221,10 +217,5 @@ class OperationInfoFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, HistoryFragment())
             ?.disallowAddToBackStack()
             ?.commit()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = OperationInfoFragment()
     }
 }

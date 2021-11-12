@@ -1,11 +1,11 @@
 package com.example.budgetcircle.viewmodel.items
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
 import com.example.budgetcircle.database.entities.types.ExpenseType
@@ -28,15 +28,12 @@ data class HistoryItem(
 )
 
 class HistoryAdapter(
-    budgetTypes: Array<BudgetType>,
-    earningsTypes: Array<EarningType>,
-    expensesTypes: Array<ExpenseType>
+    var budgetTypes: Array<BudgetType>,
+    var earningsTypes: Array<EarningType>,
+    var expensesTypes: Array<ExpenseType>
 ) : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
     var onItemClick: ((item: HistoryItem, index: Int) -> Unit)? = null
-    var budgetTypes: Array<BudgetType> = budgetTypes
-    var earningsTypes: Array<EarningType> = earningsTypes
-    var expensesTypes: Array<ExpenseType> = expensesTypes
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
@@ -68,16 +65,12 @@ class HistoryAdapter(
         return itemList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(list: Array<HistoryItem>) {
         itemList.clear()
         for (item in list.reversed()) {
             itemList.add(item)
         }
-        notifyDataSetChanged()
-    }
-
-    fun addItem(item: HistoryItem) {
-        itemList.add(item)
         notifyDataSetChanged()
     }
 }

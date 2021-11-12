@@ -21,8 +21,6 @@ import java.util.*
 
 open class BudgetData(application: Application) : AndroidViewModel(application) {
     private val budgetTypesRepository: BudgetTypesRepository
-    private val earningTypesRepository: EarningTypesRepository
-    private val expenseTypesRepository: ExpenseTypesRepository
     private val operationsRepository: OperationsRepository
     val budgetTypes: LiveData<List<BudgetType>>
     val historyItems: LiveData<List<Operation>>
@@ -57,11 +55,9 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
 
         val earningTypesDAO: EarningTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).EarningTypesDAO()
-        earningTypesRepository = EarningTypesRepository(earningTypesDAO)
 
         val expenseTypesDAO: ExpenseTypesDAO =
             DbBudget.getDatabase(application, viewModelScope).ExpenseTypesDAO()
-        expenseTypesRepository = ExpenseTypesRepository(expenseTypesDAO)
 
         earningSumByDate = Transformations.switchMap(earningsDate) { param ->
             if (param > 0) {
