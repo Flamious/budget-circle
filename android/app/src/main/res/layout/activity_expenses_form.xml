@@ -50,9 +50,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/expSum"
-                    app:layout_constraintStart_toStartOf="@+id/expSum"
-                    app:layout_constraintTop_toBottomOf="@+id/expSum">
+                    app:layout_constraintEnd_toEndOf="@+id/expTitle"
+                    app:layout_constraintStart_toStartOf="@+id/expTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/expTitle">
 
                     <TextView
                         android:id="@+id/expSelectKind"
@@ -79,7 +79,9 @@
                     android:id="@+id/expSum"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
                     android:autofillHints="sum"
                     android:backgroundTint="@color/red_main"
                     android:clickable="false"
@@ -92,9 +94,9 @@
                     android:textCursorDrawable="@color/red_main"
                     android:textSize="20sp"
                     android:theme="@style/redControlCursor"
-                    app:layout_constraintEnd_toEndOf="@+id/expTitle"
-                    app:layout_constraintStart_toStartOf="@+id/expTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/expTitle" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/repTitle"
@@ -111,9 +113,7 @@
                     android:id="@+id/expTitle"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="16dp"
                     android:autofillHints="title"
                     android:backgroundTint="@color/red_main"
                     android:clickable="false"
@@ -126,9 +126,9 @@
                     android:textCursorDrawable="@color/red_main"
                     android:textSize="20sp"
                     android:theme="@style/redControlCursor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="@+id/expSum"
+                    app:layout_constraintStart_toStartOf="@+id/expSum"
+                    app:layout_constraintTop_toBottomOf="@+id/expSum" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/expRepSwitch"
