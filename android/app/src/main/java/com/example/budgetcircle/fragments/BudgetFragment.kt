@@ -96,7 +96,7 @@ class BudgetFragment : Fragment() {
                             )
                             Toast.makeText(
                                 activity,
-                                "Added",
+                                resources.getString(R.string.added),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -114,7 +114,7 @@ class BudgetFragment : Fragment() {
                         else -> {
                             Toast.makeText(
                                 activity,
-                                "Toast",
+                                resources.getString(R.string.done),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
