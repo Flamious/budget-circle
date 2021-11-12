@@ -17,19 +17,23 @@ class MainActivity : AppCompatActivity() {
     private val budgetData: BudgetData by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initiateViewModel()
+        setNavMenu()
+    }
+    //region Setting
+    private fun initiateViewModel() {
+        budgetData.expensesDateString.postValue(resources.getString(R.string.week))
+        budgetData.earningsDateString.postValue(resources.getString(R.string.week))
+        budgetData.budgetTypes.observe(this, { })
+    }
+
+    private fun setNavMenu() {
         binding.navigationMenu.selectedItemId = R.id.budget
         setNavColor(R.color.nav_green_selector)
         openFragment(BudgetFragment())
-
-        budgetData.expensesDateString.postValue(resources.getString(R.string.week))
-        budgetData.earningsDateString.postValue(resources.getString(R.string.week))
-        budgetData.budgetTypes.observe(
-            this,
-            { }) //TODO убрать костыль, для инициализации списка счетов
         binding.navigationMenu.setOnItemSelectedListener {
             openFragment(
                 when (it.itemId) {
@@ -62,14 +66,6 @@ class MainActivity : AppCompatActivity() {
             )
             true
         }
-
-    }
-
-    private fun openFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentPanel, fragment)
-            .commit()
     }
 
     private fun setNavColor(color: Int) {
@@ -80,4 +76,13 @@ class MainActivity : AppCompatActivity() {
         binding.navigationMenu.itemIconTintList = navColor
         binding.navigationMenu.itemRippleColor = colorSecondary
     }
+    //endregion
+    //region Methods
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentPanel, fragment)
+            .commit()
+    }
+    //endregion
 }

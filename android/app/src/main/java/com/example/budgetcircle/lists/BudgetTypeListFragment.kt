@@ -26,7 +26,7 @@ import java.util.*
 class BudgetTypeListFragment : Fragment() {
 
     lateinit var binding: FragmentBudgetTypeListBinding
-    private val adapter = BudgetTypeAdapter()
+    private lateinit var adapter: BudgetTypeAdapter
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
 
@@ -36,9 +36,34 @@ class BudgetTypeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBudgetTypeListBinding.inflate(inflater)
+        setAdapter()
         setButtons()
-        init()
+        setObservation()
+        setLauncher()
+        return binding.root
+    }
+    //region Setting
+    private fun setAdapter() {
+        adapter = BudgetTypeAdapter()
+        binding.apply {
+            budgetTypeList.layoutManager = GridLayoutManager(this@BudgetTypeListFragment.context, 1)
+            budgetTypeList.adapter = adapter
+        }
+    }
 
+    private fun setButtons() {
+        binding.budgetTypesBackButton2.setOnClickListener {
+            exit()
+        }
+        adapter.onEditClick = {
+            editBudgetType(it)
+        }
+        adapter.onDeleteClick = {
+            deleteBudgetType(it)
+        }
+    }
+
+    private fun setLauncher() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -55,31 +80,15 @@ class BudgetTypeListFragment : Fragment() {
                 }
             }
 
+    }
+
+    private fun setObservation() {
         budgetData.budgetTypes.observe(this.viewLifecycleOwner, {
             adapter.setList(it)
         })
-        return binding.root
     }
-
-    private fun setButtons() {
-        binding.budgetTypesBackButton2.setOnClickListener {
-            exit()
-        }
-        adapter.onEditClick = {
-            editBudgetType(it)
-        }
-        adapter.onDeleteClick = {
-            deleteBudgetType(it)
-        }
-    }
-
-    private fun init() {
-        binding.apply {
-            budgetTypeList.layoutManager = GridLayoutManager(this@BudgetTypeListFragment.context, 1)
-            budgetTypeList.adapter = adapter
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun editBudgetType(item: BudgetType) {
         val intent = Intent(activity, BudgetFormActivity::class.java)
         lastTypeId = item.id
@@ -119,4 +128,5 @@ class BudgetTypeListFragment : Fragment() {
             ?.disallowAddToBackStack()
             ?.commit()
     }
+    //endregion
 }

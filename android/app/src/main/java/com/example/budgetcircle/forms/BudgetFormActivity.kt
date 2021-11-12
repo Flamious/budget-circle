@@ -15,8 +15,21 @@ class BudgetFormActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBudgetFormBinding.inflate(layoutInflater)
+        setInitialValues()
         setButtons()
+        setContentView(binding.root)
+    }
+    //region Setting
+    private fun setButtons() {
+        binding.budgetAddButton.setOnClickListener {
+            add()
+        }
+        binding.backButton.setOnClickListener {
+            exit()
+        }
+    }
 
+    private fun setInitialValues() {
         isEdit = intent.getStringExtra("edit") != null
         binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
         if (isEdit) {
@@ -27,19 +40,9 @@ class BudgetFormActivity : AppCompatActivity() {
                 budgetFormTitle.text = resources.getText(R.string.edit_account)
             }
         }
-
-        setContentView(binding.root)
     }
-
-    private fun setButtons() {
-        binding.budgetAddButton.setOnClickListener {
-            add()
-        }
-        binding.backButton.setOnClickListener {
-            exit()
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun checkFields(): Boolean {
         val sum = binding.budgetSum.text.toString().toDoubleOrNull()
         var isValid = true
@@ -77,4 +80,5 @@ class BudgetFormActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED, intent)
         finish()
     }
+    //endregion
 }

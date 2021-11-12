@@ -28,45 +28,14 @@ class EarningsFragment : Fragment() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        budgetData.earningsDateString.observe(this, {
-            binding.periodText.text = it
-        })
-        budgetData.earningSumByDate.observe(this, {
-            setChart(it)
-        })
-        launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-
-                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
-                    val earningTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
-                    val earningTitle = result.data?.getStringExtra("title")!!
-                    val earningCommentary = result.data?.getStringExtra("commentary")!!
-                    budgetData.addEarning(
-                        earningTitle,
-                        result.data?.getDoubleExtra("sum", 0.0)!!,
-                        budgetData.earningTypes[earningTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
-                        earningCommentary
-                    )
-
-                    Toast.makeText(
-                        activity,
-                        resources.getString(R.string.added),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEarningsBinding.inflate(inflater)
         setButtons()
+        setObservation()
+        setLauncher()
         return binding.root
     }
 
@@ -74,7 +43,7 @@ class EarningsFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
-
+    //region Setting
     private fun setButtons() {
         binding.addEarningButton.setOnClickListener {
             addEarning()
@@ -127,6 +96,42 @@ class EarningsFragment : Fragment() {
             )
     }
 
+    private fun setLauncher() {
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+
+                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
+                    val earningTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
+                    val earningTitle = result.data?.getStringExtra("title")!!
+                    val earningCommentary = result.data?.getStringExtra("commentary")!!
+                    budgetData.addEarning(
+                        earningTitle,
+                        result.data?.getDoubleExtra("sum", 0.0)!!,
+                        budgetData.earningTypes[earningTypeIndex].id,
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
+                        earningCommentary
+                    )
+
+                    Toast.makeText(
+                        activity,
+                        resources.getString(R.string.added),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+    private fun setObservation() {
+        budgetData.earningsDateString.observe(this.viewLifecycleOwner, {
+            binding.periodText.text = it
+        })
+        budgetData.earningSumByDate.observe(this.viewLifecycleOwner, {
+            setChart(it)
+        })
+    }
+    //endregion
+    //region Methods
     private fun changeOrientation() {
         activity
             ?.supportFragmentManager
@@ -145,4 +150,5 @@ class EarningsFragment : Fragment() {
             Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
         launcher?.launch(intent)
     }
+    //endregion
 }

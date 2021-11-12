@@ -20,19 +20,11 @@ class EarningsFormActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEarningsFormBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        earningTypes = intent.extras?.getStringArray("earningTypes")!!
-        if (intent.extras?.getBoolean("isEdit", false) == false) {
-            binding.earnSelectBudgetType.text = budgetTypes[0]
-            binding.earnSelectKind.text = earningTypes[0]
-        } else {
-            setEditPage()
-        }
-        binding.earnSum.filters = arrayOf<InputFilter>(SumInputFilter())
+        setInitialValues()
         setButtons()
         setContentView(binding.root)
     }
-
+    //region Setting
     private fun setButtons() {
         binding.earnSelectBudgetType.setOnClickListener {
             Dialogs().chooseOne(
@@ -62,6 +54,34 @@ class EarningsFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun setEditPage() {
+        binding.earningFromTitle.text = resources.getText(R.string.edit_earn)
+        binding.earnAddButton.text = resources.getText(R.string.edit_earn)
+        binding.earnTitle.setText(intent.extras?.getString("title")!!)
+        binding.earnSum.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.earnCommentaryField.setText(intent.extras?.getString("commentary")!!)
+        binding.earnRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
+        binding.earnRepSwitch.isEnabled = false
+        chosenEarningType.value = intent.extras?.getInt("typeIndex")!!
+        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
+        binding.earnSelectKind.text = earningTypes[chosenEarningType.value]
+        binding.earnSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
+    }
+
+    private fun setInitialValues() {
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        earningTypes = intent.extras?.getStringArray("earningTypes")!!
+        if (intent.extras?.getBoolean("isEdit", false) == false) {
+            binding.earnSelectBudgetType.text = budgetTypes[0]
+            binding.earnSelectKind.text = earningTypes[0]
+        } else {
+            setEditPage()
+        }
+        binding.earnSum.filters = arrayOf<InputFilter>(SumInputFilter())
+
+    }
+    //endregion
+    //region Methods
     private fun checkFields(): Boolean {
         val sum = binding.earnSum.text.toString().toDoubleOrNull()
         var isValid = true
@@ -86,20 +106,6 @@ class EarningsFormActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun setEditPage() {
-        binding.earningFromTitle.text = resources.getText(R.string.edit_earn)
-        binding.earnAddButton.text = resources.getText(R.string.edit_earn)
-        binding.earnTitle.setText(intent.extras?.getString("title")!!)
-        binding.earnSum.setText(intent.extras?.getDouble("sum")!!.toString())
-        binding.earnCommentaryField.setText(intent.extras?.getString("commentary")!!)
-        binding.earnRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
-        binding.earnRepSwitch.isEnabled = false
-        chosenEarningType.value = intent.extras?.getInt("typeIndex")!!
-        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
-        binding.earnSelectKind.text = earningTypes[chosenEarningType.value]
-        binding.earnSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
-    }
-
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
@@ -119,4 +125,5 @@ class EarningsFormActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED, intent)
         finish()
     }
+    //endregion
 }

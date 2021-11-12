@@ -33,11 +33,61 @@ class OperationInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOperationInfoBinding.inflate(inflater)
-
         setButtons()
-        budgetData.chosenHistoryItem.observe(this.viewLifecycleOwner, {
-            fillFields(it)
-        })
+        setObservation()
+        setLauncher()
+        return binding.root
+    }
+
+    //region Setting
+    private fun setButtons() {
+        binding.infoBackButton.setOnClickListener {
+            exit()
+        }
+        binding.opEditButton.setOnClickListener {
+            updateOperation()
+        }
+        binding.opDeleteButton.setOnClickListener {
+            val dialog =
+                MaterialAlertDialogBuilder(this.requireContext(), R.style.orangeButtonsDialog)
+                    .setTitle(resources.getString(R.string.delete))
+                    .setMessage(resources.getString(R.string.r_u_sure))
+                    .setPositiveButton(
+                        resources.getString(R.string.yes)
+                    ) { dialogInterface, _ ->
+                        run {
+                            deleteOperation()
+                            dialogInterface.dismiss()
+                        }
+                    }
+                    .setNegativeButton(
+                        resources.getString(R.string.no)
+                    ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                    .show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
+        }
+    }
+
+    private fun setFieldsValues(item: HistoryItem?) {
+        item?.let {
+            binding.apply {
+                infoOpTitle.text = it.title
+                sumInfo.text = if (it.isExpense) "-${it.sum}" else "+${it.sum}"
+                sumInfo.setTextColor(it.color)
+                accountInfo.text =
+                    budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
+                kindInfo.text =
+                    if (it.isExpense) budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
+                    else budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                commentInfo.text = it.commentary
+            }
+        }
+    }
+
+    private fun setLauncher() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -88,80 +138,16 @@ class OperationInfoFragment : Fragment() {
                     }
                 }
             }
-        return binding.root
+
     }
 
-    private fun fillFields(item: HistoryItem?) {
-        item?.let {
-            binding.apply {
-                infoOpTitle.text = it.title
-                sumInfo.text = if (it.isExpense) "-${it.sum}" else "+${it.sum}"
-                sumInfo.setTextColor(it.color)
-                accountInfo.text =
-                    budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
-                kindInfo.text =
-                    if (it.isExpense) budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
-                    else budgetData.earningTypes.first { type -> type.id == it.typeId }.title
-                commentInfo.text = it.commentary
-            }
-        }
+    private fun setObservation() {
+        budgetData.chosenHistoryItem.observe(this.viewLifecycleOwner, {
+            setFieldsValues(it)
+        })
     }
-
-    private fun setButtons() {
-        binding.infoBackButton.setOnClickListener {
-            exit()
-        }
-        binding.opEditButton.setOnClickListener {
-            updateOperation()
-        }
-        binding.opDeleteButton.setOnClickListener {
-            val dialog =
-                MaterialAlertDialogBuilder(this.requireContext(), R.style.orangeButtonsDialog)
-                    .setTitle(resources.getString(R.string.delete))
-                    .setMessage(resources.getString(R.string.r_u_sure))
-                    .setPositiveButton(
-                        resources.getString(R.string.yes)
-                    ) { dialogInterface, _ ->
-                        run {
-                            deleteOperation()
-                            dialogInterface.dismiss()
-                        }
-                    }
-                    .setNegativeButton(
-                        resources.getString(R.string.no)
-                    ) { dialogInterface, _ -> dialogInterface.dismiss() }
-                    .show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
-        }
-    }
-
-    private fun deleteOperation() {
-        val isDeleted = budgetData.chosenHistoryItem.value.let {
-            budgetData.deleteOperation(it!!)
-        }
-        if (!isDeleted) {
-            Toast.makeText(
-                this.requireContext(),
-                resources.getText(R.string.insufficient_funds),
-                Toast.LENGTH_LONG
-            ).show()
-        } else {
-            budgetData.chosenHistoryItemIndex.let {
-                if (it.value == 0 || it.value == null) it.postValue(null)
-                else it.postValue(it.value!! - 1)
-                Toast.makeText(
-                    this.requireContext(),
-                    resources.getText(R.string.deleted),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            exit()
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun updateOperation() {
         if (budgetData.chosenHistoryItem.value!!.isExpense) {
             val intent = Intent(activity, ExpensesFormActivity::class.java)
@@ -209,6 +195,30 @@ class OperationInfoFragment : Fragment() {
         }
     }
 
+    private fun deleteOperation() {
+        val isDeleted = budgetData.chosenHistoryItem.value.let {
+            budgetData.deleteOperation(it!!)
+        }
+        if (!isDeleted) {
+            Toast.makeText(
+                this.requireContext(),
+                resources.getText(R.string.insufficient_funds),
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            budgetData.chosenHistoryItemIndex.let {
+                if (it.value == 0 || it.value == null) it.postValue(null)
+                else it.postValue(it.value!! - 1)
+                Toast.makeText(
+                    this.requireContext(),
+                    resources.getText(R.string.deleted),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            exit()
+        }
+    }
+
     private fun exit() {
         budgetData.chosenHistoryItem.postValue(null)
         activity
@@ -218,4 +228,5 @@ class OperationInfoFragment : Fragment() {
             ?.disallowAddToBackStack()
             ?.commit()
     }
+    //endregion
 }

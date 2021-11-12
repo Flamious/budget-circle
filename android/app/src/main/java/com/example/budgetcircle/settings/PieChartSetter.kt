@@ -14,7 +14,6 @@ class PieChartSetter {
         private var sliceSpace = 3f
         private var holeRadius = 90f
 
-
         private fun applyData(
             titles: Array<String>,
             values: Array<Double>,

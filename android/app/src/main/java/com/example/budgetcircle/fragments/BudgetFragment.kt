@@ -34,7 +34,7 @@ class BudgetFragment : Fragment() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
 
-    /* Animations */
+    //region Animations
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this.context,
@@ -72,14 +72,94 @@ class BudgetFragment : Fragment() {
         )
     }
     private var isClicked = false
+    //endregion
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBudgetBinding.inflate(inflater)
+        setButtons()
+        setObservation()
+        setLauncher()
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        budgetData.budgetTypes.observe(this, {
-            setChart(it)
-        })
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        changeOrientation()
+    }
+    //region Setting
+    private fun setAnimation(
+        isClicked: Boolean,
+        listButton: FloatingActionButton,
+        hiddenButtonsLayout: ConstraintLayout,
+        vararg buttons: FloatingActionButton
+    ) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
+        else
+            hiddenButtonsLayout.startAnimation(if (isClicked) toLeft else fromLeft)
+        hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
+        for (button in buttons) {
+            button.isClickable = !isClicked
+        }
+        listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
+    }
 
+    private fun setButtons() {
+        binding.addAccountButton.setOnClickListener {
+            addAccount()
+            showHiddenButtons()
+        }
+        binding.listButton.setOnClickListener {
+            showHiddenButtons()
+        }
+        binding.exchangeButton.setOnClickListener {
+            addExchange()
+        }
+        binding.typeListButton.setOnClickListener {
+            openBudgetTypeList()
+        }
+    }
+
+    private fun setChart(budgetTypes: List<BudgetType>) {
+        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
+        var sum = 0.0
+        for (n in values) {
+            sum += n
+        }
+        sum = DoubleFormatter.format(sum)
+        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        if (sum > 0)
+            PieChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                resources.getString(R.string.total),
+                binding.budgetPieChart,
+                binding.sumText,
+                binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+            )
+        else
+            PieChartSetter.setChart(
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(100.0),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                resources.getString(R.string.no_entries),
+                binding.budgetPieChart,
+                binding.sumText,
+                binding.kindText,
+                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
+                true
+            )
+    }
+
+    private fun setLauncher() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -121,38 +201,16 @@ class BudgetFragment : Fragment() {
                     }
                 }
             }
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentBudgetBinding.inflate(inflater)
-        setButtons()
-        return binding.root
+    private fun setObservation() {
+        budgetData.budgetTypes.observe(this.viewLifecycleOwner, {
+            setChart(it)
+        })
     }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        changeOrientation()
-    }
-
-    private fun setButtons() {
-        binding.addAccountButton.setOnClickListener {
-            addAccount()
-            showHiddenButtons()
-        }
-        binding.listButton.setOnClickListener {
-            showHiddenButtons()
-        }
-        binding.exchangeButton.setOnClickListener {
-            addExchange()
-        }
-        binding.typeListButton.setOnClickListener {
-            openBudgetTypeList()
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun showHiddenButtons() {
         binding.apply {
             setAnimation(
@@ -167,43 +225,6 @@ class BudgetFragment : Fragment() {
         }
         isClicked = !isClicked
     }
-
-    private fun setChart(budgetTypes: List<BudgetType>) {
-        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
-        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
-        var sum = 0.0
-        for (n in values) {
-            sum += n
-        }
-        sum = DoubleFormatter.format(sum)
-        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
-        if (sum > 0)
-            PieChartSetter.setChart(
-                titles,
-                values,
-                colors,
-                sum,
-                resources.getString(R.string.total),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
-                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-            )
-        else
-            PieChartSetter.setChart(
-                arrayOf(resources.getString(R.string.no_entries)),
-                arrayOf(100.0),
-                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                sum,
-                resources.getString(R.string.no_entries),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
-                resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
-                true
-            )
-    }
-
 
     private fun addAccount() {
         val intent = Intent(activity, BudgetFormActivity::class.java)
@@ -236,21 +257,5 @@ class BudgetFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, BudgetFragment())
             ?.commit()
     }
-
-    private fun setAnimation(
-        isClicked: Boolean,
-        listButton: FloatingActionButton,
-        hiddenButtonsLayout: ConstraintLayout,
-        vararg buttons: FloatingActionButton
-    ) {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
-        else
-            hiddenButtonsLayout.startAnimation(if (isClicked) toLeft else fromLeft)
-        hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
-        for (button in buttons) {
-            button.isClickable = !isClicked
-        }
-        listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
-    }
+    //endregion
 }

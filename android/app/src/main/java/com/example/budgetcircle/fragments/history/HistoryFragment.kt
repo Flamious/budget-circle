@@ -25,13 +25,40 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater)
+        setAdapter()
+        setButtons()
+        setObservation()
+        return binding.root
+    }
+
+    //region Setting
+    private fun setAdapter() {
         adapter = HistoryAdapter(
             budgetData.budgetTypes.value!!.toTypedArray(),
             budgetData.earningTypes.toTypedArray(),
             budgetData.expenseTypes.toTypedArray()
         )
-        init()
-        setButtons()
+        binding.apply {
+            historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
+            historyList.adapter = adapter
+            if (budgetData.chosenHistoryItemIndex.value != null) {
+                historyList.scrollToPosition(
+                    budgetData.chosenHistoryItemIndex.value!!
+                )
+                budgetData.chosenHistoryItemIndex.postValue(null)
+            }
+        }
+    }
+
+    private fun setButtons() {
+        adapter.onItemClick = { item, index ->
+            budgetData.chosenHistoryItem.value = item
+            budgetData.chosenHistoryItemIndex.value = index
+            openInfo()
+        }
+    }
+
+    private fun setObservation() {
         budgetData.historyItems.observe(this.viewLifecycleOwner, {
             val list: Array<HistoryItem> = Array(it.size) { index ->
                 HistoryItem(
@@ -53,19 +80,9 @@ class HistoryFragment : Fragment() {
             }
             adapter.setList(list)
         })
-
-
-        return binding.root
     }
-
-    private fun setButtons() {
-        adapter.onItemClick = { item, index ->
-            budgetData.chosenHistoryItem.value = item
-            budgetData.chosenHistoryItemIndex.value = index
-            openInfo()
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun openInfo() {
         activity
             ?.supportFragmentManager
@@ -73,17 +90,5 @@ class HistoryFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, OperationInfoFragment())
             ?.commit()
     }
-
-    private fun init() {
-        binding.apply {
-            historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
-            historyList.adapter = adapter
-            if (budgetData.chosenHistoryItemIndex.value != null) {
-                historyList.scrollToPosition(
-                    budgetData.chosenHistoryItemIndex.value!!
-                )
-                budgetData.chosenHistoryItemIndex.postValue(null)
-            }
-        }
-    }
+    //endregion
 }

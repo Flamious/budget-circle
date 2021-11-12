@@ -28,43 +28,14 @@ class ExpensesFragment : Fragment() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        budgetData.expensesDateString.observe(this, {
-            binding.periodText.text = it
-        })
-        budgetData.expenseSumByDate.observe(this, {
-            setChart(it)
-        })
-        launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
-                    val expenseTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
-                    val expenseTitle = result.data?.getStringExtra("title")!!
-                    val expenseCommentary = result.data?.getStringExtra("commentary")!!
-                    budgetData.addExpense(
-                        expenseTitle,
-                        result.data?.getDoubleExtra("sum", 0.0)!!,
-                        budgetData.expenseTypes[expenseTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
-                        expenseCommentary
-                    )
-                    Toast.makeText(
-                        activity,
-                        resources.getString(R.string.added),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExpensesBinding.inflate(inflater)
         setButtons()
+        setObservation()
+        setLauncher()
         return binding.root
     }
 
@@ -72,7 +43,7 @@ class ExpensesFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
-
+    //region Setting
     private fun setButtons() {
         binding.addExpenseButton.setOnClickListener {
             addExpense()
@@ -125,6 +96,40 @@ class ExpensesFragment : Fragment() {
             )
     }
 
+    private fun setLauncher() {
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
+                    val expenseTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
+                    val expenseTitle = result.data?.getStringExtra("title")!!
+                    val expenseCommentary = result.data?.getStringExtra("commentary")!!
+                    budgetData.addExpense(
+                        expenseTitle,
+                        result.data?.getDoubleExtra("sum", 0.0)!!,
+                        budgetData.expenseTypes[expenseTypeIndex].id,
+                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
+                        expenseCommentary
+                    )
+                    Toast.makeText(
+                        activity,
+                        resources.getString(R.string.added),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+    private fun setObservation() {
+        budgetData.expensesDateString.observe(this.viewLifecycleOwner, {
+            binding.periodText.text = it
+        })
+        budgetData.expenseSumByDate.observe(this.viewLifecycleOwner, {
+            setChart(it)
+        })
+    }
+    //endregion
+    //region Methods
     private fun changeOrientation() {
         activity
             ?.supportFragmentManager
@@ -146,4 +151,5 @@ class ExpensesFragment : Fragment() {
             Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
         launcher?.launch(intent)
     }
+    //endregion
 }

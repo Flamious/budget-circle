@@ -20,15 +20,11 @@ class BudgetExchangeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBudgetExchangeBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>().toTypedArray()
-        binding.listFrom.text = budgetTypes[0]
-        binding.listTo.text = budgetTypes[1]
-        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
+        setInitialValues()
         setButtons()
         setContentView(binding.root)
     }
-
+    //region Setting
     private fun setButtons() {
         binding.budgetExchangeAddButton.setOnClickListener {
             add()
@@ -62,6 +58,17 @@ class BudgetExchangeActivity : AppCompatActivity() {
         }
     }
 
+    private fun setInitialValues() {
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        budgetTypesSums =
+            (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
+                .toTypedArray()
+        binding.listFrom.text = budgetTypes[0]
+        binding.listTo.text = budgetTypes[1]
+        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
+    }
+    //endregion
+    //region Methods
     private fun checkFields(): Boolean {
         val sum = binding.budgetSum.text.toString().toDoubleOrNull()
         var isValid = true
@@ -104,4 +111,5 @@ class BudgetExchangeActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED, intent)
         finish()
     }
+    //endregion
 }
