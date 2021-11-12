@@ -106,9 +106,9 @@ class BudgetTypeListFragment : Fragment() {
             ) { dialogInterface, _ -> dialogInterface.dismiss() }
             .show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_switch_main))
+            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_main))
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_switch_main))
+            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_main))
     }
 
     private fun exit() {

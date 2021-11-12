@@ -46,7 +46,7 @@ class HistoryFragment : Fragment() {
                     it[index].isExpense,
                     ContextCompat.getColor(
                         this.requireContext(),
-                        if (it[index].isExpense) R.color.red_switch_main else R.color.blue_switch_main
+                        if (it[index].isExpense) R.color.red_main else R.color.blue_main
                     )
                 )
 

@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Earnings -->
-    <string-array name="earning_titles">
-        <item>@string/salary</item>
-        <item>@string/pensions</item>
-        <item>@string/realEstate</item>
-        <item>@string/investments</item>
-        <item>@string/business</item>
-        <item>@string/prizes</item>
-        <item>@string/earn_other</item>
-    </string-array>
-
-    <!-- Expenses -->
-    <string-array name="expense_titles">
-        <item>@string/home</item>
-        <item>@string/food</item>
-        <item>@string/debts</item>
-        <item>@string/transport</item>
-        <item>@string/bills</item>
-        <item>@string/personalExpenses</item>
-        <item>@string/other</item>
-    </string-array>
-
     <!-- Budget -->
     <string-array name="budget_titles">
         <item name="stocks">Stocks</item>

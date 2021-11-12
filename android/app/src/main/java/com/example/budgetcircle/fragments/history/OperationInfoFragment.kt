@@ -132,9 +132,9 @@ class OperationInfoFragment : Fragment() {
                     ) { dialogInterface, _ -> dialogInterface.dismiss() }
                     .show()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_button))
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_button))
+                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
         }
     }
 

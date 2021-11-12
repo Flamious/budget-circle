@@ -79,24 +79,6 @@
     <!-- Lists -->
     <string name="budgetTypes">Budget Types</string>
 
-    <!-- Expenses kinds -->
-    <string name="home">Home</string>
-    <string name="food">Food</string>
-    <string name="debts">Debts</string>
-    <string name="transport">Transport</string>
-    <string name="bills">Bills and services</string>
-    <string name="personalExpenses">Personal expenses</string>
-    <string name="exp_other">Other</string>
-
-    <!-- Earnings kinds -->
-    <string name="salary">Salary</string>
-    <string name="pensions">Pensions and scholarship</string>
-    <string name="realEstate">Real estate</string>
-    <string name="investments">Investments</string>
-    <string name="business">Business</string>
-    <string name="prizes">Prizes</string>
-    <string name="earn_other">Other</string>
-
     <!-- Dialogs -->
     <string name="r_u_sure">Are you sure?</string>
     <string name="delete">Delete</string>
