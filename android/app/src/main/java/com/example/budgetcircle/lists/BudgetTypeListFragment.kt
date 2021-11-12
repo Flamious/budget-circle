@@ -1,7 +1,6 @@
 package com.example.budgetcircle.lists
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,17 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
+import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 class BudgetTypeListFragment : Fragment() {
@@ -29,7 +27,7 @@ class BudgetTypeListFragment : Fragment() {
     private lateinit var adapter: BudgetTypeAdapter
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
-
+    private var itemUnderDeletion: BudgetType? = null
     private var lastTypeId: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +40,7 @@ class BudgetTypeListFragment : Fragment() {
         setLauncher()
         return binding.root
     }
+
     //region Setting
     private fun setAdapter() {
         adapter = BudgetTypeAdapter()
@@ -59,7 +58,16 @@ class BudgetTypeListFragment : Fragment() {
             editBudgetType(it)
         }
         adapter.onDeleteClick = {
-            deleteBudgetType(it)
+            itemUnderDeletion = it
+            Dialogs().chooseYesNo(
+                this.requireContext(),
+                resources.getString(R.string.delete) + " " + it.title,
+                resources.getString(R.string.r_u_sure),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
+                R.color.green_main,
+                ::deleteBudgetType
+            )
         }
     }
 
@@ -87,6 +95,7 @@ class BudgetTypeListFragment : Fragment() {
             adapter.setList(it)
         })
     }
+
     //endregion
     //region Methods
     private fun editBudgetType(item: BudgetType) {
@@ -98,26 +107,11 @@ class BudgetTypeListFragment : Fragment() {
         launcher?.launch(intent)
     }
 
-    private fun deleteBudgetType(item: BudgetType) {
-        val dialog = MaterialAlertDialogBuilder(this.requireContext(), R.style.greenButtonsDialog)
-            .setTitle(resources.getString(R.string.delete) + " " + item.title)
-            .setMessage(resources.getString(R.string.r_u_sure))
-            .setPositiveButton(
-                resources.getString(R.string.yes)
-            ) { dialogInterface, _ ->
-                run {
-                    budgetData.deleteBudgetType(item.id)
-                    dialogInterface.dismiss()
-                }
-            }
-            .setNegativeButton(
-                resources.getString(R.string.no)
-            ) { dialogInterface, _ -> dialogInterface.dismiss() }
-            .show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_main))
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_main))
+    private fun deleteBudgetType() {
+        itemUnderDeletion?.let {
+            budgetData.deleteBudgetType(it.id)
+        }
+        itemUnderDeletion = null
     }
 
     private fun exit() {

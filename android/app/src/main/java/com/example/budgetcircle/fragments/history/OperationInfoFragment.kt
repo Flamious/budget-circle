@@ -1,7 +1,6 @@
 package com.example.budgetcircle.fragments.history
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,16 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
+import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 class OperationInfoFragment : Fragment() {
@@ -48,26 +46,15 @@ class OperationInfoFragment : Fragment() {
             updateOperation()
         }
         binding.opDeleteButton.setOnClickListener {
-            val dialog =
-                MaterialAlertDialogBuilder(this.requireContext(), R.style.orangeButtonsDialog)
-                    .setTitle(resources.getString(R.string.delete))
-                    .setMessage(resources.getString(R.string.r_u_sure))
-                    .setPositiveButton(
-                        resources.getString(R.string.yes)
-                    ) { dialogInterface, _ ->
-                        run {
-                            deleteOperation()
-                            dialogInterface.dismiss()
-                        }
-                    }
-                    .setNegativeButton(
-                        resources.getString(R.string.no)
-                    ) { dialogInterface, _ -> dialogInterface.dismiss() }
-                    .show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(this.requireContext(), R.color.orange_main))
+            Dialogs().chooseYesNo(
+                this.requireContext(),
+                resources.getString(R.string.delete),
+                resources.getString(R.string.r_u_sure),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
+                R.color.orange_main,
+                ::deleteOperation
+            )
         }
     }
 

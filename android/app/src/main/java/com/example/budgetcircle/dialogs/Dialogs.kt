@@ -1,9 +1,12 @@
 package com.example.budgetcircle.dialogs
 
+import android.app.AlertDialog
 import android.content.Context
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import com.example.budgetcircle.R
 
 data class Index(var value: Int)
 
@@ -87,5 +90,35 @@ class Dialogs {
             viewMain.text = null
             viewSecondary.text = null
         }
+    }
+
+    fun chooseYesNo(
+        context: Context,
+        title: String,
+        message: String,
+        positiveText: String,
+        negativeText: String,
+        color: Int,
+        actionOnPositive: () -> Unit
+    ) {
+        val dialog = MaterialAlertDialogBuilder(context, R.style.greenButtonsDialog)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(
+                positiveText
+            ) { dialogInterface, _ ->
+                run {
+                    actionOnPositive.invoke()
+                    dialogInterface.dismiss()
+                }
+            }
+            .setNegativeButton(
+                negativeText
+            ) { dialogInterface, _ -> dialogInterface.dismiss() }
+            .show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(context, color))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(context, color))
     }
 }
