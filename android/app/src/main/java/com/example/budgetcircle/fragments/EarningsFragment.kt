@@ -54,7 +54,7 @@ class EarningsFragment : Fragment() {
 
                     Toast.makeText(
                         activity,
-                        "Added",
+                        resources.getString(R.string.added),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
