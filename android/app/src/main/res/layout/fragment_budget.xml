@@ -11,32 +11,6 @@
         android:layout_height="match_parent">
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/exchangeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:src="@drawable/ic_exchange"
-            app:backgroundTint="@color/green_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/white" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/listButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:src="@drawable/ic_more"
-            app:backgroundTint="@color/green_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:tint="@color/white" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
@@ -74,7 +48,6 @@
                 android:id="@+id/kindText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total"
                 android:textColor="@color/text_secondary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +70,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/repetitiveOperationsSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,6 +98,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/green_button_secondary"
                 android:clickable="true"
+                android:contentDescription="@string/stocks"
+                android:focusable="true"
                 android:src="@drawable/ic_stocks"
                 app:backgroundTint="@color/green_button"
                 app:borderWidth="2dp"
@@ -141,6 +116,8 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/green_button_secondary"
                 android:clickable="true"
+                android:contentDescription="@string/repOps"
+                android:focusable="true"
                 android:src="@drawable/ic_history"
                 app:backgroundTint="@color/green_button"
                 app:borderWidth="2dp"
@@ -157,6 +134,8 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/green_button_secondary"
                 android:clickable="true"
+                android:contentDescription="@string/accList"
+                android:focusable="true"
                 android:src="@drawable/ic_list"
                 app:backgroundTint="@color/green_button"
                 app:borderWidth="2dp"
@@ -173,6 +152,8 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/green_button_secondary"
                 android:clickable="true"
+                android:contentDescription="@string/add_account"
+                android:focusable="true"
                 android:src="@drawable/ic_add"
                 app:backgroundTint="@color/green_button"
                 app:borderWidth="2dp"
@@ -182,6 +163,36 @@
                 app:layout_constraintStart_toStartOf="@+id/typeListButton"
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/exchangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:contentDescription="@string/new_exchange"
+            android:focusable="true"
+            android:src="@drawable/ic_exchange"
+            app:backgroundTint="@color/green_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/listButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:contentDescription="@string/other"
+            android:focusable="true"
+            android:src="@drawable/ic_more"
+            app:backgroundTint="@color/green_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/white" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

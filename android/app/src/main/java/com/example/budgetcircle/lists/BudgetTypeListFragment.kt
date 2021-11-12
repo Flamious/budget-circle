@@ -75,8 +75,8 @@ class BudgetTypeListFragment : Fragment() {
 
     private fun init() {
         binding.apply {
-            budgetTypelist.layoutManager = GridLayoutManager(this@BudgetTypeListFragment.context, 1)
-            budgetTypelist.adapter = adapter
+            budgetTypeList.layoutManager = GridLayoutManager(this@BudgetTypeListFragment.context, 1)
+            budgetTypeList.adapter = adapter
         }
     }
 

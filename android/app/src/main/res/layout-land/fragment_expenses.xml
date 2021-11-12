@@ -117,7 +117,8 @@
             android:textSize="24sp"
             android:theme="@style/RedSwitch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/expensesPieChart"
@@ -142,11 +143,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="@string/expList"
             android:src="@drawable/ic_list"
             app:backgroundTint="@color/red_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:focusable="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addExpenseButton"
@@ -155,11 +158,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="@string/add_exchange"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/red_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/listButton"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:focusable="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

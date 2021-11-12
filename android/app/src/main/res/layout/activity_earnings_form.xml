@@ -31,11 +31,13 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginTop="4dp"
+                    android:autofillHints="commentary"
                     android:backgroundTint="@color/blue_switch_main"
                     android:ems="10"
                     android:hint="@string/comment"
                     android:inputType="textMultiLine"
                     android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorHint="@color/text_secondary"
                     android:textColorLink="@color/blue_switch_secondary"
                     android:textCursorDrawable="@color/blue_switch_main"
                     android:theme="@style/blueControlCursor"
@@ -56,40 +58,47 @@
 
                 <EditText
                     android:id="@+id/earnSum"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
+                    android:autofillHints="sum"
                     android:backgroundTint="@color/blue_switch_main"
                     android:ems="10"
                     android:hint="@string/sum"
                     android:inputType="number|numberDecimal"
                     android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorHint="@color/text_secondary"
                     android:textColorLink="@color/blue_switch_secondary"
                     android:textCursorDrawable="@color/blue_switch_main"
                     android:textSize="20sp"
                     android:theme="@style/blueControlCursor"
                     app:layout_constraintEnd_toEndOf="@+id/earnTitle"
+                    app:layout_constraintStart_toStartOf="@+id/earnTitle"
                     app:layout_constraintTop_toBottomOf="@+id/earnTitle" />
 
                 <EditText
                     android:id="@+id/earnTitle"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="48dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
+                    android:autofillHints="title"
                     android:backgroundTint="@color/blue_switch_main"
                     android:ems="10"
                     android:hint="@string/title"
                     android:inputType="text"
                     android:textColorHighlight="@color/blue_switch_main"
+                    android:textColorHint="@color/text_secondary"
                     android:textColorLink="@color/blue_switch_secondary"
                     android:textCursorDrawable="@color/blue_switch_main"
                     android:textSize="20sp"
                     android:theme="@style/blueControlCursor"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/earnRepSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,36 +109,13 @@
                     app:layout_constraintEnd_toEndOf="@+id/earnKindLayout"
                     app:layout_constraintTop_toBottomOf="@+id/earnKindLayout" />
 
-                <TextView
-                    android:id="@+id/earnTitleTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:text="@string/title"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/earnTitle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/earnTitle" />
-
-                <TextView
-                    android:id="@+id/sumTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sum"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/earnSum"
-                    app:layout_constraintStart_toStartOf="@+id/earnTitleTitle"
-                    app:layout_constraintTop_toTopOf="@+id/earnSum" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/earnBudgetTypeLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/earnSum"
-                    app:layout_constraintStart_toStartOf="@+id/sumTitle"
+                    app:layout_constraintStart_toStartOf="@+id/earnSum"
                     app:layout_constraintTop_toBottomOf="@+id/earnSum">
 
                     <TextView
@@ -165,7 +151,6 @@
                         android:id="@+id/earnSelectKind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/earn_other"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -204,6 +189,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/back"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:scaleX="1"

@@ -41,7 +41,7 @@ class HistoryAdapter(
             itemTitle.text = item.sum.toString()
             opColor.setBackgroundColor(item.color)
             operationTitle.text = item.title
-            imageRepititive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
+            imageRepetitive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
             itemType.text =
                 if (item.isExpense) expensesTypes.first { it.id == item.typeId }.title
                 else earningsTypes.first { it.id == item.typeId }.title

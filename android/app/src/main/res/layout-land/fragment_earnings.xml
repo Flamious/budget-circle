@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:shadowColor="@color/text_primary"
+                android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
                 app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -112,6 +112,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="@string/earnList"
+            android:focusable="true"
             android:src="@drawable/ic_list"
             app:backgroundTint="@color/blue_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -125,6 +127,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            android:contentDescription="@string/add_earn"
+            android:focusable="true"
             android:src="@drawable/ic_add"
             app:backgroundTint="@color/blue_button"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -141,7 +145,8 @@
             android:textSize="24sp"
             android:theme="@style/BlueSwitch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/earningsPieChart"
