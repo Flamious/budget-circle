@@ -78,6 +78,7 @@
             android:text="@string/show_repetitive_operations_switch"
             android:textColor="@color/text_secondary"
             android:theme="@style/GreenSwitch"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Title" />
@@ -101,6 +102,7 @@
                 android:contentDescription="@string/stocks"
                 android:focusable="true"
                 android:src="@drawable/ic_stocks"
+                android:visibility="gone"
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
@@ -119,6 +121,7 @@
                 android:contentDescription="@string/repOps"
                 android:focusable="true"
                 android:src="@drawable/ic_history"
+                android:visibility="gone"
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
@@ -131,7 +134,6 @@
                 android:id="@+id/typeListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/green_secondary"
                 android:clickable="true"
                 android:contentDescription="@string/accList"
@@ -140,9 +142,9 @@
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/repetitiveOpListButton"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/repetitiveOpListButton"
+                app:layout_constraintStart_toStartOf="parent"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

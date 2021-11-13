@@ -132,6 +132,7 @@
                 android:contentDescription="@string/stocks"
                 android:focusable="true"
                 android:src="@drawable/ic_stocks"
+                android:visibility="gone"
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
@@ -149,6 +150,7 @@
                 android:contentDescription="@string/repOps"
                 android:focusable="true"
                 android:src="@drawable/ic_history"
+                android:visibility="gone"
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
@@ -170,7 +172,7 @@
                 app:borderWidth="2dp"
                 app:elevation="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/repetitiveOpListButton"
+                app:layout_constraintStart_toStartOf="parent"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -200,6 +202,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="24sp"
             android:theme="@style/GreenSwitch"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -53,10 +53,10 @@ class MainActivity : AppCompatActivity() {
                         setNavColor(R.color.nav_orange_selector)
                         HistoryFragment()
                     }
-                    R.id.settings -> {
+                    /*R.id.settings -> {
                         setNavColor(R.color.nav_purple_selector)
                         SettingsFragment()
-                    }
+                    }*/
 
                     else -> {
                         setNavColor(R.color.nav_green_selector)
