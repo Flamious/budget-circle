@@ -62,26 +62,26 @@
                     app:layout_constraintTop_toTopOf="@+id/infoOpTitle" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/kindOrToTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kind"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/kindInfo"
-                    app:layout_constraintStart_toStartOf="@+id/textView5"
+                    app:layout_constraintStart_toStartOf="@+id/fromTitle"
                     app:layout_constraintTop_toTopOf="@+id/kindInfo" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/commentTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/comment"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintStart_toStartOf="@+id/kindOrToTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/kindOrToTitle" />
 
                 <TextView
                     android:id="@+id/kindInfo"
@@ -94,7 +94,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/accountInfo" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/fromTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account"
@@ -134,8 +134,8 @@
                     android:background="@drawable/border"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/kindInfo"
-                    app:layout_constraintStart_toStartOf="@+id/textView7"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7">
+                    app:layout_constraintStart_toStartOf="@+id/commentTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/commentTitle">
 
                     <TextView
                         android:id="@+id/commentInfo"

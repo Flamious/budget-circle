@@ -73,7 +73,11 @@ class HistoryFragment : Fragment() {
                     it[index].isExpense,
                     ContextCompat.getColor(
                         this.requireContext(),
-                        if (it[index].isExpense) R.color.red_main else R.color.blue_main
+                        when (it[index].isExpense) {
+                            true -> R.color.red_main
+                            false -> R.color.blue_main
+                            else -> R.color.green_main
+                        }
                     )
                 )
 
@@ -81,6 +85,7 @@ class HistoryFragment : Fragment() {
             adapter.setList(list)
         })
     }
+
     //endregion
     //region Methods
     private fun openInfo() {

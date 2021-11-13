@@ -13,7 +13,7 @@ data class Operation(
     var budgetTypeId: Int,
     var commentary: String,
     var isRepetitive: Boolean,
-    var isExpense: Boolean
+    var isExpense: Boolean?
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

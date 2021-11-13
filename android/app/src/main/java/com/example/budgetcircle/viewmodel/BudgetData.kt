@@ -115,6 +115,18 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     fun makeExchange(idFrom: Int, idTo: Int, sum: Double) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.addSum(idFrom, -sum)
         budgetTypesRepository.addSum(idTo, sum)
+        operationsRepository.addOperation(
+            Operation(
+                "exchange",
+                sum,
+                getCurrentDate(),
+                idTo,
+                idFrom,
+                "",
+                false,
+                null
+            )
+        )
     }
 
     fun addExpense(title: String, sum: Double, type: Int, budgetTypeId: Int, commentary: String) =
@@ -152,52 +164,112 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         }
 
     fun editOperation(oldOperation: HistoryItem, newOperation: Operation): Boolean {
-        if (oldOperation.isExpense) {
-            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
-                val newBudgetType: BudgetType =
-                    budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
-                if (newBudgetType.sum < newOperation.sum) return false
-                else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, oldOperation.sum)
-                        budgetTypesRepository.addSum(newOperation.budgetTypeId, -newOperation.sum)
+        when (oldOperation.isExpense) {
+            true -> {
+                if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                    val newBudgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                    if (newBudgetType.sum < newOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            budgetTypesRepository.addSum(
+                                oldOperation.budgetTypeId,
+                                oldOperation.sum
+                            )
+                            budgetTypesRepository.addSum(
+                                newOperation.budgetTypeId,
+                                -newOperation.sum
+                            )
+                        }
                     }
-                }
-            } else {
-                val budgetType: BudgetType =
-                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
-                if (budgetType.sum < newOperation.sum - oldOperation.sum) return false
-                else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        budgetTypesRepository.addSum(
-                            oldOperation.budgetTypeId,
-                            -(newOperation.sum - oldOperation.sum)
-                        )
+                } else {
+                    val budgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (budgetType.sum < newOperation.sum - oldOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            budgetTypesRepository.addSum(
+                                oldOperation.budgetTypeId,
+                                -(newOperation.sum - oldOperation.sum)
+                            )
+                        }
                     }
                 }
             }
-        } else {
-            if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
-                val oldBudgetType: BudgetType =
-                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
-                if (oldBudgetType.sum < oldOperation.sum) return false
-                else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        budgetTypesRepository.addSum(oldOperation.budgetTypeId, -oldOperation.sum)
-                        budgetTypesRepository.addSum(newOperation.budgetTypeId, newOperation.sum)
+            false -> {
+                if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                    val oldBudgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (oldBudgetType.sum < oldOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            budgetTypesRepository.addSum(
+                                oldOperation.budgetTypeId,
+                                -oldOperation.sum
+                            )
+                            budgetTypesRepository.addSum(
+                                newOperation.budgetTypeId,
+                                newOperation.sum
+                            )
+                        }
+                    }
+                } else {
+                    val budgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (budgetType.sum < oldOperation.sum - newOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            budgetTypesRepository.addSum(
+                                oldOperation.budgetTypeId,
+                                -(oldOperation.sum - newOperation.sum)
+                            )
+                        }
                     }
                 }
-            } else {
-                val budgetType: BudgetType =
+            }
+            else -> {
+                val oldFrom: BudgetType =
                     budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
-                if (budgetType.sum < oldOperation.sum - newOperation.sum) return false
-                else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        budgetTypesRepository.addSum(
-                            oldOperation.budgetTypeId,
-                            -(oldOperation.sum - newOperation.sum)
-                        )
+                val newFrom: BudgetType =
+                    budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                val oldTo: BudgetType = budgetTypes.value!!.first { it.id == oldOperation.typeId }
+                val newTo: BudgetType = budgetTypes.value!!.first { it.id == newOperation.typeId }
+                if(oldOperation.typeId == newOperation.budgetTypeId) {
+                    if(oldTo.sum - oldOperation.sum < newOperation.sum) return false
+                }
+                //no account is changed
+                if (oldOperation.budgetTypeId == newOperation.budgetTypeId && oldOperation.typeId == newOperation.typeId) {
+                    if (oldOperation.sum < newOperation.sum) {
+                        if (oldFrom.sum < newOperation.sum - oldOperation.sum) return false
                     }
+                    if (oldOperation.sum > newOperation.sum) {
+                        if (oldTo.sum < oldOperation.sum - newOperation.sum) return false
+                    }
+                }
+                //"from" changed
+                if (oldOperation.budgetTypeId != newOperation.budgetTypeId && oldOperation.typeId == newOperation.typeId) {
+                    if (newFrom.sum < newOperation.sum) return false
+                    if (oldOperation.sum > newOperation.sum) {
+                        if (oldTo.sum < oldOperation.sum - newOperation.sum) return false
+                    }
+                }
+                //"to" changed
+                if (oldOperation.budgetTypeId == newOperation.budgetTypeId && oldOperation.typeId != newOperation.typeId) {
+                    if (oldOperation.sum < newOperation.sum) {
+                        if (oldFrom.sum < newOperation.sum - oldOperation.sum) return false
+                    }
+                    if (oldTo.sum < oldOperation.sum) return false
+                }
+                //both accounts changed
+                if (oldOperation.budgetTypeId != newOperation.budgetTypeId && oldOperation.typeId != newOperation.typeId) {
+                    if (newFrom.sum < newOperation.sum) return false
+                    if (oldTo.sum < oldOperation.sum) return false
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    budgetTypesRepository.addSum(oldFrom.id, oldOperation.sum)
+                    budgetTypesRepository.addSum(oldTo.id, -oldOperation.sum)
+                    budgetTypesRepository.addSum(newFrom.id, -newOperation.sum)
+                    budgetTypesRepository.addSum(newTo.id, newOperation.sum)
                 }
             }
         }
@@ -208,17 +280,29 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
     }
 
     fun deleteOperation(operation: HistoryItem): Boolean {
-        val budgetType: BudgetType = budgetTypes.value!!.first { it.id == operation.budgetTypeId }
-        if (!operation.isExpense) {
-            if (budgetType.sum < operation.sum) return false
-            viewModelScope.launch(Dispatchers.IO) {
-                budgetTypesRepository.addSum(budgetType.id, -operation.sum)
+        val budgetTypeFrom: BudgetType =
+            budgetTypes.value!!.first { it.id == operation.budgetTypeId }
+        when (operation.isExpense) {
+            true -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    budgetTypesRepository.addSum(budgetTypeFrom.id, operation.sum)
+                }
             }
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                budgetTypesRepository.addSum(budgetType.id, operation.sum)
+            false -> {
+                if (budgetTypeFrom.sum < operation.sum) return false
+                viewModelScope.launch(Dispatchers.IO) {
+                    budgetTypesRepository.addSum(budgetTypeFrom.id, -operation.sum)
+                }
             }
-
+            else -> {
+                val budgetTypeTo: BudgetType =
+                    budgetTypes.value!!.first { it.id == operation.typeId }
+                if (budgetTypeTo.sum < operation.sum) return false
+                viewModelScope.launch(Dispatchers.IO) {
+                    budgetTypesRepository.addSum(budgetTypeFrom.id, operation.sum)
+                    budgetTypesRepository.addSum(budgetTypeTo.id, -operation.sum)
+                }
+            }
         }
         viewModelScope.launch(Dispatchers.IO) {
             operationsRepository.deleteOperation(operation.id)
