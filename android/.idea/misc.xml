@@ -11,6 +11,9 @@
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_arrow_down.xml" value="0.403125" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_back.xml" value="0.403125" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_budget.xml" value="0.403125" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_delete.xml" value="0.2390625" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_earnings.xml" value="0.2390625" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_edit.xml" value="0.2390625" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_exchange.xml" value="0.403125" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_expenses.xml" value="0.23489583333333333" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/drawable/ic_history.xml" value="0.403125" />
@@ -31,13 +34,13 @@
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_operation_form.xml" value="0.5" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/budget_type_item.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/category_layout.xml" value="0.21875" />
-        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/category_preference_layout.xml" value="0.1" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/category_preference_layout.xml" value="0.25" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/dialog_expenses_kind.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/dialog_expenses_type.xml" value="0.38697916666666665" />
-        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_budget.xml" value="0.38697916666666665" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_budget.xml" value="0.25" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_budget_type_list.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_earnings.xml" value="0.38697916666666665" />
-        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_expenses.xml" value="0.33" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_expenses.xml" value="0.22" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_history.xml" value="0.4375" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_operation_info.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_settings.xml" value="0.22488038277511962" />

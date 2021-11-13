@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.service.autofill.Dataset
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,16 +25,7 @@ import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetData
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-import com.example.budgetcircle.viewmodel.items.HistoryItem
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.listener.OnChartGestureListener
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -45,7 +34,7 @@ class BudgetFragment : Fragment() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetData: BudgetData by activityViewModels()
 
-    /* Animations */
+    //region Animations
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(
             this.context,
@@ -83,76 +72,39 @@ class BudgetFragment : Fragment() {
         )
     }
     private var isClicked = false
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        budgetData.budgetTypes.observe(this, {
-            setChart(it)
-        })
-
-        launcher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    when (result.data?.getStringExtra("type").toString()) {
-                        "newAccount" -> {
-                            val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
-                            val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetData.addToBudgetTypesList(
-                                BudgetType(
-                                    name,
-                                    sum,
-                                    true
-                                )
-                            )
-                            Toast.makeText(
-                                activity,
-                                "Added",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        "exchange" -> {
-                            val sum: Double = result.data?.getDoubleExtra("sum", 0.0)!!
-                            val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
-                            val to: Int = result.data?.getIntExtra("toIndex", 0)!!
-
-                            budgetData.makeExchange(budgetData.budgetTypes.value!![from].id, budgetData.budgetTypes.value!![to].id, sum)
-                            /*budgetData.addExpense(
-                                sum,
-                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
-                                budgetData.budgetTypes.value!![from].id
-                            )
-
-                            budgetData.addEarning(
-                                sum,
-                                budgetData.expenseTypes[budgetData.expenseTypes.lastIndex].id, //Other
-                                budgetData.budgetTypes.value!![to].id
-                            )*/
-                        }
-                        else -> {
-                            Toast.makeText(
-                                activity,
-                                "Toast",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-            }
-    }
+    //endregion
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBudgetBinding.inflate(inflater)
         setButtons()
+        setObservation()
+        setLauncher()
         return binding.root
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
+    }
+    //region Setting
+    private fun setAnimation(
+        isClicked: Boolean,
+        listButton: FloatingActionButton,
+        hiddenButtonsLayout: ConstraintLayout,
+        vararg buttons: FloatingActionButton
+    ) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
+        else
+            hiddenButtonsLayout.startAnimation(if (isClicked) toLeft else fromLeft)
+        hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
+        for (button in buttons) {
+            button.isClickable = !isClicked
+        }
+        listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
     }
 
     private fun setButtons() {
@@ -169,21 +121,6 @@ class BudgetFragment : Fragment() {
         binding.typeListButton.setOnClickListener {
             openBudgetTypeList()
         }
-    }
-
-    private fun showHiddenButtons() {
-        binding.apply {
-            setAnimation(
-                isClicked,
-                listButton,
-                hiddenButtonsLayout,
-                addAccountButton,
-                typeListButton,
-                repetitiveOpListButton,
-                stocksListButton
-            )
-        }
-        isClicked = !isClicked
     }
 
     private fun setChart(budgetTypes: List<BudgetType>) {
@@ -222,6 +159,72 @@ class BudgetFragment : Fragment() {
             )
     }
 
+    private fun setLauncher() {
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    when (result.data?.getStringExtra("type").toString()) {
+                        "newAccount" -> {
+                            val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
+                            val name: String = result.data?.getStringExtra("newAccountName")!!
+                            budgetData.addToBudgetTypesList(
+                                BudgetType(
+                                    name,
+                                    sum,
+                                    true
+                                )
+                            )
+                            Toast.makeText(
+                                activity,
+                                resources.getString(R.string.added),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        "exchange" -> {
+                            val sum: Double = result.data?.getDoubleExtra("sum", 0.0)!!
+                            val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
+                            val to: Int = result.data?.getIntExtra("toIndex", 0)!!
+
+                            budgetData.makeExchange(
+                                budgetData.budgetTypes.value!![from].id,
+                                budgetData.budgetTypes.value!![to].id,
+                                sum
+                            )
+                        }
+                        else -> {
+                            Toast.makeText(
+                                activity,
+                                resources.getString(R.string.done),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }
+
+    }
+
+    private fun setObservation() {
+        budgetData.budgetTypes.observe(this.viewLifecycleOwner, {
+            setChart(it)
+        })
+    }
+    //endregion
+    //region Methods
+    private fun showHiddenButtons() {
+        binding.apply {
+            setAnimation(
+                isClicked,
+                listButton,
+                hiddenButtonsLayout,
+                addAccountButton,
+                typeListButton,
+                repetitiveOpListButton,
+                stocksListButton
+            )
+        }
+        isClicked = !isClicked
+    }
 
     private fun addAccount() {
         val intent = Intent(activity, BudgetFormActivity::class.java)
@@ -254,26 +257,5 @@ class BudgetFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, BudgetFragment())
             ?.commit()
     }
-
-    private fun setAnimation(
-        isClicked: Boolean,
-        listButton: FloatingActionButton,
-        hiddenButtonsLayout: ConstraintLayout,
-        vararg buttons: FloatingActionButton
-    ) {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            hiddenButtonsLayout.startAnimation(if (isClicked) toBottom else fromBottom)
-        else
-            hiddenButtonsLayout.startAnimation(if (isClicked) toLeft else fromLeft)
-        hiddenButtonsLayout.visibility = if (isClicked) View.GONE else View.VISIBLE
-        for (button in buttons) {
-            button.isClickable = !isClicked
-        }
-        listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = BudgetFragment()
-    }
+    //endregion
 }

@@ -10,9 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
-import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.viewmodel.BudgetData
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import java.util.*
@@ -25,15 +23,42 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHistoryBinding.inflate(inflater)
+        setAdapter()
+        setButtons()
+        setObservation()
+        return binding.root
+    }
+
+    //region Setting
+    private fun setAdapter() {
         adapter = HistoryAdapter(
             budgetData.budgetTypes.value!!.toTypedArray(),
             budgetData.earningTypes.toTypedArray(),
             budgetData.expenseTypes.toTypedArray()
         )
-        init()
-        setButtons()
+        binding.apply {
+            historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
+            historyList.adapter = adapter
+            if (budgetData.chosenHistoryItemIndex.value != null) {
+                historyList.scrollToPosition(
+                    budgetData.chosenHistoryItemIndex.value!!
+                )
+                budgetData.chosenHistoryItemIndex.postValue(null)
+            }
+        }
+    }
+
+    private fun setButtons() {
+        adapter.onItemClick = { item, index ->
+            budgetData.chosenHistoryItem.value = item
+            budgetData.chosenHistoryItemIndex.value = index
+            openInfo()
+        }
+    }
+
+    private fun setObservation() {
         budgetData.historyItems.observe(this.viewLifecycleOwner, {
             val list: Array<HistoryItem> = Array(it.size) { index ->
                 HistoryItem(
@@ -48,26 +73,16 @@ class HistoryFragment : Fragment() {
                     it[index].isExpense,
                     ContextCompat.getColor(
                         this.requireContext(),
-                        if (it[index].isExpense) R.color.red_switch_main else R.color.blue_switch_main
+                        if (it[index].isExpense) R.color.red_main else R.color.blue_main
                     )
                 )
 
             }
             adapter.setList(list)
         })
-
-
-        return binding.root
     }
-
-    private fun setButtons() {
-        adapter.onItemClick = { item, index ->
-            budgetData.chosenHistoryItem.value = item
-            budgetData.chosenHistoryItemIndex.value = index
-            openInfo()
-        }
-    }
-
+    //endregion
+    //region Methods
     private fun openInfo() {
         activity
             ?.supportFragmentManager
@@ -75,22 +90,5 @@ class HistoryFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, OperationInfoFragment())
             ?.commit()
     }
-
-    private fun init() {
-        binding.apply {
-            historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
-            historyList.adapter = adapter
-            if (budgetData.chosenHistoryItemIndex.value != null) {
-                historyList.scrollToPosition(
-                    budgetData.chosenHistoryItemIndex.value!!
-                )
-                budgetData.chosenHistoryItemIndex.postValue(null)
-            }
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HistoryFragment()
-    }
+    //endregion
 }

@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.history.OperationInfoFragment" >
+    tools:context=".fragments.history.OperationInfoFragment">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -13,6 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/border"
+        android:theme="@style/orangeEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -162,6 +163,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/back"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:scaleX="1"
@@ -176,6 +178,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/edit"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/ic_edit"
@@ -190,6 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/ic_delete"

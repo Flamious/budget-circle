@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class ExpenseType(
     val title: String
 ) {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }

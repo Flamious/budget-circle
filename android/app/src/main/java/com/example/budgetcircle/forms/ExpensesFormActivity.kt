@@ -4,41 +4,29 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.core.widget.doOnTextChanged
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityExpensesFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
 import com.example.budgetcircle.settings.SumInputFilter
 
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-
 class ExpensesFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityExpensesFormBinding
-    var chosenBudgetType: Index = Index(0)
-    var chosenExpenseType: Index = Index(0)
+    private var chosenBudgetType: Index = Index(0)
+    private var chosenExpenseType: Index = Index(0)
     lateinit var budgetTypes: Array<String>
-    lateinit var budgetTypesSums: Array<Double>
-    lateinit var expenseTypes: Array<String>
-    var isEdit = false
+    private lateinit var budgetTypesSums: Array<Double>
+    private lateinit var expenseTypes: Array<String>
+    private var isEdit = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesFormBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        expenseTypes = intent.extras?.getStringArray("expenseTypes")!!
-        if (intent.extras?.getBoolean("isEdit", false) == false) {
-            budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<Double>)
-            binding.expSelectBudgetType.text = budgetTypes[0]
-            binding.expSelectKind.text = expenseTypes[0]
-        } else {
-            setEditPage()
-            budgetTypesSums = arrayOf()
-        }
-        binding.expSum.filters = arrayOf<InputFilter>(SumInputFilter())
+        setInitialValues()
         setButtons()
         setContentView(binding.root)
     }
-
+    //region Setting
     private fun setButtons() {
         binding.expSelectBudgetType.setOnClickListener {
             Dialogs().chooseOne(
@@ -68,8 +56,41 @@ class ExpensesFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun setEditPage() {
+        binding.expenseFormTitle.text = resources.getText(R.string.edit_exp)
+        binding.expAddButton.text = resources.getText(R.string.edit_exp)
+        binding.expTitle.setText(intent.extras?.getString("title")!!)
+        binding.expSum.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.expCommentaryField.setText(intent.extras?.getString("commentary")!!)
+        binding.expRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
+        binding.expRepSwitch.isEnabled = false
+        chosenExpenseType.value = intent.extras?.getInt("typeIndex")!!
+        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
+        binding.expSelectKind.text = expenseTypes[chosenExpenseType.value]
+        binding.expSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
+        isEdit = true
+    }
+
+    private fun setInitialValues() {
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        expenseTypes = intent.extras?.getStringArray("expenseTypes")!!
+        if (intent.extras?.getBoolean("isEdit", false) == false) {
+            budgetTypesSums =
+                (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
+                    .toTypedArray()
+            binding.expSelectBudgetType.text = budgetTypes[0]
+            binding.expSelectKind.text = expenseTypes[0]
+        } else {
+            setEditPage()
+            budgetTypesSums = arrayOf()
+        }
+        binding.expSum.filters = arrayOf<InputFilter>(SumInputFilter())
+
+    }
+    //endregion
+    //region Methods
     private fun checkFields(): Boolean {
-        var sum = binding.expSum.text.toString().toDoubleOrNull()
+        val sum = binding.expSum.text.toString().toDoubleOrNull()
         var isValid = true
         binding.expSum.apply {
             error = null
@@ -105,21 +126,6 @@ class ExpensesFormActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun setEditPage() {
-        binding.expenseFormTitle.text = resources.getText(R.string.edit_earn)
-        binding.expAddButton.text = resources.getText(R.string.edit_earn)
-        binding.expTitle.setText(intent.extras?.getString("title")!!)
-        binding.expSum.setText(intent.extras?.getDouble("sum")!!.toString())
-        binding.expCommentaryField.setText(intent.extras?.getString("commentary")!!)
-        binding.expRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
-        binding.expRepSwitch.isEnabled = false
-        chosenExpenseType.value = intent.extras?.getInt("typeIndex")!!
-        chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
-        binding.expSelectKind.text = expenseTypes[chosenExpenseType.value]
-        binding.expSelectBudgetType.text = budgetTypes[chosenBudgetType.value]
-        isEdit = true
-    }
-
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
@@ -139,4 +145,5 @@ class ExpensesFormActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED, intent)
         finish()
     }
+    //endregion
 }

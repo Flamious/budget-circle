@@ -1,14 +1,12 @@
 package com.example.budgetcircle.dialogs
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
+import android.app.AlertDialog
 import android.content.Context
-import android.content.res.Resources
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import android.widget.TextView
-import java.util.*
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-
+import com.example.budgetcircle.R
 
 data class Index(var value: Int)
 
@@ -22,7 +20,7 @@ class Dialogs {
         theme: Int = -1
     ) {
         if (list.isNotEmpty()) {
-            var dialog = MaterialAlertDialogBuilder(context)
+            val dialog = MaterialAlertDialogBuilder(context)
             dialog.setTitle(title)
             dialog.setItems(list) { _, which ->
                 run {
@@ -48,7 +46,7 @@ class Dialogs {
         theme: Int = -1
     ) {
         if (list.isNotEmpty() && values.isNotEmpty()) {
-            var dialog = MaterialAlertDialogBuilder(context)
+            val dialog = MaterialAlertDialogBuilder(context)
             dialog.setTitle(title)
             dialog.setItems(list) { _, which ->
                 run {
@@ -94,20 +92,33 @@ class Dialogs {
         }
     }
 
-    fun pickDate(context: Context, view: TextView, theme: Int) {
-        val calendar = Calendar.getInstance()
-        val year = calendar[Calendar.YEAR]
-        val month = calendar[Calendar.MONTH]
-        val day = calendar[Calendar.DAY_OF_MONTH]
-        DatePickerDialog(
-            context,
-            theme,
-            OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                val editTextDateParam = dayOfMonth.toString() + "." + (monthOfYear + 1) + "." + year
-                view.text = editTextDateParam
-            }, year, month, day
-        )
+    fun chooseYesNo(
+        context: Context,
+        title: String,
+        message: String,
+        positiveText: String,
+        negativeText: String,
+        color: Int,
+        actionOnPositive: () -> Unit
+    ) {
+        val dialog = MaterialAlertDialogBuilder(context, R.style.greenButtonsDialog)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(
+                positiveText
+            ) { dialogInterface, _ ->
+                run {
+                    actionOnPositive.invoke()
+                    dialogInterface.dismiss()
+                }
+            }
+            .setNegativeButton(
+                negativeText
+            ) { dialogInterface, _ -> dialogInterface.dismiss() }
             .show()
-
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(context, color))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(context, color))
     }
 }

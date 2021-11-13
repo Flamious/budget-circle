@@ -21,6 +21,14 @@
     <string name="added">Added</string>
     <string name="deleted">Deleted</string>
     <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="more">More</string>
+    <string name="stocks">Stocks</string>
+    <string name="repOps">Repetitive operations</string>
+    <string name="accList">Accounts list</string>
+    <string name="earnList">All earnings</string>
+    <string name="expList">All expenses</string>
+    <string name="accept">Accept</string>
 
     <!-- Settings -->
     <string name="language">Language</string>
@@ -53,17 +61,18 @@
     <string name="is_repetitive">Repetitive</string>
     <string name="sum">Sum</string>
     <string name="op_date">Date</string>
-    <string name="add_exp">Add expensive</string>
+    <string name="add_exp">Add expense</string>
     <string name="add_earn">Add earning</string>
+    <string name="edit_account">Edit account</string>
     <string name="add_account">Add account</string>
-    <string name="edit_earn">Edit account</string>
+    <string name="edit_earn">Edit earning</string>
+    <string name="edit_exp">Edit expense</string>
     <string name="add_exchange">Exchange</string>
     <string name="comment">Commentary</string>
     <string name="acc_name">Account name</string>
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="title">Title</string>
-    <string name="edit_account">Edit account</string>
     <string name="empty_field">Field cannot be empty</string>
     <string name="zero_sum">Sum must be greater than 0</string>
     <string name="insufficient_funds">Insufficient funds on the account</string>
@@ -71,27 +80,10 @@
     <!-- Lists -->
     <string name="budgetTypes">Budget Types</string>
 
-    <!-- Expenses kinds -->
-    <string name="home">Home</string>
-    <string name="food">Food</string>
-    <string name="debts">Debts</string>
-    <string name="transport">Transport</string>
-    <string name="bills">Bills and services</string>
-    <string name="personalExpenses">Personal expenses</string>
-    <string name="exp_other">Other</string>
-
-    <!-- Earnings kinds -->
-    <string name="salary">Salary</string>
-    <string name="pensions">Pensions and scholarship</string>
-    <string name="realEstate">Real estate</string>
-    <string name="investments">Investments</string>
-    <string name="business">Business</string>
-    <string name="prizes">Prizes</string>
-    <string name="earn_other">Other</string>
-
     <!-- Dialogs -->
     <string name="r_u_sure">Are you sure?</string>
     <string name="delete">Delete</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="done">Done</string>
 </resources>

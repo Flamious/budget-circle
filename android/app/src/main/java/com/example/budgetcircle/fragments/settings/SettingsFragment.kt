@@ -14,17 +14,12 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
         childFragmentManager
             .beginTransaction()
             .replace(R.id.settingsList, SettingsPreferences())
             .commit()
         return binding.root
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = SettingsFragment()
     }
 }

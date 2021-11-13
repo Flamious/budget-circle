@@ -9,28 +9,22 @@ import com.example.budgetcircle.databinding.ActivityBudgetExchangeBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
 import com.example.budgetcircle.settings.SumInputFilter
-/*import com.example.budgetcircle.viewmodel.items.BudgetType*/
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class BudgetExchangeActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetExchangeBinding
-    var chosenBudgetTypeFrom: Index = Index(0)
-    var chosenBudgetTypeTo: Index = Index(1)
+    private var chosenBudgetTypeFrom: Index = Index(0)
+    private var chosenBudgetTypeTo: Index = Index(1)
     lateinit var budgetTypes: Array<String>
-    lateinit var budgetTypesSums: Array<Double>
+    private lateinit var budgetTypesSums: Array<Double>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBudgetExchangeBinding.inflate(layoutInflater)
-        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        budgetTypesSums = (intent.extras?.getSerializable("budgetTypesSums")!! as Array<Double>)
-        binding.listFrom.text = budgetTypes[0]
-        binding.listTo.text = budgetTypes[1]
-        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
+        setInitialValues()
         setButtons()
         setContentView(binding.root)
     }
-
+    //region Setting
     private fun setButtons() {
         binding.budgetExchangeAddButton.setOnClickListener {
             add()
@@ -64,8 +58,19 @@ class BudgetExchangeActivity : AppCompatActivity() {
         }
     }
 
+    private fun setInitialValues() {
+        budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
+        budgetTypesSums =
+            (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
+                .toTypedArray()
+        binding.listFrom.text = budgetTypes[0]
+        binding.listTo.text = budgetTypes[1]
+        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
+    }
+    //endregion
+    //region Methods
     private fun checkFields(): Boolean {
-        var sum = binding.budgetSum.text.toString().toDoubleOrNull()
+        val sum = binding.budgetSum.text.toString().toDoubleOrNull()
         var isValid = true
         binding.budgetSum.apply {
             error = null
@@ -106,4 +111,5 @@ class BudgetExchangeActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED, intent)
         finish()
     }
+    //endregion
 }

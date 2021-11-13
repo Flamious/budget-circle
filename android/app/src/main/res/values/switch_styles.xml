@@ -1,46 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="RedSwitch" parent="Theme.AppCompat.Light">
-        <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/red_switch_main</item>
-
-        <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/red_switch_secondary</item>
-
-        <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/red_switch_main</item>
+        <item name="colorControlActivated">@color/red_main</item>
+        <item name="colorSwitchThumbNormal">@color/red_main</item>
+        <item name="android:colorForeground">@color/red_main</item>
     </style>
 
     <style name="BlueSwitch" parent="Theme.AppCompat.Light">
-        <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/blue_switch_main</item>
-
-        <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/blue_switch_secondary</item>
-
-        <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/blue_switch_main</item>
+        <item name="colorControlActivated">@color/blue_main</item>
+        <item name="colorSwitchThumbNormal">@color/blue_secondary</item>
+        <item name="android:colorForeground">@color/blue_main</item>
     </style>
 
     <style name="GreenSwitch" parent="Theme.AppCompat.Light">
-        <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/green_switch_main</item>
-
-        <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/green_switch_secondary</item>
-
-        <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/green_switch_main</item>
+        <item name="colorControlActivated">@color/green_main</item>
+        <item name="colorSwitchThumbNormal">@color/green_secondary</item>
+        <item name="android:colorForeground">@color/green_main</item>
     </style>
 
     <style name="PurpleSwitch" parent="Theme.AppCompat.Light">
-        <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">@color/purple_switch_main</item>
-
-        <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">@color/purple_switch_secondary</item>
-
-        <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">@color/purple_switch_main</item>
+        <item name="colorControlActivated">@color/purple_main</item>
+        <item name="colorSwitchThumbNormal">@color/purple_secondary</item>
+        <item name="android:colorForeground">@color/purple_main</item>
     </style>
 </resources>

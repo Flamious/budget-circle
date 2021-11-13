@@ -2,35 +2,35 @@
 <resources>
     <!-- Expenses -->
     <array name="expense_colors">
-        <item name="expenses_first">@color/expenses_first</item>
-        <item name="expenses_second">@color/expenses_second</item>
-        <item name="expenses_third">@color/expenses_third</item>
-        <item name="expenses_fourth">@color/expenses_fourth</item>
-        <item name="expenses_fifth">@color/expenses_fifth</item>
-        <item name="expenses_sixth">@color/expenses_sixth</item>
-        <item name="expenses_seventh">@color/expenses_seventh</item>
+        <item name="expenses_first">#F70606</item>
+        <item name="expenses_second">#A10202</item>
+        <item name="expenses_third">#C91212</item>
+        <item name="expenses_fourth">#691111</item>
+        <item name="expenses_fifth">#E95757</item>
+        <item name="expenses_sixth">#C01A1A</item>
+        <item name="expenses_seventh">#823333</item>
     </array>
 
     <!-- Earnings -->
     <array name="earning_colors">
-        <item name="earnings_first">@color/earnings_first</item>
-        <item name="earnings_second">@color/earnings_second</item>
-        <item name="earnings_third">@color/earnings_third</item>
-        <item name="earnings_fourth">@color/earnings_fourth</item>
-        <item name="earnings_fifth">@color/earnings_fifth</item>
-        <item name="earnings_sixth">@color/earnings_sixth</item>
-        <item name="earnings_seventh">@color/earnings_seventh</item>
+        <item name="earnings_first">#1147F7</item>
+        <item name="earnings_second">#5175ED</item>
+        <item name="earnings_third">#18348F</item>
+        <item name="earnings_fourth">#465CA6</item>
+        <item name="earnings_fifth">#023BFA</item>
+        <item name="earnings_sixth">#6B89ED</item>
+        <item name="earnings_seventh">#152A70</item>
     </array>
 
     <!-- Budget -->
     <array name="budget_colors">
-        <item name="budget_first">@color/budget_first</item>
-        <item name="budget_second">@color/budget_second</item>
-        <item name="budget_third">@color/budget_third</item>
-        <item name="budget_fourth">@color/budget_fourth</item>
-        <item name="budget_fifth">@color/budget_fifth</item>
-        <item name="budget_sixth">@color/budget_sixth</item>
-        <item name="budget_seventh">@color/budget_seventh</item>
+        <item name="budget_first">#0C6E13</item>
+        <item name="budget_second">#47C950</item>
+        <item name="budget_third">#216126</item>
+        <item name="budget_fourth">#5DB064</item>
+        <item name="budget_fifth">#08520E</item>
+        <item name="budget_sixth">#1BD12A</item>
+        <item name="budget_seventh">#2A632F</item>
     </array>
 
 </resources>

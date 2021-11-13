@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/btMainLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -23,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/budgetTypeEditButton"
@@ -36,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/edit"
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/budgetTypeDeleteButton"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/green_switch_main"
+        android:textColor="@color/green_main"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/typeTitle"
         app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
@@ -62,5 +62,5 @@
         app:layout_constraintEnd_toEndOf="@+id/budgetTypeDeleteButton"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/budgetTypeSum"
-        app:layout_constraintTop_toBottomOf="@+id/budgetTypeSum"></androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/budgetTypeSum" />
 </androidx.constraintlayout.widget.ConstraintLayout>
