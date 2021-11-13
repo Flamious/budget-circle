@@ -20,8 +20,11 @@ interface OperationsDAO {
     @Query("DELETE FROM operations WHERE id = :id")
     suspend fun delete(id: Int)
 
-    @Query("DELETE FROM operations WHERE budgetTypeId = :id")
+    @Query("DELETE FROM operations WHERE budgetTypeId = :id OR (typeId = :id AND isExpense IS NULL)")
     fun deleteByBudgetTypeId(id: Int)
+
+    /*@Query("DELETE FROM operations WHERE typeId = :id AND isExpense IS NULL")
+    fun deleteExchangesByBudgetTypeId(id: Int)*/
 
     @Query("SELECT types.title, SUM(e.sum) as sum FROM operations AS e JOIN earning_types AS types ON e.typeId == types.id AND NOT e.isExpense GROUP BY types.title")
     fun getAllEarnings(): LiveData<List<OperationSum>>

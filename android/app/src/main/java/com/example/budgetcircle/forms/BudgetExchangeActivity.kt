@@ -16,6 +16,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
     private var chosenBudgetTypeTo: Index = Index(1)
     lateinit var budgetTypes: Array<String>
     private lateinit var budgetTypesSums: Array<Double>
+    private var isEdit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
         setButtons()
         setContentView(binding.root)
     }
+
     //region Setting
     private fun setButtons() {
         binding.budgetExchangeAddButton.setOnClickListener {
@@ -33,24 +35,20 @@ class BudgetExchangeActivity : AppCompatActivity() {
             exit()
         }
         binding.listFrom.setOnClickListener {
-            Dialogs().chooseTwoWithNoRepeat(
+            Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
                 budgetTypes,
                 binding.listFrom,
-                binding.listTo,
                 chosenBudgetTypeFrom,
-                chosenBudgetTypeTo,
                 R.style.greenEdgeEffect
             )
         }
         binding.listTo.setOnClickListener {
-            val budgetTypesCut = budgetTypes.toMutableList()
-            budgetTypesCut.removeAt(chosenBudgetTypeFrom.value)
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
-                budgetTypesCut.toTypedArray(),
+                budgetTypes,
                 binding.listTo,
                 chosenBudgetTypeTo,
                 R.style.greenEdgeEffect
@@ -58,15 +56,31 @@ class BudgetExchangeActivity : AppCompatActivity() {
         }
     }
 
+    private fun setEditPage() {
+        binding.budgetSum.setText(intent.getDoubleExtra("exchangeSum", 0.0).toString())
+        chosenBudgetTypeFrom.value = intent.extras?.getInt("fromIndex")!!
+        chosenBudgetTypeTo.value = intent.extras?.getInt("toIndex")!!
+        binding.budgetExchangeAddButton.text = resources.getText(R.string.edit)
+        binding.listFrom.text = budgetTypes[chosenBudgetTypeFrom.value]
+        binding.listTo.text = budgetTypes[chosenBudgetTypeTo.value]
+        isEdit = true
+    }
+
     private fun setInitialValues() {
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
-        budgetTypesSums =
-            (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
-                .toTypedArray()
-        binding.listFrom.text = budgetTypes[0]
-        binding.listTo.text = budgetTypes[1]
+        if (intent.extras?.getBoolean("isEdit", false) == false) {
+            binding.listFrom.text = budgetTypes[0]
+            binding.listTo.text = budgetTypes[1]
+            budgetTypesSums =
+                (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
+                    .toTypedArray()
+        } else {
+            setEditPage()
+            budgetTypesSums = arrayOf()
+        }
         binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
     }
+
     //endregion
     //region Methods
     private fun checkFields(): Boolean {
@@ -83,10 +97,12 @@ class BudgetExchangeActivity : AppCompatActivity() {
                     error = resources.getString(R.string.zero_sum)
                     isValid = false
                 }
-                sum > budgetTypesSums[chosenBudgetTypeFrom.value] -> {
-                    error =
-                        "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetTypeFrom.value]})"
-                    isValid = false
+                else -> if (!isEdit) {
+                    if (sum > budgetTypesSums[chosenBudgetTypeFrom.value]) {
+                        error =
+                            "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetTypeFrom.value]})"
+                        isValid = false
+                    }
                 }
             }
         }
@@ -97,10 +113,16 @@ class BudgetExchangeActivity : AppCompatActivity() {
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
+            if(isEdit) {
+                intent.putExtra("budgetTypeIndex", chosenBudgetTypeFrom.value)
+                intent.putExtra("typeIndex", chosenBudgetTypeTo.value)
+            }
+            else {
+                intent.putExtra("fromIndex", chosenBudgetTypeFrom.value)
+                intent.putExtra("toIndex", chosenBudgetTypeTo.value)
+            }
             intent.putExtra("type", "exchange")
             intent.putExtra("sum", binding.budgetSum.text.toString().toDouble())
-            intent.putExtra("fromIndex", chosenBudgetTypeFrom.value)
-            intent.putExtra("toIndex", chosenBudgetTypeTo.value)
             setResult(RESULT_OK, intent)
             finish()
         }

@@ -15,6 +15,7 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.viewmodel.BudgetData
@@ -62,13 +63,26 @@ class OperationInfoFragment : Fragment() {
         item?.let {
             binding.apply {
                 infoOpTitle.text = it.title
-                sumInfo.text = if (it.isExpense) "-${it.sum}" else "+${it.sum}"
+                sumInfo.text = when (it.isExpense) {
+                    true -> "-${it.sum}"
+                    false -> "+${it.sum}"
+                    else -> "${it.sum}"
+                }
                 sumInfo.setTextColor(it.color)
                 accountInfo.text =
                     budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
                 kindInfo.text =
-                    if (it.isExpense) budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
-                    else budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                    when (it.isExpense) {
+                        true -> budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
+                        false -> budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                        null -> {
+                            fromTitle.text = resources.getString(R.string.from)
+                            kindOrToTitle.text = resources.getString(R.string.to)
+                            commentInfo.visibility = View.GONE
+                            commentTitle.visibility = View.GONE
+                            budgetData.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
+                        }
+                    }
                 commentInfo.text = it.commentary
             }
         }
@@ -80,12 +94,22 @@ class OperationInfoFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
                     val operationTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
-                    val operationTitle = result.data?.getStringExtra("title")!!
-                    val operationCommentary = result.data?.getStringExtra("commentary")!!
+                    val operationTitle:String
+                    val operationCommentary: String
                     val operationSum = result.data?.getDoubleExtra("sum", 0.0)!!
-                    val typeId =
-                        if (budgetData.chosenHistoryItem.value!!.isExpense) budgetData.expenseTypes[operationTypeIndex].id
-                        else budgetData.earningTypes[operationTypeIndex].id
+                    val typeId = when (budgetData.chosenHistoryItem.value!!.isExpense) {
+                        true -> budgetData.expenseTypes[operationTypeIndex].id
+                        false -> budgetData.earningTypes[operationTypeIndex].id
+                        else -> budgetData.budgetTypes.value!![operationTypeIndex].id
+                    }
+                    if(budgetData.chosenHistoryItem.value!!.isExpense == null) {
+                        operationTitle = budgetData.chosenHistoryItem.value!!.title
+                        operationCommentary = budgetData.chosenHistoryItem.value!!.commentary
+                    }
+                    else {
+                        operationTitle = result.data?.getStringExtra("title")!!
+                        operationCommentary = result.data?.getStringExtra("commentary")!!
+                    }
                     val budgetTypeId = budgetData.budgetTypes.value!![budgetTypeIndex].id
                     val isEdited = budgetData.editOperation(
                         budgetData.chosenHistoryItem.value!!, Operation(
@@ -133,52 +157,70 @@ class OperationInfoFragment : Fragment() {
             setFieldsValues(it)
         })
     }
+
     //endregion
     //region Methods
     private fun updateOperation() {
-        if (budgetData.chosenHistoryItem.value!!.isExpense) {
-            val intent = Intent(activity, ExpensesFormActivity::class.java)
-            intent.putExtra("isEdit", true)
-            intent.putExtra(
-                "budgetTypes",
-                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-            intent.putExtra(
-                "expenseTypes",
-                Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
+        when (budgetData.chosenHistoryItem.value!!.isExpense) {
+            true -> {
+                val intent = Intent(activity, ExpensesFormActivity::class.java)
+                intent.putExtra("isEdit", true)
+                intent.putExtra(
+                    "budgetTypes",
+                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                intent.putExtra(
+                    "expenseTypes",
+                    Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
 
-            intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
-            intent.putExtra(
-                "budgetTypeIndex",
-                budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
-            intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
-            intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
-            intent.putExtra(
-                "typeIndex",
-                budgetData.expenseTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
-            intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
-            launcher?.launch(intent)
-        } else {
-            val intent = Intent(activity, EarningsFormActivity::class.java)
-            intent.putExtra("isEdit", true)
-            intent.putExtra(
-                "budgetTypes",
-                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-            intent.putExtra(
-                "earningTypes",
-                Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+                intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
+                intent.putExtra(
+                    "budgetTypeIndex",
+                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
+                intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
+                intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
+                intent.putExtra(
+                    "typeIndex",
+                    budgetData.expenseTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
+                intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
+                launcher?.launch(intent)
+            }
+            false -> {
+                val intent = Intent(activity, EarningsFormActivity::class.java)
+                intent.putExtra("isEdit", true)
+                intent.putExtra(
+                    "budgetTypes",
+                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                intent.putExtra(
+                    "earningTypes",
+                    Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
 
-            intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
-            intent.putExtra(
-                "budgetTypeIndex",
-                budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
-            intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
-            intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
-            intent.putExtra(
-                "typeIndex",
-                budgetData.earningTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
-            intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
-            launcher?.launch(intent)
-
+                intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
+                intent.putExtra(
+                    "budgetTypeIndex",
+                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
+                intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
+                intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
+                intent.putExtra(
+                    "typeIndex",
+                    budgetData.earningTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
+                intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
+                launcher?.launch(intent)
+            }
+            else -> {
+                val intent = Intent(activity, BudgetExchangeActivity::class.java)
+                intent.putExtra("isEdit", true)
+                intent.putExtra(
+                    "budgetTypes",
+                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                intent.putExtra("exchangeSum", budgetData.chosenHistoryItem.value!!.sum)
+                intent.putExtra(
+                    "fromIndex",
+                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
+                intent.putExtra(
+                    "toIndex",
+                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
+                launcher?.launch(intent)
+            }
         }
     }
 

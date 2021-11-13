@@ -59,39 +59,6 @@ class Dialogs {
         }
     }
 
-    fun chooseTwoWithNoRepeat(
-        context: Context,
-        title: String,
-        list: Array<String>,
-        viewMain: TextView,
-        viewSecondary: TextView,
-        chosenTypeMain: Index,
-        chosenTypeSecondary: Index,
-        theme: Int = -1
-    ) {
-        if (list.isNotEmpty()) {
-            val dialog = MaterialAlertDialogBuilder(context)
-            dialog.setTitle(title)
-            dialog.setItems(list) { _, which ->
-                run {
-                    chosenTypeMain.value = which
-                    viewMain.text = list[chosenTypeMain.value]
-
-
-                    if (chosenTypeSecondary.value == chosenTypeMain.value) {
-                        chosenTypeSecondary.value = if (which == 0) 1 else 0
-                        viewSecondary.text = list[chosenTypeSecondary.value]
-                    }
-                }
-            }
-            if (theme >= 0) dialog.context.setTheme(theme)
-            dialog.show()
-        } else {
-            viewMain.text = null
-            viewSecondary.text = null
-        }
-    }
-
     fun chooseYesNo(
         context: Context,
         title: String,
