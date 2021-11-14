@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Budget Circle</string>
+    <string name="app_name" translatable="false">Budget Circle</string>
 
     <!-- Fragments' titles -->
     <string name="budget_fragment">Budget</string>
@@ -44,9 +44,6 @@
     <string name="period">Period:</string>
     <string name="type">Type:</string>
     <string name="rep_op">Operations:</string>
-    <string name="exp_type">Expenses</string>
-    <string name="earn_type">Earnings</string>
-    <string name="tr_type">Transactions</string>
     <string name="repetitive_op">Repetitive</string>
     <string name="non_repetitive_op">Non-repetitive</string>
     <string name="all">All</string>
