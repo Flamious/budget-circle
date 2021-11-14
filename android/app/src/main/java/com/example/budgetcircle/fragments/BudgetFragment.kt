@@ -192,7 +192,8 @@ class BudgetFragment : Fragment() {
                             budgetData.makeExchange(
                                 budgetData.budgetTypes.value!![from].id,
                                 budgetData.budgetTypes.value!![to].id,
-                                sum
+                                sum,
+                                resources.getString(R.string.new_exchange)
                             )
                         }
                         else -> {

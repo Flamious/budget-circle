@@ -112,12 +112,12 @@ open class BudgetData(application: Application) : AndroidViewModel(application) 
         budgetTypesRepository.deleteBudgetType(id)
     }
 
-    fun makeExchange(idFrom: Int, idTo: Int, sum: Double) = viewModelScope.launch(Dispatchers.IO) {
+    fun makeExchange(idFrom: Int, idTo: Int, sum: Double, title: String) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypesRepository.addSum(idFrom, -sum)
         budgetTypesRepository.addSum(idTo, sum)
         operationsRepository.addOperation(
             Operation(
-                "exchange",
+                title,
                 sum,
                 getCurrentDate(),
                 idTo,
