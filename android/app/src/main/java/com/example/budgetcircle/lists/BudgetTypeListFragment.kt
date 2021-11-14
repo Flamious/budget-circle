@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
@@ -81,6 +82,7 @@ class BudgetTypeListFragment : Fragment() {
                         lastTypeId,
                         BudgetType(
                             name,
+                            name,
                             sum,
                             true
                         )
@@ -102,7 +104,10 @@ class BudgetTypeListFragment : Fragment() {
         val intent = Intent(activity, BudgetFormActivity::class.java)
         lastTypeId = item.id
         intent.putExtra("edit", "edit")
-        intent.putExtra("accountName", item.title)
+        if (MainActivity.isRu())
+            intent.putExtra("accountName", item.titleRu)
+        else
+            intent.putExtra("accountName", item.title)
         intent.putExtra("newAccountBudget", item.sum)
         launcher?.launch(intent)
     }

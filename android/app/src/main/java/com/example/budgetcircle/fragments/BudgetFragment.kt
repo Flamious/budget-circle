@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
@@ -89,6 +90,7 @@ class BudgetFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
     //region Setting
     private fun setAnimation(
         isClicked: Boolean,
@@ -125,7 +127,8 @@ class BudgetFragment : Fragment() {
 
     private fun setChart(budgetTypes: List<BudgetType>) {
         val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
-        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
+        val titles =
+            Array(budgetTypes.size) { index -> if (MainActivity.isRu()) budgetTypes[index].titleRu else budgetTypes[index].title }
         var sum = 0.0
         for (n in values) {
             sum += n
@@ -170,6 +173,7 @@ class BudgetFragment : Fragment() {
                             budgetData.addToBudgetTypesList(
                                 BudgetType(
                                     name,
+                                    name,
                                     sum,
                                     true
                                 )
@@ -209,6 +213,7 @@ class BudgetFragment : Fragment() {
             setChart(it)
         })
     }
+
     //endregion
     //region Methods
     private fun showHiddenButtons() {
@@ -233,9 +238,14 @@ class BudgetFragment : Fragment() {
 
     private fun addExchange() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
-        intent.putExtra(
-            "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+        if (MainActivity.isRu())
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].titleRu })
+        else
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
         intent.putExtra(
             "budgetTypesSums",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })

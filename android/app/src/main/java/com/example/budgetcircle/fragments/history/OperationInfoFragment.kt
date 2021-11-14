@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
@@ -70,17 +71,25 @@ class OperationInfoFragment : Fragment() {
                 }
                 sumInfo.setTextColor(it.color)
                 accountInfo.text =
-                    budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
+                    if (MainActivity.isRu()) budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.titleRu
+                    else budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
                 kindInfo.text =
                     when (it.isExpense) {
-                        true -> budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
-                        false -> budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                        true -> {
+                            if (MainActivity.isRu()) budgetData.expenseTypes.first { type -> type.id == it.typeId }.titleRu
+                            else budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
+                        }
+                        false -> {
+                            if (MainActivity.isRu()) budgetData.earningTypes.first { type -> type.id == it.typeId }.titleRu
+                            else budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                        }
                         null -> {
                             fromTitle.text = resources.getString(R.string.from)
                             kindOrToTitle.text = resources.getString(R.string.to)
                             commentInfo.visibility = View.GONE
                             commentTitle.visibility = View.GONE
-                            budgetData.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
+                            if (MainActivity.isRu()) budgetData.budgetTypes.value!!.first { type -> type.id == it.typeId }.titleRu
+                            else budgetData.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
                         }
                     }
                 commentInfo.text = it.commentary
@@ -94,7 +103,7 @@ class OperationInfoFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
                     val operationTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
-                    val operationTitle:String
+                    val operationTitle: String
                     val operationCommentary: String
                     val operationSum = result.data?.getDoubleExtra("sum", 0.0)!!
                     val typeId = when (budgetData.chosenHistoryItem.value!!.isExpense) {
@@ -102,11 +111,10 @@ class OperationInfoFragment : Fragment() {
                         false -> budgetData.earningTypes[operationTypeIndex].id
                         else -> budgetData.budgetTypes.value!![operationTypeIndex].id
                     }
-                    if(budgetData.chosenHistoryItem.value!!.isExpense == null) {
+                    if (budgetData.chosenHistoryItem.value!!.isExpense == null) {
                         operationTitle = budgetData.chosenHistoryItem.value!!.title
                         operationCommentary = budgetData.chosenHistoryItem.value!!.commentary
-                    }
-                    else {
+                    } else {
                         operationTitle = result.data?.getStringExtra("title")!!
                         operationCommentary = result.data?.getStringExtra("commentary")!!
                     }
@@ -161,16 +169,18 @@ class OperationInfoFragment : Fragment() {
     //endregion
     //region Methods
     private fun updateOperation() {
+        val budgetTypes =
+            Array(budgetData.budgetTypes.value!!.size) { index -> if (MainActivity.isRu()) budgetData.budgetTypes.value!![index].titleRu else budgetData.budgetTypes.value!![index].title }
+        val expenseTypes =
+            Array(budgetData.expenseTypes.size) { index -> if (MainActivity.isRu()) budgetData.expenseTypes[index].titleRu else budgetData.expenseTypes[index].title }
+        val earningTypes =
+            Array(budgetData.earningTypes.size) { index -> if (MainActivity.isRu()) budgetData.earningTypes[index].titleRu else budgetData.earningTypes[index].title }
         when (budgetData.chosenHistoryItem.value!!.isExpense) {
             true -> {
                 val intent = Intent(activity, ExpensesFormActivity::class.java)
                 intent.putExtra("isEdit", true)
-                intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-                intent.putExtra(
-                    "expenseTypes",
-                    Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
+                intent.putExtra("budgetTypes", budgetTypes)
+                intent.putExtra("expenseTypes", expenseTypes)
 
                 intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
@@ -187,12 +197,8 @@ class OperationInfoFragment : Fragment() {
             false -> {
                 val intent = Intent(activity, EarningsFormActivity::class.java)
                 intent.putExtra("isEdit", true)
-                intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-                intent.putExtra(
-                    "earningTypes",
-                    Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+                intent.putExtra("budgetTypes", budgetTypes)
+                intent.putExtra("earningTypes", earningTypes)
 
                 intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
@@ -209,9 +215,7 @@ class OperationInfoFragment : Fragment() {
             else -> {
                 val intent = Intent(activity, BudgetExchangeActivity::class.java)
                 intent.putExtra("isEdit", true)
-                intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                intent.putExtra("budgetTypes", budgetTypes)
                 intent.putExtra("exchangeSum", budgetData.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
                     "fromIndex",

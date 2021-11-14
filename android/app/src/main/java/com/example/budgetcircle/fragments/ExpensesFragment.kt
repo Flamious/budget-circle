@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.OperationSum
@@ -43,6 +44,7 @@ class ExpensesFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
     //region Setting
     private fun setButtons() {
         binding.addExpenseButton.setOnClickListener {
@@ -62,7 +64,8 @@ class ExpensesFragment : Fragment() {
 
     private fun setChart(expenseSums: List<OperationSum>) {
         val values = Array(expenseSums.size) { index -> expenseSums[index].sum }
-        val titles = Array(expenseSums.size) { index -> expenseSums[index].title }
+        val titles =
+            Array(expenseSums.size) { index -> if (MainActivity.isRu()) expenseSums[index].titleRu else expenseSums[index].title }
         var sum = 0.0
         for (n in values) {
             sum += n
@@ -128,6 +131,7 @@ class ExpensesFragment : Fragment() {
             setChart(it)
         })
     }
+
     //endregion
     //region Methods
     private fun changeOrientation() {
@@ -140,15 +144,26 @@ class ExpensesFragment : Fragment() {
 
     private fun addExpense() {
         val intent = Intent(activity, ExpensesFormActivity::class.java)
-        intent.putExtra(
-            "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+        if (MainActivity.isRu()) {
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].titleRu })
+
+            intent.putExtra(
+                "expenseTypes",
+                Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].titleRu })
+        } else {
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+
+            intent.putExtra(
+                "expenseTypes",
+                Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
+        }
         intent.putExtra(
             "budgetTypesSums",
             Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })
-        intent.putExtra(
-            "expenseTypes",
-            Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
         launcher?.launch(intent)
     }
     //endregion

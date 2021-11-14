@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
@@ -43,6 +44,7 @@ class EarningsFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
     //region Setting
     private fun setButtons() {
         binding.addEarningButton.setOnClickListener {
@@ -62,7 +64,8 @@ class EarningsFragment : Fragment() {
 
     private fun setChart(earningSums: List<OperationSum>) {
         val values = Array(earningSums.size) { index -> earningSums[index].sum }
-        val titles = Array(earningSums.size) { index -> earningSums[index].title }
+        val titles =
+            Array(earningSums.size) { index -> if (MainActivity.isRu()) earningSums[index].titleRu else earningSums[index].title }
         var sum = 0.0
         for (n in values) {
             sum += n
@@ -130,6 +133,7 @@ class EarningsFragment : Fragment() {
             setChart(it)
         })
     }
+
     //endregion
     //region Methods
     private fun changeOrientation() {
@@ -142,13 +146,25 @@ class EarningsFragment : Fragment() {
 
     private fun addEarning() {
         val intent = Intent(activity, EarningsFormActivity::class.java)
-        intent.putExtra(
-            "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-        intent.putExtra(
-            "earningTypes",
-            Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
-        launcher?.launch(intent)
+        if (MainActivity.isRu()) {
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].titleRu })
+
+            intent.putExtra(
+                "earningTypes",
+                Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].titleRu })
+            launcher?.launch(intent)
+        } else {
+            intent.putExtra(
+                "budgetTypes",
+                Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+
+            intent.putExtra(
+                "earningTypes",
+                Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+            launcher?.launch(intent)
+        }
     }
     //endregion
 }

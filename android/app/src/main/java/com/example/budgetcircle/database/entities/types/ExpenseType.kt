@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "expenses_types")
 data class ExpenseType(
-    val title: String
+    val title: String,
+    var titleRu: String
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

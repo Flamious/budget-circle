@@ -11,6 +11,7 @@ import com.example.budgetcircle.fragments.*
 import com.example.budgetcircle.fragments.history.HistoryFragment
 import com.example.budgetcircle.fragments.settings.SettingsFragment
 import com.example.budgetcircle.viewmodel.BudgetData
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -85,4 +86,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
     //endregion
+
+    companion object {
+        fun isRu(): Boolean {
+            return Locale.getDefault().language == "ru"
+        }
+    }
 }

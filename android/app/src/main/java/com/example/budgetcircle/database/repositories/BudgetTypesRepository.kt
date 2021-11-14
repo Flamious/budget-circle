@@ -13,6 +13,7 @@ class BudgetTypesRepository(private val BudgetTypesDAO: BudgetTypesDAO) {
     fun updateBudgetType(id: Int, newItem: BudgetType) {
         val previousItem = BudgetTypesDAO.getById(id)
         previousItem.title = newItem.title
+        previousItem.titleRu = newItem.titleRu
         previousItem.sum = DoubleFormatter.format(newItem.sum)
         BudgetTypesDAO.update(previousItem)
     }

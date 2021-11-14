@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.database.entities.types.EarningType
@@ -44,16 +45,22 @@ class HistoryAdapter(
             imageRepetitive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
             itemType.text =
                 when (item.isExpense) {
-                    true -> expensesTypes.first { it.id == item.typeId }.title
-                    false -> earningsTypes.first { it.id == item.typeId }.title
+                    true -> {
+                        if(MainActivity.isRu()) expensesTypes.first { it.id == item.typeId }.titleRu
+                        else expensesTypes.first { it.id == item.typeId }.title
+                    }
+                    false -> {
+                        if(MainActivity.isRu()) earningsTypes.first { it.id == item.typeId }.titleRu
+                        else earningsTypes.first { it.id == item.typeId }.title
+                    }
                     else -> {
                         typeTitle.text = to
-                        budgetTypes.first { it.id == item.typeId }.title
+                        if(MainActivity.isRu()) budgetTypes.first { it.id == item.typeId }.titleRu
+                        else budgetTypes.first { it.id == item.typeId }.title
                     }
                 }
-            accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
-                /*if (item.isExpense == true) expensesTypes.first { it.id == item.typeId }.title
-                else earningsTypes.first { it.id == item.typeId }.title*/
+            if(MainActivity.isRu()) accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.titleRu
+            else accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
             itemDate.text = SimpleDateFormat("dd.MM.yyy", Locale.getDefault()).format(item.date)
             itemLayout.setOnClickListener {
                 onItemClick?.invoke(item, itemList.indexOfFirst { op -> op.id == item.id })

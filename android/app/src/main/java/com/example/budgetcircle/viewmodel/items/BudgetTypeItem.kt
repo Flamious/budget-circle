@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
@@ -20,7 +21,7 @@ class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
         private val binding = BudgetTypeItemBinding.bind(view)
         fun bind(item: BudgetType) = binding.apply {
             budgetTypeSum.text = item.sum.toString()
-            typeTitle.text = item.title
+            typeTitle.text = if(MainActivity.isRu()) item.titleRu else item.title
             budgetTypeDeleteButton.isEnabled = item.isDeletable
             budgetTypeEditButton.setOnClickListener {
                 onEditClick?.invoke(item)

@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "budget_types")
 data class BudgetType(
     var title: String,
+    var titleRu: String,
     var sum: Double,
     var isDeletable: Boolean
 ) {

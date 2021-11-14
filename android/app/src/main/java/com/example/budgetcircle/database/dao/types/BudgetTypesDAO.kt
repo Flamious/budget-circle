@@ -6,7 +6,7 @@ import com.example.budgetcircle.database.entities.types.BudgetType
 
 @Dao
 interface BudgetTypesDAO {
-    @Query("SELECT title, sum, isDeletable, MAX(id) AS id FROM budget_types")
+    @Query("SELECT title, titleRu, sum, isDeletable, MAX(id) AS id FROM budget_types")
     fun getLastItem(): BudgetType
 
     @Query("SELECT * FROM budget_types WHERE id = :id")
