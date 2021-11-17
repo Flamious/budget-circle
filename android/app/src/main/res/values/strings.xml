@@ -75,7 +75,7 @@
     <string name="insufficient_funds">Insufficient funds on the account</string>
 
     <!-- Lists -->
-    <string name="budgetTypes">Budget Types</string>
+    <string name="budgetTypes">Accounts</string>
 
     <!-- Dialogs -->
     <string name="r_u_sure">Are you sure?</string>
