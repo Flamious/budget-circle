@@ -60,6 +60,7 @@ class HistoryFragment : Fragment() {
 
     private fun setObservation() {
         budgetData.historyItems.observe(this.viewLifecycleOwner, {
+             binding.noEntriesTitle.visibility = if(it.isNullOrEmpty()) View.VISIBLE else View.GONE
             val list: Array<HistoryItem> = Array(it.size) { index ->
                 HistoryItem(
                     it[index].id,
