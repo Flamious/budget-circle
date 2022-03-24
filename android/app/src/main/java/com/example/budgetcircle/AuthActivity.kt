@@ -1,7 +1,10 @@
 package com.example.budgetcircle
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginFragment

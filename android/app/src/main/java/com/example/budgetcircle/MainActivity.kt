@@ -1,8 +1,10 @@
 package com.example.budgetcircle
 
+import android.content.Context
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -15,13 +17,15 @@ import com.example.budgetcircle.viewmodel.BudgetData
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val budgetData: BudgetData by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initiateViewModel()
         setNavMenu()
+
+        Token = intent.extras?.getString("token")!!
+        Toast.makeText(this, Token, Toast.LENGTH_LONG).show()
     }
     //region Setting
     private fun initiateViewModel() {
@@ -85,4 +89,8 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
     //endregion
+
+    companion object {
+        var Token: String = ""
+    }
 }
