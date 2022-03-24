@@ -9,4 +9,12 @@ interface UserApi {
     @FormUrlEncoded
     @POST("/user/signin")
     fun signIn(@Field("Email") Email: String, @Field("Password") Password: String): Call<Any>
+
+    @FormUrlEncoded
+    @POST("/user/signup")
+    fun signUp(
+        @Field("Email") Email: String,
+        @Field("Password") Password: String,
+        @Field("ConfirmationPassword") ConfirmationPassword: String
+    ): Call<Any>
 }
