@@ -23,13 +23,15 @@ import retrofit2.*
 
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
-
+    lateinit var service: UserApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater)
         setButtons()
+        setService()
+        loadToken()
         return binding.root
     }
 
@@ -45,6 +47,11 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
+    private fun setService() {
+        val url = resources.getString(R.string.url)
+        service = Client.getClient(url).create(UserApi::class.java)
+    }
     //endregion
 
     //region Methods
@@ -57,9 +64,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun sendRequest() {
-        val url = resources.getString(R.string.url)
-        val service = Client.getClient(url).create(UserApi::class.java)
-
         service.signIn(
             binding.emailLoginText.text.toString(),
             binding.PasswordLoginText.text.toString()
@@ -106,9 +110,40 @@ class LoginFragment : Fragment() {
         val intent = Intent(activity, MainActivity::class.java)
         intent.putExtra(
             "token",
-            token)
+            token
+        )
 
         startActivity(intent)
+    }
+
+    private fun loadToken() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val token = sharedPref.getString(getString(R.string.token), null)
+
+        if (token != null) {
+            refreshToken(token)
+        }
+    }
+
+    private fun refreshToken(token: String) {
+        service.refreshToken(
+            "Bearer $token"
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                print(t.message)
+            }
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                val gson = Gson()
+                if (response.isSuccessful) {
+                    val token =
+                        gson.fromJson(gson.toJson(response.body()), AuthResponse::class.java).token
+
+                    saveToken(token)
+                    startApp(token)
+                }
+            }
+        })
     }
     //endregion
 }
