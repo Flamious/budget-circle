@@ -12,13 +12,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
+import com.example.budgetcircle.viewmodel.models.BudgetType
 import java.util.*
 
 class BudgetTypeListFragment : Fragment() {
@@ -26,7 +27,7 @@ class BudgetTypeListFragment : Fragment() {
     lateinit var binding: FragmentBudgetTypeListBinding
     private lateinit var adapter: BudgetTypeAdapter
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
     private var itemUnderDeletion: BudgetType? = null
     private var lastTypeId: Int = -1
     override fun onCreateView(
@@ -77,9 +78,10 @@ class BudgetTypeListFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val name = result.data?.getStringExtra("newAccountName")!!
                     val sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
-                    budgetData.editBudgetType(
+                    budgetDataApi.editBudgetType(
                         lastTypeId,
                         BudgetType(
+                            -1,
                             name,
                             sum,
                             true
@@ -91,7 +93,7 @@ class BudgetTypeListFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetData.budgetTypes.observe(this.viewLifecycleOwner, {
+        budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
             adapter.setList(it)
         })
     }
@@ -109,7 +111,7 @@ class BudgetTypeListFragment : Fragment() {
 
     private fun deleteBudgetType() {
         itemUnderDeletion?.let {
-            budgetData.deleteBudgetType(it.id)
+            budgetDataApi.deleteBudgetType(it.id)
         }
         itemUnderDeletion = null
     }

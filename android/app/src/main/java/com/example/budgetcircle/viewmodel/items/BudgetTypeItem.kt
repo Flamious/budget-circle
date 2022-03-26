@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
+import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
 
 

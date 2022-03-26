@@ -15,18 +15,19 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.models.Operation
+import com.example.budgetcircle.viewmodel.models.OperationSum
 import kotlin.collections.ArrayList
 
 class ExpensesFragment : Fragment() {
     lateinit var binding: FragmentExpensesBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +44,7 @@ class ExpensesFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
     //region Setting
     private fun setButtons() {
         binding.addExpenseButton.setOnClickListener {
@@ -54,15 +56,15 @@ class ExpensesFragment : Fragment() {
                 resources.getString(R.string.choosingPeriod),
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                budgetData.expensesDateString,
-                budgetData.expensesDate
+                budgetDataApi.expensesDateString,
+                budgetDataApi.expensesDate
             )
         }
     }
 
     private fun setChart(expenseSums: List<OperationSum>) {
         val values = Array(expenseSums.size) { index -> expenseSums[index].sum }
-        val titles = Array(expenseSums.size) { index -> expenseSums[index].title }
+        val titles = Array(expenseSums.size) { index -> expenseSums[index].type }
         var sum = 0.0
         for (n in values) {
             sum += n
@@ -104,12 +106,17 @@ class ExpensesFragment : Fragment() {
                     val expenseTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
                     val expenseTitle = result.data?.getStringExtra("title")!!
                     val expenseCommentary = result.data?.getStringExtra("commentary")!!
-                    budgetData.addExpense(
-                        expenseTitle,
-                        result.data?.getDoubleExtra("sum", 0.0)!!,
-                        budgetData.expenseTypes[expenseTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
-                        expenseCommentary
+                    budgetDataApi.addOperation(
+                        Operation(
+                            -1,
+                            expenseTitle,
+                            result.data?.getDoubleExtra("sum", 0.0)!!,
+                            "",
+                            budgetDataApi.expenseTypes.value!![expenseTypeIndex].id,
+                            budgetDataApi.budgetTypes.value!![budgetTypeIndex].id,
+                            expenseCommentary,
+                            true
+                        )
                     )
                     Toast.makeText(
                         activity,
@@ -121,13 +128,19 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetData.expensesDateString.observe(this.viewLifecycleOwner, {
+        budgetDataApi.expensesDateString.observe(this.viewLifecycleOwner, {
             binding.periodText.text = it
         })
-        budgetData.expenseSumByDate.observe(this.viewLifecycleOwner, {
-            setChart(it)
+        budgetDataApi.expensesDate.observe(this.viewLifecycleOwner, {
+            budgetDataApi.getExpenseSums(it)
+        })
+        budgetDataApi.expenseSums.observe(this.viewLifecycleOwner, {
+            if (it != null) {
+                setChart(it)
+            }
         })
     }
+
     //endregion
     //region Methods
     private fun changeOrientation() {
@@ -142,13 +155,13 @@ class ExpensesFragment : Fragment() {
         val intent = Intent(activity, ExpensesFormActivity::class.java)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
         intent.putExtra(
             "budgetTypesSums",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].sum })
         intent.putExtra(
             "expenseTypes",
-            Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
+            Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
         launcher?.launch(intent)
     }
     //endregion
