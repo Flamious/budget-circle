@@ -23,7 +23,6 @@ import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,7 +32,6 @@ import kotlin.collections.ArrayList
 class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
     private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     //region Animations

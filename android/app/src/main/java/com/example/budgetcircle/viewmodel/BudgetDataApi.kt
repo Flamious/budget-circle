@@ -10,10 +10,14 @@ import com.example.budgetcircle.requests.BudgetTypeApi
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.OperationApi
 import com.example.budgetcircle.requests.OperationTypeApi
+import com.example.budgetcircle.requests.models.AuthResponse
+import com.example.budgetcircle.requests.models.OperationListResponse
+import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
 import com.example.budgetcircle.viewmodel.models.OperationType
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -32,6 +36,15 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(OperationTypeApi::class.java)
 
+    val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
+        value = null
+    }
+    val chosenHistoryItemIndex: MutableLiveData<Int?> = MutableLiveData<Int?>().apply {
+        value = null
+    }
+    var operations: MutableLiveData<List<Operation>> = MutableLiveData<List<Operation>>().apply {
+        value = null
+    }
     var budgetTypes: MutableLiveData<List<BudgetType>> = MutableLiveData<List<BudgetType>>().apply {
         value = null
     }
@@ -64,6 +77,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         getBudgetTypes()
         getEarningTypes()
         getExpenseTypes()
+        getOperations()
     }
 
     private fun getBudgetTypes() = viewModelScope.launch(Dispatchers.IO) {
@@ -145,7 +159,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         })
     }
 
-    fun addSum(budget: BudgetType, sum: Double, loadList: Boolean = true) {
+    private fun addSum(budget: BudgetType, sum: Double, loadList: Boolean = true) {
         budget.sum += sum
 
         editBudgetType(
@@ -155,7 +169,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         )
     }
 
-    fun addSum(budgetId: Int, sum: Double, newList: Boolean = true) {
+    private fun addSum(budgetId: Int, sum: Double, newList: Boolean = true) {
         val budget = budgetTypes.value!!.findLast { x -> x.id == budgetId }
         addSum(budget!!, sum, newList)
     }
@@ -178,6 +192,31 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             addSum(to, sum, false)
             addSum(from, -sum, true)
         }
+
+    private fun getOperations() = viewModelScope.launch(Dispatchers.IO) {
+        operationApiService.getOperations(
+            MainActivity.Token
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                val gson = Gson()
+                if (response.isSuccessful) {
+                    val listResponse =
+                        gson.fromJson(
+                            gson.toJson(response.body()),
+                            OperationListResponse::class.java
+                        )
+
+                    operations.value = listResponse.operations
+                }
+            }
+        })
+    }
 
     fun addOperation(operation: Operation) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -202,6 +241,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                 ) {
                     if (response.isSuccessful) {
                         getBudgetTypes()
+                        getOperations()
                         if (operation.isExpense == false) {
                             getEarningSums(earningsDate.value!!)
                         }
@@ -212,6 +252,195 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                 }
             })
         }
+
+
+    fun editOperation(oldOperation: HistoryItem, newOperation: Operation): Boolean {
+        when (oldOperation.isExpense) {
+            true -> {
+                if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                    val newBudgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                    if (newBudgetType.sum < newOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            addSum(
+                                oldOperation.budgetTypeId,
+                                oldOperation.sum
+                            )
+                            addSum(
+                                newOperation.budgetTypeId,
+                                -newOperation.sum
+                            )
+                        }
+                    }
+                } else {
+                    val budgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (budgetType.sum < newOperation.sum - oldOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            addSum(
+                                oldOperation.budgetTypeId,
+                                -(newOperation.sum - oldOperation.sum)
+                            )
+                        }
+                    }
+                }
+            }
+            false -> {
+                if (newOperation.budgetTypeId != oldOperation.budgetTypeId) {
+                    val oldBudgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (oldBudgetType.sum < oldOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            addSum(
+                                oldOperation.budgetTypeId,
+                                -oldOperation.sum
+                            )
+                            addSum(
+                                newOperation.budgetTypeId,
+                                newOperation.sum
+                            )
+                        }
+                    }
+                } else {
+                    val budgetType: BudgetType =
+                        budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                    if (budgetType.sum < oldOperation.sum - newOperation.sum) return false
+                    else {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            addSum(
+                                oldOperation.budgetTypeId,
+                                -(oldOperation.sum - newOperation.sum)
+                            )
+                        }
+                    }
+                }
+            }
+            else -> {
+                val oldFrom: BudgetType =
+                    budgetTypes.value!!.first { it.id == oldOperation.budgetTypeId }
+                val newFrom: BudgetType =
+                    budgetTypes.value!!.first { it.id == newOperation.budgetTypeId }
+                val oldTo: BudgetType = budgetTypes.value!!.first { it.id == oldOperation.typeId }
+                val newTo: BudgetType = budgetTypes.value!!.first { it.id == newOperation.typeId }
+                if (oldOperation.typeId == newOperation.budgetTypeId) {
+                    if (oldTo.sum - oldOperation.sum < newOperation.sum) return false
+                }
+                //no account is changed
+                if (oldOperation.budgetTypeId == newOperation.budgetTypeId && oldOperation.typeId == newOperation.typeId) {
+                    if (oldOperation.sum < newOperation.sum) {
+                        if (oldFrom.sum < newOperation.sum - oldOperation.sum) return false
+                    }
+                    if (oldOperation.sum > newOperation.sum) {
+                        if (oldTo.sum < oldOperation.sum - newOperation.sum) return false
+                    }
+                }
+                //"from" changed
+                if (oldOperation.budgetTypeId != newOperation.budgetTypeId && oldOperation.typeId == newOperation.typeId) {
+                    if (newFrom.sum < newOperation.sum) return false
+                    if (oldOperation.sum > newOperation.sum) {
+                        if (oldTo.sum < oldOperation.sum - newOperation.sum) return false
+                    }
+                }
+                //"to" changed
+                if (oldOperation.budgetTypeId == newOperation.budgetTypeId && oldOperation.typeId != newOperation.typeId) {
+                    if (oldOperation.sum < newOperation.sum) {
+                        if (oldFrom.sum < newOperation.sum - oldOperation.sum) return false
+                    }
+                    if (oldTo.sum < oldOperation.sum) return false
+                }
+                //both accounts changed
+                if (oldOperation.budgetTypeId != newOperation.budgetTypeId && oldOperation.typeId != newOperation.typeId) {
+                    if (newFrom.sum < newOperation.sum) return false
+                    if (oldTo.sum < oldOperation.sum) return false
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    addSum(oldFrom.id, oldOperation.sum)
+                    addSum(oldTo.id, -oldOperation.sum)
+                    addSum(newFrom.id, -newOperation.sum)
+                    addSum(newTo.id, newOperation.sum)
+                }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationApiService.editOperation(
+                MainActivity.Token,
+                oldOperation.id,
+                newOperation.title,
+                newOperation.sum,
+                newOperation.typeId,
+                newOperation.budgetTypeId,
+                newOperation.commentary,
+                newOperation.isExpense
+            ).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    if (response.isSuccessful) {
+                        getBudgetTypes()
+                        getOperations()
+                        if (oldOperation.isExpense == false) {
+                            getEarningSums(earningsDate.value!!)
+                        }
+                        if (oldOperation.isExpense == true) {
+                            getExpenseSums(expensesDate.value!!)
+                        }
+                    }
+                }
+            })
+        }
+        return true
+    }
+
+    fun deleteOperation(operation: HistoryItem): Boolean {
+        val budgetTypeFrom: BudgetType =
+            budgetTypes.value!!.first { it.id == operation.budgetTypeId }
+        when (operation.isExpense) {
+            true -> {
+                addSum(budgetTypeFrom.id, operation.sum)
+            }
+            false -> {
+                if (budgetTypeFrom.sum < operation.sum) return false
+                addSum(budgetTypeFrom.id, -operation.sum)
+            }
+            else -> {
+                val budgetTypeTo: BudgetType =
+                    budgetTypes.value!!.first { it.id == operation.typeId }
+                if (budgetTypeTo.sum < operation.sum) return false
+                addSum(budgetTypeFrom.id, operation.sum)
+                addSum(budgetTypeTo.id, -operation.sum)
+
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            operationApiService.deleteOperation(
+                MainActivity.Token,
+                operation.id
+            ).enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Any>,
+                    response: Response<Any>
+                ) {
+                    if (response.isSuccessful) {
+                        getBudgetTypes()
+                        getOperations()
+                        if (operation.isExpense == true) getExpenseSums(expensesDate.value!!)
+                        if (operation.isExpense == false) getEarningSums(earningsDate.value!!)
+                    }
+                }
+            })
+        }
+        return true
+    }
 
     fun getEarningSums(period: Int) =
         viewModelScope.launch(Dispatchers.IO) {

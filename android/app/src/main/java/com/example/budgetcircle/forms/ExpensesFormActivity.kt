@@ -62,7 +62,6 @@ class ExpensesFormActivity : AppCompatActivity() {
         binding.expTitle.setText(intent.extras?.getString("title")!!)
         binding.expSum.setText(intent.extras?.getDouble("sum")!!.toString())
         binding.expCommentaryField.setText(intent.extras?.getString("commentary")!!)
-        binding.expRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
         binding.expRepSwitch.isEnabled = false
         chosenExpenseType.value = intent.extras?.getInt("typeIndex")!!
         chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
@@ -131,7 +130,6 @@ class ExpensesFormActivity : AppCompatActivity() {
             val intent = Intent()
             intent.putExtra("sum", binding.expSum.text.toString().toDouble())
             intent.putExtra("typeIndex", chosenExpenseType.value)
-            intent.putExtra("isRep", binding.expRepSwitch.isChecked)
             intent.putExtra("title", binding.expTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
             intent.putExtra("commentary", binding.expCommentaryField.text.toString())

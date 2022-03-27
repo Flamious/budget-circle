@@ -16,7 +16,6 @@ import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
-import com.example.budgetcircle.viewmodel.BudgetData
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.models.BudgetType

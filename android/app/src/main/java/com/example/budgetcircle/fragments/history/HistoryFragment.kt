@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import java.util.*
@@ -18,7 +18,9 @@ import java.util.*
 class HistoryFragment : Fragment() {
     lateinit var binding: FragmentHistoryBinding
     private lateinit var adapter: HistoryAdapter
-    private val budgetData: BudgetData by activityViewModels()
+
+    //private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,55 +36,56 @@ class HistoryFragment : Fragment() {
     //region Setting
     private fun setAdapter() {
         adapter = HistoryAdapter(
-            budgetData.budgetTypes.value!!.toTypedArray(),
-            budgetData.earningTypes.toTypedArray(),
-            budgetData.expenseTypes.toTypedArray()
+            budgetDataApi.budgetTypes.value!!.toTypedArray(),
+            budgetDataApi.earningTypes.value!!.toTypedArray(),
+            budgetDataApi.expenseTypes.value!!.toTypedArray()
         )
         binding.apply {
             historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
             historyList.adapter = adapter
-            if (budgetData.chosenHistoryItemIndex.value != null) {
+            if (budgetDataApi.chosenHistoryItemIndex.value != null) {
                 historyList.scrollToPosition(
-                    budgetData.chosenHistoryItemIndex.value!!
+                    budgetDataApi.chosenHistoryItemIndex.value!!
                 )
-                budgetData.chosenHistoryItemIndex.postValue(null)
+                budgetDataApi.chosenHistoryItemIndex.postValue(null)
             }
         }
     }
 
     private fun setButtons() {
         adapter.onItemClick = { item, index ->
-            budgetData.chosenHistoryItem.value = item
-            budgetData.chosenHistoryItemIndex.value = index
+            budgetDataApi.chosenHistoryItem.value = item
+            budgetDataApi.chosenHistoryItemIndex.value = index
             openInfo()
         }
     }
 
     private fun setObservation() {
-        budgetData.historyItems.observe(this.viewLifecycleOwner, {
-            val list: Array<HistoryItem> = Array(it.size) { index ->
-                HistoryItem(
-                    it[index].id,
-                    it[index].title,
-                    it[index].sum,
-                    it[index].date,
-                    it[index].typeId,
-                    it[index].budgetTypeId,
-                    it[index].commentary,
-                    it[index].isRepetitive,
-                    it[index].isExpense,
-                    ContextCompat.getColor(
-                        this.requireContext(),
-                        when (it[index].isExpense) {
-                            true -> R.color.red_main
-                            false -> R.color.blue_main
-                            else -> R.color.green_main
-                        }
+        budgetDataApi.operations.observe(this.viewLifecycleOwner, {
+            if (it != null) {
+                val list: Array<HistoryItem> = Array(it.size) { index ->
+                    HistoryItem(
+                        it[index].id,
+                        it[index].title,
+                        it[index].sum,
+                        it[index].date,
+                        it[index].typeId,
+                        it[index].budgetTypeId,
+                        it[index].commentary,
+                        it[index].isExpense,
+                        ContextCompat.getColor(
+                            this.requireContext(),
+                            when (it[index].isExpense) {
+                                true -> R.color.red_main
+                                false -> R.color.blue_main
+                                else -> R.color.green_main
+                            }
+                        )
                     )
-                )
+                }
 
+                adapter.setList(list)
             }
-            adapter.setList(list)
         })
     }
 

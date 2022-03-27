@@ -60,7 +60,6 @@ class EarningsFormActivity : AppCompatActivity() {
         binding.earnTitle.setText(intent.extras?.getString("title")!!)
         binding.earnSum.setText(intent.extras?.getDouble("sum")!!.toString())
         binding.earnCommentaryField.setText(intent.extras?.getString("commentary")!!)
-        binding.earnRepSwitch.isChecked = intent.extras?.getBoolean("isRep")!!
         binding.earnRepSwitch.isEnabled = false
         chosenEarningType.value = intent.extras?.getInt("typeIndex")!!
         chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
@@ -111,7 +110,6 @@ class EarningsFormActivity : AppCompatActivity() {
             val intent = Intent()
             intent.putExtra("sum", binding.earnSum.text.toString().toDouble())
             intent.putExtra("typeIndex", chosenEarningType.value)
-            intent.putExtra("isRep", binding.earnRepSwitch.isChecked)
             intent.putExtra("title", binding.earnTitle.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
             intent.putExtra("commentary", binding.earnCommentaryField.text.toString())

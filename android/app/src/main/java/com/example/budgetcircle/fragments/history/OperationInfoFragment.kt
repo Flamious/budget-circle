@@ -12,20 +12,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.main.Operation
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.forms.ExpensesFormActivity
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryItem
-import java.util.*
+import com.example.budgetcircle.viewmodel.models.Operation
 
 class OperationInfoFragment : Fragment() {
     lateinit var binding: FragmentOperationInfoBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,17 +69,17 @@ class OperationInfoFragment : Fragment() {
                 }
                 sumInfo.setTextColor(it.color)
                 accountInfo.text =
-                    budgetData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
+                    budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
                 kindInfo.text =
                     when (it.isExpense) {
-                        true -> budgetData.expenseTypes.first { type -> type.id == it.typeId }.title
-                        false -> budgetData.earningTypes.first { type -> type.id == it.typeId }.title
+                        true -> budgetDataApi.expenseTypes.value!!.first { type -> type.id == it.typeId }.title
+                        false -> budgetDataApi.earningTypes.value!!.first { type -> type.id == it.typeId }.title
                         null -> {
                             fromTitle.text = resources.getString(R.string.from)
                             kindOrToTitle.text = resources.getString(R.string.to)
                             commentInfo.visibility = View.GONE
                             commentTitle.visibility = View.GONE
-                            budgetData.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
+                            budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
                         }
                     }
                 commentInfo.text = it.commentary
@@ -97,30 +96,30 @@ class OperationInfoFragment : Fragment() {
                     val operationTitle:String
                     val operationCommentary: String
                     val operationSum = result.data?.getDoubleExtra("sum", 0.0)!!
-                    val typeId = when (budgetData.chosenHistoryItem.value!!.isExpense) {
-                        true -> budgetData.expenseTypes[operationTypeIndex].id
-                        false -> budgetData.earningTypes[operationTypeIndex].id
-                        else -> budgetData.budgetTypes.value!![operationTypeIndex].id
+                    val typeId = when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
+                        true -> budgetDataApi.expenseTypes.value!![operationTypeIndex].id
+                        false -> budgetDataApi.earningTypes.value!![operationTypeIndex].id
+                        else -> budgetDataApi.budgetTypes.value!![operationTypeIndex].id
                     }
-                    if(budgetData.chosenHistoryItem.value!!.isExpense == null) {
-                        operationTitle = budgetData.chosenHistoryItem.value!!.title
-                        operationCommentary = budgetData.chosenHistoryItem.value!!.commentary
+                    if(budgetDataApi.chosenHistoryItem.value!!.isExpense == null) {
+                        operationTitle = budgetDataApi.chosenHistoryItem.value!!.title
+                        operationCommentary = budgetDataApi.chosenHistoryItem.value!!.commentary
                     }
                     else {
                         operationTitle = result.data?.getStringExtra("title")!!
                         operationCommentary = result.data?.getStringExtra("commentary")!!
                     }
-                    val budgetTypeId = budgetData.budgetTypes.value!![budgetTypeIndex].id
-                    val isEdited = budgetData.editOperation(
-                        budgetData.chosenHistoryItem.value!!, Operation(
+                    val budgetTypeId = budgetDataApi.budgetTypes.value!![budgetTypeIndex].id
+                    val isEdited = budgetDataApi.editOperation(
+                        budgetDataApi.chosenHistoryItem.value!!, Operation(
+                            -1,
                             operationTitle,
                             operationSum,
-                            Date(),
+                            "",
                             typeId,
                             budgetTypeId,
                             operationCommentary,
-                            isRepetitive = false,
-                            isExpense = false
+                            budgetDataApi.chosenHistoryItem.value!!.isExpense
                         )
                     )
                     if (!isEdited) {
@@ -130,7 +129,7 @@ class OperationInfoFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        budgetData.chosenHistoryItem.apply {
+                        budgetDataApi.chosenHistoryItem.apply {
                             postValue(
                                 HistoryItem(
                                     this.value!!.id,
@@ -140,7 +139,6 @@ class OperationInfoFragment : Fragment() {
                                     typeId,
                                     budgetTypeId,
                                     operationCommentary,
-                                    this.value!!.isRepetitive,
                                     this.value!!.isExpense,
                                     this.value!!.color,
                                 )
@@ -153,7 +151,7 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetData.chosenHistoryItem.observe(this.viewLifecycleOwner, {
+        budgetDataApi.chosenHistoryItem.observe(this.viewLifecycleOwner, {
             setFieldsValues(it)
         })
     }
@@ -161,27 +159,26 @@ class OperationInfoFragment : Fragment() {
     //endregion
     //region Methods
     private fun updateOperation() {
-        when (budgetData.chosenHistoryItem.value!!.isExpense) {
+        when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
             true -> {
                 val intent = Intent(activity, ExpensesFormActivity::class.java)
                 intent.putExtra("isEdit", true)
                 intent.putExtra(
                     "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
                 intent.putExtra(
                     "expenseTypes",
-                    Array(budgetData.expenseTypes.size) { index -> budgetData.expenseTypes[index].title })
+                    Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
 
-                intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
+                intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
                     "budgetTypeIndex",
-                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
-                intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
-                intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
+                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
+                intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
                 intent.putExtra(
                     "typeIndex",
-                    budgetData.expenseTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
-                intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
+                    budgetDataApi.expenseTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+                intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
                 launcher?.launch(intent)
             }
             false -> {
@@ -189,21 +186,20 @@ class OperationInfoFragment : Fragment() {
                 intent.putExtra("isEdit", true)
                 intent.putExtra(
                     "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
                 intent.putExtra(
                     "earningTypes",
-                    Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+                    Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
 
-                intent.putExtra("sum", budgetData.chosenHistoryItem.value!!.sum)
+                intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
                     "budgetTypeIndex",
-                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
-                intent.putExtra("isRep", budgetData.chosenHistoryItem.value!!.isRepetitive)
-                intent.putExtra("title", budgetData.chosenHistoryItem.value!!.title)
+                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
+                intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
                 intent.putExtra(
                     "typeIndex",
-                    budgetData.earningTypes.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
-                intent.putExtra("commentary", budgetData.chosenHistoryItem.value!!.commentary)
+                    budgetDataApi.earningTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+                intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
                 launcher?.launch(intent)
             }
             else -> {
@@ -211,22 +207,22 @@ class OperationInfoFragment : Fragment() {
                 intent.putExtra("isEdit", true)
                 intent.putExtra(
                     "budgetTypes",
-                    Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
-                intent.putExtra("exchangeSum", budgetData.chosenHistoryItem.value!!.sum)
+                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+                intent.putExtra("exchangeSum", budgetDataApi.chosenHistoryItem.value!!.sum)
                 intent.putExtra(
                     "fromIndex",
-                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.budgetTypeId })
+                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
                 intent.putExtra(
                     "toIndex",
-                    budgetData.budgetTypes.value!!.indexOfFirst { it.id == budgetData.chosenHistoryItem.value!!.typeId })
+                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
                 launcher?.launch(intent)
             }
         }
     }
 
     private fun deleteOperation() {
-        val isDeleted = budgetData.chosenHistoryItem.value.let {
-            budgetData.deleteOperation(it!!)
+        val isDeleted = budgetDataApi.chosenHistoryItem.value.let {
+            budgetDataApi.deleteOperation(it!!)
         }
         if (!isDeleted) {
             Toast.makeText(
@@ -235,7 +231,7 @@ class OperationInfoFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         } else {
-            budgetData.chosenHistoryItemIndex.let {
+            budgetDataApi.chosenHistoryItemIndex.let {
                 if (it.value == 0 || it.value == null) it.postValue(null)
                 else it.postValue(it.value!! - 1)
                 Toast.makeText(
@@ -249,7 +245,7 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun exit() {
-        budgetData.chosenHistoryItem.postValue(null)
+        budgetDataApi.chosenHistoryItem.postValue(null)
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
