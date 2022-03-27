@@ -58,6 +58,15 @@ class HistoryFragment : Fragment() {
             budgetDataApi.chosenHistoryItemIndex.value = index
             openInfo()
         }
+
+        binding.nextPageButton.setOnClickListener {
+            budgetDataApi.page.postValue(budgetDataApi.page.value!! + 1)
+        }
+
+
+        binding.previousPageButton.setOnClickListener {
+            budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
+        }
     }
 
     private fun setObservation() {
@@ -86,6 +95,15 @@ class HistoryFragment : Fragment() {
 
                 adapter.setList(list)
             }
+        })
+
+        budgetDataApi.isLastPage.observe(this.viewLifecycleOwner, {
+            binding.nextPageButton.isEnabled = !it
+        })
+
+        budgetDataApi.page.observe(this.viewLifecycleOwner, {
+            binding.previousPageButton.isEnabled = it != 1
+            budgetDataApi.getOperations()
         })
     }
 

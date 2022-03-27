@@ -38,7 +38,8 @@ interface OperationApi {
 
     @GET("/operation")
     fun getOperations(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("Page") page: Int
     ): Call<Any>
 
 

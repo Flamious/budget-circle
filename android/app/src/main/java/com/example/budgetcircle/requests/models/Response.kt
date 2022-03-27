@@ -15,6 +15,6 @@ class ErrorResponse(
 
 class OperationListResponse(
     @SerializedName("message") val message: String,
-    @SerializedName("entitiesNumber") val entitiesNumber: Int,
+    @SerializedName("isLastPage") val isLastPage: Boolean,
     @SerializedName("operations") val operations: List<Operation>
 )

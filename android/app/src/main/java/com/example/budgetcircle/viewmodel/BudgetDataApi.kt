@@ -72,12 +72,17 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         MutableLiveData<List<OperationSum>>().apply {
             value = null
         }
+    val page: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 1
+    }
+    val isLastPage: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
+        value = false
+    }
 
     init {
         getBudgetTypes()
         getEarningTypes()
         getExpenseTypes()
-        getOperations()
     }
 
     private fun getBudgetTypes() = viewModelScope.launch(Dispatchers.IO) {
@@ -193,9 +198,10 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             addSum(from, -sum, true)
         }
 
-    private fun getOperations() = viewModelScope.launch(Dispatchers.IO) {
+    fun getOperations() = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.getOperations(
-            MainActivity.Token
+            MainActivity.Token,
+            page.value!!
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
             }
@@ -212,6 +218,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                             OperationListResponse::class.java
                         )
 
+                    isLastPage.value = listResponse.isLastPage
                     operations.value = listResponse.operations
                 }
             }
