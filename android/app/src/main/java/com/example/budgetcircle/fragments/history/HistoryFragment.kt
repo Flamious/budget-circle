@@ -19,7 +19,6 @@ class HistoryFragment : Fragment() {
     lateinit var binding: FragmentHistoryBinding
     private lateinit var adapter: HistoryAdapter
 
-    //private val budgetData: BudgetData by activityViewModels()
     private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     override fun onCreateView(
@@ -44,9 +43,6 @@ class HistoryFragment : Fragment() {
             historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
             historyList.adapter = adapter
             if (budgetDataApi.chosenHistoryItemIndex.value != null) {
-                historyList.scrollToPosition(
-                    budgetDataApi.chosenHistoryItemIndex.value!!
-                )
                 budgetDataApi.chosenHistoryItemIndex.postValue(null)
             }
         }
@@ -63,6 +59,9 @@ class HistoryFragment : Fragment() {
             budgetDataApi.page.postValue(budgetDataApi.page.value!! + 1)
         }
 
+        binding.filterListButton.setOnClickListener {
+            openFilter()
+        }
 
         binding.previousPageButton.setOnClickListener {
             budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
@@ -94,6 +93,7 @@ class HistoryFragment : Fragment() {
                 }
 
                 adapter.setList(list)
+                binding.historyList.scrollToPosition(0)
             }
         })
 
@@ -114,6 +114,14 @@ class HistoryFragment : Fragment() {
             ?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragmentPanel, OperationInfoFragment())
+            ?.commit()
+    }
+
+    private fun openFilter() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, OperationListSettingsFragment())
             ?.commit()
     }
     //endregion

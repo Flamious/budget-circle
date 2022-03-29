@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
     private fun initiateViewModel() {
         budgetDataApi.expensesDateString.postValue(resources.getString(R.string.week))
         budgetDataApi.earningsDateString.postValue(resources.getString(R.string.week))
+        budgetDataApi.operationListDateString.postValue(resources.getString(R.string.week))
+        budgetDataApi.operationType.postValue(resources.getString(R.string.all))
+        budgetDataApi.operationListStartWith.postValue(resources.getString(R.string.start_with_new))
+        budgetDataApi.operationListChosenBudgetTypeString.postValue(resources.getString(R.string.all))
+        budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
     }
 
     private fun setNavMenu() {

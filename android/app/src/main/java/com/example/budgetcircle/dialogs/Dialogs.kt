@@ -40,6 +40,26 @@ class Dialogs {
         context: Context,
         title: String,
         list: Array<String>,
+        mutableDataString: MutableLiveData<String>,
+        theme: Int = -1
+    ) {
+        if (list.isNotEmpty()) {
+            val dialog = MaterialAlertDialogBuilder(context)
+            dialog.setTitle(title)
+            dialog.setItems(list) { _, which ->
+                run {
+                    mutableDataString.postValue(list[which])
+                }
+            }
+            if (theme >= 0) dialog.context.setTheme(theme)
+            dialog.show()
+        }
+    }
+
+    fun chooseOne(
+        context: Context,
+        title: String,
+        list: Array<String>,
         values: Array<Int>,
         mutableDataString: MutableLiveData<String>,
         mutableDataInt: MutableLiveData<Int>,

@@ -10,7 +10,6 @@ import com.example.budgetcircle.requests.BudgetTypeApi
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.OperationApi
 import com.example.budgetcircle.requests.OperationTypeApi
-import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.requests.models.OperationListResponse
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.BudgetType
@@ -78,6 +77,20 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     val isLastPage: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {
         value = false
     }
+    val operationListDate: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 7 //use week at start
+    }
+    val operationListDateString: MutableLiveData<String> = MutableLiveData<String>()
+    val operationType: MutableLiveData<String> = MutableLiveData<String>()
+    val operationListChosenBudgetType: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 0
+    }
+    val operationListChosenBudgetTypeString: MutableLiveData<String> = MutableLiveData<String>()
+    val operationListChosenType: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 0
+    }
+    val operationListChosenTypeString: MutableLiveData<String> = MutableLiveData<String>()
+    val operationListStartWith: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
         getBudgetTypes()
@@ -201,7 +214,12 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun getOperations() = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.getOperations(
             MainActivity.Token,
-            page.value!!
+            page.value!!,
+            operationListDate.value!!,
+            operationType.value!!,
+            if (operationListChosenBudgetType.value!! == 0) null else operationListChosenBudgetType.value!!,
+            operationListStartWith.value!!,
+            if (operationListChosenType.value!! == 0) null else operationListChosenType.value!!
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
             }
