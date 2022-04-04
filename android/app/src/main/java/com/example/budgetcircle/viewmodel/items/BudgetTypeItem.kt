@@ -10,7 +10,6 @@ import com.example.budgetcircle.databinding.BudgetTypeItemBinding
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
 
-
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<BudgetType>()
     var onEditClick: ((item: BudgetType) -> Unit)? = null

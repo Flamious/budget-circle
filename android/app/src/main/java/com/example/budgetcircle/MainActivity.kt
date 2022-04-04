@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
 import com.example.budgetcircle.fragments.history.HistoryFragment
-import com.example.budgetcircle.fragments.settings.SettingsFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.settings -> {
                         setNavColor(R.color.nav_purple_selector)
-                        SettingsFragment()
+                        UserFragment()
                     }
 
                     else -> {

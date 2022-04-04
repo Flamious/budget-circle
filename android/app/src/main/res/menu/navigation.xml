@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/earnings"
-        android:title="Earnings"
+        android:title="@string/earnings_fragment"
         android:icon="@drawable/ic_earnings"
         android:orderInCategory="1"/>
     <item android:id="@+id/expenses"
-        android:title="Expenses"
+        android:title="@string/expenses_fragment"
         android:icon="@drawable/ic_expenses"
         android:orderInCategory="2"/>
     <item android:id="@+id/budget"
-        android:title="Budget"
+        android:title="@string/budget_fragment"
         android:icon="@drawable/ic_budget"
         android:orderInCategory="3"/>
     <item android:id="@+id/history"
-        android:title="History"
+        android:title="@string/history_fragment"
         android:icon="@drawable/ic_history"
         android:orderInCategory="4"/>
-    <item android:id="@+id/settings"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings"
-        android:orderInCategory="5"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_person"
+        android:orderInCategory="5"
+        android:title="@string/user_account" />
 </menu>

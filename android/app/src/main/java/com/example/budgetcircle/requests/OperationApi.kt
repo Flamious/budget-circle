@@ -47,10 +47,14 @@ interface OperationApi {
         @Query("TypeId") typeId: Int?
     ): Call<Any>
 
-
     @DELETE("/operation/{id}")
     fun deleteOperation(
         @Header("Authorization") token: String,
         @Path("id") id: Int
+    ): Call<Any>
+
+    @DELETE("/operation")
+    fun deleteAllOperations(
+        @Header("Authorization") token: String
     ): Call<Any>
 }

@@ -99,6 +99,15 @@
     <string name="wrongLoginOrPassword">Wrong Login or Password</string>
     <string name="token">token</string>
 
+    <!-- User -->
+    <string name="change_password">Change password</string>
+    <string name="delete_all_operations">Delete all operations</string>
+    <string name="log_out">Log out</string>
+    <string name="user_account">User Account</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="password_changed">Password was changed</string>
+
     <!-- Api -->
     <string name="url">url</string>
 </resources>

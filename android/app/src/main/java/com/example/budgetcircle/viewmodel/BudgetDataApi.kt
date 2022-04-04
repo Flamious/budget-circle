@@ -467,6 +467,28 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         return true
     }
 
+    fun deleteAllOperations() = viewModelScope.launch(Dispatchers.IO) {
+        operationApiService.deleteAllOperations(
+            MainActivity.Token
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getBudgetTypes()
+                    getOperations()
+                    getExpenseSums(expensesDate.value!!)
+                    getEarningSums(earningsDate.value!!)
+                }
+            }
+        })
+    }
+
+
     fun getEarningSums(period: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             operationApiService.getOperationSums(

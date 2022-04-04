@@ -24,6 +24,7 @@ import retrofit2.*
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
     lateinit var service: UserApi
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

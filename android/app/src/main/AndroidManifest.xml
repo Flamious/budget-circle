@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetCircle">
         <activity
+            android:name=".forms.PasswordChangeActivity"
+            android:exported="true" />
+        <activity
             android:name=".AuthActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +38,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>
