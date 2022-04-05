@@ -17,14 +17,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.types.BudgetType
 import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.collections.ArrayList
 
@@ -32,7 +32,7 @@ import kotlin.collections.ArrayList
 class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     //region Animations
     private val rotateOpen: Animation by lazy {
@@ -167,27 +167,23 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetData.addToBudgetTypesList(
+                            budgetDataApi.addBudgetType(
                                 BudgetType(
+                                    -1,
                                     name,
                                     sum,
                                     true
                                 )
                             )
-                            Toast.makeText(
-                                activity,
-                                resources.getString(R.string.added),
-                                Toast.LENGTH_SHORT
-                            ).show()
                         }
                         "exchange" -> {
                             val sum: Double = result.data?.getDoubleExtra("sum", 0.0)!!
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetData.makeExchange(
-                                budgetData.budgetTypes.value!![from].id,
-                                budgetData.budgetTypes.value!![to].id,
+                            budgetDataApi.makeExchange(
+                                budgetDataApi.budgetTypes.value!![from],
+                                budgetDataApi.budgetTypes.value!![to],
                                 sum
                             )
                         }
@@ -205,8 +201,10 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetData.budgetTypes.observe(this.viewLifecycleOwner, {
-            setChart(it)
+        budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
+            if(it != null) {
+                setChart(it)
+            }
         })
     }
     //endregion
@@ -235,10 +233,10 @@ class BudgetFragment : Fragment() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
         intent.putExtra(
             "budgetTypesSums",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].sum })
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].sum })
         launcher?.launch(intent)
     }
 

@@ -8,6 +8,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginFragment
+import android.content.SharedPreferences
+
+
+
 
 class AuthActivity : AppCompatActivity() {
     lateinit var binding: ActivityAuthBinding
@@ -16,6 +20,7 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkLogout()
         openLogin()
     }
 
@@ -26,6 +31,16 @@ class AuthActivity : AppCompatActivity() {
     //endregion
 
     //region Methods
+    private fun checkLogout() {
+        val isLogout = intent.getBooleanExtra("logout", false)
+        if (isLogout) {
+            val mySPrefs: SharedPreferences = getPreferences(Context.MODE_PRIVATE) ?: return
+            val editor = mySPrefs.edit()
+            editor.remove(getString(R.string.token))
+            editor.apply()
+        }
+    }
+
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()

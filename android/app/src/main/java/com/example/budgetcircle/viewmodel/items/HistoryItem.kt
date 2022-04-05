@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.types.BudgetType
-import com.example.budgetcircle.database.entities.types.EarningType
-import com.example.budgetcircle.database.entities.types.ExpenseType
 import com.example.budgetcircle.databinding.HistoryItemBinding
+import com.example.budgetcircle.viewmodel.models.BudgetType
+import com.example.budgetcircle.viewmodel.models.OperationType
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,19 +17,18 @@ data class HistoryItem(
     val id: Int,
     val title: String,
     val sum: Double,
-    val date: Date,
+    val date: String,
     val typeId: Int,
     val budgetTypeId: Int,
     val commentary: String,
-    val isRepetitive: Boolean,
     val isExpense: Boolean?,
     val color: Int,
 )
 
 class HistoryAdapter(
     var budgetTypes: Array<BudgetType>,
-    var earningsTypes: Array<EarningType>,
-    var expensesTypes: Array<ExpenseType>
+    var earningsTypes: Array<OperationType>,
+    var expensesTypes: Array<OperationType>
 ) : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
     var onItemClick: ((item: HistoryItem, index: Int) -> Unit)? = null
@@ -41,7 +39,6 @@ class HistoryAdapter(
             itemTitle.text = item.sum.toString()
             opColor.setBackgroundColor(item.color)
             operationTitle.text = item.title
-            imageRepetitive.visibility = if (item.isRepetitive) View.VISIBLE else View.INVISIBLE
             itemType.text =
                 when (item.isExpense) {
                     true -> expensesTypes.first { it.id == item.typeId }.title
@@ -54,7 +51,7 @@ class HistoryAdapter(
             accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
                 /*if (item.isExpense == true) expensesTypes.first { it.id == item.typeId }.title
                 else earningsTypes.first { it.id == item.typeId }.title*/
-            itemDate.text = SimpleDateFormat("dd.MM.yyy", Locale.getDefault()).format(item.date)
+            itemDate.text = item.date
             itemLayout.setOnClickListener {
                 onItemClick?.invoke(item, itemList.indexOfFirst { op -> op.id == item.id })
             }
@@ -77,7 +74,7 @@ class HistoryAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: Array<HistoryItem>) {
         itemList.clear()
-        for (item in list.reversed()) {
+        for (item in list) {
             itemList.add(item)
         }
         notifyDataSetChanged()

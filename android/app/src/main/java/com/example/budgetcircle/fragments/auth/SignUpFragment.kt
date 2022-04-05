@@ -25,6 +25,7 @@ import retrofit2.Response
 
 class SignUpFragment : Fragment() {
     lateinit var binding: FragmentSignUpBinding
+    lateinit var service: UserApi
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +33,7 @@ class SignUpFragment : Fragment() {
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater)
         setButtons()
+        setService()
         return binding.root
     }
 
@@ -47,6 +49,11 @@ class SignUpFragment : Fragment() {
             }
         }
     }
+
+    private fun setService() {
+        val url = resources.getString(R.string.url)
+        service = Client.getClient(url).create(UserApi::class.java)
+    }
     //endregion
 
     //region Methods
@@ -59,9 +66,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun sendRequest() {
-        val url = resources.getString(R.string.url)
-        val service = Client.getClient(url).create(UserApi::class.java)
-
         service.signUp(
             binding.emailSignUpText.text.toString(),
             binding.passwordSignUpText.text.toString(),

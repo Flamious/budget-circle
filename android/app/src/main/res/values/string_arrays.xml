@@ -30,4 +30,16 @@
         <item>@string/month</item>
         <item>@string/year</item>
     </string-array>
+
+    <!-- Operation List -->
+    <string-array name="operationTypes">
+        <item>@string/all</item>
+        <item>@string/exchange_type</item>
+        <item>@string/exp_type</item>
+        <item>@string/earn_type</item>
+    </string-array>
+    <string-array name="startWith">
+        <item>@string/start_with_new</item>
+        <item>@string/start_with_old</item>
+    </string-array>
 </resources>

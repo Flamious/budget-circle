@@ -29,86 +29,44 @@
             android:id="@+id/historyList"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:theme="@style/orangeEdgeEffect"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Title" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/typeText" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/typeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/all"
-            android:textColor="@color/text_primary"
-            app:layout_constraintStart_toEndOf="@+id/historyTypeTitle"
-            app:layout_constraintTop_toTopOf="@+id/historyTypeTitle" />
-
-        <TextView
-            android:id="@+id/historyTypeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/type"
-            android:textColor="@color/text_secondary"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-        <TextView
-            android:id="@+id/historyOpTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="@string/rep_op"
-            android:textColor="@color/text_secondary"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintEnd_toStartOf="@+id/opText"
-            app:layout_constraintTop_toTopOf="@+id/opText" />
-
-        <TextView
-            android:id="@+id/opText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/all"
-            android:textColor="@color/text_primary"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/Title"
-            app:layout_constraintStart_toStartOf="@+id/Title"
-            app:layout_constraintTop_toTopOf="@+id/historyOpTitle">
-
-            <TextView
-                android:id="@+id/historyPeriodTitle"
+            <ImageButton
+                android:id="@+id/previousPageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/period"
-                android:textColor="@color/text_secondary"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_weight="1"
+                android:src="@drawable/ic_previous" />
 
-            <TextView
-                android:id="@+id/periodText"
+            <ImageButton
+                android:id="@+id/filterListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/year"
-                android:textColor="@color/text_primary"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/historyPeriodTitle"
-                app:layout_constraintTop_toTopOf="@+id/historyPeriodTitle" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_weight="1"
+                android:src="@drawable/ic_filter" />
+
+            <ImageButton
+                android:id="@+id/nextPageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_next" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

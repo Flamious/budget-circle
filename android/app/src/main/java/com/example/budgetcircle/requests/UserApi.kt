@@ -19,6 +19,15 @@ interface UserApi {
         @Field("ConfirmationPassword") ConfirmationPassword: String
     ): Call<Any>
 
+    @FormUrlEncoded
+    @POST("/user/newpassword")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Field("Password") OldPassword: String,
+        @Field("NewPassword") NewPassword: String,
+        @Field("ConfirmationPassword") ConfirmationPassword: String
+    ): Call<Any>
+
     @POST("/user/token")
     fun refreshToken(@Header("Authorization") token: String): Call<Any>
 }

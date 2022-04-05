@@ -14,19 +14,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
-import com.example.budgetcircle.database.entities.main.OperationSum
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.EarningsFormActivity
+import com.example.budgetcircle.lists.BudgetTypeListFragment
+import com.example.budgetcircle.lists.OperationTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.models.Operation
+import com.example.budgetcircle.viewmodel.models.OperationSum
 import kotlin.collections.ArrayList
 
 class EarningsFragment : Fragment() {
     lateinit var binding: FragmentEarningsBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetData: BudgetData by activityViewModels()
+    private val budgetDataApi: BudgetDataApi by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +48,9 @@ class EarningsFragment : Fragment() {
     }
     //region Setting
     private fun setButtons() {
+        binding.listButton.setOnClickListener {
+            openTypeList()
+        }
         binding.addEarningButton.setOnClickListener {
             addEarning()
         }
@@ -54,15 +60,15 @@ class EarningsFragment : Fragment() {
                 resources.getString(R.string.choosingPeriod),
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                budgetData.earningsDateString,
-                budgetData.earningsDate
+                budgetDataApi.earningsDateString,
+                budgetDataApi.earningsDate
             )
         }
     }
 
     private fun setChart(earningSums: List<OperationSum>) {
         val values = Array(earningSums.size) { index -> earningSums[index].sum }
-        val titles = Array(earningSums.size) { index -> earningSums[index].title }
+        val titles = Array(earningSums.size) { index -> earningSums[index].type }
         var sum = 0.0
         for (n in values) {
             sum += n
@@ -100,18 +106,19 @@ class EarningsFragment : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
                     val earningTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
                     val earningTitle = result.data?.getStringExtra("title")!!
                     val earningCommentary = result.data?.getStringExtra("commentary")!!
-                    budgetData.addEarning(
+                    budgetDataApi.addOperation(Operation(-1,
                         earningTitle,
                         result.data?.getDoubleExtra("sum", 0.0)!!,
-                        budgetData.earningTypes[earningTypeIndex].id,
-                        budgetData.budgetTypes.value!![budgetTypeIndex].id,
-                        earningCommentary
-                    )
+                        "",
+                        budgetDataApi.earningTypes.value!![earningTypeIndex].id,
+                        budgetDataApi.budgetTypes.value!![budgetTypeIndex].id,
+                        earningCommentary,
+                        false
+                    ))
 
                     Toast.makeText(
                         activity,
@@ -123,11 +130,16 @@ class EarningsFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetData.earningsDateString.observe(this.viewLifecycleOwner, {
+        budgetDataApi.earningsDateString.observe(this.viewLifecycleOwner, {
             binding.periodText.text = it
         })
-        budgetData.earningSumByDate.observe(this.viewLifecycleOwner, {
-            setChart(it)
+        budgetDataApi.earningsDate.observe(this.viewLifecycleOwner, {
+            budgetDataApi.getEarningSums(it)
+        })
+        budgetDataApi.earningSums.observe(this.viewLifecycleOwner, {
+            if(it != null) {
+                setChart(it)
+            }
         })
     }
     //endregion
@@ -144,11 +156,20 @@ class EarningsFragment : Fragment() {
         val intent = Intent(activity, EarningsFormActivity::class.java)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetData.budgetTypes.value!!.size) { index -> budgetData.budgetTypes.value!![index].title })
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
         intent.putExtra(
             "earningTypes",
-            Array(budgetData.earningTypes.size) { index -> budgetData.earningTypes[index].title })
+            Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
         launcher?.launch(intent)
+    }
+
+    private fun openTypeList() {
+        budgetDataApi.isExpense = false
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, OperationTypeListFragment())
+            ?.commit()
     }
     //endregion
 }

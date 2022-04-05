@@ -1,6 +1,5 @@
 package com.example.budgetcircle
 
-import android.content.Context
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,27 +10,29 @@ import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
 import com.example.budgetcircle.fragments.history.HistoryFragment
-import com.example.budgetcircle.fragments.settings.SettingsFragment
-import com.example.budgetcircle.viewmodel.BudgetData
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    private val budgetData: BudgetData by viewModels()
+    private val budgetDataApi: BudgetDataApi by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Token = "Bearer ${intent.extras?.getString("token")!!}"
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initiateViewModel()
         setNavMenu()
-
-        Token = intent.extras?.getString("token")!!
         Toast.makeText(this, Token, Toast.LENGTH_LONG).show()
     }
     //region Setting
     private fun initiateViewModel() {
-        budgetData.expensesDateString.postValue(resources.getString(R.string.week))
-        budgetData.earningsDateString.postValue(resources.getString(R.string.week))
-        budgetData.budgetTypes.observe(this, { })
+        budgetDataApi.expensesDateString.postValue(resources.getString(R.string.week))
+        budgetDataApi.earningsDateString.postValue(resources.getString(R.string.week))
+        budgetDataApi.operationListDateString.postValue(resources.getString(R.string.week))
+        budgetDataApi.operationType.postValue(resources.getString(R.string.all))
+        budgetDataApi.operationListStartWith.postValue(resources.getString(R.string.start_with_new))
+        budgetDataApi.operationListChosenBudgetTypeString.postValue(resources.getString(R.string.all))
+        budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
     }
 
     private fun setNavMenu() {
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.settings -> {
                         setNavColor(R.color.nav_purple_selector)
-                        SettingsFragment()
+                        UserFragment()
                     }
 
                     else -> {

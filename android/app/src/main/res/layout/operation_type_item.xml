@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/opTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/operationTypeDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/delete"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/operationTypeEditButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeEditButton"
+        app:srcCompat="@drawable/ic_delete" />
+
+    <ImageButton
+        android:id="@+id/operationTypeEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/edit"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/operationTypeDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/opTypeTitle"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <TextView
+        android:id="@+id/operationypeSum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/opTypeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/opTypeTitle" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btLine2"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:background="@color/text_secondary"
+        android:backgroundTint="@color/text_secondary"
+        app:layout_constraintEnd_toEndOf="@+id/operationTypeDeleteButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/operationypeSum"
+        app:layout_constraintTop_toBottomOf="@+id/operationypeSum" />
+</androidx.constraintlayout.widget.ConstraintLayout>
