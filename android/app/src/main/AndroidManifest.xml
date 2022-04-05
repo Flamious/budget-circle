@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetCircle">
         <activity
+            android:name=".forms.OperationTypeFormActivity"
+            android:exported="true" />
+        <activity
             android:name=".forms.PasswordChangeActivity"
             android:exported="true" />
         <activity
@@ -38,7 +41,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

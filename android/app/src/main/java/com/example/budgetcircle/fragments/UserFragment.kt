@@ -42,6 +42,18 @@ class UserFragment : Fragment() {
             )
         }
 
+        binding.clearAAccountsButton.setOnClickListener {
+            Dialogs().chooseYesNo(
+                this.requireContext(),
+                resources.getString(R.string.clear_accounts),
+                resources.getString(R.string.r_u_sure),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
+                R.color.purple_main,
+                ::clearBudgetTypes
+            )
+        }
+
         binding.deleteAllOperationsButton.setOnClickListener {
             Dialogs().chooseYesNo(
                 this.requireContext(),
@@ -73,6 +85,10 @@ class UserFragment : Fragment() {
 
     private fun deleteAllOperations() {
         budgetDataApi.deleteAllOperations()
+    }
+
+    private fun clearBudgetTypes() {
+        budgetDataApi.clearBudgetTypes()
     }
 
     private fun openChangePasswordActivity() {

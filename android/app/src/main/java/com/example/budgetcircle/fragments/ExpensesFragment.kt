@@ -17,6 +17,7 @@ import com.example.budgetcircle.forms.ExpensesFormActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentExpensesBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.lists.OperationTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
@@ -47,6 +48,9 @@ class ExpensesFragment : Fragment() {
 
     //region Setting
     private fun setButtons() {
+        binding.listButton.setOnClickListener {
+            openTypeList()
+        }
         binding.addExpenseButton.setOnClickListener {
             addExpense()
         }
@@ -163,6 +167,15 @@ class ExpensesFragment : Fragment() {
             "expenseTypes",
             Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
         launcher?.launch(intent)
+    }
+
+    private fun openTypeList() {
+        budgetDataApi.isExpense = true
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, OperationTypeListFragment())
+            ?.commit()
     }
     //endregion
 }

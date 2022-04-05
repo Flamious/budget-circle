@@ -17,6 +17,8 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentEarningsBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.EarningsFormActivity
+import com.example.budgetcircle.lists.BudgetTypeListFragment
+import com.example.budgetcircle.lists.OperationTypeListFragment
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
@@ -46,6 +48,9 @@ class EarningsFragment : Fragment() {
     }
     //region Setting
     private fun setButtons() {
+        binding.listButton.setOnClickListener {
+            openTypeList()
+        }
         binding.addEarningButton.setOnClickListener {
             addEarning()
         }
@@ -156,6 +161,15 @@ class EarningsFragment : Fragment() {
             "earningTypes",
             Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
         launcher?.launch(intent)
+    }
+
+    private fun openTypeList() {
+        budgetDataApi.isExpense = false
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, OperationTypeListFragment())
+            ?.commit()
     }
     //endregion
 }

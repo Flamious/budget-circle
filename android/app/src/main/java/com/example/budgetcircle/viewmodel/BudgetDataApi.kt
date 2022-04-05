@@ -34,6 +34,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     private val operationTypeApiService: OperationTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(OperationTypeApi::class.java)
+    var isExpense: Boolean = false
 
     val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
         value = null
@@ -278,7 +279,6 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             })
         }
 
-
     fun editOperation(oldOperation: HistoryItem, newOperation: Operation): Boolean {
         when (oldOperation.isExpense) {
             true -> {
@@ -412,9 +412,11 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                         getOperations()
                         if (oldOperation.isExpense == false) {
                             getEarningSums(earningsDate.value!!)
+                            getEarningTypes()
                         }
                         if (oldOperation.isExpense == true) {
                             getExpenseSums(expensesDate.value!!)
+                            getExpenseTypes()
                         }
                     }
                 }
@@ -458,8 +460,14 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                     if (response.isSuccessful) {
                         getBudgetTypes()
                         getOperations()
-                        if (operation.isExpense == true) getExpenseSums(expensesDate.value!!)
-                        if (operation.isExpense == false) getEarningSums(earningsDate.value!!)
+                        if (operation.isExpense == true) {
+                            getExpenseSums(expensesDate.value!!)
+                            getExpenseTypes()
+                        }
+                        if (operation.isExpense == false){
+                            getEarningSums(earningsDate.value!!)
+                            getEarningTypes()
+                        }
                     }
                 }
             })
@@ -487,7 +495,6 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             }
         })
     }
-
 
     fun getEarningSums(period: Int) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -568,4 +575,141 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                 }
             })
         }
+
+    fun addEarningType(title: String) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.addEarningType(
+            MainActivity.Token,
+            title
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                   getEarningTypes()
+                }
+            }
+        })
+    }
+
+    fun addExpenseType(title: String) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.addExpenseType(
+            MainActivity.Token,
+            title
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getExpenseTypes()
+                }
+            }
+        })
+    }
+
+    fun editEarningType(id: Int, title: String) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.editEarningType(
+            MainActivity.Token,
+            id,
+            title
+        ).enqueue(object : Callback<Void> {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    getEarningTypes()
+                }
+            }
+        })
+    }
+
+    fun editExpenseType(id: Int, title: String) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.editExpenseType(
+            MainActivity.Token,
+            id,
+            title
+        ).enqueue(object : Callback<Void> {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    getExpenseTypes()
+                }
+            }
+        })
+    }
+
+    fun deleteEarningType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.deleteEarningType(
+            MainActivity.Token,
+            id
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getOperations()
+                    getEarningTypes()
+                }
+            }
+        })
+    }
+
+    fun deleteExpenseType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        operationTypeApiService.deleteExpenseType(
+            MainActivity.Token,
+            id
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getOperations()
+                    getExpenseTypes()
+                }
+            }
+        })
+    }
+
+    fun clearBudgetTypes() {
+        budgetTypeApiService.clearBudgetTypes(
+            MainActivity.Token
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                var a = 1
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getBudgetTypes()
+                }
+            }
+        })
+    }
 }

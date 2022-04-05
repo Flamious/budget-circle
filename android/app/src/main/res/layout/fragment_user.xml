@@ -61,8 +61,8 @@
                     android:text="@string/user_account"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/deleteAllOperationsButton"
-                    app:layout_constraintTop_toBottomOf="@+id/deleteAllOperationsButton" />
+                    app:layout_constraintStart_toStartOf="@+id/clearAAccountsButton"
+                    app:layout_constraintTop_toBottomOf="@+id/clearAAccountsButton" />
 
                 <TextView
                     android:id="@+id/deleteAllOperationsButton"
@@ -75,6 +75,18 @@
                     app:layout_constraintEnd_toEndOf="@+id/changePasswordActivityButton"
                     app:layout_constraintStart_toStartOf="@+id/textView24"
                     app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+                <TextView
+                    android:id="@+id/clearAAccountsButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/clear_accounts"
+                    android:textColor="@color/blue_main"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="@+id/deleteAllOperationsButton"
+                    app:layout_constraintStart_toStartOf="@+id/deleteAllOperationsButton"
+                    app:layout_constraintTop_toBottomOf="@+id/deleteAllOperationsButton" />
 
                 <TextView
                     android:id="@+id/textView24"

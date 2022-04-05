@@ -28,4 +28,9 @@ interface BudgetTypeApi {
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ): Call<Any>
+
+    @DELETE("/budgettype/clearsums")
+    fun clearBudgetTypes(
+        @Header("Authorization") token: String
+    ): Call<Any>
 }
