@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Budget Circle</string>
 
+    <!-- Loading-->
+    <string name="please_wait">Please, wait...</string>
+
     <!-- Fragments' titles -->
     <string name="budget_fragment">Budget</string>
     <string name="expenses_fragment">Expenses</string>
@@ -79,6 +82,7 @@
     <string name="to">To</string>
     <string name="title">Title</string>
     <string name="empty_field">Field cannot be empty</string>
+    <string name="email_format_string">String should have email format</string>
     <string name="zero_sum">Sum must be greater than 0</string>
     <string name="insufficient_funds">Insufficient funds on the account</string>
 

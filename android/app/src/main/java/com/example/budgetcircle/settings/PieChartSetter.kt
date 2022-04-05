@@ -69,7 +69,7 @@ class PieChartSetter {
                 )
             )
             chart.invalidate()
-
+            chart.animateXY(1000, 1000)
         }
 
         private class ChartListener(

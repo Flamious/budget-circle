@@ -26,6 +26,10 @@ class ExpensesFormActivity : AppCompatActivity() {
         setButtons()
         setContentView(binding.root)
     }
+
+    override fun onBackPressed() {
+        exit()
+    }
     //region Setting
     private fun setButtons() {
         binding.expSelectBudgetType.setOnClickListener {

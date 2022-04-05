@@ -1,5 +1,6 @@
 package com.example.budgetcircle.forms
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -29,6 +30,9 @@ class PasswordChangeActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onBackPressed() {
+        exit()
+    }
     //region Setting
     private fun setButtons() {
         binding.changePasswordButton.setOnClickListener {
@@ -37,7 +41,7 @@ class PasswordChangeActivity : AppCompatActivity() {
             }
         }
         binding.changePasswordBackButton.setOnClickListener {
-            finish()
+            exit()
         }
     }
 
@@ -107,6 +111,12 @@ class PasswordChangeActivity : AppCompatActivity() {
     private fun print(message: String?) {
         if (message != null)
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun exit() {
+        val intent = Intent()
+        setResult(RESULT_CANCELED, intent)
+        finish()
     }
     //endregion
 }

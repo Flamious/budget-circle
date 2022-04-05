@@ -47,7 +47,8 @@
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_earnings.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_expenses.xml" value="0.22" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_history.xml" value="0.4375" />
-        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_login.xml" value="0.215625" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_login_loading.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_operation_info.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_operation_list_settings.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/fragment_operation_type_form.xml" value="0.215625" />

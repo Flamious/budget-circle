@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentLoginBinding
@@ -17,6 +20,7 @@ import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.requests.models.ErrorResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.*
@@ -25,6 +29,13 @@ class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
     lateinit var service: UserApi
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +43,12 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(inflater)
         setButtons()
         setService()
-        loadToken()
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setAnimation()
     }
 
     //region Setting
@@ -43,7 +58,8 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginAdmitButton.setOnClickListener {
-            GlobalScope.launch {
+            if (checkFields()) {
+                startLoading()
                 sendRequest()
             }
         }
@@ -53,10 +69,57 @@ class LoginFragment : Fragment() {
         val url = resources.getString(R.string.url)
         service = Client.getClient(url).create(UserApi::class.java)
     }
+
+    private fun setAnimation() {
+        binding.frameLayout3.startAnimation(appear)
+    }
     //endregion
 
     //region Methods
+    private fun checkFields(): Boolean {
+        var isValid = true
+        binding.emailLoginText.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+                error = resources.getString(R.string.email_format_string)
+                isValid = false
+            }
+        }
+
+        binding.passwordLoginText.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
+    }
+
+    private fun startLoading() {
+        binding.loginLoadingLayout.visibility = View.VISIBLE
+
+        binding.emailLoginText.isEnabled = false
+        binding.passwordLoginText.isEnabled = false
+        binding.loginAdmitButton.isEnabled = false
+        binding.signUpButton.isClickable = false
+    }
+
+    private fun stopLoading() {
+        binding.loginLoadingLayout.visibility = View.GONE
+
+        binding.emailLoginText.isEnabled = true
+        binding.passwordLoginText.isEnabled = true
+        binding.loginAdmitButton.isEnabled = true
+        binding.signUpButton.isClickable = true
+    }
+
     private fun openSignUp() {
+        binding.frameLayout3.clearAnimation()
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
@@ -64,13 +127,13 @@ class LoginFragment : Fragment() {
             ?.commit()
     }
 
-    private fun sendRequest() {
+    private fun sendRequest() = lifecycleScope.launch(Dispatchers.IO) {
         service.signIn(
             binding.emailLoginText.text.toString(),
-            binding.PasswordLoginText.text.toString()
+            binding.passwordLoginText.text.toString()
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
-                print(t.message)
+                stopLoading()
             }
 
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
@@ -86,9 +149,10 @@ class LoginFragment : Fragment() {
                     val type = object : TypeToken<ErrorResponse>() {}.type
                     val errorResponse: ErrorResponse? = gson.fromJson(errorBody.charStream(), type)
                     val errorMessage =
-                        errorResponse?.error ?: resources.getString(R.string.wrongLoginOrPassword)
+                        errorResponse?.error ?: null
 
                     print(errorMessage)
+                    stopLoading()
                 }
             }
         })
@@ -115,36 +179,6 @@ class LoginFragment : Fragment() {
         )
 
         startActivity(intent)
-    }
-
-    private fun loadToken() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val token = sharedPref.getString(getString(R.string.token), null)
-
-        if (token != null) {
-            refreshToken(token)
-        }
-    }
-
-    private fun refreshToken(token: String) {
-        service.refreshToken(
-            "Bearer $token"
-        ).enqueue(object : Callback<Any> {
-            override fun onFailure(call: Call<Any>, t: Throwable) {
-                print(t.message)
-            }
-
-            override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                val gson = Gson()
-                if (response.isSuccessful) {
-                    val token =
-                        gson.fromJson(gson.toJson(response.body()), AuthResponse::class.java).token
-
-                    saveToken(token)
-                    startApp(token)
-                }
-            }
-        })
     }
     //endregion
 }

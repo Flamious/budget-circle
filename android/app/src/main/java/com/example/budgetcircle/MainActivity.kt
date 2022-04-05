@@ -15,6 +15,7 @@ import com.example.budgetcircle.viewmodel.BudgetDataApi
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val budgetDataApi: BudgetDataApi by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Token = "Bearer ${intent.extras?.getString("token")!!}"
@@ -24,6 +25,11 @@ class MainActivity : AppCompatActivity() {
         setNavMenu()
         Toast.makeText(this, Token, Toast.LENGTH_LONG).show()
     }
+
+    override fun onBackPressed() {
+
+    }
+
     //region Setting
     private fun initiateViewModel() {
         budgetDataApi.expensesDateString.postValue(resources.getString(R.string.week))

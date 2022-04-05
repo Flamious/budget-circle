@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
@@ -25,7 +27,14 @@ import retrofit2.Response
 
 class SignUpFragment : Fragment() {
     lateinit var binding: FragmentSignUpBinding
-    lateinit var service: UserApi
+    private lateinit var service: UserApi
+
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +46,11 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        setAnimation()
+    }
+
     //region Setting
     private fun setButtons() {
         binding.loginButton.setOnClickListener {
@@ -44,8 +58,12 @@ class SignUpFragment : Fragment() {
         }
 
         binding.signUpAdmitButton.setOnClickListener {
-            GlobalScope.launch {
-                sendRequest()
+            if (checkFields()) {
+
+                startLoading()
+                GlobalScope.launch {
+                    sendRequest()
+                }
             }
         }
     }
@@ -54,10 +72,67 @@ class SignUpFragment : Fragment() {
         val url = resources.getString(R.string.url)
         service = Client.getClient(url).create(UserApi::class.java)
     }
+
+    private fun setAnimation() {
+        binding.frameLayout4.startAnimation(appear)
+    }
     //endregion
 
     //region Methods
+    private fun checkFields(): Boolean {
+        var isValid = true
+        binding.emailSignUpText.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+                error = resources.getString(R.string.email_format_string)
+                isValid = false
+            }
+        }
+
+        binding.passwordSignUpText.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        binding.confirmPasswordSignUpText.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
+    }
+
+    private fun startLoading() {
+        binding.signUpLoadingLayout.visibility = View.VISIBLE
+
+        binding.emailSignUpText.isEnabled = false
+        binding.passwordSignUpText.isEnabled = false
+        binding.confirmPasswordSignUpText.isEnabled = false
+        binding.signUpAdmitButton.isEnabled = false
+        binding.loginButton.isClickable = false
+    }
+
+    private fun stopLoading() {
+        binding.signUpLoadingLayout.visibility = View.GONE
+
+        binding.emailSignUpText.isEnabled = true
+        binding.passwordSignUpText.isEnabled = true
+        binding.confirmPasswordSignUpText.isEnabled = true
+        binding.signUpAdmitButton.isEnabled = true
+        binding.loginButton.isClickable = true
+    }
+
     private fun openLogin() {
+        binding.frameLayout4.clearAnimation()
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
@@ -91,6 +166,7 @@ class SignUpFragment : Fragment() {
                         errorResponse?.error ?: resources.getString(R.string.wrongLoginOrPassword)
 
                     print(errorMessage)
+                    stopLoading()
                 }
             }
         })
@@ -113,7 +189,8 @@ class SignUpFragment : Fragment() {
         val intent = Intent(activity, MainActivity::class.java)
         intent.putExtra(
             "token",
-            token)
+            token
+        )
 
         startActivity(intent)
     }

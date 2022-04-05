@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginFragment
 import android.content.SharedPreferences
-
-
+import com.example.budgetcircle.fragments.auth.LoginLoadingFragment
 
 
 class AuthActivity : AppCompatActivity() {
@@ -21,14 +20,12 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
         checkLogout()
-        openLogin()
+        openLoading()
     }
 
-    //region Setting
-    private fun openLogin() {
-        openFragment(LoginFragment())
+    override fun onBackPressed() {
+
     }
-    //endregion
 
     //region Methods
     private fun checkLogout() {
@@ -41,10 +38,10 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun openFragment(fragment: Fragment) {
+    private fun openLoading() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.authLayout, fragment)
+            .replace(R.id.authLayout, LoginLoadingFragment())
             .commit()
     }
     //endregion

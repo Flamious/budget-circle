@@ -31,8 +31,8 @@ class OperationListSettingsFragment : Fragment() {
         previousDateString = budgetDataApi.operationListDateString.value!!
         return binding.root
     }
-    //region Setting
 
+    //region Setting
     private fun setButtons() {
         binding.selectPeriod.setOnClickListener {
             Dialogs().chooseOne(
@@ -121,14 +121,11 @@ class OperationListSettingsFragment : Fragment() {
         }
 
         binding.filterButton.setOnClickListener {
-            budgetDataApi.page.postValue(1)
-            openHistory()
+            apply()
         }
 
         binding.stopFilterButton.setOnClickListener {
-            budgetDataApi.operationListDate.postValue(previousDate)
-            budgetDataApi.operationListDateString.postValue(previousDateString)
-            openHistory()
+            cancel()
         }
     }
 
@@ -171,6 +168,17 @@ class OperationListSettingsFragment : Fragment() {
             ?.beginTransaction()
             ?.replace(R.id.fragmentPanel, HistoryFragment())
             ?.commit()
+    }
+
+    private fun apply(){
+        budgetDataApi.page.postValue(1)
+        openHistory()
+    }
+
+    private fun cancel() {
+        budgetDataApi.operationListDate.postValue(previousDate)
+        budgetDataApi.operationListDateString.postValue(previousDateString)
+        openHistory()
     }
     //endregion
 }

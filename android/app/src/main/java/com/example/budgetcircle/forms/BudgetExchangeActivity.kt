@@ -26,6 +26,10 @@ class BudgetExchangeActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onBackPressed() {
+        exit()
+    }
+
     //region Setting
     private fun setButtons() {
         binding.budgetExchangeAddButton.setOnClickListener {
