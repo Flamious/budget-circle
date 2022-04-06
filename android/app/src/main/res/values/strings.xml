@@ -2,7 +2,7 @@
     <string name="app_name">Budget Circle</string>
 
     <!-- Loading-->
-    <string name="please_wait">Please, wait...</string>
+    <string name="please_wait">Please, wait…</string>
 
     <!-- Fragments' titles -->
     <string name="budget_fragment">Budget</string>

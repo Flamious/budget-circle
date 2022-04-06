@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -29,6 +31,20 @@ class BudgetTypeListFragment : Fragment() {
     private val budgetDataApi: BudgetDataApi by activityViewModels()
     private var itemUnderDeletion: BudgetType? = null
     private var lastTypeId: Int = -1
+
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
+
+    private val createList: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            android.R.anim.slide_in_left
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +57,11 @@ class BudgetTypeListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
+
     //region Setting
     private fun setAdapter() {
         adapter = BudgetTypeAdapter()
@@ -51,7 +72,7 @@ class BudgetTypeListFragment : Fragment() {
     }
 
     private fun setButtons() {
-        binding.budgetTypesBackButton2.setOnClickListener {
+        binding.budgetTypesBackButton.setOnClickListener {
             exit()
         }
         adapter.onEditClick = {
@@ -75,6 +96,7 @@ class BudgetTypeListFragment : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    startLoading()
                     val name = result.data?.getStringExtra("newAccountName")!!
                     val sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                     budgetDataApi.editBudgetType(
@@ -93,12 +115,25 @@ class BudgetTypeListFragment : Fragment() {
 
     private fun setObservation() {
         budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
+            stopLoading()
             adapter.setList(it)
+            createList()
         })
     }
 
     //endregion
     //region Methods
+    private fun createList() {
+        binding.budgetTypeList.startAnimation(createList)
+    }
+
+    private fun appear() {
+        binding.budgetTypesBackButton.startAnimation(appear)
+        binding.budgetTypeListTitle.startAnimation(appear)
+
+        createList()
+    }
+
     private fun editBudgetType(item: BudgetType) {
         val intent = Intent(activity, BudgetFormActivity::class.java)
         lastTypeId = item.id
@@ -110,6 +145,7 @@ class BudgetTypeListFragment : Fragment() {
 
     private fun deleteBudgetType() {
         itemUnderDeletion?.let {
+            startLoading()
             budgetDataApi.deleteBudgetType(it.id)
         }
         itemUnderDeletion = null
@@ -122,6 +158,16 @@ class BudgetTypeListFragment : Fragment() {
             ?.replace(R.id.fragmentPanel, BudgetFragment())
             ?.disallowAddToBackStack()
             ?.commit()
+    }
+
+    private fun startLoading() {
+        binding.progressBar2.visibility = View.VISIBLE
+        binding.budgetTypeList.visibility = View.INVISIBLE
+    }
+
+    private fun stopLoading() {
+        binding.progressBar2.visibility = View.GONE
+        binding.budgetTypeList.visibility = View.VISIBLE
     }
     //endregion
 }

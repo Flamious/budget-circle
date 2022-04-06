@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.HistoryItemBinding
@@ -49,8 +51,6 @@ class HistoryAdapter(
                     }
                 }
             accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
-                /*if (item.isExpense == true) expensesTypes.first { it.id == item.typeId }.title
-                else earningsTypes.first { it.id == item.typeId }.title*/
             itemDate.text = item.date
             itemLayout.setOnClickListener {
                 onItemClick?.invoke(item, itemList.indexOfFirst { op -> op.id == item.id })

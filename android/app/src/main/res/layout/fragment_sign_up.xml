@@ -7,75 +7,132 @@
     android:layout_height="match_parent"
     tools:context=".fragments.auth.SignUpFragment">
 
-    <TextView
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/login"
-        android:textColor="@color/blue_secondary"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/passwordSignUpText"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordSignUpText" />
-
-    <EditText
-        android:id="@+id/passwordSignUpText"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:textColor="@color/text_primary"
-        android:theme="@style/greenControlCursor"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/signUpAdmitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/confirmPasswordSignUpText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:textColor="@color/text_primary"
-        android:theme="@style/greenControlCursor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView22"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/signup"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/greenEdgeEffect">
 
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/email"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/signup"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/passwordSignUpText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:textColor="@color/text_primary"
+                    android:theme="@style/greenControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/emailSignUpText"
+                    app:layout_constraintStart_toStartOf="@+id/emailSignUpText"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:text="@string/login"
+                    android:textColor="@color/blue_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/confirmPasswordSignUpText"
+                    app:layout_constraintTop_toBottomOf="@+id/confirmPasswordSignUpText" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/password"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/emailSignUpText"
+                    app:layout_constraintTop_toBottomOf="@+id/emailSignUpText" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+                <EditText
+                    android:id="@+id/emailSignUpText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:minHeight="48dp"
+                    android:textColor="@color/text_primary"
+                    android:theme="@style/greenControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView19"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/confirm_password"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/passwordSignUpText"
+                    app:layout_constraintTop_toBottomOf="@+id/passwordSignUpText" />
+
+                <EditText
+                    android:id="@+id/confirmPasswordSignUpText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:textColor="@color/text_primary"
+                    android:theme="@style/greenControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/passwordSignUpText"
+                    app:layout_constraintStart_toStartOf="@+id/passwordSignUpText"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/signUpAdmitButton"
@@ -89,46 +146,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
-
-    <EditText
-        android:id="@+id/emailSignUpText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:textColor="@color/text_primary"
-        android:theme="@style/greenControlCursor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/password"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/emailSignUpText"
-        app:layout_constraintTop_toBottomOf="@+id/emailSignUpText" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/confirm_password"
-        android:textColor="@color/text_secondary"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/passwordSignUpText"
-        app:layout_constraintTop_toBottomOf="@+id/passwordSignUpText" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/signUpLoadingLayout"

@@ -28,7 +28,7 @@ import kotlin.random.Random
 class LoginLoadingFragment : Fragment() {
     lateinit var binding: FragmentLoginLoadingBinding
     lateinit var service: UserApi
-    private var loading: Long = 5000;
+    private var loading: Long = 1500;
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(

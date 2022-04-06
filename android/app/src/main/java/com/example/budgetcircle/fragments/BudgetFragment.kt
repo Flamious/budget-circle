@@ -71,6 +71,12 @@ class BudgetFragment : Fragment() {
             R.anim.to_left_anim
         )
     }
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
     private var isClicked = false
     //endregion
 
@@ -89,6 +95,12 @@ class BudgetFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
+
     //region Setting
     private fun setAnimation(
         isClicked: Boolean,
@@ -117,6 +129,7 @@ class BudgetFragment : Fragment() {
         }
         binding.exchangeButton.setOnClickListener {
             addExchange()
+            if (isClicked) showHiddenButtons()
         }
         binding.typeListButton.setOnClickListener {
             openBudgetTypeList()
@@ -202,13 +215,27 @@ class BudgetFragment : Fragment() {
 
     private fun setObservation() {
         budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
-            if(it != null) {
+            if (it != null) {
                 setChart(it)
+                binding.exchangeButton.visibility = if (it.count() > 1) View.VISIBLE else View.GONE
             }
         })
     }
+
     //endregion
     //region Methods
+    private fun appear() {
+        binding.apply {
+            budgetFragmentTitle.startAnimation(appear)
+            sumText.startAnimation(appear)
+            kindText.startAnimation(appear)
+            exchangeButton.startAnimation(appear)
+            listButton.startAnimation(appear)
+            budgetSumTitleTextView?.startAnimation(appear)
+            budgetAccountTitleTextView?.startAnimation(appear)
+        }
+    }
+
     private fun showHiddenButtons() {
         binding.apply {
             setAnimation(

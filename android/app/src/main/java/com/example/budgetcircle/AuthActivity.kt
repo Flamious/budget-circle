@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginFragment
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import com.example.budgetcircle.fragments.auth.LoginLoadingFragment
 
 

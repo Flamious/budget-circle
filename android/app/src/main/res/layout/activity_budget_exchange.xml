@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budgetExchangeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/greenEdgeEffect"
@@ -16,27 +17,25 @@
         android:text="@string/new_exchange"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/backButton"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetExchangeBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/budgetExchangeBackButton" />
 
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/budgetExchangeBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
         android:id="@+id/budgetExchangeAddButton"
@@ -58,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/budgetExchangeAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton">
+        app:layout_constraintTop_toBottomOf="@+id/budgetExchangeBackButton">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,17 +91,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/titleTo" />
 
                 <TextView
-                    android:id="@+id/listFrom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
                     android:id="@+id/titleFrom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,15 +113,37 @@
                     app:layout_constraintStart_toStartOf="@+id/titleFrom"
                     app:layout_constraintTop_toTopOf="@+id/listTo" />
 
-                <TextView
+                <Button
                     android:id="@+id/listTo"
-                    android:layout_width="wrap_content"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="@+id/listFrom"
+                    app:layout_constraintStart_toStartOf="@+id/listFrom"
                     app:layout_constraintTop_toBottomOf="@+id/listFrom" />
+
+                <Button
+                    android:id="@+id/listFrom"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/titleFrom"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

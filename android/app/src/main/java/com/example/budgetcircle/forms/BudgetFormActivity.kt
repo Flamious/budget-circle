@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
 import com.example.budgetcircle.settings.SumInputFilter
@@ -11,6 +13,13 @@ import com.example.budgetcircle.settings.SumInputFilter
 class BudgetFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetFormBinding
     private var isEdit: Boolean = false
+
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.appear_short_anim
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,15 +29,21 @@ class BudgetFormActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
+
     override fun onBackPressed() {
         exit()
     }
+
     //region Setting
     private fun setButtons() {
         binding.budgetAddButton.setOnClickListener {
             add()
         }
-        binding.backButton.setOnClickListener {
+        binding.newAccountBackButton.setOnClickListener {
             exit()
         }
     }
@@ -47,6 +62,10 @@ class BudgetFormActivity : AppCompatActivity() {
     }
     //endregion
     //region Methods
+    private fun appear() {
+        binding.newAccountFormLayout.startAnimation(appear)
+    }
+
     private fun checkFields(): Boolean {
         val sum = binding.budgetSum.text.toString().toDoubleOrNull()
         var isValid = true

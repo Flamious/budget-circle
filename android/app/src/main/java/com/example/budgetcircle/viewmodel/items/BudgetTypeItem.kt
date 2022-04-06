@@ -9,6 +9,9 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+
 
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<BudgetType>()

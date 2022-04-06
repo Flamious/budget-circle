@@ -8,20 +8,18 @@
     tools:context=".lists.BudgetTypeListFragment">
 
     <ImageButton
-        android:id="@+id/budgetTypesBackButton2"
+        android:id="@+id/budgetTypesBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
         android:id="@+id/budgetTypeListTitle"
@@ -31,10 +29,10 @@
         android:text="@string/budgetTypes"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/budgetTypesBackButton2"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetTypesBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/budgetTypesBackButton2"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="@+id/budgetTypesBackButton" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/budgetTypeList"
@@ -47,6 +45,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budgetTypesBackButton2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/budgetTypesBackButton" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/green_main"
+        android:foregroundTint="@color/white"
+        android:indeterminateTint="@color/green_main"
+        android:progressBackgroundTint="@color/white"
+        android:progressTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budgetTypesBackButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initiateViewModel()
         setNavMenu()
-        Toast.makeText(this, Token, Toast.LENGTH_LONG).show()
     }
 
     override fun onBackPressed() {

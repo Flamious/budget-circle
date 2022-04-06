@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newAccountFormLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".forms.BudgetFormActivity">
@@ -11,15 +12,15 @@
         android:id="@+id/budgetFormTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="@string/new_account"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/newAccountBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/newAccountBackButton"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/budgetAddButton"
@@ -34,31 +35,27 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/newAccountBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
         android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        app:layout_constraintBottom_toBottomOf="@+id/budgetFormTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/budgetFormTitle"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border"
         android:theme="@style/greenEdgeEffect"
         app:layout_constraintBottom_toTopOf="@+id/budgetAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton">
+        app:layout_constraintTop_toBottomOf="@+id/newAccountBackButton">
 
         <LinearLayout
             android:layout_width="match_parent"
