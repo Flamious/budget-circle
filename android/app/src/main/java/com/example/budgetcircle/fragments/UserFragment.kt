@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
@@ -19,6 +21,13 @@ class UserFragment : Fragment() {
     lateinit var binding: FragmentUserBinding
     private val budgetDataApi: BudgetDataApi by activityViewModels()
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.requireContext(),
+            R.anim.appear_short_anim
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,6 +35,11 @@ class UserFragment : Fragment() {
         binding = FragmentUserBinding.inflate(inflater)
         setButtons()
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
     }
 
     //region Setting
@@ -42,7 +56,7 @@ class UserFragment : Fragment() {
             )
         }
 
-        binding.clearAAccountsButton.setOnClickListener {
+        binding.clearAccountsButton.setOnClickListener {
             Dialogs().chooseYesNo(
                 this.requireContext(),
                 resources.getString(R.string.clear_accounts),
@@ -73,6 +87,12 @@ class UserFragment : Fragment() {
     //endregion
 
     //region Methods
+    private fun appear() {
+        binding.scrollView3.startAnimation(appear)
+        binding.userFragmentTitle.startAnimation(appear)
+
+    }
+
     private fun logout() {
         val intent = Intent(activity, AuthActivity::class.java)
         intent.putExtra(

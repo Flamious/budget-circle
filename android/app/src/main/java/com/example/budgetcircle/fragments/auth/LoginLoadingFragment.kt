@@ -124,6 +124,7 @@ class LoginLoadingFragment : Fragment() {
             "Bearer $token"
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
+                openLogin()
             }
 
             override fun onResponse(call: Call<Any>, response: Response<Any>) {

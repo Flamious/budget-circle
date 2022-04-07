@@ -133,6 +133,7 @@ class LoginFragment : Fragment() {
             binding.passwordLoginText.text.toString()
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
+                print(t.message)
                 stopLoading()
             }
 

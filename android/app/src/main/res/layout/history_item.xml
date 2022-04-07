@@ -57,17 +57,6 @@
         app:layout_constraintStart_toEndOf="@+id/accountTitle"
         app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
 
-    <ImageView
-        android:id="@+id/imageRepetitive"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:contentDescription="@string/is_repetitive"
-        app:layout_constraintEnd_toStartOf="@+id/itemTitle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_history" />
-
     <TextView
         android:id="@+id/typeTitle"
         android:layout_width="wrap_content"

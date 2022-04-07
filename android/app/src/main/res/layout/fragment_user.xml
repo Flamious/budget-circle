@@ -8,7 +8,7 @@
     tools:context=".fragments.UserFragment" >
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/userFragmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17">
+        app:layout_constraintTop_toBottomOf="@+id/userFragmentTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,78 +40,102 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <Button
                     android:id="@+id/changePasswordActivityButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
                     android:text="@string/change_password"
+                    android:textAllCaps="false"
                     android:textColor="@color/blue_main"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView20"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+                <Button
+                    android:id="@+id/deleteAllOperationsButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:text="@string/delete_all_operations"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue_main"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+                <Button
+                    android:id="@+id/clearAccountsButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:text="@string/clear_accounts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue_main"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/deleteAllOperationsButton" />
+
+                <Button
+                    android:id="@+id/logoutButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="start|center_vertical"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:text="@string/log_out"
+                    android:textAllCaps="false"
+                    android:textColor="@color/red_main"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
                 <TextView
                     android:id="@+id/textView27"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/user_account"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/clearAAccountsButton"
-                    app:layout_constraintTop_toBottomOf="@+id/clearAAccountsButton" />
-
-                <TextView
-                    android:id="@+id/deleteAllOperationsButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/delete_all_operations"
-                    android:textColor="@color/blue_main"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/changePasswordActivityButton"
                     app:layout_constraintStart_toStartOf="@+id/textView24"
-                    app:layout_constraintTop_toBottomOf="@+id/textView24" />
-
-                <TextView
-                    android:id="@+id/clearAAccountsButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/clear_accounts"
-                    android:textColor="@color/blue_main"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/deleteAllOperationsButton"
-                    app:layout_constraintStart_toStartOf="@+id/deleteAllOperationsButton"
-                    app:layout_constraintTop_toBottomOf="@+id/deleteAllOperationsButton" />
+                    app:layout_constraintTop_toBottomOf="@+id/clearAccountsButton" />
 
                 <TextView
                     android:id="@+id/textView24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/operations"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/changePasswordActivityButton"
+                    app:layout_constraintStart_toStartOf="@+id/textView20"
                     app:layout_constraintTop_toBottomOf="@+id/changePasswordActivityButton" />
-
-                <TextView
-                    android:id="@+id/logoutButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="24dp"
-                    android:text="@string/log_out"
-                    android:textColor="@color/red_main"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/deleteAllOperationsButton"
-                    app:layout_constraintStart_toStartOf="@+id/textView27"
-                    app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
                 <TextView
                     android:id="@+id/textView20"

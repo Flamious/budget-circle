@@ -148,6 +148,7 @@ class SignUpFragment : Fragment() {
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 print(t.message)
+                stopLoading()
             }
 
             override fun onResponse(call: Call<Any>, response: Response<Any>) {

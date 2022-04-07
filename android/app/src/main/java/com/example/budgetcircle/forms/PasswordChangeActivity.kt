@@ -3,6 +3,8 @@ package com.example.budgetcircle.forms
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityPasswordChangeBinding
@@ -20,6 +22,13 @@ class PasswordChangeActivity : AppCompatActivity() {
     lateinit var token: String
     lateinit var service: UserApi
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.appear_short_anim
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPasswordChangeBinding.inflate(layoutInflater)
@@ -30,9 +39,15 @@ class PasswordChangeActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    override fun onBackPressed() {
-        exit()
+    override fun onStart() {
+        super.onStart()
+        appear()
     }
+
+    override fun onBackPressed() {
+        finish()
+    }
+
     //region Setting
     private fun setButtons() {
         binding.changePasswordButton.setOnClickListener {
@@ -41,7 +56,7 @@ class PasswordChangeActivity : AppCompatActivity() {
             }
         }
         binding.changePasswordBackButton.setOnClickListener {
-            exit()
+            finish()
         }
     }
 
@@ -52,6 +67,13 @@ class PasswordChangeActivity : AppCompatActivity() {
     //endregion
 
     //region Methods
+    private fun appear() {
+        binding.changePasswordScrollView.startAnimation(appear)
+        binding.changePasswordBackButton.startAnimation(appear)
+        binding.changePasswordButton.startAnimation(appear)
+        binding.title2.startAnimation(appear)
+    }
+
     private fun checkFields(): Boolean {
         var isValid = true
 
@@ -111,12 +133,6 @@ class PasswordChangeActivity : AppCompatActivity() {
     private fun print(message: String?) {
         if (message != null)
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun exit() {
-        val intent = Intent()
-        setResult(RESULT_CANCELED, intent)
-        finish()
     }
     //endregion
 }

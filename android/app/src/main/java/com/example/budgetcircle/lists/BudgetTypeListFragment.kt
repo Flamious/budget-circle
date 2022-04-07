@@ -45,6 +45,7 @@ class BudgetTypeListFragment : Fragment() {
             android.R.anim.slide_in_left
         )
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

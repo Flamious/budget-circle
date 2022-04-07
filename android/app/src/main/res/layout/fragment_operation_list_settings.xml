@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/white"
             android:src="@drawable/ic_back" />
 
         <ImageButton
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/white"
             android:src="@drawable/ic_filter" />
     </LinearLayout>
 
@@ -35,10 +37,11 @@
         android:id="@+id/operationSettingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/filter"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +49,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ScrollView
+        android:id="@+id/operationListSettingsScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -69,31 +73,37 @@
                     android:id="@+id/constraintLayout2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <Button
                         android:id="@+id/selectPeriod"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/text_primary"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center_vertical|end"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/budgetTypeTitle2"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/budgetTypeTitle2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:text="@string/period"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,29 +112,37 @@
                     android:id="@+id/constraintLayout4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-                    <TextView
+                    <Button
                         android:id="@+id/selectBudgetType"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/text_primary"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center_vertical|end"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/opListBudgetTypeTitle"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/opListBudgetTypeTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:text="@string/budget_type"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -133,29 +151,37 @@
                     android:id="@+id/constraintLayout5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout4"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-                    <TextView
+                    <Button
                         android:id="@+id/selectOrder"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/text_primary"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center_vertical|end"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/orderTitle"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/orderTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:text="@string/start_with"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -164,29 +190,37 @@
                     android:id="@+id/constraintLayout3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout5"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout5"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
 
-                    <TextView
+                    <Button
                         android:id="@+id/selectOperationType"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/text_primary"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center_vertical|end"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/operationTypeTitle"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/operationTypeTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:text="@string/operations"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -195,30 +229,38 @@
                     android:id="@+id/typeLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-                    <TextView
+                    <Button
                         android:id="@+id/selectType"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/text_primary"
+                        android:backgroundTint="@color/white"
+                        android:gravity="center_vertical|end"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/opListTypeTitle"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/opListTypeTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
                         android:text="@string/type"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

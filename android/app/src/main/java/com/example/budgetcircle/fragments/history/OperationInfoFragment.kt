@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +28,13 @@ class OperationInfoFragment : Fragment() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetDataApi: BudgetDataApi by activityViewModels()
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.requireContext(),
+            R.anim.appear_short_anim
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +46,10 @@ class OperationInfoFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
     //region Setting
     private fun setButtons() {
         binding.infoBackButton.setOnClickListener {
@@ -158,6 +171,13 @@ class OperationInfoFragment : Fragment() {
 
     //endregion
     //region Methods
+    private fun appear() {
+        binding.scrollView2.startAnimation(appear)
+        binding.infoBackButton.startAnimation(appear)
+        binding.opDeleteButton.startAnimation(appear)
+        binding.opEditButton.startAnimation(appear)
+    }
+
     private fun updateOperation() {
         when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
             true -> {

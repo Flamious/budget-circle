@@ -7,11 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".fragments.history.OperationInfoFragment">
 
+    <ImageButton
+        android:id="@+id/infoBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/opDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/white"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/opEditButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/opEditButton"
+        app:srcCompat="@drawable/ic_delete"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/opEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/white"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/infoBackButton"
+        app:layout_constraintEnd_toStartOf="@+id/opDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/infoBackButton"
+        app:srcCompat="@drawable/ic_edit"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/border"
         android:theme="@style/orangeEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -155,50 +193,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-
-    <ImageButton
-        android:id="@+id/infoBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
-
-    <ImageButton
-        android:id="@+id/opEditButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/edit"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/infoBackButton"
-        app:layout_constraintEnd_toStartOf="@+id/opDeleteButton"
-        app:layout_constraintTop_toTopOf="@+id/infoBackButton"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageButton
-        android:id="@+id/opDeleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/delete"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/opEditButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/opEditButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

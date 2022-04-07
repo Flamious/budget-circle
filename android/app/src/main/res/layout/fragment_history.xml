@@ -11,30 +11,62 @@
         android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/Title"
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/orange_main"
+            android:foregroundTint="@color/orange_main"
+            android:indeterminateTint="@color/orange_main"
+            android:progressBackgroundTint="@color/orange_main"
+            android:progressTint="@color/orange_main"
+            android:secondaryProgressTint="@color/orange_main"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/historyList"
+            app:layout_constraintEnd_toEndOf="@+id/historyList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/historyList" />
+
+        <TextView
+            android:id="@+id/hostoryFragmentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/history_fragment"
             android:textColor="@color/text_primary"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/noEntriesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_entries"
+            android:textColor="@color/text_secondary"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/historyList"
+            app:layout_constraintEnd_toEndOf="@+id/historyList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/historyList" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/border"
             android:theme="@style/orangeEdgeEffect"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Title" />
+            app:layout_constraintTop_toBottomOf="@+id/hostoryFragmentTitle" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -50,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:src="@drawable/ic_previous" />
 
             <ImageButton
@@ -57,6 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:src="@drawable/ic_filter" />
 
             <ImageButton
@@ -64,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:src="@drawable/ic_next" />
 
         </LinearLayout>
