@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
@@ -38,11 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:textColor="@color/text_primary"
-        android:textSize="24sp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetTypeEditButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/budgetTypeEditButton" />
 
     <TextView
         android:id="@+id/budgetTypeSum"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/green_main"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/typeTitle"
         app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
 
@@ -58,9 +58,12 @@
         android:id="@+id/btLine"
         android:layout_width="0dp"
         android:layout_height="1px"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:background="@color/text_secondary"
         android:backgroundTint="@color/text_secondary"
-        app:layout_constraintStart_toStartOf="@+id/budgetTypeSum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/budgetTypeSum" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,8 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
@@ -23,6 +25,13 @@ class OperationFormActivity : AppCompatActivity() {
     private var isExpense: Boolean = false
     private var isEdit: Boolean = false
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.appear_short_anim
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOperationFormBinding.inflate(layoutInflater)
@@ -30,6 +39,11 @@ class OperationFormActivity : AppCompatActivity() {
         setInitialValues()
         setButtons()
         setContentView(binding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
     }
 
     override fun onBackPressed() {
@@ -44,13 +58,13 @@ class OperationFormActivity : AppCompatActivity() {
 
         if(isExpense) {
             binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.new_expense)
-            binding.operationFromAddButton.text = resources.getText(R.string.add_exp)
+            binding.operationFormAddButton.text = resources.getText(R.string.add_exp)
         } else {
             binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.new_earning)
-            binding.operationFromAddButton.text = resources.getText(R.string.add_earn)
+            binding.operationFormAddButton.text = resources.getText(R.string.add_earn)
         }
 
-        binding.operationFromAddButton.backgroundTintList = ColorStateList.valueOf(
+        binding.operationFormAddButton.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(
                 this,
                 mainColor
@@ -100,7 +114,7 @@ class OperationFormActivity : AppCompatActivity() {
                 R.style.blueEdgeEffect
             )
         }
-        binding.operationFromAddButton.setOnClickListener {
+        binding.operationFormAddButton.setOnClickListener {
             add()
         }
         binding.operationFormBackButton.setOnClickListener {
@@ -111,11 +125,11 @@ class OperationFormActivity : AppCompatActivity() {
     private fun setEditPage() {
         if(isExpense) {
             binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.edit_exp)
-            binding.operationFromAddButton.text = resources.getText(R.string.edit_exp)
+            binding.operationFormAddButton.text = resources.getText(R.string.edit_exp)
 
         } else {
             binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.edit_earn)
-            binding.operationFromAddButton.text = resources.getText(R.string.edit_earn)
+            binding.operationFormAddButton.text = resources.getText(R.string.edit_earn)
         }
 
         binding.operationSumField.setText(intent.extras?.getDouble("sum")!!.toString())
@@ -147,6 +161,13 @@ class OperationFormActivity : AppCompatActivity() {
     }
     //endregion
     //region Methods
+    private fun appear() {
+        binding.operationFormScrollView.startAnimation(appear)
+        binding.operationFormAddButton.startAnimation(appear)
+        binding.operationFormBackButton.startAnimation(appear)
+        binding.operationFormTitle.startAnimation(appear)
+    }
+
     private fun checkFields(): Boolean {
         val sum = binding.operationSumField.text.toString().toDoubleOrNull()
         var isValid = true
@@ -162,7 +183,7 @@ class OperationFormActivity : AppCompatActivity() {
                     isValid = false
                 }
                 else -> {
-                    if (!isEdit) {
+                    if (!isEdit && isExpense) {
                         if (sum > budgetTypesSums[chosenBudgetType.value]) {
                             error =
                                 "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetType.value]})"

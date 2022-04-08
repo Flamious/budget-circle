@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".forms.OperationTypeFormActivity">
 
+    <ImageButton
+        android:id="@+id/opTypeBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
     <Button
         android:id="@+id/opTypeAddButton"
         android:layout_width="0dp"
@@ -13,43 +27,26 @@
         android:backgroundTint="@color/blue_main"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="@string/add_earn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/opTypeBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        app:layout_constraintBottom_toBottomOf="@+id/opTypeTitle2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/opTypeTitle2"
-        app:srcCompat="@drawable/ic_back" />
 
     <TextView
         android:id="@+id/opTypeTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/new_earning"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/opTypeBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/opTypeBackButton" />
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/opTypeAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.EdgeEffect
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,6 +36,20 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     private var itemUnderDeletion: OperationType? = null
     private var lastTypeId: Int = -1
 
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
+
+    private val createList: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            android.R.anim.slide_in_left
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +61,11 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
         setObservation()
         setLauncher()
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
     }
 
     //region Setting
@@ -72,6 +93,15 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
                 }
             }
         }
+
+        binding.progressBar4.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                this.requireContext(),
+                mainColor
+            )
+        )
+
+        binding.progressBar4.indeterminateTintList = binding.progressBar4.backgroundTintList
 
         binding.addOpTypeButton.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(
@@ -112,6 +142,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    startLoading()
                     val isEdit = result.data?.getBooleanExtra("isEdit", false)!!
                     val title = result.data?.getStringExtra("title")!!
                     if (!isEdit) {
@@ -132,16 +163,31 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     private fun setObservation() {
         if (isExpense)
             budgetDataApi.expenseTypes.observe(this.viewLifecycleOwner, {
+                stopLoading()
                 adapter.setList(it)
+                createList()
             })
         else
             budgetDataApi.earningTypes.observe(this.viewLifecycleOwner, {
+                stopLoading()
                 adapter.setList(it)
+                createList()
             })
     }
 
     //endregion
     //region Methods
+    private fun createList() {
+        binding.operationTypeList.startAnimation(createList)
+    }
+
+    private fun appear() {
+        binding.operationTypesBackButton.startAnimation(appear)
+        binding.operationTypeListTitle.startAnimation(appear)
+
+        createList()
+    }
+
     private fun editOperationType(item: OperationType) {
         val intent = Intent(activity, OperationTypeFormActivity::class.java)
         lastTypeId = item.id
@@ -153,6 +199,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
 
     private fun deleteOperationType() {
         itemUnderDeletion?.let {
+            startLoading()
             if (isExpense) budgetDataApi.deleteExpenseType(it.id)
             else budgetDataApi.deleteEarningType(it.id)
         }
@@ -176,6 +223,16 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
             )
             ?.disallowAddToBackStack()
             ?.commit()
+    }
+
+    private fun startLoading() {
+        binding.progressBar4.visibility = View.VISIBLE
+        binding.operationTypeList.visibility = View.INVISIBLE
+    }
+
+    private fun stopLoading() {
+        binding.progressBar4.visibility = View.GONE
+        binding.operationTypeList.visibility = View.VISIBLE
     }
     //endregion
 }

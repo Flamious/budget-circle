@@ -13,28 +13,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
         android:id="@+id/operationTypeListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:text="@string/budgetTypes"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/operationTypesBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/operationTypesBackButton"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="@+id/operationTypesBackButton" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/operationTypeList"
@@ -47,8 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationTypesBackButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/operationTypesBackButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addOpTypeButton"
@@ -62,4 +58,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
+
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/operationTypeList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeList" />
 </androidx.constraintlayout.widget.ConstraintLayout>
