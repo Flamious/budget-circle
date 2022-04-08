@@ -17,8 +17,7 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetExchangeActivity
-import com.example.budgetcircle.forms.EarningsFormActivity
-import com.example.budgetcircle.forms.ExpensesFormActivity
+import com.example.budgetcircle.forms.OperationFormActivity
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.Operation
@@ -50,6 +49,7 @@ class OperationInfoFragment : Fragment() {
         super.onStart()
         appear()
     }
+
     //region Setting
     private fun setButtons() {
         binding.infoBackButton.setOnClickListener {
@@ -106,7 +106,7 @@ class OperationInfoFragment : Fragment() {
                 if (result.resultCode == Activity.RESULT_OK) {
                     val budgetTypeIndex = result.data?.getIntExtra("budgetTypeIndex", 0)!!
                     val operationTypeIndex = result.data?.getIntExtra("typeIndex", 0)!!
-                    val operationTitle:String
+                    val operationTitle: String
                     val operationCommentary: String
                     val operationSum = result.data?.getDoubleExtra("sum", 0.0)!!
                     val typeId = when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
@@ -114,11 +114,10 @@ class OperationInfoFragment : Fragment() {
                         false -> budgetDataApi.earningTypes.value!![operationTypeIndex].id
                         else -> budgetDataApi.budgetTypes.value!![operationTypeIndex].id
                     }
-                    if(budgetDataApi.chosenHistoryItem.value!!.isExpense == null) {
+                    if (budgetDataApi.chosenHistoryItem.value!!.isExpense == null) {
                         operationTitle = budgetDataApi.chosenHistoryItem.value!!.title
                         operationCommentary = budgetDataApi.chosenHistoryItem.value!!.commentary
-                    }
-                    else {
+                    } else {
                         operationTitle = result.data?.getStringExtra("title")!!
                         operationCommentary = result.data?.getStringExtra("commentary")!!
                     }
@@ -179,65 +178,50 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun updateOperation() {
-        when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
-            true -> {
-                val intent = Intent(activity, ExpensesFormActivity::class.java)
-                intent.putExtra("isEdit", true)
-                intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
-                intent.putExtra(
-                    "expenseTypes",
-                    Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
+        val isExpense = budgetDataApi.chosenHistoryItem.value!!.isExpense
+        var intent: Intent
+        if (isExpense == null) {
+            intent = Intent(activity, BudgetExchangeActivity::class.java)
+            intent.putExtra("exchangeSum", budgetDataApi.chosenHistoryItem.value!!.sum)
+            intent.putExtra(
+                "fromIndex",
+                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
+            intent.putExtra(
+                "toIndex",
+                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+        } else {
+            intent = Intent(activity, OperationFormActivity::class.java)
+            intent.putExtra("isExpense", isExpense)
 
-                intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
+            if (isExpense) {
                 intent.putExtra(
-                    "budgetTypeIndex",
-                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
-                intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
+                    "types",
+                    Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
                 intent.putExtra(
                     "typeIndex",
                     budgetDataApi.expenseTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
-                intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
-                launcher?.launch(intent)
-            }
-            false -> {
-                val intent = Intent(activity, EarningsFormActivity::class.java)
-                intent.putExtra("isEdit", true)
+            } else {
                 intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
-                intent.putExtra(
-                    "earningTypes",
+                    "types",
                     Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
-
-                intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
-                intent.putExtra(
-                    "budgetTypeIndex",
-                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
-                intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
                 intent.putExtra(
                     "typeIndex",
                     budgetDataApi.earningTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
-                intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
-                launcher?.launch(intent)
             }
-            else -> {
-                val intent = Intent(activity, BudgetExchangeActivity::class.java)
-                intent.putExtra("isEdit", true)
-                intent.putExtra(
-                    "budgetTypes",
-                    Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
-                intent.putExtra("exchangeSum", budgetDataApi.chosenHistoryItem.value!!.sum)
-                intent.putExtra(
-                    "fromIndex",
-                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
-                intent.putExtra(
-                    "toIndex",
-                    budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
-                launcher?.launch(intent)
-            }
+
+            intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
+            intent.putExtra(
+                "budgetTypeIndex",
+                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
+            intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
+            intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
         }
+
+        intent.putExtra("isEdit", true)
+        intent.putExtra(
+            "budgetTypes",
+            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+        launcher?.launch(intent)
     }
 
     private fun deleteOperation() {

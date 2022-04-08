@@ -18,16 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.forms.EarningsFormActivity
 import com.example.budgetcircle.forms.OperationTypeFormActivity
-import com.example.budgetcircle.fragments.EarningsFragment
-import com.example.budgetcircle.fragments.ExpensesFragment
+import com.example.budgetcircle.fragments.OperationFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.OperationTypeAdapter
-import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.example.budgetcircle.viewmodel.models.OperationType
 
-class OperationTypeListFragment : Fragment() {
+class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
 
     lateinit var binding: FragmentOperationTypeListBinding
     private lateinit var adapter: OperationTypeAdapter
@@ -61,7 +58,7 @@ class OperationTypeListFragment : Fragment() {
     }
 
     private fun setTheme() {
-        val mainColor = if (budgetDataApi.isExpense) R.color.red_main else R.color.blue_main
+        val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
 
         binding.operationTypeList.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
             override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
@@ -84,7 +81,7 @@ class OperationTypeListFragment : Fragment() {
         )
 
         binding.operationTypeListTitle.text =
-            resources.getText(if (budgetDataApi.isExpense) R.string.expense_types_fragment else R.string.earning_types_fragment)
+            resources.getText(if (isExpense) R.string.expense_types_fragment else R.string.earning_types_fragment)
     }
 
     private fun setButtons() {
@@ -105,7 +102,7 @@ class OperationTypeListFragment : Fragment() {
                 resources.getString(R.string.r_u_sure),
                 resources.getString(R.string.yes),
                 resources.getString(R.string.no),
-                if (budgetDataApi.isExpense) R.color.red_main else R.color.blue_main,
+                if (isExpense) R.color.red_main else R.color.blue_main,
                 ::deleteOperationType
             )
         }
@@ -118,10 +115,10 @@ class OperationTypeListFragment : Fragment() {
                     val isEdit = result.data?.getBooleanExtra("isEdit", false)!!
                     val title = result.data?.getStringExtra("title")!!
                     if (!isEdit) {
-                        if (budgetDataApi.isExpense) budgetDataApi.addExpenseType(title)
+                        if (isExpense) budgetDataApi.addExpenseType(title)
                         else budgetDataApi.addEarningType(title)
                     } else {
-                        if (budgetDataApi.isExpense) budgetDataApi.editExpenseType(
+                        if (isExpense) budgetDataApi.editExpenseType(
                             lastTypeId,
                             title
                         )
@@ -133,7 +130,7 @@ class OperationTypeListFragment : Fragment() {
     }
 
     private fun setObservation() {
-        if (budgetDataApi.isExpense)
+        if (isExpense)
             budgetDataApi.expenseTypes.observe(this.viewLifecycleOwner, {
                 adapter.setList(it)
             })
@@ -149,13 +146,14 @@ class OperationTypeListFragment : Fragment() {
         val intent = Intent(activity, OperationTypeFormActivity::class.java)
         lastTypeId = item.id
         intent.putExtra("isEdit", true)
+        intent.putExtra("isExpense", isExpense)
         intent.putExtra("title", item.title)
         launcher?.launch(intent)
     }
 
     private fun deleteOperationType() {
         itemUnderDeletion?.let {
-            if (budgetDataApi.isExpense) budgetDataApi.deleteExpenseType(it.id)
+            if (isExpense) budgetDataApi.deleteExpenseType(it.id)
             else budgetDataApi.deleteEarningType(it.id)
         }
         itemUnderDeletion = null
@@ -163,10 +161,7 @@ class OperationTypeListFragment : Fragment() {
 
     private fun addOperationType() {
         val intent = Intent(activity, OperationTypeFormActivity::class.java)
-        intent.putExtra(
-            "isExpense",
-            budgetDataApi.isExpense
-        )
+        intent.putExtra("isExpense", isExpense)
 
         launcher?.launch(intent)
     }
@@ -177,7 +172,7 @@ class OperationTypeListFragment : Fragment() {
             ?.beginTransaction()
             ?.replace(
                 R.id.fragmentPanel,
-                if (budgetDataApi.isExpense) ExpensesFragment() else EarningsFragment()
+                OperationFragment(isExpense)
             )
             ?.disallowAddToBackStack()
             ?.commit()

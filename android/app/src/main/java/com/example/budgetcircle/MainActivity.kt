@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.earnings -> {
                         setNavColor(R.color.nav_blue_selector)
-                        EarningsFragment()
+                        OperationFragment(false)
                     }
                     R.id.expenses -> {
                         setNavColor(R.color.nav_red_selector)
-                        ExpensesFragment()
+                        OperationFragment(true)
                     }
                     R.id.budget -> {
                         setNavColor(R.color.nav_green_selector)

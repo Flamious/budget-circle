@@ -34,7 +34,6 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     private val operationTypeApiService: OperationTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(OperationTypeApi::class.java)
-    var isExpense: Boolean = false
 
     val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
         value = null
@@ -270,9 +269,11 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
                         getOperations()
                         if (operation.isExpense == false) {
                             getEarningSums(earningsDate.value!!)
+                            getEarningTypes()
                         }
                         if (operation.isExpense == true) {
                             getExpenseSums(expensesDate.value!!)
+                            getExpenseTypes()
                         }
                     }
                 }
@@ -699,7 +700,6 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             MainActivity.Token
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
-                var a = 1
             }
 
             override fun onResponse(

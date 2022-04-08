@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forms.OperationFormActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border"
+        android:theme="@style/blueEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/operationFromAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operationFormBackButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/operationCommentaryField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:autofillHints="commentary"
+                    android:backgroundTint="@color/blue_main"
+                    android:ems="10"
+                    android:hint="@string/comment"
+                    android:inputType="textMultiLine"
+                    android:textColorHighlight="@color/blue_main"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColorLink="@color/blue_secondary"
+                    android:textCursorDrawable="@color/blue_main"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/operationSumField"
+                    app:layout_constraintStart_toStartOf="@+id/operationSumField"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFragmentTypeButton" />
+
+                <EditText
+                    android:id="@+id/operationSumField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="sum"
+                    android:backgroundTint="@color/blue_main"
+                    android:ems="10"
+                    android:hint="@string/sum"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/blue_main"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColorLink="@color/blue_secondary"
+                    android:textCursorDrawable="@color/blue_main"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/operationTitleField"
+                    app:layout_constraintStart_toStartOf="@+id/operationTitleField"
+                    app:layout_constraintTop_toBottomOf="@+id/operationTitleField" />
+
+                <EditText
+                    android:id="@+id/operationTitleField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:autofillHints="title"
+                    android:backgroundTint="@color/blue_main"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:textColorHighlight="@color/blue_main"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColorLink="@color/blue_secondary"
+                    android:textCursorDrawable="@color/blue_main"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/operationFormBudgetTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationFragmentBudgetTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationSumField"
+                    app:layout_constraintTop_toTopOf="@+id/operationFragmentBudgetTypeButton" />
+
+                <Button
+                    android:id="@+id/operationFragmentBudgetTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/operationSumField" />
+
+                <TextView
+                    android:id="@+id/operationFormKindTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kind"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationFragmentTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationFormBudgetTypeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationFragmentTypeButton" />
+
+                <Button
+                    android:id="@+id/operationFragmentTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFragmentBudgetTypeButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/operationFromAddButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/add_earn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/operationFormBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/operationFromTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="@string/new_earning"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/operationFormBackButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/operationFormBackButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
