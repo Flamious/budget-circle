@@ -118,6 +118,8 @@
     <!-- Operation Types-->
     <string name="add_earning_type">Add earning type</string>
     <string name="add_expense_type">Add expense type</string>
+    <string name="edit_earning_type">Edit earning type</string>
+    <string name="edit_expense_type">Edit expense type</string>
 
     <!-- Api -->
     <string name="url">url</string>

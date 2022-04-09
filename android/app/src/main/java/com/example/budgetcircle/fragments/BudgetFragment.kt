@@ -226,7 +226,7 @@ class BudgetFragment : Fragment() {
     //region Methods
     private fun appear() {
         binding.apply {
-            budgetFragmentTitle.startAnimation(appear)
+            budgetFragmentheaderLayout?.startAnimation(appear)
             sumText.startAnimation(appear)
             kindText.startAnimation(appear)
             exchangeButton.startAnimation(appear)

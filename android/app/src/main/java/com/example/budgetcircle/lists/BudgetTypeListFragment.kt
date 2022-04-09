@@ -129,9 +129,7 @@ class BudgetTypeListFragment : Fragment() {
     }
 
     private fun appear() {
-        binding.budgetTypesBackButton.startAnimation(appear)
-        binding.budgetTypeListTitle.startAnimation(appear)
-
+        binding.budgetTypeListHeaderLayout.startAnimation(appear)
         createList()
     }
 
