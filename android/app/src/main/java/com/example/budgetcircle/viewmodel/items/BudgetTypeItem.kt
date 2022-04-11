@@ -11,6 +11,7 @@ import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.example.budgetcircle.settings.DoubleFormatter
 
 
 class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
@@ -21,7 +22,7 @@ class BudgetTypeAdapter : RecyclerView.Adapter<BudgetTypeAdapter.ItemHolder>() {
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = BudgetTypeItemBinding.bind(view)
         fun bind(item: BudgetType) = binding.apply {
-            budgetTypeSum.text = item.sum.toString()
+            budgetTypeSum.text = DoubleFormatter.formatString(item.sum)
             typeTitle.text = item.title
             budgetTypeDeleteButton.isEnabled = item.isDeletable
             budgetTypeEditButton.setOnClickListener {

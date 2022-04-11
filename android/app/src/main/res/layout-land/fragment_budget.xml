@@ -25,19 +25,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/budget_fragment"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/budgetChangeChartButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/budgetChangeChartButton" />
+
+            <ImageButton
+                android:id="@+id/budgetChangeChartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/green_main"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_bar_chart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/budgetChartLayout"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,20 +67,43 @@
                 android:layout_marginStart="8dp"
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
+                android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/budgetSumTitleTextView"
                 app:layout_constraintTop_toTopOf="@+id/budgetSumTitleTextView" />
 
-            <TextView
-                android:id="@+id/kindText"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/budgetInfoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/total"
-                android:textColor="@color/text_primary"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/budgetAccountTitleTextView"
-                app:layout_constraintStart_toEndOf="@+id/budgetAccountTitleTextView"
-                app:layout_constraintTop_toTopOf="@+id/budgetAccountTitleTextView" />
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/budgetSumTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/sumText">
+
+                <TextView
+                    android:id="@+id/budgetAccountTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/kindText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/total"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/budgetAccountTitleTextView"
+                    app:layout_constraintStart_toEndOf="@+id/budgetAccountTitleTextView"
+                    app:layout_constraintTop_toTopOf="@+id/budgetAccountTitleTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/budgetSumTitleTextView"
@@ -80,17 +117,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/budgetAccountTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/account"
-                android:textColor="@color/text_secondary"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="@+id/budgetSumTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/budgetSumTitleTextView" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.github.mikephil.charting.charts.PieChart
@@ -100,12 +126,27 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+            app:layout_constraintTop_toTopOf="@+id/budgetChartLayout">
 
         </com.github.mikephil.charting.charts.PieChart>
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/budgetBarChart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1.2:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/budgetChartLayout"></com.github.mikephil.charting.charts.BarChart>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/exchangeButton"

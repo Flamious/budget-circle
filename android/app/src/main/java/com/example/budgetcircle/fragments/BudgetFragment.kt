@@ -21,6 +21,7 @@ import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
+import com.example.budgetcircle.settings.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
@@ -33,6 +34,7 @@ class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private var isPieChart = true
 
     //region Animations
     private val rotateOpen: Animation by lazy {
@@ -77,6 +79,7 @@ class BudgetFragment : Fragment() {
             R.anim.appear_short_anim
         )
     }
+
     private var isClicked = false
     //endregion
 
@@ -134,9 +137,42 @@ class BudgetFragment : Fragment() {
         binding.typeListButton.setOnClickListener {
             openBudgetTypeList()
         }
+        binding.budgetChangeChartButton?.setOnClickListener {
+            changeChart()
+        }
     }
 
-    private fun setChart(budgetTypes: List<BudgetType>) {
+    private fun setBarChart(budgetTypes: List<BudgetType>) {
+        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
+        var sum = 0.0
+        for (n in values) {
+            sum += n
+        }
+        sum = DoubleFormatter.format(sum)
+        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        if (sum > 0)
+            BarChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                binding.budgetBarChart,
+                binding.sumText,
+            )
+        else
+            BarChartSetter.setChart(
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(0.0),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                binding.budgetBarChart,
+                binding.sumText,
+                true
+            )
+    }
+
+    private fun setPieChart(budgetTypes: List<BudgetType>) {
         val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
         val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
         var sum = 0.0
@@ -216,7 +252,10 @@ class BudgetFragment : Fragment() {
     private fun setObservation() {
         budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
             if (it != null) {
-                setChart(it)
+                if (isPieChart)
+                    setPieChart(it)
+                else
+                    setBarChart(it)
                 binding.exchangeButton.visibility = if (it.count() > 1) View.VISIBLE else View.GONE
             }
         })
@@ -224,6 +263,24 @@ class BudgetFragment : Fragment() {
 
     //endregion
     //region Methods
+    private fun changeChart() {
+        binding.apply {
+            if (isPieChart) {
+                budgetPieChart.visibility = View.INVISIBLE
+                budgetBarChart.visibility = View.VISIBLE
+                budgetInfoLayout?.visibility = View.INVISIBLE
+
+                setBarChart(budgetDataApi.budgetTypes.value!!)
+            } else {
+                budgetBarChart.visibility = View.INVISIBLE
+                budgetPieChart.visibility = View.VISIBLE
+                budgetInfoLayout?.visibility = View.VISIBLE
+
+                setPieChart(budgetDataApi.budgetTypes.value!!)
+            }
+            isPieChart = !isPieChart
+        }
+    }
     private fun appear() {
         binding.apply {
             budgetFragmentheaderLayout?.startAnimation(appear)

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.OperationTypeItemBinding
+import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.viewmodel.models.OperationType
 
 class OperationTypeAdapter : RecyclerView.Adapter<OperationTypeAdapter.ItemHolder>() {
@@ -18,7 +19,7 @@ class OperationTypeAdapter : RecyclerView.Adapter<OperationTypeAdapter.ItemHolde
         private val binding = OperationTypeItemBinding.bind(view)
 
         fun bind(item: OperationType) = binding.apply {
-            operationypeSum.text = item.sum.toString()
+            operationypeSum.text = DoubleFormatter.formatString(item.sum)
             opTypeTitle.text = item.title
             operationTypeDeleteButton.isEnabled = item.isDeletable
             operationTypeEditButton.isEnabled = item.isDeletable

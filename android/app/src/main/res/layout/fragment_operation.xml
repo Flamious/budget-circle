@@ -8,7 +8,7 @@
     tools:context=".fragments.OperationFragment" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/budgetChartLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="-16dp"

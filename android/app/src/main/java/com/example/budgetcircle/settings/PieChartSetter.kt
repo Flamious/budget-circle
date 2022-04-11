@@ -57,7 +57,7 @@ class PieChartSetter {
             chart.holeRadius = if (!isFull) holeRadius else 0f
             chart.setDrawEntryLabels(false)
             chart.setTransparentCircleAlpha(0)
-            sumTextView.text = sum.toString()
+            sumTextView.text = DoubleFormatter.formatString(sum)
             labelTextView.text = label
             chart.highlightValues(null)
             chart.setOnChartValueSelectedListener(
@@ -80,12 +80,12 @@ class PieChartSetter {
         ) : OnChartValueSelectedListener {
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                sumTextView.text = e?.y.toString()
+                sumTextView.text = DoubleFormatter.formatString(e?.y!!.toDouble())
                 labelTextView.text = (e as PieEntry).label
             }
 
             override fun onNothingSelected() {
-                sumTextView.text = sum.toString()
+                sumTextView.text = DoubleFormatter.formatString(sum)
                 labelTextView.text = label
             }
 
