@@ -22,8 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/green_main"
             android:contentDescription="@string/new_exchange"
             android:minHeight="48dp"
@@ -42,7 +40,7 @@
             android:text="@string/budgetTypes"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:textStyle="normal"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/budgetTypesBackButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/budgetTypesBackButton" />

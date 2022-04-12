@@ -25,18 +25,30 @@
                 android:layout_height="match_parent"
                 android:theme="@style/greenEdgeEffect">
 
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout7"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/signup"
-                    android:textColor="@color/text_primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
+                    android:background="@color/green_main"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/signup"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <EditText
                     android:id="@+id/passwordSignUpText"
@@ -59,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="32dp"
-                    android:text="@string/login"
+                    android:text="@string/login_short"
                     android:textColor="@color/blue_secondary"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -82,12 +94,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/email"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
                 <EditText
                     android:id="@+id/emailSignUpText"
@@ -141,7 +153,7 @@
         android:backgroundTint="@color/green_main"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="@string/signup"
+        android:text="@string/signup_short"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

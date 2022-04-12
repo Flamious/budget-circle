@@ -63,7 +63,7 @@ class LoginLoadingFragment : Fragment() {
 
         val size = 4
         val values = Array(size) { Random.nextDouble(10.0, 50.0) }
-        val titles = Array(size) { "" }
+        val titles = Array(size) { resources.getString(R.string.app_name) }
         val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
             PieChartSetter.setChart(
                 titles,
@@ -74,7 +74,8 @@ class LoginLoadingFragment : Fragment() {
                 binding.loadingPieChart,
                 binding.sumTextView,
                 binding.titleView,
-                false
+                isFull = false,
+                noEntries = true
             )
     }
     //endregion

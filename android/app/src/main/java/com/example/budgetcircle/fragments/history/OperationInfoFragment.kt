@@ -172,9 +172,7 @@ class OperationInfoFragment : Fragment() {
     //region Methods
     private fun appear() {
         binding.scrollView2.startAnimation(appear)
-        binding.infoBackButton.startAnimation(appear)
-        binding.opDeleteButton.startAnimation(appear)
-        binding.opEditButton.startAnimation(appear)
+        binding.operationInfoFragmentHeaderLayout.startAnimation(appear)
     }
 
     private fun updateOperation() {

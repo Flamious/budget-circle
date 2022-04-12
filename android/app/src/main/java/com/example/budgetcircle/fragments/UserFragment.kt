@@ -89,7 +89,7 @@ class UserFragment : Fragment() {
     //region Methods
     private fun appear() {
         binding.scrollView3.startAnimation(appear)
-        binding.userFragmentTitle.startAnimation(appear)
+        binding.userFragmentHeaderLayout.startAnimation(appear)
 
     }
 

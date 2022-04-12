@@ -245,7 +245,7 @@ class OperationListSettingsFragment : Fragment() {
     private fun appear() {
         binding.operationListSettingsScrollView.startAnimation(appear)
         binding.linearLayout3.startAnimation(appear)
-        binding.operationSettingsTitle.startAnimation(appear)
+        binding.operationListSettingsFragmentHeaderLayout.startAnimation(appear)
     }
 
     private fun openHistory() {

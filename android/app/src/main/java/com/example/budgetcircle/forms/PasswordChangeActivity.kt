@@ -70,8 +70,7 @@ class PasswordChangeActivity : AppCompatActivity() {
     private fun appear() {
         binding.changePasswordScrollView.startAnimation(appear)
         binding.changePasswordBackButton.startAnimation(appear)
-        binding.changePasswordButton.startAnimation(appear)
-        binding.title2.startAnimation(appear)
+        binding.changePasswordHeaderLayout.startAnimation(appear)
     }
 
     private fun checkFields(): Boolean {

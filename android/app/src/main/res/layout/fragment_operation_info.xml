@@ -7,44 +7,57 @@
     android:layout_height="match_parent"
     tools:context=".fragments.history.OperationInfoFragment">
 
-    <ImageButton
-        android:id="@+id/infoBackButton"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/operationInfoFragmentHeaderLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/white"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back"
-        tools:ignore="DuplicateSpeakableTextCheck" />
-
-    <ImageButton
-        android:id="@+id/opDeleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/white"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/opEditButton"
+        android:background="@color/orange_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/opEditButton"
-        app:srcCompat="@drawable/ic_delete"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/opEditButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/white"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/infoBackButton"
-        app:layout_constraintEnd_toStartOf="@+id/opDeleteButton"
-        app:layout_constraintTop_toTopOf="@+id/infoBackButton"
-        app:srcCompat="@drawable/ic_edit"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        <ImageButton
+            android:id="@+id/infoBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/orange_main"
+            android:minHeight="48dp"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <ImageButton
+            android:id="@+id/opEditButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/orange_main"
+            android:minHeight="48dp"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/infoBackButton"
+            app:layout_constraintEnd_toStartOf="@+id/opDeleteButton"
+            app:layout_constraintTop_toTopOf="@+id/infoBackButton"
+            app:srcCompat="@drawable/ic_edit"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <ImageButton
+            android:id="@+id/opDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/orange_main"
+            android:minHeight="48dp"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/opEditButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/opEditButton"
+            app:srcCompat="@drawable/ic_delete"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -55,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoBackButton">
+        app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentHeaderLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
