@@ -8,47 +8,100 @@
     tools:context=".fragments.OperationFragment" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/operationFragmentHeaderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/operationFragmentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/operationChangeChartButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/operationChangeChartButton" />
+
+        <ImageButton
+            android:id="@+id/operationChangeChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_bar_chart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/budgetChartLayout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationFragmentTitle">
+        app:layout_constraintTop_toBottomOf="@+id/operationFragmentHeaderLayout">
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/operationKindInfoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/operationFragmentSumTitle"
+            app:layout_constraintTop_toBottomOf="@+id/operationFragmentSumText">
+
+            <TextView
+                android:id="@+id/operationFragmentKindText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/operationFragmentKindTitle"
+                app:layout_constraintTop_toTopOf="@+id/operationFragmentKindTitle" />
+
+            <TextView
+                android:id="@+id/operationFragmentKindTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kind"
+                android:textColor="@color/text_secondary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/operationFragmentPeriodTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/choosingPeriod"
             android:textColor="@color/text_secondary"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/operationFragmentKindTitle"
-            app:layout_constraintTop_toBottomOf="@+id/operationFragmentKindTitle" />
-
-        <TextView
-            android:id="@+id/operationFragmentKindTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/kind"
-            android:textColor="@color/text_secondary"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/operationFragmentSumTitle"
-            app:layout_constraintTop_toBottomOf="@+id/operationFragmentSumTitle" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/operationFragmentSumTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/sum"
             android:textColor="@color/text_secondary"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/operationFragmentPeriodTitle"
+            app:layout_constraintTop_toBottomOf="@+id/operationFragmentPeriodTitle" />
 
         <TextView
             android:id="@+id/operationFragmentSumText"
@@ -73,17 +126,6 @@
             app:layout_constraintStart_toEndOf="@+id/operationFragmentPeriodTitle"
             app:layout_constraintTop_toTopOf="@+id/operationFragmentPeriodTitle" />
 
-        <TextView
-            android:id="@+id/operationFragmentKindText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/operationFragmentKindTitle"
-            app:layout_constraintStart_toEndOf="@+id/operationFragmentKindTitle"
-            app:layout_constraintTop_toTopOf="@+id/operationFragmentKindTitle" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.github.mikephil.charting.charts.PieChart
@@ -94,21 +136,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationFragmentTitle">
+        app:layout_constraintTop_toBottomOf="@+id/operationFragmentHeaderLayout">
 
     </com.github.mikephil.charting.charts.PieChart>
-
-    <TextView
-        android:id="@+id/operationFragmentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/operationFragmentListButton"
@@ -124,6 +154,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/white" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/operationBarChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1.2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/budgetChartLayout"></com.github.mikephil.charting.charts.BarChart>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/operationFragmentAddButton"

@@ -12,7 +12,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/budgetFragmentheaderLayout"
+            android:id="@+id/budgetFragmentHeaderLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/green_main"
@@ -54,7 +54,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/budgetFragmentheaderLayout"
+            app:layout_constraintTop_toBottomOf="@+id/budgetFragmentHeaderLayout"
             app:layout_constraintVertical_bias="0.0">
 
 

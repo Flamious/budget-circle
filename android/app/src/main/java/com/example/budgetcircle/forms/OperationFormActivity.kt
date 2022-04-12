@@ -57,12 +57,23 @@ class OperationFormActivity : AppCompatActivity() {
         val secondaryColor = if (isExpense) R.color.red_secondary else R.color.blue_secondary
 
         if(isExpense) {
-            binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.new_expense)
+            binding.operationFormTitle.text = resources.getText(R.string.new_expense)
             binding.operationFormAddButton.text = resources.getText(R.string.add_exp)
         } else {
-            binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.new_earning)
+            binding.operationFormTitle.text = resources.getText(R.string.new_earning)
             binding.operationFormAddButton.text = resources.getText(R.string.add_earn)
         }
+
+        binding.operationFormBackButton.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                this,
+                mainColor
+            )
+        )
+        binding.newOperationFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
+            this,
+            mainColor
+        ))
 
         binding.operationFormAddButton.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(
@@ -164,8 +175,7 @@ class OperationFormActivity : AppCompatActivity() {
     private fun appear() {
         binding.operationFormScrollView.startAnimation(appear)
         binding.operationFormAddButton.startAnimation(appear)
-        binding.operationFormBackButton.startAnimation(appear)
-        binding.operationFormTitle.startAnimation(appear)
+        binding.newOperationFragmentHeaderLayout.startAnimation(appear)
     }
 
     private fun checkFields(): Boolean {

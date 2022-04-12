@@ -72,17 +72,29 @@ class OperationTypeFormActivity : AppCompatActivity() {
         val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
         val secondaryColor = if (isExpense) R.color.red_secondary else R.color.blue_secondary
 
-        binding.opTypeTitle2.text =
-            resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
-        binding.opTypeAddButton.text =
-            resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
         binding.apply {
+            opTypeTitle2.text =
+            resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
+            opTypeAddButton.text =
+                resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
+
             opTypeAddButton.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     this@OperationTypeFormActivity,
                     mainColor
                 )
             )
+            opTypeBackButton.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    mainColor
+                )
+            )
+            operationTypeHeaderLayout.setBackgroundColor(ContextCompat.getColor(
+                this@OperationTypeFormActivity,
+                mainColor
+            ))
+
             opTitle.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     this@OperationTypeFormActivity,
@@ -104,8 +116,7 @@ class OperationTypeFormActivity : AppCompatActivity() {
     //region Methods
     private fun appear() {
         binding.opTitle.startAnimation(appear)
-        binding.opTypeBackButton.startAnimation(appear)
-        binding.opTypeTitle2.startAnimation(appear)
+        binding.operationTypeHeaderLayout.startAnimation(appear)
         binding.opTypeAddButton.startAnimation(appear)
     }
 

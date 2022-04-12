@@ -19,7 +19,7 @@
             app:layout_constraintBottom_toTopOf="@+id/listButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/budgetFragmentheaderLayout">
+            app:layout_constraintTop_toBottomOf="@+id/budgetFragmentHeaderLayout">
 
 
             <com.github.mikephil.charting.charts.PieChart
@@ -83,7 +83,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/budgetFragmentheaderLayout"
+            android:id="@+id/budgetFragmentHeaderLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/green_main"

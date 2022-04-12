@@ -20,6 +20,7 @@ import com.example.budgetcircle.databinding.FragmentOperationBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.OperationFormActivity
 import com.example.budgetcircle.lists.OperationTypeListFragment
+import com.example.budgetcircle.settings.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
@@ -30,6 +31,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
     lateinit var binding: FragmentOperationBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private var isPieChart = true
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -78,6 +80,9 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 if (isExpense) budgetDataApi.expensesDate else budgetDataApi.earningsDate
             )
         }
+        binding.operationChangeChartButton.setOnClickListener {
+            changeChart()
+        }
     }
 
     private fun setTheme() {
@@ -85,6 +90,18 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             operationFragmentTitle.text =
                 resources.getText(if (isExpense) R.string.expenses_fragment else R.string.earnings_fragment)
             val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
+
+
+            binding.operationChangeChartButton.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    mainColor
+                )
+            )
+            binding.operationFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
+                this@OperationFragment.requireContext(),
+                mainColor
+            ))
 
             operationFragmentAddButton.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
@@ -102,7 +119,38 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
         }
     }
 
-    private fun setChart(sums: List<OperationSum>) {
+    private fun setBarChart(budgetTypes: List<OperationSum>) {
+        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].type }
+        var sum = 0.0
+        for (n in values) {
+            sum += n
+        }
+        sum = DoubleFormatter.format(sum)
+        val colors = resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
+            .toCollection(ArrayList())
+        if (sum > 0)
+            BarChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                sum,
+                binding.operationBarChart,
+                binding.operationFragmentSumText,
+            )
+        else
+            BarChartSetter.setChart(
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(0.0),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                sum,
+                binding.operationBarChart,
+                binding.operationFragmentSumText,
+                true
+            )
+    }
+
+    private fun setPieChart(sums: List<OperationSum>) {
         val values = Array(sums.size) { index -> sums[index].sum }
         val titles = Array(sums.size) { index -> sums[index].type }
         var sum = 0.0
@@ -174,7 +222,10 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             })
             budgetDataApi.expenseSums.observe(this.viewLifecycleOwner, {
                 if (it != null) {
-                    setChart(it)
+                    if (isPieChart)
+                        setPieChart(it)
+                    else
+                        setBarChart(it)
                 }
             })
         } else {
@@ -186,7 +237,10 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             })
             budgetDataApi.earningSums.observe(this.viewLifecycleOwner, {
                 if (it != null) {
-                    setChart(it)
+                    if (isPieChart)
+                        setPieChart(it)
+                    else
+                        setBarChart(it)
                 }
             })
         }
@@ -194,6 +248,37 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
 
     //endregion
     //region Methods
+    private fun changeChart() {
+        binding.apply {
+            if (isPieChart) {
+                operationsPieChart.visibility = View.INVISIBLE
+                operationBarChart.visibility = View.VISIBLE
+                operationKindInfoLayout.visibility = View.INVISIBLE
+
+                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    operationFragmentPeriodText.setTextColor(ContextCompat.getColor(
+                        this@OperationFragment.requireContext(),
+                        R.color.text_primary
+                    ))
+                }
+
+                setBarChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+            } else {
+                operationBarChart.visibility = View.INVISIBLE
+                operationsPieChart.visibility = View.VISIBLE
+                operationKindInfoLayout.visibility = View.VISIBLE
+
+                operationFragmentPeriodText.setTextColor(ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.text_secondary
+                ))
+
+                setPieChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+            }
+            isPieChart = !isPieChart
+        }
+    }
+
     private fun appear() {
         binding.apply {
             operationFragmentTitle.startAnimation(appear)

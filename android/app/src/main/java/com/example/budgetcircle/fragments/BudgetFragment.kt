@@ -137,7 +137,7 @@ class BudgetFragment : Fragment() {
         binding.typeListButton.setOnClickListener {
             openBudgetTypeList()
         }
-        binding.budgetChangeChartButton?.setOnClickListener {
+        binding.budgetChangeChartButton.setOnClickListener {
             changeChart()
         }
     }
@@ -268,22 +268,23 @@ class BudgetFragment : Fragment() {
             if (isPieChart) {
                 budgetPieChart.visibility = View.INVISIBLE
                 budgetBarChart.visibility = View.VISIBLE
-                budgetInfoLayout?.visibility = View.INVISIBLE
+                budgetInfoLayout.visibility = View.INVISIBLE
 
                 setBarChart(budgetDataApi.budgetTypes.value!!)
             } else {
                 budgetBarChart.visibility = View.INVISIBLE
                 budgetPieChart.visibility = View.VISIBLE
-                budgetInfoLayout?.visibility = View.VISIBLE
+                budgetInfoLayout.visibility = View.VISIBLE
 
                 setPieChart(budgetDataApi.budgetTypes.value!!)
             }
             isPieChart = !isPieChart
         }
     }
+
     private fun appear() {
         binding.apply {
-            budgetFragmentheaderLayout?.startAnimation(appear)
+            budgetFragmentHeaderLayout.startAnimation(appear)
             sumText.startAnimation(appear)
             kindText.startAnimation(appear)
             exchangeButton.startAnimation(appear)

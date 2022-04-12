@@ -94,6 +94,18 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
             }
         }
 
+
+        binding.operationTypesBackButton.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                this.requireContext(),
+                mainColor
+            )
+        )
+        binding.operationTypeListFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
+            this.requireContext(),
+            mainColor
+        ))
+
         binding.progressBar4.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(
                 this.requireContext(),
@@ -182,8 +194,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     }
 
     private fun appear() {
-        binding.operationTypesBackButton.startAnimation(appear)
-        binding.operationTypeListTitle.startAnimation(appear)
+        binding.operationTypeListFragmentHeaderLayout.startAnimation(appear)
 
         createList()
     }
