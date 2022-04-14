@@ -70,9 +70,6 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
         binding.operationFragmentAddButton.setOnClickListener {
             addEarning()
         }
-        binding.operationFragmentPeriodText.setOnClickListener {
-            choosePeriod()
-        }
         binding.operationChangeChartButton.setOnClickListener {
             changeChart()
         }
@@ -258,7 +255,6 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 operationKindInfoLayout.visibility = View.INVISIBLE
 
                 operationChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
-                operationChangePeriodButton.visibility = View.VISIBLE
                 setBarChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             } else {
                 operationBarChart.visibility = View.INVISIBLE
@@ -266,7 +262,6 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 operationKindInfoLayout.visibility = View.VISIBLE
 
                 operationChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
-                operationChangePeriodButton.visibility = View.GONE
                 setPieChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             }
             isPieChart = !isPieChart

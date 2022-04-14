@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".fragments.history.OperationListSettingsFragment" >
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/add_earn"
+        android:focusable="true"
+        android:src="@drawable/ic_filter"
+        app:backgroundTint="@color/orange_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/operationListSettingsFragmentHeaderLayout"
         android:layout_width="match_parent"
@@ -16,54 +31,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/operationSettingsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/filter"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
         <ImageButton
             android:id="@+id/stopFilterButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_back" />
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/orange_main"
+            android:contentDescription="@string/new_exchange"
+            android:minHeight="48dp"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            tools:ignore="DuplicateSpeakableTextCheck" />
 
-        <ImageButton
-            android:id="@+id/filterButton"
+        <TextView
+            android:id="@+id/operationSettingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_filter" />
-    </LinearLayout>
+            android:layout_marginEnd="32dp"
+            android:text="@string/filter"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/stopFilterButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stopFilterButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/operationListSettingsScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/border"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        android:theme="@style/orangeEdgeEffect"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/operationListSettingsFragmentHeaderLayout"
@@ -249,6 +252,7 @@
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="64dp"
                         android:backgroundTint="@color/white"
                         android:gravity="center_vertical|end"
                         android:paddingLeft="32dp"
@@ -269,9 +273,9 @@
                         android:text="@string/type"
                         android:textColor="@color/text_secondary"
                         android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/selectType"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/selectType" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

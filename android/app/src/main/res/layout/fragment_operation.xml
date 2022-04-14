@@ -126,7 +126,6 @@
             android:layout_marginEnd="16dp"
             android:minHeight="48dp"
             android:src="@drawable/ic_calendar"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/operationChangeChartButton"
             app:layout_constraintTop_toTopOf="parent"

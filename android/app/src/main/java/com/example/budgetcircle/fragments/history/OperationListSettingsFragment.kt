@@ -69,7 +69,8 @@ class OperationListSettingsFragment : Fragment() {
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
                 budgetDataApi.operationListDateString,
-                budgetDataApi.operationListDate
+                budgetDataApi.operationListDate,
+                R.style.orangeEdgeEffect
             )
         }
 
@@ -78,7 +79,8 @@ class OperationListSettingsFragment : Fragment() {
                 this.requireContext(),
                 resources.getString(R.string.operations),
                 resources.getStringArray(R.array.operationTypes),
-                budgetDataApi.operationType
+                budgetDataApi.operationType,
+                R.style.orangeEdgeEffect
             )
         }
 
@@ -87,7 +89,8 @@ class OperationListSettingsFragment : Fragment() {
                 this.requireContext(),
                 resources.getString(R.string.start_with),
                 resources.getStringArray(R.array.startWith),
-                budgetDataApi.operationListStartWith
+                budgetDataApi.operationListStartWith,
+                R.style.orangeEdgeEffect
             )
         }
 
@@ -109,7 +112,8 @@ class OperationListSettingsFragment : Fragment() {
                 types,
                 typesId,
                 budgetDataApi.operationListChosenBudgetTypeString,
-                budgetDataApi.operationListChosenBudgetType
+                budgetDataApi.operationListChosenBudgetType,
+                R.style.orangeEdgeEffect
             )
         }
 
@@ -169,7 +173,8 @@ class OperationListSettingsFragment : Fragment() {
                 types,
                 typesId,
                 budgetDataApi.operationListChosenTypeString,
-                budgetDataApi.operationListChosenType
+                budgetDataApi.operationListChosenType,
+                R.style.orangeEdgeEffect
             )
         }
 
@@ -244,7 +249,7 @@ class OperationListSettingsFragment : Fragment() {
     //region Methods
     private fun appear() {
         binding.operationListSettingsScrollView.startAnimation(appear)
-        binding.linearLayout3.startAnimation(appear)
+        binding.filterButton.startAnimation(appear)
         binding.operationListSettingsFragmentHeaderLayout.startAnimation(appear)
     }
 
