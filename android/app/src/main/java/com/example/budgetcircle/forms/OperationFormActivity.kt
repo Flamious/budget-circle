@@ -112,7 +112,7 @@ class OperationFormActivity : AppCompatActivity() {
                 budgetTypes,
                 binding.operationFragmentBudgetTypeButton,
                 chosenBudgetType,
-                R.style.blueEdgeEffect
+                if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
             )
         }
         binding.operationFragmentTypeButton.setOnClickListener {
@@ -122,7 +122,7 @@ class OperationFormActivity : AppCompatActivity() {
                 types,
                 binding.operationFragmentTypeButton,
                 chosenType,
-                R.style.blueEdgeEffect
+                if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
             )
         }
         binding.operationFormAddButton.setOnClickListener {

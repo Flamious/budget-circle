@@ -38,6 +38,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/operationChangePeriodButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:minHeight="48dp"
+            android:src="@drawable/ic_calendar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/operationChangeChartButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,9 +67,65 @@
             android:id="@+id/operationKindInfoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/operationFragmentSumTitle"
-            app:layout_constraintTop_toBottomOf="@+id/operationFragmentSumText">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/operationFragmentPeriodTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choosingPeriod"
+                android:textColor="@color/text_secondary"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/operationFragmentPeriodText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/operationFragmentPeriodTitle"
+                app:layout_constraintStart_toEndOf="@+id/operationFragmentPeriodTitle"
+                app:layout_constraintTop_toTopOf="@+id/operationFragmentPeriodTitle" />
+
+            <TextView
+                android:id="@+id/operationFragmentSumTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sum"
+                android:textColor="@color/text_secondary"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/operationFragmentPeriodTitle"
+                app:layout_constraintTop_toBottomOf="@+id/operationFragmentPeriodTitle" />
+
+            <TextView
+                android:id="@+id/operationFragmentSumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/operationFragmentSumTitle"
+                app:layout_constraintStart_toEndOf="@+id/operationFragmentSumTitle"
+                app:layout_constraintTop_toTopOf="@+id/operationFragmentSumTitle" />
+
+            <TextView
+                android:id="@+id/operationFragmentKindTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/kind"
+                android:textColor="@color/text_secondary"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/operationFragmentPeriodTitle"
+                app:layout_constraintTop_toBottomOf="@+id/operationFragmentSumTitle" />
 
             <TextView
                 android:id="@+id/operationFragmentKindText"
@@ -64,67 +134,11 @@
                 android:layout_marginStart="8dp"
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/operationFragmentKindTitle"
                 app:layout_constraintStart_toEndOf="@+id/operationFragmentKindTitle"
                 app:layout_constraintTop_toTopOf="@+id/operationFragmentKindTitle" />
 
-            <TextView
-                android:id="@+id/operationFragmentKindTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/kind"
-                android:textColor="@color/text_secondary"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/operationFragmentPeriodTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/choosingPeriod"
-            android:textColor="@color/text_secondary"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/operationFragmentSumTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/sum"
-            android:textColor="@color/text_secondary"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/operationFragmentPeriodTitle"
-            app:layout_constraintTop_toBottomOf="@+id/operationFragmentPeriodTitle" />
-
-        <TextView
-            android:id="@+id/operationFragmentSumText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/operationFragmentSumTitle"
-            app:layout_constraintStart_toEndOf="@+id/operationFragmentSumTitle"
-            app:layout_constraintTop_toTopOf="@+id/operationFragmentSumTitle" />
-
-        <TextView
-            android:id="@+id/operationFragmentPeriodText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/operationFragmentPeriodTitle"
-            app:layout_constraintStart_toEndOf="@+id/operationFragmentPeriodTitle"
-            app:layout_constraintTop_toTopOf="@+id/operationFragmentPeriodTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -135,7 +149,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/operationFragmentAddButton"
         app:layout_constraintTop_toBottomOf="@+id/operationFragmentHeaderLayout">
 
     </com.github.mikephil.charting.charts.PieChart>
@@ -160,26 +174,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1.2:1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/operationFragmentAddButton"
+        app:layout_constraintStart_toEndOf="@+id/operationFragmentListButton"
         app:layout_constraintTop_toTopOf="@+id/budgetChartLayout"></com.github.mikephil.charting.charts.BarChart>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/operationFragmentAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@string/add_earn"
         android:focusable="true"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/blue_main"
-        app:layout_constraintBottom_toBottomOf="@+id/operationFragmentListButton"
-        app:layout_constraintStart_toEndOf="@+id/operationFragmentListButton"
-        app:layout_constraintTop_toTopOf="@+id/operationFragmentListButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

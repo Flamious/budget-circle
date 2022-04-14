@@ -71,17 +71,13 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             addEarning()
         }
         binding.operationFragmentPeriodText.setOnClickListener {
-            Dialogs().chooseOne(
-                this.requireContext(),
-                resources.getString(R.string.choosingPeriod),
-                resources.getStringArray(R.array.periodsString),
-                resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                if (isExpense) budgetDataApi.expensesDateString else budgetDataApi.earningsDateString,
-                if (isExpense) budgetDataApi.expensesDate else budgetDataApi.earningsDate
-            )
+            choosePeriod()
         }
         binding.operationChangeChartButton.setOnClickListener {
             changeChart()
+        }
+        binding.operationChangePeriodButton.setOnClickListener {
+            choosePeriod()
         }
     }
 
@@ -102,6 +98,12 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 this@OperationFragment.requireContext(),
                 mainColor
             ))
+            binding.operationChangePeriodButton.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    mainColor
+                )
+            )
 
             operationFragmentAddButton.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
@@ -255,24 +257,16 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 operationBarChart.visibility = View.VISIBLE
                 operationKindInfoLayout.visibility = View.INVISIBLE
 
-                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    operationFragmentPeriodText.setTextColor(ContextCompat.getColor(
-                        this@OperationFragment.requireContext(),
-                        R.color.text_primary
-                    ))
-                }
-
+                operationChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
+                operationChangePeriodButton.visibility = View.VISIBLE
                 setBarChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             } else {
                 operationBarChart.visibility = View.INVISIBLE
                 operationsPieChart.visibility = View.VISIBLE
                 operationKindInfoLayout.visibility = View.VISIBLE
 
-                operationFragmentPeriodText.setTextColor(ContextCompat.getColor(
-                    this@OperationFragment.requireContext(),
-                    R.color.text_secondary
-                ))
-
+                operationChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
+                operationChangePeriodButton.visibility = View.GONE
                 setPieChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             }
             isPieChart = !isPieChart
@@ -328,6 +322,18 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             ?.beginTransaction()
             ?.replace(R.id.fragmentPanel, OperationTypeListFragment(isExpense))
             ?.commit()
+    }
+
+    private fun choosePeriod() {
+        Dialogs().chooseOne(
+            this.requireContext(),
+            resources.getString(R.string.choosingPeriod),
+            resources.getStringArray(R.array.periodsString),
+            resources.getIntArray(R.array.periodsInt).toTypedArray(),
+            if (isExpense) budgetDataApi.expensesDateString else budgetDataApi.earningsDateString,
+            if (isExpense) budgetDataApi.expensesDate else budgetDataApi.earningsDate,
+            if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+        )
     }
     //endregion
 }

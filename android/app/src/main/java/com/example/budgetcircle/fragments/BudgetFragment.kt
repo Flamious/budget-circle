@@ -269,12 +269,14 @@ class BudgetFragment : Fragment() {
                 budgetPieChart.visibility = View.INVISIBLE
                 budgetBarChart.visibility = View.VISIBLE
                 budgetInfoLayout.visibility = View.INVISIBLE
+                budgetChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
 
                 setBarChart(budgetDataApi.budgetTypes.value!!)
             } else {
                 budgetBarChart.visibility = View.INVISIBLE
                 budgetPieChart.visibility = View.VISIBLE
                 budgetInfoLayout.visibility = View.VISIBLE
+                budgetChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
 
                 setPieChart(budgetDataApi.budgetTypes.value!!)
             }

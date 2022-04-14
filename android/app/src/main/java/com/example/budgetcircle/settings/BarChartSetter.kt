@@ -28,7 +28,7 @@ class BarChartSetter {
             barDataSet.colors = colors
 
             val barData = BarData(barDataSet)
-            barData.setDrawValues(false)
+            //barData.setDrawValues(false)
             chart.data = barData
 
             chart.xAxis.apply {
