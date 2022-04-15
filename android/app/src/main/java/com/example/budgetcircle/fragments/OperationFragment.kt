@@ -166,6 +166,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 binding.operationsPieChart,
                 binding.operationFragmentSumText,
                 binding.operationFragmentKindText,
+                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
@@ -178,6 +179,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 binding.operationsPieChart,
                 binding.operationFragmentSumText,
                 binding.operationFragmentKindText,
+                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
@@ -74,6 +75,7 @@ class LoginLoadingFragment : Fragment() {
                 binding.loadingPieChart,
                 binding.sumTextView,
                 binding.titleView,
+                ContextCompat.getColor(this.requireContext(), R.color.white),
                 isFull = false,
                 noEntries = true
             )

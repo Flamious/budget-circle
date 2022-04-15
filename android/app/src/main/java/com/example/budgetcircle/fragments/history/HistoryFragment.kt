@@ -139,6 +139,7 @@ class HistoryFragment : Fragment() {
         budgetDataApi.page.observe(this.viewLifecycleOwner, {
             startLoading()
             binding.previousPageButton.isEnabled = it != 1
+            binding.pageNumberTextView.text = it.toString()
             budgetDataApi.getOperations()
         })
     }

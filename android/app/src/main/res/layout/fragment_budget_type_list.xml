@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     tools:context=".lists.BudgetTypeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +51,7 @@
         android:id="@+id/budgetTypeList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border"
+        android:background="@color/light_grey"
         android:theme="@style/greenEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -187,6 +187,7 @@ class BudgetFragment : Fragment() {
                 binding.budgetPieChart,
                 binding.sumText,
                 binding.kindText,
+                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
@@ -199,6 +200,7 @@ class BudgetFragment : Fragment() {
                 binding.budgetPieChart,
                 binding.sumText,
                 binding.kindText,
+                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )

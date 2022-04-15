@@ -46,6 +46,7 @@ class PieChartSetter {
             chart: PieChart,
             sumTextView: TextView,
             labelTextView: TextView,
+            holeColor: Int,
             isFull: Boolean = false,
             noEntries: Boolean = false
         ) {
@@ -55,6 +56,7 @@ class PieChartSetter {
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.holeRadius = if (!isFull) holeRadius else 0f
+            chart.setHoleColor(holeColor)
             chart.setDrawEntryLabels(false)
             chart.setTransparentCircleAlpha(0)
             sumTextView.text = DoubleFormatter.formatString(sum)

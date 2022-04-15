@@ -5,7 +5,8 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.history.OperationListSettingsFragment" >
+    android:background="@color/light_grey"
+    tools:context=".fragments.history.OperationListSettingsFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/filterButton"
@@ -39,11 +40,11 @@
             android:backgroundTint="@color/orange_main"
             android:contentDescription="@string/new_exchange"
             android:minHeight="48dp"
-            app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white"
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <TextView

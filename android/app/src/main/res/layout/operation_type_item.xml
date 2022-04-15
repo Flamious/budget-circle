@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <ImageButton
         android:id="@+id/operationTypeDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/operationTypeEditButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeEditButton"
         app:srcCompat="@drawable/ic_delete"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -23,47 +24,43 @@
         android:id="@+id/operationTypeEditButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/operationTypeDeleteButton"
+        app:layout_constraintBottom_toBottomOf="@+id/operationypeSum"
         app:layout_constraintEnd_toStartOf="@+id/operationTypeDeleteButton"
-        app:layout_constraintTop_toTopOf="@+id/operationTypeDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/opTypeTitle"
         app:srcCompat="@drawable/ic_edit"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
         android:id="@+id/opTypeTitle"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/text_primary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/operationTypeEditButton"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/operationTypeEditButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btLine2" />
 
     <TextView
         android:id="@+id/operationypeSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/text_secondary"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/opTypeTitle"
         app:layout_constraintTop_toBottomOf="@+id/opTypeTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btLine2"
         android:layout_width="0dp"
-        android:layout_height="1px"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:background="@color/text_secondary"
-        android:backgroundTint="@color/text_secondary"
+        android:layout_height="3dp"
+        android:background="@color/light_grey"
+        android:backgroundTint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationypeSum" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
