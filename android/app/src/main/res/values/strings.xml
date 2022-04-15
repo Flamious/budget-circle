@@ -11,6 +11,7 @@
     <string name="earning_types_fragment">Earning types</string>
     <string name="expense_types_fragment">Expense types</string>
     <string name="history_fragment">History</string>
+    <string name="history_chart_fragment">History chart</string>
     <string name="settings_fragment">Settings</string>
 
     <!-- Text on fragments -->

@@ -133,18 +133,14 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 titles,
                 values,
                 colors,
-                sum,
                 binding.operationBarChart,
-                binding.operationFragmentSumText,
             )
         else
             BarChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
                 arrayOf(0.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                sum,
                 binding.operationBarChart,
-                binding.operationFragmentSumText,
                 true
             )
     }

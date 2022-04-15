@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         budgetDataApi.operationType.postValue(resources.getString(R.string.all))
         budgetDataApi.operationListStartWith.postValue(resources.getString(R.string.start_with_new))
         budgetDataApi.operationListChosenBudgetTypeString.postValue(resources.getString(R.string.all))
+        budgetDataApi.operationChartChosenBudgetTypeString.postValue(resources.getString(R.string.all))
         budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
+        budgetDataApi.chartOperationPeriod.postValue(resources.getString(R.string.week))
     }
 
     private fun setNavMenu() {

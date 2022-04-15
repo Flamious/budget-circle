@@ -11,4 +11,11 @@ data class Operation(
     var isExpense: Boolean?
 )
 
-data class OperationSum(val sum: Double, val type: String )
+data class OperationSum(val sum: Double, val type: String)
+
+data class ChartOperation(
+    val title: String,
+    val expenses: Double,
+    val earnings: Double,
+    val exchanges: Double
+)

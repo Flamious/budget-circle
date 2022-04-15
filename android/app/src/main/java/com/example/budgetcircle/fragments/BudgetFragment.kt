@@ -156,18 +156,14 @@ class BudgetFragment : Fragment() {
                 titles,
                 values,
                 colors,
-                sum,
                 binding.budgetBarChart,
-                binding.sumText,
             )
         else
             BarChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
                 arrayOf(0.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                sum,
                 binding.budgetBarChart,
-                binding.sumText,
                 true
             )
     }

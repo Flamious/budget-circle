@@ -51,9 +51,7 @@ class BarChartSetter {
             titles: Array<String>,
             values: Array<Double>,
             colors: ArrayList<Int>,
-            sum: Double,
             chart: BarChart,
-            sumTextView: TextView,
             noEntries: Boolean = false
         ) {
             applyData(titles, values, colors, chart)
@@ -62,29 +60,8 @@ class BarChartSetter {
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.highlightValues(null)
-            chart.setOnChartValueSelectedListener(
-                ChartListener(
-                    sumTextView,
-                    sum
-                )
-            )
             chart.invalidate()
             chart.animateXY(1000, 1000)
-        }
-
-        private class ChartListener(
-            val sumTextView: TextView,
-            val sum: Double
-        ) : OnChartValueSelectedListener {
-
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                sumTextView.text = DoubleFormatter.formatString(e?.y!!.toDouble())
-            }
-
-            override fun onNothingSelected() {
-                sumTextView.text = DoubleFormatter.formatString(sum)
-            }
-
         }
     }
 }

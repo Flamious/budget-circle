@@ -87,6 +87,10 @@ class HistoryFragment : Fragment() {
         binding.previousPageButton.setOnClickListener {
             budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
         }
+
+        binding.openChartButton.setOnClickListener {
+            openChart()
+        }
     }
 
     private fun setObservation() {
@@ -149,7 +153,7 @@ class HistoryFragment : Fragment() {
         binding.nextPageButton.startAnimation(appear)
         binding.filterListButton.startAnimation(appear)
         binding.previousPageButton.startAnimation(appear)
-        binding.hostoryFragmentTitle.startAnimation(appear)
+        binding.constraintLayout8.startAnimation(appear)
 
         createList()
     }
@@ -159,6 +163,14 @@ class HistoryFragment : Fragment() {
             ?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragmentPanel, OperationInfoFragment())
+            ?.commit()
+    }
+
+    private fun openChart() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, HistoryChartFragment())
             ?.commit()
     }
 

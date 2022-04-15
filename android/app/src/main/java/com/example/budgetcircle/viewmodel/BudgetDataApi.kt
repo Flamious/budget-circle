@@ -12,10 +12,7 @@ import com.example.budgetcircle.requests.OperationApi
 import com.example.budgetcircle.requests.OperationTypeApi
 import com.example.budgetcircle.requests.models.OperationListResponse
 import com.example.budgetcircle.viewmodel.items.HistoryItem
-import com.example.budgetcircle.viewmodel.models.BudgetType
-import com.example.budgetcircle.viewmodel.models.Operation
-import com.example.budgetcircle.viewmodel.models.OperationSum
-import com.example.budgetcircle.viewmodel.models.OperationType
+import com.example.budgetcircle.viewmodel.models.*
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -89,8 +86,17 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     val operationListChosenType: MutableLiveData<Int> = MutableLiveData<Int>().apply {
         value = 0
     }
+    val operationChartChosenBudgetTypeString: MutableLiveData<String> = MutableLiveData<String>()
+    val operationChartChosenBudgetType: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+        value = 0
+    }
     val operationListChosenTypeString: MutableLiveData<String> = MutableLiveData<String>()
     val operationListStartWith: MutableLiveData<String> = MutableLiveData<String>()
+    val chartOperationPeriod: MutableLiveData<String> = MutableLiveData<String>()
+    var chartOperations: MutableLiveData<List<ChartOperation>> =
+        MutableLiveData<List<ChartOperation>>().apply {
+            value = null
+        }
 
     init {
         getBudgetTypes()
@@ -695,7 +701,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         })
     }
 
-    fun clearBudgetTypes() {
+    fun clearBudgetTypes() = viewModelScope.launch(Dispatchers.IO)  {
         budgetTypeApiService.clearBudgetTypes(
             MainActivity.Token
         ).enqueue(object : Callback<Any> {
@@ -708,6 +714,26 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             ) {
                 if (response.isSuccessful) {
                     getBudgetTypes()
+                }
+            }
+        })
+    }
+
+    fun getChartOperations()  = viewModelScope.launch(Dispatchers.IO) {
+        operationApiService.getChartOperation(
+            MainActivity.Token,
+            chartOperationPeriod.value!!,
+            if (operationChartChosenBudgetType.value!! == 0) null else operationChartChosenBudgetType.value!!,
+        ).enqueue(object : Callback<List<ChartOperation>> {
+            override fun onFailure(call: Call<List<ChartOperation>>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<List<ChartOperation>>,
+                response: Response<List<ChartOperation>>
+            ) {
+                if (response.isSuccessful) {
+                    chartOperations.value = response.body()!!.toList()
                 }
             }
         })

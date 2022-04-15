@@ -33,4 +33,10 @@
         <item name="budget_seventh">#2A632F</item>
     </array>
 
+    <!-- History chart-->
+    <array name="history_chart_colors">
+        <item name="expenses">#F70606</item>
+        <item name="earnings">#1147F7</item>
+        <item name="Exchanges">#216126</item>
+    </array>
 </resources>
