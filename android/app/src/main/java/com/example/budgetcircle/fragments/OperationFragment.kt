@@ -70,51 +70,81 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
         binding.operationFragmentAddButton.setOnClickListener {
             addEarning()
         }
-        binding.operationChangeChartButton.setOnClickListener {
+        binding.operationFragmentChangeChartButton.setOnClickListener {
             changeChart()
         }
-        binding.operationChangePeriodButton.setOnClickListener {
+        binding.operationFragmentChangePeriodButton.setOnClickListener {
             choosePeriod()
         }
     }
 
     private fun setTheme() {
+        val textColor: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
         binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                textColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.text_primary
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.text_secondary
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.light_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    if (isExpense) R.color.red_main else R.color.blue_main
+                )
+            } else {
+                textColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationFragment.requireContext(),
+                    R.color.darker_grey
+                )
+            }
+
             operationFragmentTitle.text =
                 resources.getText(if (isExpense) R.string.expenses_fragment else R.string.earnings_fragment)
-            val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
 
+            operationFragmentChangeChartButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentHeaderLayout.setBackgroundColor(mainColor)
+            operationFragmentChangePeriodButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentChangePeriodButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            operationFragmentListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
 
-            binding.operationChangeChartButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationFragment.requireContext(),
-                    mainColor
-                )
-            )
-            binding.operationFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
-                this@OperationFragment.requireContext(),
-                mainColor
-            ))
-            binding.operationChangePeriodButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationFragment.requireContext(),
-                    mainColor
-                )
-            )
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                operationFragmentPeriodText.setTextColor(textColor)
+                operationFragmentKindText.setTextColor(textColor)
+                operationFragmentPeriodTitle?.setTextColor(textSecondary)
+                operationFragmentSumTitle?.setTextColor(textSecondary)
+                operationFragmentKindTitle?.setTextColor(textSecondary)
+            } else {
+                operationFragmentPeriodText.setTextColor(textSecondary)
+                operationFragmentKindText.setTextColor(textSecondary)
+            }
 
-            operationFragmentAddButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationFragment.requireContext(),
-                    mainColor
-                )
-            )
+            operationFragmentSumText.setTextColor(textColor)
 
-            operationFragmentListButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationFragment.requireContext(),
-                    mainColor
-                )
-            )
         }
     }
 
@@ -126,21 +156,33 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
-            .toCollection(ArrayList())
+        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+            resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
+                .toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+
         if (sum > 0)
             BarChartSetter.setChart(
                 titles,
                 values,
                 colors,
-                binding.operationBarChart,
+                binding.operationFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                )
             )
         else
             BarChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
                 arrayOf(0.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                binding.operationBarChart,
+                binding.operationFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                ),
                 true
             )
     }
@@ -153,9 +195,17 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors =
+        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
             resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
                 .toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+
+        val holeColor = ContextCompat.getColor(
+            this.requireContext(),
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.light_grey else R.color.dark_grey
+        )
+
         if (sum > 0)
             PieChartSetter.setChart(
                 titles,
@@ -163,10 +213,10 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 colors,
                 sum,
                 resources.getString(R.string.total),
-                binding.operationsPieChart,
+                binding.operationFragmentPieChart,
                 binding.operationFragmentSumText,
                 binding.operationFragmentKindText,
-                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
@@ -176,10 +226,10 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
                 sum,
                 resources.getString(R.string.no_entries),
-                binding.operationsPieChart,
+                binding.operationFragmentPieChart,
                 binding.operationFragmentSumText,
                 binding.operationFragmentKindText,
-                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )
@@ -248,19 +298,19 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
     private fun changeChart() {
         binding.apply {
             if (isPieChart) {
-                operationsPieChart.visibility = View.INVISIBLE
-                operationBarChart.visibility = View.VISIBLE
-                operationKindInfoLayout.visibility = View.INVISIBLE
+                operationFragmentPieChart.visibility = View.INVISIBLE
+                operationFragmentBarChart.visibility = View.VISIBLE
+                operationFragmentInfoLayout.visibility = View.INVISIBLE
 
-                operationChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
-                setBarChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+                operationFragmentChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
+                setBarChart(if (isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             } else {
-                operationBarChart.visibility = View.INVISIBLE
-                operationsPieChart.visibility = View.VISIBLE
-                operationKindInfoLayout.visibility = View.VISIBLE
+                operationFragmentBarChart.visibility = View.INVISIBLE
+                operationFragmentPieChart.visibility = View.VISIBLE
+                operationFragmentInfoLayout.visibility = View.VISIBLE
 
-                operationChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
-                setPieChart(if(isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+                operationFragmentChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
+                setPieChart(if (isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
             }
             isPieChart = !isPieChart
         }
@@ -318,6 +368,12 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
     }
 
     private fun choosePeriod() {
+        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            if (isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+        } else {
+            R.style.darkEdgeEffect
+        }
+
         Dialogs().chooseOne(
             this.requireContext(),
             resources.getString(R.string.choosingPeriod),
@@ -325,7 +381,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             resources.getIntArray(R.array.periodsInt).toTypedArray(),
             if (isExpense) budgetDataApi.expensesDateString else budgetDataApi.earningsDateString,
             if (isExpense) budgetDataApi.expensesDate else budgetDataApi.earningsDate,
-            if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+            effectColor
         )
     }
     //endregion

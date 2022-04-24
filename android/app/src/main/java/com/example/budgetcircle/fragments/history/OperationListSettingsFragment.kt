@@ -1,6 +1,7 @@
 package com.example.budgetcircle.fragments.history
 
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationListSettingsBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.models.BudgetType
 
@@ -43,6 +45,7 @@ class OperationListSettingsFragment : Fragment() {
         binding = FragmentOperationListSettingsBinding.inflate(inflater)
         setButtons()
         setObservation()
+        setTheme()
 
         previousDate = budgetDataApi.operationListDate.value!!
         previousDateString = budgetDataApi.operationListDateString.value!!
@@ -62,7 +65,13 @@ class OperationListSettingsFragment : Fragment() {
 
     //region Setting
     private fun setButtons() {
-        binding.selectPeriod.setOnClickListener {
+        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            R.style.orangeEdgeEffect
+        } else {
+            R.style.darkEdgeEffect
+        }
+
+        binding.operationListSettingsFragmentSelectPeriodButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.choosingPeriod),
@@ -70,31 +79,31 @@ class OperationListSettingsFragment : Fragment() {
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
                 budgetDataApi.operationListDateString,
                 budgetDataApi.operationListDate,
-                R.style.orangeEdgeEffect
+                effectColor
             )
         }
 
-        binding.selectOperationType.setOnClickListener {
+        binding.operationListSettingsFragmentSelectOperationTypeButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.operations),
                 resources.getStringArray(R.array.operationTypes),
                 budgetDataApi.operationType,
-                R.style.orangeEdgeEffect
+                effectColor
             )
         }
 
-        binding.selectOrder.setOnClickListener {
+        binding.operationListSettingsFragmentSelectOrderButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.start_with),
                 resources.getStringArray(R.array.startWith),
                 budgetDataApi.operationListStartWith,
-                R.style.orangeEdgeEffect
+                effectColor
             )
         }
 
-        binding.selectBudgetType.setOnClickListener {
+        binding.operationListSettingsFragmentSelectBudgetTypeButton.setOnClickListener {
             val types =
                 Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
                     if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].title else resources.getString(
@@ -113,11 +122,11 @@ class OperationListSettingsFragment : Fragment() {
                 typesId,
                 budgetDataApi.operationListChosenBudgetTypeString,
                 budgetDataApi.operationListChosenBudgetType,
-                R.style.orangeEdgeEffect
+                effectColor
             )
         }
 
-        binding.selectType.setOnClickListener {
+        binding.operationListSettingsFragmentSelectTypeButton.setOnClickListener {
             var types: Array<String> = arrayOf()
             when (budgetDataApi.operationType.value!!) {
                 resources.getString(R.string.exchange_type) -> {
@@ -174,28 +183,76 @@ class OperationListSettingsFragment : Fragment() {
                 typesId,
                 budgetDataApi.operationListChosenTypeString,
                 budgetDataApi.operationListChosenType,
-                R.style.orangeEdgeEffect
+                effectColor
             )
         }
 
-        binding.filterButton.setOnClickListener {
+        binding.operationListSettingsFragmentFilterButton.setOnClickListener {
             apply()
         }
 
-        binding.stopFilterButton.setOnClickListener {
+        binding.operationListSettingsFragmentBackButton.setOnClickListener {
             cancel()
+        }
+    }
+
+    private fun setTheme() {
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
+        binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+                textPrimary = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                operationListSettingsFragmentBackButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationListSettingsFragmentFilterButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationListSettingsFragmentHeaderLayout.setBackgroundColor(mainColor)
+                operationListSettingsFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+
+                operationListSettingsFragmentPeriodTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentBudgetTypeTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentOrderTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentOperationTypeTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentTypeTitle.setTextColor(textSecondary)
+
+                operationListSettingsFragmentSelectPeriodButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectBudgetTypeButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectOrderButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectOperationTypeButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectTypeButton.setTextColor(textPrimary)
+            }
         }
     }
 
     private fun setObservation() {
         budgetDataApi.operationListDateString.observe(this.viewLifecycleOwner, {
-            binding.selectPeriod.text = it
+            binding.operationListSettingsFragmentSelectPeriodButton.text = it
         })
 
         budgetDataApi.operationType.observe(this.viewLifecycleOwner, {
             if (it == resources.getString(R.string.all)) {
-                binding.selectType.isClickable = false
-                binding.selectType.setTextColor(
+                binding.operationListSettingsFragmentSelectTypeButton.isClickable = false
+                binding.operationListSettingsFragmentSelectTypeButton.setTextColor(
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this.requireContext(),
@@ -204,26 +261,26 @@ class OperationListSettingsFragment : Fragment() {
                     )
                 )
             } else {
-                binding.selectType.isClickable = true
-                binding.selectType.setTextColor(
+                binding.operationListSettingsFragmentSelectTypeButton.isClickable = true
+                binding.operationListSettingsFragmentSelectTypeButton.setTextColor(
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this.requireContext(),
-                            R.color.text_primary
+                            if(BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
                         )
                     )
                 )
             }
 
             if (it == resources.getString(R.string.exchange_type)) {
-                binding.opListTypeTitle.text = resources.getString(R.string.to)
+                binding.operationListSettingsFragmentTitle.text = resources.getString(R.string.to)
             } else {
-                binding.opListTypeTitle.text = resources.getString(R.string.type)
+                binding.operationListSettingsFragmentTitle.text = resources.getString(R.string.type)
             }
 
-            binding.selectOperationType.apply {
+            binding.operationListSettingsFragmentSelectOperationTypeButton.apply {
                 if (text.toString() == "" || text.toString() == it) {
-                    binding.selectType.text =
+                    binding.operationListSettingsFragmentSelectTypeButton.text =
                         budgetDataApi.operationListChosenTypeString.value!!
                 } else {
                     budgetDataApi.operationListChosenType.postValue(0)
@@ -231,25 +288,25 @@ class OperationListSettingsFragment : Fragment() {
                 }
             }
 
-            binding.selectOperationType.text = it
+            binding.operationListSettingsFragmentSelectOperationTypeButton.text = it
 
         })
         budgetDataApi.operationListChosenBudgetTypeString.observe(this.viewLifecycleOwner, {
-            binding.selectBudgetType.text = it
+            binding.operationListSettingsFragmentSelectBudgetTypeButton.text = it
         })
         budgetDataApi.operationListChosenTypeString.observe(this.viewLifecycleOwner, {
-            binding.selectType.text = it
+            binding.operationListSettingsFragmentSelectTypeButton.text = it
         })
         budgetDataApi.operationListStartWith.observe(this.viewLifecycleOwner, {
-            binding.selectOrder.text = it
+            binding.operationListSettingsFragmentSelectOrderButton.text = it
         })
     }
     //endregion
 
     //region Methods
     private fun appear() {
-        binding.operationListSettingsScrollView.startAnimation(appear)
-        binding.filterButton.startAnimation(appear)
+        binding.operationListSettingsFragmentScrollView.startAnimation(appear)
+        binding.operationListSettingsFragmentFilterButton.startAnimation(appear)
         binding.operationListSettingsFragmentHeaderLayout.startAnimation(appear)
     }
 

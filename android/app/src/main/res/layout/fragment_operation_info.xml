@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout2"
+    android:id="@+id/operationInfoFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
@@ -18,13 +18,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/infoBackButton"
+            android:id="@+id/operationInfoFragmentBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:backgroundTint="@color/orange_main"
             android:minHeight="48dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,40 +32,39 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <ImageButton
-            android:id="@+id/opEditButton"
+            android:id="@+id/operationInfoFragmentEditButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/orange_main"
             android:minHeight="48dp"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/infoBackButton"
-            app:layout_constraintEnd_toStartOf="@+id/opDeleteButton"
-            app:layout_constraintTop_toTopOf="@+id/infoBackButton"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentBackButton"
+            app:layout_constraintEnd_toStartOf="@+id/operationInfoFragmentDeleteButton"
+            app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentBackButton"
             app:srcCompat="@drawable/ic_edit"
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <ImageButton
-            android:id="@+id/opDeleteButton"
+            android:id="@+id/operationInfoFragmentDeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/orange_main"
             android:minHeight="48dp"
-            android:tint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/opEditButton"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentEditButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/opEditButton"
+            app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentEditButton"
             app:srcCompat="@drawable/ic_delete"
             tools:ignore="DuplicateSpeakableTextCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/operationInfoFragmentScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border"
-        android:theme="@style/orangeEdgeEffect"
+        android:theme="@style/greyEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,93 +80,93 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/accountInfo"
+                    android:id="@+id/operationInfoFragmentAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/sumInfo"
-                    app:layout_constraintTop_toBottomOf="@+id/sumInfo" />
+                    app:layout_constraintEnd_toEndOf="@+id/operationInfoFragmentSum"
+                    app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentSum" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/operationInfoFragmentSumTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sum"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/sumInfo"
-                    app:layout_constraintStart_toStartOf="@+id/textView13"
-                    app:layout_constraintTop_toTopOf="@+id/sumInfo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentSum"
+                    app:layout_constraintStart_toStartOf="@+id/operationInfoFragmentTitleTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentSum" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/operationInfoFragmentTitleTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:text="@string/title"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/infoOpTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentTitle"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/infoOpTitle" />
+                    app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentTitle" />
 
                 <TextView
-                    android:id="@+id/kindOrToTitle"
+                    android:id="@+id/operationInfoFragmentKindTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/kind"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/kindInfo"
-                    app:layout_constraintStart_toStartOf="@+id/fromTitle"
-                    app:layout_constraintTop_toTopOf="@+id/kindInfo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentKind"
+                    app:layout_constraintStart_toStartOf="@+id/operationInfoFragmentAccountTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentKind" />
 
                 <TextView
-                    android:id="@+id/commentTitle"
+                    android:id="@+id/operationInfoFragmentCommentaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="@string/comment"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/kindOrToTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/kindOrToTitle" />
+                    app:layout_constraintStart_toStartOf="@+id/operationInfoFragmentKindTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentKindTitle" />
 
                 <TextView
-                    android:id="@+id/kindInfo"
+                    android:id="@+id/operationInfoFragmentKind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/accountInfo"
-                    app:layout_constraintTop_toBottomOf="@+id/accountInfo" />
+                    app:layout_constraintEnd_toEndOf="@+id/operationInfoFragmentAccount"
+                    app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentAccount" />
 
                 <TextView
-                    android:id="@+id/fromTitle"
+                    android:id="@+id/operationInfoFragmentAccountTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/account"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/accountInfo"
-                    app:layout_constraintStart_toStartOf="@+id/textView2"
-                    app:layout_constraintTop_toTopOf="@+id/accountInfo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/operationInfoFragmentAccount"
+                    app:layout_constraintStart_toStartOf="@+id/operationInfoFragmentSumTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationInfoFragmentAccount" />
 
                 <TextView
-                    android:id="@+id/sumInfo"
+                    android:id="@+id/operationInfoFragmentSum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/infoOpTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/infoOpTitle" />
+                    app:layout_constraintEnd_toEndOf="@+id/operationInfoFragmentTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentTitle" />
 
                 <TextView
-                    android:id="@+id/infoOpTitle"
+                    android:id="@+id/operationInfoFragmentTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -178,19 +177,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/linearLayout"
+                    android:id="@+id/operationInfoFragmentCommentaryLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="32dp"
                     android:background="@drawable/border"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/kindInfo"
-                    app:layout_constraintStart_toStartOf="@+id/commentTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/commentTitle">
+                    app:layout_constraintEnd_toEndOf="@+id/operationInfoFragmentKind"
+                    app:layout_constraintStart_toStartOf="@+id/operationInfoFragmentCommentaryTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/operationInfoFragmentCommentaryTitle">
 
                     <TextView
-                        android:id="@+id/commentInfo"
+                        android:id="@+id/operationInfoFragmentCommentary"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

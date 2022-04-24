@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         Token = "Bearer ${intent.extras?.getString("token")!!}"
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setObservations()
         initiateViewModel()
         setNavMenu()
     }
@@ -42,10 +43,17 @@ class MainActivity : AppCompatActivity() {
         budgetDataApi.chartOperationPeriod.postValue(resources.getString(R.string.week))
     }
 
+    private fun setObservations() {
+        BudgetDataApi.mode.observe(this) {
+            applyDayNight(it)
+        }
+    }
+
     private fun setNavMenu() {
         binding.navigationMenu.selectedItemId = R.id.budget
         setNavColor(R.color.nav_green_selector)
         openFragment(BudgetFragment())
+
         binding.navigationMenu.setOnItemSelectedListener {
             openFragment(
                 when (it.itemId) {
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         setNavColor(R.color.nav_orange_selector)
                         HistoryFragment()
                     }
-                    R.id.settings -> {
+                    R.id.userSettings -> {
                         setNavColor(R.color.nav_purple_selector)
                         UserFragment()
                     }
@@ -81,13 +89,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setNavColor(color: Int) {
-        val navColor = ColorStateList.valueOf(ContextCompat.getColor(this, color))
+        val navColor = ColorStateList.valueOf(
+            ContextCompat.getColor(
+                this,
+                if (BudgetDataApi.mode.value!! == UserFragment.DAY) color else R.color.grey
+            )
+        )
         val colorSecondary =
             ColorStateList.valueOf(ContextCompat.getColor(this, R.color.no_money_op))
         binding.navigationMenu.itemTextColor = navColor
         binding.navigationMenu.itemIconTintList = navColor
         binding.navigationMenu.itemRippleColor = colorSecondary
     }
+
     //endregion
     //region Methods
     private fun openFragment(fragment: Fragment) {
@@ -96,7 +110,29 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragmentPanel, fragment)
             .commit()
     }
-    //endregion
+
+    private fun applyDayNight(mode: Int) {
+        val backgroundNavColor: Int
+        if (mode == UserFragment.DAY) {
+            backgroundNavColor = ContextCompat.getColor(
+                this@MainActivity,
+                R.color.white
+            )
+
+            if (binding.navigationMenu.selectedItemId == R.id.userSettings)
+                setNavColor(R.color.purple_main)
+        } else {
+            backgroundNavColor = ContextCompat.getColor(
+                this@MainActivity,
+                R.color.darker_grey
+            )
+
+            setNavColor(R.color.grey)
+        }
+
+        binding.navigationMenu.backgroundTintList = ColorStateList.valueOf(backgroundNavColor)
+    }
+//endregion
 
     companion object {
         var Token: String = ""

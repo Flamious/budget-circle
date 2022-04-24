@@ -3,6 +3,7 @@ package com.example.budgetcircle.lists
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.example.budgetcircle.databinding.FragmentOperationTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.OperationTypeFormActivity
 import com.example.budgetcircle.fragments.OperationFragment
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.OperationTypeAdapter
 import com.example.budgetcircle.viewmodel.models.OperationType
@@ -70,73 +72,112 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
 
     //region Setting
     private fun setAdapter() {
-        adapter = OperationTypeAdapter()
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val borderColor: Int
+        val buttonColor: Int?
+
+        if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+           textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
+            textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
+            backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
+            borderColor = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+            buttonColor = null
+        } else {
+            textPrimary = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+            textSecondary = ContextCompat.getColor(this.requireContext(), R.color.grey)
+            backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
+            buttonColor = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+            borderColor = ContextCompat.getColor(this.requireContext(), R.color.dark_grey)
+        }
+
+        adapter = OperationTypeAdapter(textPrimary, textSecondary, backgroundColor, borderColor, buttonColor)
         binding.apply {
-            operationTypeList.layoutManager =
+            operationTypeListFragmentList.layoutManager =
                 GridLayoutManager(this@OperationTypeListFragment.context, 1)
-            operationTypeList.adapter = adapter
+            operationTypeListFragmentList.adapter = adapter
         }
     }
 
     private fun setTheme() {
-        val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
+        val backgroundColor: Int
+        val mainColor: Int
 
-        binding.operationTypeList.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
-            override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
-                return EdgeEffect(view.context).apply {
-                    color = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            this@OperationTypeListFragment.requireContext(),
-                            mainColor
-                        )
-                    ).defaultColor
+        binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationTypeListFragment.requireContext(),
+                    R.color.light_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationTypeListFragment.requireContext(),
+                    if (isExpense) R.color.red_main else R.color.blue_main
+                )
+            } else {
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationTypeListFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationTypeListFragment.requireContext(),
+                    R.color.darker_grey
+                )
+            }
+
+            operationTypeListFragmentTitle.text =
+                resources.getText(if (isExpense) R.string.expenses_fragment else R.string.earnings_fragment)
+
+            operationTypeListFragmentList.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+                override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
+                    return EdgeEffect(view.context).apply {
+                        color = ColorStateList.valueOf(mainColor).defaultColor
+                    }
                 }
             }
+
+            operationTypeListFragmentList.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            operationTypeListFragmentHeaderLayout.setBackgroundColor(mainColor)
+            operationTypeListFragmentBackButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeListFragmentAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeListFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            operationTypeListFragmentProgressBar.indeterminateTintList =
+                ColorStateList.valueOf(mainColor)
         }
-
-
-        binding.operationTypesBackButton.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this.requireContext(),
-                mainColor
-            )
-        )
-        binding.operationTypeListFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
-            this.requireContext(),
-            mainColor
-        ))
-
-        binding.progressBar4.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this.requireContext(),
-                mainColor
-            )
-        )
-
-        binding.progressBar4.indeterminateTintList = binding.progressBar4.backgroundTintList
-
-        binding.addOpTypeButton.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this.requireContext(),
-                mainColor
-            )
-        )
-
-        binding.operationTypeListTitle.text =
-            resources.getText(if (isExpense) R.string.expense_types_fragment else R.string.earning_types_fragment)
     }
 
     private fun setButtons() {
-        binding.operationTypesBackButton.setOnClickListener {
+        binding.operationTypeListFragmentBackButton.setOnClickListener {
             exit()
         }
-        binding.addOpTypeButton.setOnClickListener {
+        binding.operationTypeListFragmentAddButton.setOnClickListener {
             addOperationType()
         }
         adapter.onEditClick = {
             editOperationType(it)
         }
         adapter.onDeleteClick = {
+            val background: Int
+            val buttonColor:Int
+            if (isExpense) {
+                if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                    background = R.style.redEdgeEffect
+                    buttonColor = ContextCompat.getColor(this.requireContext(), R.color.red_main)
+                } else {
+                    background = R.style.darkEdgeEffect
+                    buttonColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
+                }
+
+            } else {
+                if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                    background = R.style.blueEdgeEffect
+                    buttonColor = ContextCompat.getColor(this.requireContext(), R.color.blue_main)
+                } else {
+                    background = R.style.darkEdgeEffect
+                    buttonColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
+                }
+            }
+
             itemUnderDeletion = it
             Dialogs().chooseYesNo(
                 this.requireContext(),
@@ -144,8 +185,9 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
                 resources.getString(R.string.r_u_sure),
                 resources.getString(R.string.yes),
                 resources.getString(R.string.no),
-                if (isExpense) R.color.red_main else R.color.blue_main,
-                ::deleteOperationType
+                buttonColor,
+                ::deleteOperationType,
+                background
             )
         }
     }
@@ -190,7 +232,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     //endregion
     //region Methods
     private fun createList() {
-        binding.operationTypeList.startAnimation(createList)
+        binding.operationTypeListFragmentList.startAnimation(createList)
     }
 
     private fun appear() {
@@ -237,13 +279,13 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     }
 
     private fun startLoading() {
-        binding.progressBar4.visibility = View.VISIBLE
-        binding.operationTypeList.visibility = View.INVISIBLE
+        binding.operationTypeListFragmentProgressBar.visibility = View.VISIBLE
+        binding.operationTypeListFragmentList.visibility = View.INVISIBLE
     }
 
     private fun stopLoading() {
-        binding.progressBar4.visibility = View.GONE
-        binding.operationTypeList.visibility = View.VISIBLE
+        binding.operationTypeListFragmentProgressBar.visibility = View.GONE
+        binding.operationTypeListFragmentList.visibility = View.VISIBLE
     }
     //endregion
 }

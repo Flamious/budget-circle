@@ -17,6 +17,7 @@ class MultipleBarChartSetter {
             values3: Array<Double>,
             colors: ArrayList<Int>,
             chart: BarChart,
+            textColor: Int,
             xToBottom: Boolean = true
         ) {
             val barEntries1: ArrayList<BarEntry> = ArrayList()
@@ -38,6 +39,9 @@ class MultipleBarChartSetter {
             barDataSet1.color = colors[0]
             barDataSet2.color = colors[1]
             barDataSet3.color = colors[2]
+            barDataSet1.valueTextColor = textColor
+            barDataSet2.valueTextColor = textColor
+            barDataSet3.valueTextColor = textColor
 
             val barData = BarData(arrayListOf<IBarDataSet>(barDataSet1, barDataSet2, barDataSet3))
             chart.data = barData
@@ -74,15 +78,19 @@ class MultipleBarChartSetter {
             values3: Array<Double>,
             colors: ArrayList<Int>,
             chart: BarChart,
+            textColor: Int,
             noEntries: Boolean = false,
             xToBottom: Boolean = true,
         ) {
-            applyData(titles, values1, values2, values3, colors, chart, xToBottom)
+            applyData(titles, values1, values2, values3, colors, chart, textColor, xToBottom)
 
             chart.setTouchEnabled(!noEntries)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.highlightValues(null)
+            chart.axisLeft.textColor = textColor
+            chart.axisRight.textColor = textColor
+            chart.xAxis.textColor = textColor
             chart.invalidate()
             chart.animateXY(1000, 1000)
         }

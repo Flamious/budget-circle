@@ -86,9 +86,10 @@ class Dialogs {
         positiveText: String,
         negativeText: String,
         color: Int,
-        actionOnPositive: () -> Unit
+        actionOnPositive: () -> Unit,
+        theme: Int = -1
     ) {
-        val dialog = MaterialAlertDialogBuilder(context, R.style.greenButtonsDialog)
+        val dialogSettings = MaterialAlertDialogBuilder(context, R.style.greenButtonsDialog)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(
@@ -98,14 +99,17 @@ class Dialogs {
                     actionOnPositive.invoke()
                     dialogInterface.dismiss()
                 }
-            }
-            .setNegativeButton(
+            }.setNegativeButton(
                 negativeText
             ) { dialogInterface, _ -> dialogInterface.dismiss() }
-            .show()
+
+        if (theme >= 0) dialogSettings.context.setTheme(theme)
+
+        val dialog = dialogSettings.show()
+
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(context, color))
+            .setTextColor(color)
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(context, color))
+            .setTextColor(color)
     }
 }

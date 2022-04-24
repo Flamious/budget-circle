@@ -2,6 +2,8 @@ package com.example.budgetcircle.fragments.auth
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,13 +13,16 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentLoginLoadingBinding
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +49,7 @@ class LoginLoadingFragment : Fragment() {
     ): View {
         binding = FragmentLoginLoadingBinding.inflate(inflater)
         setService()
+        setTheme()
         return binding.root
     }
 
@@ -59,26 +65,53 @@ class LoginLoadingFragment : Fragment() {
         service = Client.getClient(url).create(UserApi::class.java)
     }
 
+    private fun setTheme() {
+        if (AuthActivity.mode == UserFragment.NIGHT) {
+            binding.apply {
+                val textColor = ContextCompat.getColor(
+                    this@LoginLoadingFragment.requireContext(),
+                    R.color.light_grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@LoginLoadingFragment.requireContext(),
+                    R.color.dark_grey
+                )
+
+                loadingFragmentLayout.setBackgroundColor(backgroundColor) //= ColorStateList.valueOf(backgroundColor)
+                loadingFragmentTitle.setTextColor(textColor)
+            }
+        }
+    }
+
     private fun setChart() {
-        binding.titleView.startAnimation(appear)
+        binding.loadingFragmentTitle.startAnimation(appear)
 
         val size = 4
         val values = Array(size) { Random.nextDouble(10.0, 50.0) }
         val titles = Array(size) { resources.getString(R.string.app_name) }
-        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
-            PieChartSetter.setChart(
-                titles,
-                values,
-                colors,
-                0.0,
-                resources.getString(R.string.app_name),
-                binding.loadingPieChart,
-                binding.sumTextView,
-                binding.titleView,
-                ContextCompat.getColor(this.requireContext(), R.color.white),
-                isFull = false,
-                noEntries = true
-            )
+        val colors = if (AuthActivity.mode == UserFragment.DAY)
+            resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+
+        val holeColor = ContextCompat.getColor(
+            this.requireContext(),
+            if (AuthActivity.mode == UserFragment.DAY) R.color.white else R.color.dark_grey
+        )
+
+        PieChartSetter.setChart(
+            titles,
+            values,
+            colors,
+            0.0,
+            resources.getString(R.string.app_name),
+            binding.loadingFragmentPieChart,
+            binding.loadingFragmentSumTextView,
+            binding.loadingFragmentTitle,
+            holeColor,
+            isFull = false,
+            noEntries = true
+        )
     }
     //endregion
 
@@ -100,7 +133,7 @@ class LoginLoadingFragment : Fragment() {
         }
     }
 
-    private fun startApp(token: String)  = lifecycleScope.launch(Dispatchers.IO) {
+    private fun startApp(token: String) = lifecycleScope.launch(Dispatchers.IO) {
         Thread.sleep(loading)
         val intent = Intent(activity, MainActivity::class.java)
         intent.putExtra(

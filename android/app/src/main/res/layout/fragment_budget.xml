@@ -7,24 +7,25 @@
     tools:context=".fragments.BudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/budgetFragmentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_grey">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/budgetChartLayout"
+            android:id="@+id/budgetFragmentChartLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="-16dp"
-            app:layout_constraintBottom_toTopOf="@+id/listButton"
+            app:layout_constraintBottom_toTopOf="@+id/budgetFragmentListButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/budgetFragmentHeaderLayout">
 
 
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/budgetPieChart"
+                android:id="@+id/budgetFragmentPieChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
@@ -34,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"></com.github.mikephil.charting.charts.PieChart>
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/budgetBarChart"
+                android:id="@+id/budgetFragmentBarChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="24dp"
@@ -47,17 +48,17 @@
             </com.github.mikephil.charting.charts.BarChart>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/budgetInfoLayout"
+                android:id="@+id/budgetFragmentInfoLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34sp"
-                app:layout_constraintBottom_toBottomOf="@+id/budgetPieChart"
+                app:layout_constraintBottom_toBottomOf="@+id/budgetFragmentPieChart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/budgetPieChart">
+                app:layout_constraintTop_toTopOf="@+id/budgetFragmentPieChart">
 
                 <TextView
-                    android:id="@+id/sumText"
+                    android:id="@+id/budgetFragmentSumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_primary"
@@ -69,7 +70,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/kindText"
+                    android:id="@+id/budgetFragmentKindText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_secondary"
@@ -78,7 +79,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sumText" />
+                    app:layout_constraintTop_toBottomOf="@+id/budgetFragmentSumText" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -102,12 +103,12 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/budgetChangeChartButton"
+                app:layout_constraintBottom_toBottomOf="@+id/budgetFragmentChangeChartButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/budgetChangeChartButton" />
+                app:layout_constraintTop_toTopOf="@+id/budgetFragmentChangeChartButton" />
 
             <ImageButton
-                android:id="@+id/budgetChangeChartButton"
+                android:id="@+id/budgetFragmentChangeChartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -121,24 +122,23 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/hiddenButtonsLayout"
+            android:id="@+id/budgetFragmentHiddenButtonsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/listButton"
-            app:layout_constraintEnd_toEndOf="@+id/listButton"
-            app:layout_constraintStart_toStartOf="@+id/listButton">
+            app:layout_constraintBottom_toTopOf="@+id/budgetFragmentListButton"
+            app:layout_constraintEnd_toEndOf="@+id/budgetFragmentListButton"
+            app:layout_constraintStart_toStartOf="@+id/budgetFragmentListButton">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/stocksListButton"
+                android:id="@+id/budgetFragmentTypeListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green_secondary"
                 android:clickable="true"
-                android:contentDescription="@string/stocks"
+                android:contentDescription="@string/accList"
                 android:focusable="true"
-                android:src="@drawable/ic_stocks"
+                android:src="@drawable/ic_list"
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
@@ -148,47 +148,10 @@
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/repetitiveOpListButton"
+                android:id="@+id/budgetFragmentAddAccountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
-                android:clickable="true"
-                android:contentDescription="@string/repOps"
-                android:focusable="true"
-                android:src="@drawable/ic_history"
-                app:backgroundTint="@color/green_main"
-                app:borderWidth="2dp"
-                app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/stocksListButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/stocksListButton"
-                app:tint="@color/white" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/typeListButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
-                android:clickable="true"
-                android:contentDescription="@string/accList"
-                android:focusable="true"
-                android:src="@drawable/ic_list"
-                app:backgroundTint="@color/green_main"
-                app:borderWidth="2dp"
-                app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/repetitiveOpListButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/repetitiveOpListButton"
-                app:tint="@color/white" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addAccountButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
                 android:clickable="true"
                 android:contentDescription="@string/add_account"
                 android:focusable="true"
@@ -196,14 +159,14 @@
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/typeListButton"
+                app:layout_constraintBottom_toTopOf="@+id/budgetFragmentTypeListButton"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/typeListButton"
+                app:layout_constraintStart_toStartOf="@+id/budgetFragmentTypeListButton"
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/exchangeButton"
+            android:id="@+id/budgetFragmentExchangeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -218,7 +181,7 @@
             app:tint="@color/white" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/listButton"
+            android:id="@+id/budgetFragmentListButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

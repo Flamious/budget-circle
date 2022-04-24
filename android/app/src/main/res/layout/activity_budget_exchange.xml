@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/budgetExchangeLayout"
+    android:id="@+id/budgetExchangeActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/greenEdgeEffect"
@@ -10,7 +10,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/budgetTypeListHeaderLayout"
+        android:id="@+id/budgetExchangeActivityListHeaderLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/green_main"
@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/budgetExchangeBackButton"
+            android:id="@+id/budgetExchangeActivityBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:backgroundTint="@color/green_main"
             android:contentDescription="@string/new_exchange"
             android:minHeight="48dp"
-            android:tint="@color/white"
+            app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <TextView
-            android:id="@+id/Title"
+            android:id="@+id/budgetExchangeActivityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -43,14 +43,14 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/budgetExchangeBackButton"
+            app:layout_constraintBottom_toBottomOf="@+id/budgetExchangeActivityBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/budgetExchangeBackButton" />
+            app:layout_constraintTop_toTopOf="@+id/budgetExchangeActivityBackButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <Button
-        android:id="@+id/budgetExchangeAddButton"
+        android:id="@+id/budgetExchangeActivityAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/green_main"
@@ -62,15 +62,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView4"
+        android:id="@+id/budgetExchangeActivityScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border"
-        android:theme="@style/greenEdgeEffect"
-        app:layout_constraintBottom_toTopOf="@+id/budgetExchangeAddButton"
+        android:theme="@style/greyEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/budgetExchangeActivityAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budgetTypeListHeaderLayout">
+        app:layout_constraintTop_toBottomOf="@+id/budgetExchangeActivityListHeaderLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,7 +81,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/budgetSum"
+                    android:id="@+id/budgetExchangeActivityBudgetSum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -94,41 +93,41 @@
                     android:hint="@string/sum"
                     android:inputType="number|numberDecimal"
                     android:textColorHighlight="@color/green_main"
-                    android:textColorHint="@color/text_secondary"
+                    android:textColorHint="@color/grey"
                     android:textColorLink="@color/green_secondary"
-                    android:textCursorDrawable="@color/green_main"
+                    android:textCursorDrawable="@color/grey"
                     android:textSize="20sp"
-                    android:theme="@style/greenControlCursor"
+                    android:theme="@style/grayControlCursor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/titleTo"
-                    app:layout_constraintTop_toBottomOf="@+id/titleTo" />
+                    app:layout_constraintStart_toStartOf="@+id/budgetExchangeActivityTitleTo"
+                    app:layout_constraintTop_toBottomOf="@+id/budgetExchangeActivityTitleTo" />
 
                 <TextView
-                    android:id="@+id/titleFrom"
+                    android:id="@+id/budgetExchangeActivityTitleFrom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:text="@string/from"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/listFrom"
+                    app:layout_constraintBottom_toBottomOf="@+id/budgetExchangeActivityListFrom"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/listFrom" />
+                    app:layout_constraintTop_toTopOf="@+id/budgetExchangeActivityListFrom" />
 
                 <TextView
-                    android:id="@+id/titleTo"
+                    android:id="@+id/budgetExchangeActivityTitleTo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/listTo"
-                    app:layout_constraintStart_toStartOf="@+id/titleFrom"
-                    app:layout_constraintTop_toTopOf="@+id/listTo" />
+                    app:layout_constraintBottom_toBottomOf="@+id/budgetExchangeActivityListTo"
+                    app:layout_constraintStart_toStartOf="@+id/budgetExchangeActivityTitleFrom"
+                    app:layout_constraintTop_toTopOf="@+id/budgetExchangeActivityListTo" />
 
                 <Button
-                    android:id="@+id/listTo"
+                    android:id="@+id/budgetExchangeActivityListTo"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -140,12 +139,12 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="@+id/listFrom"
-                    app:layout_constraintStart_toStartOf="@+id/listFrom"
-                    app:layout_constraintTop_toBottomOf="@+id/listFrom" />
+                    app:layout_constraintEnd_toEndOf="@+id/budgetExchangeActivityListFrom"
+                    app:layout_constraintStart_toStartOf="@+id/budgetExchangeActivityListFrom"
+                    app:layout_constraintTop_toBottomOf="@+id/budgetExchangeActivityListFrom" />
 
                 <Button
-                    android:id="@+id/listFrom"
+                    android:id="@+id/budgetExchangeActivityListFrom"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -158,6 +157,7 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

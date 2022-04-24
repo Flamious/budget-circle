@@ -22,6 +22,12 @@ import retrofit2.Response
 
 
 class BudgetDataApi(application: Application) : AndroidViewModel(application) {
+    companion object {
+        val mode: MutableLiveData<Int> = MutableLiveData<Int>().apply {
+            value = 0
+        }
+    }
+
     private val budgetTypeApiService: BudgetTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(BudgetTypeApi::class.java)

@@ -1,5 +1,6 @@
 package com.example.budgetcircle.fragments.history
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
@@ -45,6 +47,7 @@ class HistoryFragment : Fragment() {
         setAdapter()
         setButtons()
         setObservation()
+        setTheme()
         return binding.root
     }
 
@@ -55,16 +58,77 @@ class HistoryFragment : Fragment() {
 
     //region Setting
     private fun setAdapter() {
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val borderColor: Int
+
+        if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
+            textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
+            backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
+            borderColor = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+        } else {
+            textPrimary = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+            textSecondary = ContextCompat.getColor(this.requireContext(), R.color.grey)
+            backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
+            borderColor = ContextCompat.getColor(this.requireContext(), R.color.dark_grey)
+        }
+
         adapter = HistoryAdapter(
             budgetDataApi.budgetTypes.value!!.toTypedArray(),
             budgetDataApi.earningTypes.value!!.toTypedArray(),
-            budgetDataApi.expenseTypes.value!!.toTypedArray()
+            budgetDataApi.expenseTypes.value!!.toTypedArray(),
+            textPrimary,
+            textSecondary,
+            backgroundColor,
+            borderColor
         )
+
         binding.apply {
-            historyList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
-            historyList.adapter = adapter
+            historyFragmentList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
+            historyFragmentList.adapter = adapter
             if (budgetDataApi.chosenHistoryItemIndex.value != null) {
                 budgetDataApi.chosenHistoryItemIndex.postValue(null)
+            }
+        }
+    }
+
+    private fun setTheme() {
+        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            binding.apply {
+                val textPrimary = ContextCompat.getColor(
+                    this@HistoryFragment.requireContext(),
+                    R.color.light_grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@HistoryFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                val mainColor = ContextCompat.getColor(
+                    this@HistoryFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                historyFragmentHeaderLayout.setBackgroundColor(mainColor)
+                historyFragmentFilterListButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyFragmentOpenChartButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyFragmentNextPageButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyFragmentNextPageButton.imageTintList =
+                    ColorStateList.valueOf(textPrimary)
+                historyFragmentPreviousPageButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyFragmentPreviousPageButton.imageTintList =
+                    ColorStateList.valueOf(textPrimary)
+                historyFragmentPageLayout.setBackgroundColor(mainColor)
+                historyFragmentList.setBackgroundColor(backgroundColor)
+                historyFragmentPageNumberTextView.setTextColor(textPrimary)
+                historyFragmentLayout.setBackgroundColor(backgroundColor)
+                historyFragmentProgressBar.indeterminateTintList =
+                    ColorStateList.valueOf(mainColor)
             }
         }
     }
@@ -76,19 +140,19 @@ class HistoryFragment : Fragment() {
             openInfo()
         }
 
-        binding.nextPageButton.setOnClickListener {
+        binding.historyFragmentNextPageButton.setOnClickListener {
             budgetDataApi.page.postValue(budgetDataApi.page.value!! + 1)
         }
 
-        binding.filterListButton.setOnClickListener {
+        binding.historyFragmentFilterListButton.setOnClickListener {
             openFilter()
         }
 
-        binding.previousPageButton.setOnClickListener {
+        binding.historyFragmentPreviousPageButton.setOnClickListener {
             budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
         }
 
-        binding.openChartButton.setOnClickListener {
+        binding.historyFragmentOpenChartButton.setOnClickListener {
             openChart()
         }
     }
@@ -97,10 +161,9 @@ class HistoryFragment : Fragment() {
         budgetDataApi.operations.observe(this.viewLifecycleOwner, {
             if (it != null) {
                 if (it.count() == 0) {
-                    if(budgetDataApi.page.value!! > 1) {
+                    if (budgetDataApi.page.value!! > 1) {
                         budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
-                    }
-                    else {
+                    } else {
                         stopLoading(true)
                     }
                 } else {
@@ -116,30 +179,37 @@ class HistoryFragment : Fragment() {
                             it[index].isExpense,
                             ContextCompat.getColor(
                                 this.requireContext(),
-                                when (it[index].isExpense) {
-                                    true -> R.color.red_main
-                                    false -> R.color.blue_main
-                                    else -> R.color.green_main
-                                }
+                                if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+                                    when (it[index].isExpense) {
+                                        true -> R.color.red_main
+                                        false -> R.color.blue_main
+                                        else -> R.color.green_main
+                                    }
+                                else
+                                    when (it[index].isExpense) {
+                                        true -> R.color.red_secondary
+                                        false -> R.color.blue_secondary
+                                        else -> R.color.green_secondary
+                                    }
                             )
                         )
                     }
 
                     adapter.setList(list)
-                    binding.historyList.scrollToPosition(0)
+                    binding.historyFragmentList.scrollToPosition(0)
                     stopLoading()
                 }
             }
         })
 
         budgetDataApi.isLastPage.observe(this.viewLifecycleOwner, {
-            binding.nextPageButton.isEnabled = !it
+            binding.historyFragmentNextPageButton.isEnabled = !it
         })
 
         budgetDataApi.page.observe(this.viewLifecycleOwner, {
             startLoading()
-            binding.previousPageButton.isEnabled = it != 1
-            binding.pageNumberTextView.text = it.toString()
+            binding.historyFragmentPreviousPageButton.isEnabled = it != 1
+            binding.historyFragmentPageNumberTextView.text = it.toString()
             budgetDataApi.getOperations()
         })
     }
@@ -147,14 +217,14 @@ class HistoryFragment : Fragment() {
     //endregion
     //region Methods
     private fun createList() {
-        binding.historyList.startAnimation(createList)
+        binding.historyFragmentList.startAnimation(createList)
     }
 
     private fun appear() {
-        binding.nextPageButton.startAnimation(appear)
-        binding.filterListButton.startAnimation(appear)
-        binding.previousPageButton.startAnimation(appear)
-        binding.constraintLayout8.startAnimation(appear)
+        binding.historyFragmentNextPageButton.startAnimation(appear)
+        binding.historyFragmentFilterListButton.startAnimation(appear)
+        binding.historyFragmentPreviousPageButton.startAnimation(appear)
+        binding.historyFragmentHeaderLayout.startAnimation(appear)
 
         createList()
     }
@@ -184,29 +254,28 @@ class HistoryFragment : Fragment() {
     }
 
     private fun startLoading() {
-        binding.progressBar3.visibility = View.VISIBLE
-        binding.historyList.visibility = View.INVISIBLE
-        binding.noEntriesTextView.visibility = View.GONE
+        binding.historyFragmentProgressBar.visibility = View.VISIBLE
+        binding.historyFragmentList.visibility = View.INVISIBLE
+        binding.historyFragmentNoEntriesTextView.visibility = View.GONE
 
-        binding.previousPageButton.isEnabled = false
-        binding.filterListButton.isEnabled = false
-        binding.nextPageButton.isEnabled = false
+        binding.historyFragmentPreviousPageButton.isEnabled = false
+        binding.historyFragmentFilterListButton.isEnabled = false
+        binding.historyFragmentNextPageButton.isEnabled = false
     }
 
     private fun stopLoading(isEmpty: Boolean = false) {
-        if(!isEmpty)
-        {
-            binding.historyList.visibility = View.VISIBLE
+        if (!isEmpty) {
+            binding.historyFragmentList.visibility = View.VISIBLE
             createList()
         } else {
-            binding.noEntriesTextView.visibility = View.VISIBLE
+            binding.historyFragmentNoEntriesTextView.visibility = View.VISIBLE
         }
-        binding.progressBar3.visibility = View.GONE
-        binding.linearLayout2.visibility = View.VISIBLE
+        binding.historyFragmentProgressBar.visibility = View.GONE
+        binding.historyFragmentPageLayout.visibility = View.VISIBLE
 
-        binding.previousPageButton.isEnabled = budgetDataApi.page.value!! > 1
-        binding.filterListButton.isEnabled = true
-        binding.nextPageButton.isEnabled = !budgetDataApi.isLastPage.value!!
+        binding.historyFragmentPreviousPageButton.isEnabled = budgetDataApi.page.value!! > 1
+        binding.historyFragmentFilterListButton.isEnabled = true
+        binding.historyFragmentNextPageButton.isEnabled = !budgetDataApi.isLastPage.value!!
     }
     //endregion
 }

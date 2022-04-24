@@ -7,25 +7,25 @@
     tools:context=".fragments.history.HistoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/historyFragmentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_grey">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout11"
+            android:id="@+id/historyFragmentBorder"
             android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:background="@color/light_grey"
-            android:backgroundTint="@color/light_grey"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            android:layout_height="1px"
+            android:background="@color/grey"
+            app:layout_constraintBottom_toTopOf="@+id/historyFragmentPageLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout8"
+            android:id="@+id/historyFragmentHeaderLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/orange_main"
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/openChartButton"
+                android:id="@+id/historyFragmentOpenChartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -47,7 +47,7 @@
                 app:tint="@color/white" />
 
             <ImageButton
-                android:id="@+id/filterListButton"
+                android:id="@+id/historyFragmentFilterListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -55,7 +55,7 @@
                 android:minHeight="48dp"
                 android:src="@drawable/ic_filter"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/openChartButton"
+                app:layout_constraintEnd_toStartOf="@+id/historyFragmentOpenChartButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/white" />
 
@@ -68,54 +68,49 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/filterListButton"
+                app:layout_constraintBottom_toBottomOf="@+id/historyFragmentFilterListButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/filterListButton" />
+                app:layout_constraintTop_toTopOf="@+id/historyFragmentFilterListButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyFragmentList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/light_grey"
+            android:theme="@style/greyEdgeEffect"
+            app:layout_constraintBottom_toTopOf="@+id/historyFragmentBorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/historyFragmentHeaderLayout" />
+
         <ProgressBar
-            android:id="@+id/progressBar3"
+            android:id="@+id/historyFragmentProgressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange_main"
-            android:foregroundTint="@color/orange_main"
             android:indeterminateTint="@color/orange_main"
-            android:progressBackgroundTint="@color/orange_main"
-            android:progressTint="@color/orange_main"
-            android:secondaryProgressTint="@color/orange_main"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/historyList"
-            app:layout_constraintEnd_toEndOf="@+id/historyList"
+            app:layout_constraintBottom_toBottomOf="@+id/historyFragmentList"
+            app:layout_constraintEnd_toEndOf="@+id/historyFragmentList"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/historyList" />
+            app:layout_constraintTop_toTopOf="@+id/historyFragmentList" />
 
         <TextView
-            android:id="@+id/noEntriesTextView"
+            android:id="@+id/historyFragmentNoEntriesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_entries"
             android:textColor="@color/text_secondary"
             android:textSize="20sp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/historyList"
-            app:layout_constraintEnd_toEndOf="@+id/historyList"
+            app:layout_constraintBottom_toBottomOf="@+id/historyFragmentList"
+            app:layout_constraintEnd_toEndOf="@+id/historyFragmentList"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/historyList" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/historyList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/light_grey"
-            android:theme="@style/orangeEdgeEffect"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
+            app:layout_constraintTop_toTopOf="@+id/historyFragmentList" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/historyFragmentPageLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -125,7 +120,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageButton
-                android:id="@+id/previousPageButton"
+                android:id="@+id/historyFragmentPreviousPageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
@@ -133,7 +128,7 @@
                 android:src="@drawable/ic_previous" />
 
             <TextView
-                android:id="@+id/pageNumberTextView"
+                android:id="@+id/historyFragmentPageNumberTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -141,7 +136,7 @@
                 android:textColor="@color/text_primary" />
 
             <ImageButton
-                android:id="@+id/nextPageButton"
+                android:id="@+id/historyFragmentNextPageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"

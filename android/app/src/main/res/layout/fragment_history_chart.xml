@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout10"
+    android:id="@+id/historyChartFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
@@ -10,7 +10,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/chooseBudgetTypeButton"
+        android:id="@+id/historyChartFragmentChooseBudgetTypeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -24,7 +24,7 @@
         app:tint="@color/white" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/operationBarChart"
+        android:id="@+id/historyChartFragmentBarChart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -35,13 +35,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hitoryChartPeriodLayout"
+        app:layout_constraintTop_toBottomOf="@+id/historyChartFragmentPeriodLayout"
         app:layout_constraintVertical_bias="1.0">
 
     </com.github.mikephil.charting.charts.BarChart>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/historyChartHeaderLayout"
+        android:id="@+id/historyChartFragmentHeaderLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/orange_main"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/historyChartBackButton"
+            android:id="@+id/historyChartFragmentBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -73,22 +73,22 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/historyChartBackButton"
+            app:layout_constraintBottom_toBottomOf="@+id/historyChartFragmentBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/historyChartBackButton" />
+            app:layout_constraintTop_toTopOf="@+id/historyChartFragmentBackButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/hitoryChartPeriodLayout"
+        android:id="@+id/historyChartFragmentPeriodLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyChartHeaderLayout">
+        app:layout_constraintTop_toBottomOf="@+id/historyChartFragmentHeaderLayout">
 
         <ImageButton
-            android:id="@+id/previousPeriodButton"
+            android:id="@+id/historyChartFragmentPreviousPeriodButton"
             android:layout_width="wrap_content"
             android:layout_height="29dp"
             android:layout_weight="0.1"
@@ -96,7 +96,7 @@
             android:src="@drawable/ic_previous" />
 
         <TextView
-            android:id="@+id/historyChartPeriod"
+            android:id="@+id/historyChartFragmentPeriod"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -105,7 +105,7 @@
             android:textColor="@color/text_primary" />
 
         <ImageButton
-            android:id="@+id/nextPeriodButton"
+            android:id="@+id/historyChartFragmentNextPeriodButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.1"

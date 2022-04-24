@@ -2,71 +2,76 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout4"
+    android:id="@+id/signUpFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.auth.SignUpFragment">
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/signUpAdmitButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/signUpFragmentHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/signup"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/signUpFragmentScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:theme="@style/greyEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/signUpFragmentAdmitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpFragmentHeaderLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:theme="@style/greenEdgeEffect">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/green_main"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/signup"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/passwordSignUpText"
+                    android:id="@+id/signUpFragmentPasswordField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/green_main"
                     android:ems="10"
                     android:inputType="textPassword"
                     android:minHeight="48dp"
-                    android:textColor="@color/text_primary"
+                    android:textColorHighlight="@color/green_main"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/green_main"
+                    android:textCursorDrawable="@color/grey"
                     android:theme="@style/greenControlCursor"
-                    app:layout_constraintEnd_toEndOf="@+id/emailSignUpText"
-                    app:layout_constraintStart_toStartOf="@+id/emailSignUpText"
-                    app:layout_constraintTop_toBottomOf="@+id/textView21"
+                    app:layout_constraintEnd_toEndOf="@+id/signUpFragmentEmailField"
+                    app:layout_constraintStart_toStartOf="@+id/signUpFragmentEmailField"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentPasswordTitle"
                     tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
-                    android:id="@+id/loginButton"
+                    android:id="@+id/signUpFragmentLoginButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -75,22 +80,22 @@
                     android:textColor="@color/blue_secondary"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/confirmPasswordSignUpText"
-                    app:layout_constraintTop_toBottomOf="@+id/confirmPasswordSignUpText" />
+                    app:layout_constraintEnd_toEndOf="@+id/signUpFragmentConfirmPasswordField"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentConfirmPasswordField" />
 
                 <TextView
-                    android:id="@+id/textView21"
+                    android:id="@+id/signUpFragmentPasswordTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/password"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/emailSignUpText"
-                    app:layout_constraintTop_toBottomOf="@+id/emailSignUpText" />
+                    app:layout_constraintStart_toStartOf="@+id/signUpFragmentEmailField"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentEmailField" />
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/signUpFragmentEmailTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -99,57 +104,67 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/emailSignUpText"
+                    android:id="@+id/signUpFragmentEmailField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/green_main"
                     android:ems="10"
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
-                    android:textColor="@color/text_primary"
+                    android:textColorHighlight="@color/green_main"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/green_main"
+                    android:textCursorDrawable="@color/grey"
                     android:theme="@style/greenControlCursor"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView19"
-                    app:layout_constraintTop_toBottomOf="@+id/textView19"
+                    app:layout_constraintStart_toStartOf="@+id/signUpFragmentEmailTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentEmailTitle"
                     tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
-                    android:id="@+id/textView22"
+                    android:id="@+id/signUpFragmentConfirmPasswordTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/confirm_password"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/passwordSignUpText"
-                    app:layout_constraintTop_toBottomOf="@+id/passwordSignUpText" />
+                    app:layout_constraintStart_toStartOf="@+id/signUpFragmentPasswordField"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentPasswordField" />
 
                 <EditText
-                    android:id="@+id/confirmPasswordSignUpText"
+                    android:id="@+id/signUpFragmentConfirmPasswordField"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/green_main"
                     android:ems="10"
                     android:inputType="textPassword"
                     android:minHeight="48dp"
-                    android:textColor="@color/text_primary"
+                    android:textColorHighlight="@color/green_main"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/green_main"
+                    android:textCursorDrawable="@color/grey"
                     android:theme="@style/greenControlCursor"
-                    app:layout_constraintEnd_toEndOf="@+id/passwordSignUpText"
-                    app:layout_constraintStart_toStartOf="@+id/passwordSignUpText"
-                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    app:layout_constraintEnd_toEndOf="@+id/signUpFragmentPasswordField"
+                    app:layout_constraintStart_toStartOf="@+id/signUpFragmentPasswordField"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpFragmentConfirmPasswordTitle"
                     tools:ignore="SpeakableTextPresentCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/signUpAdmitButton"
+        android:id="@+id/signUpFragmentAdmitButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
         android:backgroundTint="@color/green_main"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -160,7 +175,7 @@
         tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/signUpLoadingLayout"
+        android:id="@+id/signUpFragmentLoadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.75"
@@ -172,7 +187,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/signUpFragmentSignUpFragment"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -186,16 +201,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/signUpFragmentWaitTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/please_wait"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/progressBar"
-            app:layout_constraintStart_toStartOf="@+id/progressBar"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+            app:layout_constraintEnd_toEndOf="@+id/signUpFragmentSignUpFragment"
+            app:layout_constraintStart_toStartOf="@+id/signUpFragmentSignUpFragment"
+            app:layout_constraintTop_toBottomOf="@+id/signUpFragmentSignUpFragment" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

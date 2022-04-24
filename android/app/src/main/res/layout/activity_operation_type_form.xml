@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operationTypeFormActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".forms.OperationTypeFormActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/operationTypeHeaderLayout"
+        android:id="@+id/operationTypeFormActivityHeaderLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,39 +16,39 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/opTypeBackButton"
+            android:id="@+id/operationTypeFormActivityBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/white"
             android:contentDescription="@string/new_exchange"
             android:minHeight="48dp"
-            app:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white"
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <TextView
-            android:id="@+id/opTypeTitle2"
+            android:id="@+id/operationTypeFormActivityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/opTypeBackButton"
+            app:layout_constraintBottom_toBottomOf="@+id/operationTypeFormActivityBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/opTypeBackButton" />
+            app:layout_constraintTop_toTopOf="@+id/operationTypeFormActivityBackButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/opTypeAddButton"
+        android:id="@+id/operationTypeFormActivityAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
         android:backgroundTint="@color/blue_main"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -59,10 +60,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:theme="@style/greyEdgeEffect"
-        app:layout_constraintBottom_toTopOf="@+id/opTypeAddButton"
+        app:layout_constraintBottom_toTopOf="@+id/operationTypeFormActivityAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationTypeHeaderLayout">
+        app:layout_constraintTop_toBottomOf="@+id/operationTypeFormActivityHeaderLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/opTitle"
+                    android:id="@+id/operationTypeFormActivityTitleEditText"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="32dp"
@@ -85,10 +86,10 @@
                     android:ems="10"
                     android:hint="@string/title"
                     android:inputType="text"
-                    android:textColorHighlight="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    android:textColorLink="@color/text_secondary"
-                    android:textCursorDrawable="@color/text_secondary"
+                    android:textColorHighlight="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/grey"
+                    android:textCursorDrawable="@color/grey"
                     android:textSize="20sp"
                     android:theme="@style/grayControlCursor"
                     app:layout_constraintEnd_toEndOf="parent"

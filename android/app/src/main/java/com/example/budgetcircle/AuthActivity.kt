@@ -10,7 +10,10 @@ import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginFragment
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import com.example.budgetcircle.fragments.BudgetFragment
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.fragments.auth.LoginLoadingFragment
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 
 class AuthActivity : AppCompatActivity() {
@@ -20,6 +23,7 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getMode()
         checkLogout()
         openLoading()
     }
@@ -44,6 +48,17 @@ class AuthActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.authLayout, LoginLoadingFragment())
             .commit()
+    }
+
+    private fun getMode() {
+        val prefs = getSharedPreferences(resources.getString(R.string.settings), MODE_PRIVATE)
+        mode = prefs.getInt(resources.getString(R.string.mode), UserFragment.DAY);
+
+        BudgetDataApi.mode.postValue(mode)
+    }
+
+    companion object {
+        var mode: Int = 0
     }
     //endregion
 }

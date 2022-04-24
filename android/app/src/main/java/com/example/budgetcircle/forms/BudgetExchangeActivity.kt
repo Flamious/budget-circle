@@ -1,16 +1,20 @@
 package com.example.budgetcircle.forms
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetExchangeBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.settings.SumInputFilter
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class BudgetExchangeActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetExchangeBinding
@@ -31,6 +35,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBudgetExchangeBinding.inflate(layoutInflater)
         setInitialValues()
+        setTheme()
         setButtons()
         setContentView(binding.root)
     }
@@ -45,50 +50,100 @@ class BudgetExchangeActivity : AppCompatActivity() {
     }
 
     //region Setting
+    private fun setTheme() {
+        binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+                val textColor = ContextCompat.getColor(
+                    this@BudgetExchangeActivity,
+                    R.color.light_grey
+                )
+                val textSecondary = ContextCompat.getColor(
+                    this@BudgetExchangeActivity,
+                    R.color.grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@BudgetExchangeActivity,
+                    R.color.dark_grey
+                )
+                val mainColor = ContextCompat.getColor(
+                    this@BudgetExchangeActivity,
+                    R.color.darker_grey
+                )
+
+
+                budgetExchangeActivityListHeaderLayout.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetExchangeActivityAddButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetExchangeActivityBackButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetExchangeActivityLayout.setBackgroundColor(backgroundColor)
+                budgetExchangeActivityListFrom.setTextColor(textColor)
+                budgetExchangeActivityListTo.setTextColor(textColor)
+                budgetExchangeActivityTitleFrom.setTextColor(textSecondary)
+                budgetExchangeActivityTitleTo.setTextColor(textSecondary)
+
+                budgetExchangeActivityBudgetSum.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetExchangeActivityBudgetSum.highlightColor = mainColor
+                budgetExchangeActivityBudgetSum.setLinkTextColor(mainColor)
+                budgetExchangeActivityBudgetSum.setTextColor(textColor)
+                budgetExchangeActivityBudgetSum.setHintTextColor(textSecondary)
+            }
+        }
+    }
+
     private fun setButtons() {
-        binding.budgetExchangeAddButton.setOnClickListener {
+
+        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            R.style.greenEdgeEffect
+        } else {
+            R.style.darkEdgeEffect
+        }
+
+        binding.budgetExchangeActivityAddButton.setOnClickListener {
             add()
         }
-        binding.budgetExchangeBackButton.setOnClickListener {
+        binding.budgetExchangeActivityBackButton.setOnClickListener {
             exit()
         }
-        binding.listFrom.setOnClickListener {
+        binding.budgetExchangeActivityListFrom.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
                 budgetTypes,
-                binding.listFrom,
+                binding.budgetExchangeActivityListFrom,
                 chosenBudgetTypeFrom,
-                R.style.greenEdgeEffect
+                effectColor
             )
         }
-        binding.listTo.setOnClickListener {
+        binding.budgetExchangeActivityListTo.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
                 budgetTypes,
-                binding.listTo,
+                binding.budgetExchangeActivityListTo,
                 chosenBudgetTypeTo,
-                R.style.greenEdgeEffect
+                effectColor
             )
         }
     }
 
     private fun setEditPage() {
-        binding.budgetSum.setText(intent.getDoubleExtra("exchangeSum", 0.0).toString())
+        binding.budgetExchangeActivityBudgetSum.setText(intent.getDoubleExtra("exchangeSum", 0.0).toString())
         chosenBudgetTypeFrom.value = intent.extras?.getInt("fromIndex")!!
         chosenBudgetTypeTo.value = intent.extras?.getInt("toIndex")!!
-        binding.budgetExchangeAddButton.text = resources.getText(R.string.edit)
-        binding.listFrom.text = budgetTypes[chosenBudgetTypeFrom.value]
-        binding.listTo.text = budgetTypes[chosenBudgetTypeTo.value]
+        binding.budgetExchangeActivityAddButton.text = resources.getText(R.string.edit)
+        binding.budgetExchangeActivityListFrom.text = budgetTypes[chosenBudgetTypeFrom.value]
+        binding.budgetExchangeActivityListTo.text = budgetTypes[chosenBudgetTypeTo.value]
         isEdit = true
     }
 
     private fun setInitialValues() {
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
         if (intent.extras?.getBoolean("isEdit", false) == false) {
-            binding.listFrom.text = budgetTypes[0]
-            binding.listTo.text = budgetTypes[1]
+            binding.budgetExchangeActivityListFrom.text = budgetTypes[0]
+            binding.budgetExchangeActivityListTo.text = budgetTypes[1]
             budgetTypesSums =
                 (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
                     .toTypedArray()
@@ -96,19 +151,21 @@ class BudgetExchangeActivity : AppCompatActivity() {
             setEditPage()
             budgetTypesSums = arrayOf()
         }
-        binding.budgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
+        binding.budgetExchangeActivityBudgetSum.filters = arrayOf<InputFilter>(SumInputFilter())
     }
 
     //endregion
     //region Methods
     private fun appear() {
-        binding.budgetExchangeLayout.startAnimation(appear)
+        binding.budgetExchangeActivityListHeaderLayout.startAnimation(appear)
+        binding.budgetExchangeActivityAddButton.startAnimation(appear)
+        binding.budgetExchangeActivityScrollView.startAnimation(appear)
     }
 
     private fun checkFields(): Boolean {
-        val sum = binding.budgetSum.text.toString().toDoubleOrNull()
+        val sum = binding.budgetExchangeActivityBudgetSum.text.toString().toDoubleOrNull()
         var isValid = true
-        binding.budgetSum.apply {
+        binding.budgetExchangeActivityBudgetSum.apply {
             error = null
             when {
                 sum == null -> {
@@ -144,7 +201,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
                 intent.putExtra("toIndex", chosenBudgetTypeTo.value)
             }
             intent.putExtra("type", "exchange")
-            intent.putExtra("sum", binding.budgetSum.text.toString().toDouble())
+            intent.putExtra("sum", binding.budgetExchangeActivityBudgetSum.text.toString().toDouble())
             setResult(RESULT_OK, intent)
             finish()
         }

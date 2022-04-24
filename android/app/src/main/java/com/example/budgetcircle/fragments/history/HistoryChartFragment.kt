@@ -1,5 +1,7 @@
 package com.example.budgetcircle.fragments.history
 
+import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryChartBinding
 import com.example.budgetcircle.dialogs.Dialogs
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.settings.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.MultipleBarChartSetter
@@ -42,6 +45,7 @@ class HistoryChartFragment : Fragment() {
         periodIndex = periods.indexOf(budgetDataApi.chartOperationPeriod.value!!)
 
         setButtons()
+        setTheme()
         setObservation()
         return binding.root
     }
@@ -57,7 +61,11 @@ class HistoryChartFragment : Fragment() {
         val values2 = Array(operations.size) { index -> operations[index].earnings }
         val values3 = Array(operations.size) { index -> operations[index].exchanges }
         val titles = Array(operations.size) { index -> operations[index].title }
-        val colors = resources.getIntArray(R.array.history_chart_colors).toCollection(ArrayList())
+
+        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+            resources.getIntArray(R.array.history_chart_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.history_chart_colors_dark).toCollection(ArrayList())
 
         MultipleBarChartSetter.setChart(
             titles,
@@ -65,17 +73,57 @@ class HistoryChartFragment : Fragment() {
             values2,
             values3,
             colors,
-            binding.operationBarChart,
+            binding.historyChartFragmentBarChart,
+            ContextCompat.getColor(
+                this.requireContext(),
+                if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+            ),
             xToBottom = false,
         )
     }
 
+    private fun setTheme() {
+        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            binding.apply {
+                val textPrimary = ContextCompat.getColor(
+                    this@HistoryChartFragment.requireContext(),
+                    R.color.light_grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@HistoryChartFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                val mainColor = ContextCompat.getColor(
+                    this@HistoryChartFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                historyChartFragmentHeaderLayout.setBackgroundColor(mainColor)
+                historyChartFragmentChooseBudgetTypeButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyChartFragmentBackButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                historyChartFragmentNextPeriodButton.backgroundTintList =
+                    ColorStateList.valueOf(backgroundColor)
+                historyChartFragmentNextPeriodButton.imageTintList =
+                    ColorStateList.valueOf(textPrimary)
+                historyChartFragmentPreviousPeriodButton.backgroundTintList =
+                    ColorStateList.valueOf(backgroundColor)
+                historyChartFragmentPreviousPeriodButton.imageTintList =
+                    ColorStateList.valueOf(textPrimary)
+                historyChartFragmentPeriodLayout.setBackgroundColor(backgroundColor)
+                historyChartFragmentPeriod.setTextColor(textPrimary)
+                historyChartFragmentLayout.setBackgroundColor(backgroundColor)
+            }
+        }
+    }
+
     private fun setButtons() {
-        binding.historyChartBackButton.setOnClickListener {
+        binding.historyChartFragmentBackButton.setOnClickListener {
             exit()
         }
-        binding.previousPeriodButton.apply {
-            isEnabled = periodIndex > 0
+        binding.historyChartFragmentPreviousPeriodButton.apply {
+            visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
 
             setOnClickListener {
                 if (periodIndex > 0) {
@@ -83,13 +131,14 @@ class HistoryChartFragment : Fragment() {
                     budgetDataApi.chartOperationPeriod.postValue(periods[periodIndex])
                 }
 
-                isEnabled = periodIndex > 0
-                binding.nextPeriodButton.isEnabled = periodIndex < periods.size - 1
+                visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
+                binding.historyChartFragmentNextPeriodButton.visibility =
+                    if (periodIndex < periods.size - 1) View.VISIBLE else View.INVISIBLE
             }
         }
 
-        binding.nextPeriodButton.apply {
-            isEnabled = periodIndex < periods.size - 1
+        binding.historyChartFragmentNextPeriodButton.apply {
+            visibility = if (periodIndex < periods.size - 1) View.VISIBLE else View.INVISIBLE
 
             setOnClickListener {
                 if (periodIndex < periods.size - 1) {
@@ -97,12 +146,12 @@ class HistoryChartFragment : Fragment() {
                     budgetDataApi.chartOperationPeriod.postValue(periods[periodIndex])
                 }
 
-                binding.previousPeriodButton.isEnabled = periodIndex > 0
-                isEnabled = periodIndex < periods.size - 1
+                binding.historyChartFragmentPreviousPeriodButton.visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
+                visibility = if (periodIndex < periods.size - 1) View.VISIBLE else View.INVISIBLE
             }
         }
 
-        binding.chooseBudgetTypeButton.setOnClickListener {
+        binding.historyChartFragmentChooseBudgetTypeButton.setOnClickListener {
             val types =
                 Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
                     if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].title else resources.getString(
@@ -121,14 +170,14 @@ class HistoryChartFragment : Fragment() {
                 typesId,
                 budgetDataApi.operationChartChosenBudgetTypeString,
                 budgetDataApi.operationChartChosenBudgetType,
-                R.style.orangeEdgeEffect
+                if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.style.orangeEdgeEffect else R.style.darkEdgeEffect
             )
         }
     }
 
     private fun setObservation() {
         budgetDataApi.chartOperationPeriod.observe(this.viewLifecycleOwner) {
-            binding.historyChartPeriod.text = it
+            binding.historyChartFragmentPeriod.text = it
 
             budgetDataApi.getChartOperations()
         }
@@ -146,8 +195,8 @@ class HistoryChartFragment : Fragment() {
     //endregion
     //region Methods
     private fun appear() {
-        binding.historyChartHeaderLayout.startAnimation(appear)
-        binding.hitoryChartPeriodLayout.startAnimation(appear)
+        binding.historyChartFragmentHeaderLayout.startAnimation(appear)
+        binding.historyChartFragmentPeriodLayout.startAnimation(appear)
     }
 
     private fun exit() {

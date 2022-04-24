@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout6"
+    android:id="@+id/userFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
@@ -17,26 +17,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageButton
+            android:id="@+id/userFragmentModeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/purple_main"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_dark_mode"
+            app:tint="@color/white"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
         <TextView
             android:id="@+id/userFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/user_account"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/userFragmentModeButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scrollView3"
+        android:id="@+id/userFragmentScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:theme="@style/greyEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,12 +61,12 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
+                android:id="@+id/userFragmentBodyLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/changePasswordActivityButton"
+                    android:id="@+id/userFragmentChangePasswordActivityButton"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -68,10 +81,10 @@
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentPasswordTitle" />
 
                 <Button
-                    android:id="@+id/deleteAllOperationsButton"
+                    android:id="@+id/userFragmentDeleteAllOperationsButton"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -87,10 +100,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentOperationsTitle" />
 
                 <Button
-                    android:id="@+id/clearAccountsButton"
+                    android:id="@+id/userFragmentClearAccountsButton"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -106,10 +119,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/deleteAllOperationsButton" />
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentDeleteAllOperationsButton" />
 
                 <Button
-                    android:id="@+id/logoutButton"
+                    android:id="@+id/userFragmentLogoutButton"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -125,32 +138,32 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentOtherTitle" />
 
                 <TextView
-                    android:id="@+id/textView27"
+                    android:id="@+id/userFragmentOtherTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/user_account"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView24"
-                    app:layout_constraintTop_toBottomOf="@+id/clearAccountsButton" />
+                    app:layout_constraintStart_toStartOf="@+id/userFragmentOperationsTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentClearAccountsButton" />
 
                 <TextView
-                    android:id="@+id/textView24"
+                    android:id="@+id/userFragmentOperationsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/operations"
                     android:textColor="@color/text_secondary"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView20"
-                    app:layout_constraintTop_toBottomOf="@+id/changePasswordActivityButton" />
+                    app:layout_constraintStart_toStartOf="@+id/userFragmentPasswordTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/userFragmentChangePasswordActivityButton" />
 
                 <TextView
-                    android:id="@+id/textView20"
+                    android:id="@+id/userFragmentPasswordTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"

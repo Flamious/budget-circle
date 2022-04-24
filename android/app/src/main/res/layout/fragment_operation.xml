@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout9"
+    android:id="@+id/operationFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     tools:context=".fragments.OperationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/budgetChartLayout"
+        android:id="@+id/operationFragmentChartLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="-16dp"
@@ -20,7 +20,7 @@
 
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/operationBarChart"
+            android:id="@+id/operationFragmentBarChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="24dp"
@@ -33,7 +33,7 @@
         </com.github.mikephil.charting.charts.BarChart>
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/operationsPieChart"
+            android:id="@+id/operationFragmentPieChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -44,10 +44,10 @@
         </com.github.mikephil.charting.charts.PieChart>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/operationKindInfoLayout"
+            android:id="@+id/operationFragmentInfoLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/operationsPieChart"
+            app:layout_constraintBottom_toBottomOf="@+id/operationFragmentPieChart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -104,12 +104,12 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/operationChangeChartButton"
+            app:layout_constraintBottom_toBottomOf="@+id/operationFragmentChangeChartButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/operationChangeChartButton" />
+            app:layout_constraintTop_toTopOf="@+id/operationFragmentChangeChartButton" />
 
         <ImageButton
-            android:id="@+id/operationChangeChartButton"
+            android:id="@+id/operationFragmentChangeChartButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -121,14 +121,14 @@
             app:tint="@color/white" />
 
         <ImageButton
-            android:id="@+id/operationChangePeriodButton"
+            android:id="@+id/operationFragmentChangePeriodButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:minHeight="48dp"
             android:src="@drawable/ic_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/operationChangeChartButton"
+            app:layout_constraintEnd_toStartOf="@+id/operationFragmentChangeChartButton"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:tint="@color/white" />

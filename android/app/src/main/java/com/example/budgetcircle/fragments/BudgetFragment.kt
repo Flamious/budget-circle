@@ -2,6 +2,7 @@ package com.example.budgetcircle.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -89,6 +90,7 @@ class BudgetFragment : Fragment() {
     ): View {
         binding = FragmentBudgetBinding.inflate(inflater)
         setButtons()
+        setTheme()
         setObservation()
         setLauncher()
         return binding.root
@@ -122,22 +124,64 @@ class BudgetFragment : Fragment() {
         listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
     }
 
+    private fun setTheme() {
+        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            binding.apply {
+                val textColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.light_grey
+                )
+                val textSecondary = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                val mainColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                budgetFragmentChangeChartButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentExchangeButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentTypeListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentAddAccountButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetFragmentHeaderLayout.setBackgroundColor(mainColor)
+                budgetFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    budgetFragmentKindText.setTextColor(textColor)
+                    budgetFragmentSumTitleTextView?.setTextColor(textSecondary)
+                    budgetFragmentAccountTitleTextView?.setTextColor(textSecondary)
+                } else {
+                    budgetFragmentKindText.setTextColor(textSecondary)
+                }
+
+                budgetFragmentSumText.setTextColor(textColor)
+            }
+        }
+    }
+
     private fun setButtons() {
-        binding.addAccountButton.setOnClickListener {
+        binding.budgetFragmentAddAccountButton.setOnClickListener {
             addAccount()
             showHiddenButtons()
         }
-        binding.listButton.setOnClickListener {
+        binding.budgetFragmentListButton.setOnClickListener {
             showHiddenButtons()
         }
-        binding.exchangeButton.setOnClickListener {
+        binding.budgetFragmentExchangeButton.setOnClickListener {
             addExchange()
             if (isClicked) showHiddenButtons()
         }
-        binding.typeListButton.setOnClickListener {
+        binding.budgetFragmentTypeListButton.setOnClickListener {
             openBudgetTypeList()
         }
-        binding.budgetChangeChartButton.setOnClickListener {
+        binding.budgetFragmentChangeChartButton.setOnClickListener {
             changeChart()
         }
     }
@@ -150,20 +194,31 @@ class BudgetFragment : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+            resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
         if (sum > 0)
             BarChartSetter.setChart(
                 titles,
                 values,
                 colors,
-                binding.budgetBarChart,
+                binding.budgetFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                )
             )
         else
             BarChartSetter.setChart(
                 arrayOf(resources.getString(R.string.no_entries)),
                 arrayOf(0.0),
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                binding.budgetBarChart,
+                binding.budgetFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                ),
                 true
             )
     }
@@ -176,7 +231,15 @@ class BudgetFragment : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+            resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+
+        val holeColor = ContextCompat.getColor(
+            this.requireContext(),
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.light_grey else R.color.dark_grey
+        )
         if (sum > 0)
             PieChartSetter.setChart(
                 titles,
@@ -184,10 +247,10 @@ class BudgetFragment : Fragment() {
                 colors,
                 sum,
                 resources.getString(R.string.total),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
-                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
+                binding.budgetFragmentPieChart,
+                binding.budgetFragmentSumText,
+                binding.budgetFragmentKindText,
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
@@ -197,10 +260,10 @@ class BudgetFragment : Fragment() {
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
                 sum,
                 resources.getString(R.string.no_entries),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
-                ContextCompat.getColor(this.requireContext(), R.color.light_grey),
+                binding.budgetFragmentPieChart,
+                binding.budgetFragmentSumText,
+                binding.budgetFragmentKindText,
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )
@@ -254,7 +317,8 @@ class BudgetFragment : Fragment() {
                     setPieChart(it)
                 else
                     setBarChart(it)
-                binding.exchangeButton.visibility = if (it.count() > 1) View.VISIBLE else View.GONE
+                binding.budgetFragmentExchangeButton.visibility =
+                    if (it.count() > 1) View.VISIBLE else View.GONE
             }
         })
     }
@@ -264,17 +328,17 @@ class BudgetFragment : Fragment() {
     private fun changeChart() {
         binding.apply {
             if (isPieChart) {
-                budgetPieChart.visibility = View.INVISIBLE
-                budgetBarChart.visibility = View.VISIBLE
-                budgetInfoLayout.visibility = View.INVISIBLE
-                budgetChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
+                budgetFragmentPieChart.visibility = View.INVISIBLE
+                budgetFragmentBarChart.visibility = View.VISIBLE
+                budgetFragmentInfoLayout.visibility = View.INVISIBLE
+                budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
 
                 setBarChart(budgetDataApi.budgetTypes.value!!)
             } else {
-                budgetBarChart.visibility = View.INVISIBLE
-                budgetPieChart.visibility = View.VISIBLE
-                budgetInfoLayout.visibility = View.VISIBLE
-                budgetChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
+                budgetFragmentBarChart.visibility = View.INVISIBLE
+                budgetFragmentPieChart.visibility = View.VISIBLE
+                budgetFragmentInfoLayout.visibility = View.VISIBLE
+                budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
 
                 setPieChart(budgetDataApi.budgetTypes.value!!)
             }
@@ -285,12 +349,12 @@ class BudgetFragment : Fragment() {
     private fun appear() {
         binding.apply {
             budgetFragmentHeaderLayout.startAnimation(appear)
-            sumText.startAnimation(appear)
-            kindText.startAnimation(appear)
-            exchangeButton.startAnimation(appear)
-            listButton.startAnimation(appear)
-            budgetSumTitleTextView?.startAnimation(appear)
-            budgetAccountTitleTextView?.startAnimation(appear)
+            budgetFragmentSumText.startAnimation(appear)
+            budgetFragmentKindText.startAnimation(appear)
+            budgetFragmentExchangeButton.startAnimation(appear)
+            budgetFragmentListButton.startAnimation(appear)
+            budgetFragmentSumTitleTextView?.startAnimation(appear)
+            budgetFragmentAccountTitleTextView?.startAnimation(appear)
         }
     }
 
@@ -298,12 +362,10 @@ class BudgetFragment : Fragment() {
         binding.apply {
             setAnimation(
                 isClicked,
-                listButton,
-                hiddenButtonsLayout,
-                addAccountButton,
-                typeListButton,
-                repetitiveOpListButton,
-                stocksListButton
+                budgetFragmentListButton,
+                budgetFragmentHiddenButtonsLayout,
+                budgetFragmentAddAccountButton,
+                budgetFragmentTypeListButton
             )
         }
         isClicked = !isClicked

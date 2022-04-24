@@ -2,6 +2,7 @@ package com.example.budgetcircle.forms
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.Animation
@@ -9,6 +10,8 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityOperationTypeFormBinding
+import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 
 class OperationTypeFormActivity : AppCompatActivity() {
@@ -43,10 +46,10 @@ class OperationTypeFormActivity : AppCompatActivity() {
 
     //region Setting
     private fun setButtons() {
-        binding.opTypeAddButton.setOnClickListener {
+        binding.operationTypeFormActivityAddButton.setOnClickListener {
             add()
         }
-        binding.opTypeBackButton.setOnClickListener {
+        binding.operationTypeFormActivityBackButton.setOnClickListener {
             exit()
         }
     }
@@ -54,75 +57,94 @@ class OperationTypeFormActivity : AppCompatActivity() {
     private fun setEditPage() {
         isEdit = intent.extras?.getBoolean("isEdit", false)!!
         if (isEdit) {
-            binding.opTitle.setText(intent.extras?.getString("title")!!)
+            binding.operationTypeFormActivityTitleEditText.setText(intent.extras?.getString("title")!!)
         }
 
         if (isEdit) {
             if (isExpense) {
-                binding.opTypeTitle2.text = resources.getText(R.string.edit_expense_type)
+                binding.operationTypeFormActivityTitle.text = resources.getText(R.string.edit_expense_type)
             } else {
-                binding.opTypeTitle2.text = resources.getText(R.string.edit_earning_type)
+                binding.operationTypeFormActivityTitle.text = resources.getText(R.string.edit_earning_type)
             }
-            binding.opTypeAddButton.text = binding.opTypeTitle2.text
+            binding.operationTypeFormActivityAddButton.text = binding.operationTypeFormActivityTitle.text
         }
     }
 
     private fun setTheme() {
         isExpense = intent.extras?.getBoolean("isExpense", false)!!
-        val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
-        val secondaryColor = if (isExpense) R.color.red_secondary else R.color.blue_secondary
+
+        val textColor: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
 
         binding.apply {
-            opTypeTitle2.text =
-            resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
-            opTypeAddButton.text =
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                textColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.text_primary
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.text_secondary
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.light_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    if (isExpense) R.color.red_main else R.color.blue_main
+                )
+            } else {
+                textColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationTypeFormActivity,
+                    R.color.darker_grey
+                )
+            }
+            operationTypeFormActivityTitle.text =
+                resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
+            operationTypeFormActivityAddButton.text =
                 resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
 
-            opTypeAddButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationTypeFormActivity,
-                    mainColor
-                )
-            )
-            opTypeBackButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationTypeFormActivity,
-                    mainColor
-                )
-            )
-            operationTypeHeaderLayout.setBackgroundColor(ContextCompat.getColor(
-                this@OperationTypeFormActivity,
-                mainColor
-            ))
+            operationTypeFormActivityHeaderLayout.setBackgroundColor(mainColor)
+            operationTypeFormActivityAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeFormActivityBackButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeFormActivityLayout.setBackgroundColor(backgroundColor)
 
-            opTitle.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    this@OperationTypeFormActivity,
-                    mainColor
-                )
-            )
-            opTitle.highlightColor =
-                ContextCompat.getColor(this@OperationTypeFormActivity, mainColor)
-            opTitle.setLinkTextColor(
-                ContextCompat.getColor(
-                    this@OperationTypeFormActivity,
-                    secondaryColor
-                )
-            )
+
+            operationTypeFormActivityTitleEditText.backgroundTintList = ColorStateList.valueOf(mainColor)
+
+            operationTypeFormActivityTitleEditText.highlightColor = mainColor
+            operationTypeFormActivityTitleEditText.setLinkTextColor(mainColor)
+            operationTypeFormActivityTitleEditText.setTextColor(textColor)
+            operationTypeFormActivityTitleEditText.setHintTextColor(textSecondary)
         }
     }
 
     //endregion
     //region Methods
     private fun appear() {
-        binding.opTitle.startAnimation(appear)
-        binding.operationTypeHeaderLayout.startAnimation(appear)
-        binding.opTypeAddButton.startAnimation(appear)
+        binding.operationTypeFormActivityTitleEditText.startAnimation(appear)
+        binding.operationTypeFormActivityHeaderLayout.startAnimation(appear)
+        binding.operationTypeFormActivityAddButton.startAnimation(appear)
     }
 
     private fun checkFields(): Boolean {
         var isValid = true
-        binding.opTitle.apply {
+        binding.operationTypeFormActivityTitleEditText.apply {
             error = null
             if (text.isNullOrBlank()) {
                 error = resources.getString(R.string.empty_field)
@@ -136,7 +158,7 @@ class OperationTypeFormActivity : AppCompatActivity() {
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
-            intent.putExtra("title", binding.opTitle.text.toString())
+            intent.putExtra("title", binding.operationTypeFormActivityTitleEditText.text.toString())
             if (isEdit) intent.putExtra("isEdit", true)
             setResult(RESULT_OK, intent)
             finish()

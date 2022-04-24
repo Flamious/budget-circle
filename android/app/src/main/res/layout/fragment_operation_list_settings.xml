@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout5"
+    android:id="@+id/operationListSettingsFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
     tools:context=".fragments.history.OperationListSettingsFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filterButton"
+        android:id="@+id/operationListSettingsFragmentFilterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/stopFilterButton"
+            android:id="@+id/operationListSettingsFragmentBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -48,7 +48,7 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <TextView
-            android:id="@+id/operationSettingsTitle"
+            android:id="@+id/operationListSettingsFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -56,17 +56,16 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/stopFilterButton"
+            app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/stopFilterButton" />
+            app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentBackButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/operationListSettingsScrollView"
+        android:id="@+id/operationListSettingsFragmentScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border"
-        android:theme="@style/orangeEdgeEffect"
+        android:theme="@style/greyEdgeEffect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,202 +81,149 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout2"
+                <Button
+                    android:id="@+id/operationListSettingsFragmentSelectPeriodButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
-                        android:id="@+id/selectPeriod"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center_vertical|end"
-                        android:paddingLeft="32dp"
-                        android:paddingRight="32dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/operationListSettingsFragmentPeriodTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="@string/period"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentSelectPeriodButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentSelectPeriodButton" />
 
-                    <TextView
-                        android:id="@+id/budgetTypeTitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="@string/period"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout4"
+                <Button
+                    android:id="@+id/operationListSettingsFragmentSelectBudgetTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="@+id/operationListSettingsFragmentSelectPeriodButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentSelectPeriodButton"
+                    app:layout_constraintTop_toBottomOf="@+id/operationListSettingsFragmentSelectPeriodButton" />
 
-                    <Button
-                        android:id="@+id/selectBudgetType"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center_vertical|end"
-                        android:paddingLeft="32dp"
-                        android:paddingRight="32dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/operationListSettingsFragmentBudgetTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/budget_type"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentSelectBudgetTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentPeriodTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentSelectBudgetTypeButton" />
 
-                    <TextView
-                        android:id="@+id/opListBudgetTypeTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="@string/budget_type"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout5"
+                <Button
+                    android:id="@+id/operationListSettingsFragmentSelectOrderButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout4"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="@+id/operationListSettingsFragmentSelectBudgetTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentSelectBudgetTypeButton"
+                    app:layout_constraintTop_toBottomOf="@+id/operationListSettingsFragmentSelectBudgetTypeButton" />
 
-                    <Button
-                        android:id="@+id/selectOrder"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center_vertical|end"
-                        android:paddingLeft="32dp"
-                        android:paddingRight="32dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/operationListSettingsFragmentOrderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_with"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentSelectOrderButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentBudgetTypeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentSelectOrderButton" />
 
-                    <TextView
-                        android:id="@+id/orderTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="@string/start_with"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout3"
+                <Button
+                    android:id="@+id/operationListSettingsFragmentSelectOperationTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout5"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout5"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/operationListSettingsFragmentSelectOrderButton" />
 
-                    <Button
-                        android:id="@+id/selectOperationType"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center_vertical|end"
-                        android:paddingLeft="32dp"
-                        android:paddingRight="32dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/operationListSettingsFragmentOperationTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/operations"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentSelectOperationTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentOrderTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentSelectOperationTypeButton" />
 
-                    <TextView
-                        android:id="@+id/operationTypeTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="@string/operations"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/typeLayout"
+                <Button
+                    android:id="@+id/operationListSettingsFragmentSelectTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+                    android:layout_marginBottom="64dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentSelectOperationTypeButton"
+                    app:layout_constraintTop_toBottomOf="@+id/operationListSettingsFragmentSelectOperationTypeButton" />
 
-                    <Button
-                        android:id="@+id/selectType"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="64dp"
-                        android:backgroundTint="@color/white"
-                        android:gravity="center_vertical|end"
-                        android:paddingLeft="32dp"
-                        android:paddingRight="32dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/operationListSettingsFragmentTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/type"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationListSettingsFragmentSelectTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationListSettingsFragmentOperationTypeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationListSettingsFragmentSelectTypeButton" />
 
-                    <TextView
-                        android:id="@+id/opListTypeTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="@string/type"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/selectType"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/selectType" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

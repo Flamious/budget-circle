@@ -2,39 +2,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operationTypeItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
 
     <ImageButton
-        android:id="@+id/operationTypeDeleteButton"
+        android:id="@+id/operationTypeItemDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/operationTypeEditButton"
+        app:layout_constraintBottom_toBottomOf="@+id/operationTypeItemEditButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/operationTypeEditButton"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeItemEditButton"
         app:srcCompat="@drawable/ic_delete"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <ImageButton
-        android:id="@+id/operationTypeEditButton"
+        android:id="@+id/operationTypeItemEditButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/new_exchange"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/operationypeSum"
-        app:layout_constraintEnd_toStartOf="@+id/operationTypeDeleteButton"
-        app:layout_constraintTop_toTopOf="@+id/opTypeTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/operationTypeItemSum"
+        app:layout_constraintEnd_toStartOf="@+id/operationTypeItemDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeItemTitle"
         app:srcCompat="@drawable/ic_edit"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
-        android:id="@+id/opTypeTitle"
+        android:id="@+id/operationTypeItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -42,20 +43,20 @@
         android:textColor="@color/text_primary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btLine2" />
+        app:layout_constraintTop_toBottomOf="@+id/operationTypeItemBorderLine" />
 
     <TextView
-        android:id="@+id/operationypeSum"
+        android:id="@+id/operationTypeItemSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="@color/text_secondary"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/opTypeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/opTypeTitle" />
+        app:layout_constraintStart_toStartOf="@+id/operationTypeItemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/operationTypeItemTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btLine2"
+        android:id="@+id/operationTypeItemBorderLine"
         android:layout_width="0dp"
         android:layout_height="3dp"
         android:background="@color/light_grey"

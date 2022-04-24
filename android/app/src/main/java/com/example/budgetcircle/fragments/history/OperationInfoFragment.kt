@@ -2,6 +2,7 @@ package com.example.budgetcircle.fragments.history
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +13,14 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.OperationFormActivity
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.Operation
@@ -42,6 +45,7 @@ class OperationInfoFragment : Fragment() {
         setButtons()
         setObservation()
         setLauncher()
+        setTheme()
         return binding.root
     }
 
@@ -52,13 +56,13 @@ class OperationInfoFragment : Fragment() {
 
     //region Setting
     private fun setButtons() {
-        binding.infoBackButton.setOnClickListener {
+        binding.operationInfoFragmentBackButton.setOnClickListener {
             exit()
         }
-        binding.opEditButton.setOnClickListener {
+        binding.operationInfoFragmentEditButton.setOnClickListener {
             updateOperation()
         }
-        binding.opDeleteButton.setOnClickListener {
+        binding.operationInfoFragmentDeleteButton.setOnClickListener {
             Dialogs().chooseYesNo(
                 this.requireContext(),
                 resources.getString(R.string.delete),
@@ -71,31 +75,80 @@ class OperationInfoFragment : Fragment() {
         }
     }
 
+
+    private fun setTheme() {
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
+        binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+                textPrimary = ContextCompat.getColor(
+                    this@OperationInfoFragment.requireContext(),
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationInfoFragment.requireContext(),
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationInfoFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationInfoFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                operationInfoFragmentBackButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationInfoFragmentEditButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationInfoFragmentDeleteButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationInfoFragmentHeaderLayout.setBackgroundColor(mainColor)
+                operationInfoFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+                operationInfoFragmentTitleTitle.setTextColor(textSecondary)
+                operationInfoFragmentSumTitle.setTextColor(textSecondary)
+                operationInfoFragmentAccountTitle.setTextColor(textSecondary)
+                operationInfoFragmentKindTitle.setTextColor(textSecondary)
+                operationInfoFragmentCommentaryTitle.setTextColor(textSecondary)
+
+                operationInfoFragmentTitle.setTextColor(textPrimary)
+                operationInfoFragmentAccount.setTextColor(textPrimary)
+                operationInfoFragmentKind.setTextColor(textPrimary)
+                operationInfoFragmentCommentary.setTextColor(textPrimary)
+            }
+        }
+    }
+
     private fun setFieldsValues(item: HistoryItem?) {
         item?.let {
             binding.apply {
-                infoOpTitle.text = it.title
-                sumInfo.text = when (it.isExpense) {
+                operationInfoFragmentTitle.text = it.title
+                operationInfoFragmentSum.text = when (it.isExpense) {
                     true -> "-${it.sum}"
                     false -> "+${it.sum}"
                     else -> "${it.sum}"
                 }
-                sumInfo.setTextColor(it.color)
-                accountInfo.text =
+                operationInfoFragmentSum.setTextColor(it.color)
+                operationInfoFragmentAccount.text =
                     budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
-                kindInfo.text =
+                operationInfoFragmentKind.text =
                     when (it.isExpense) {
                         true -> budgetDataApi.expenseTypes.value!!.first { type -> type.id == it.typeId }.title
                         false -> budgetDataApi.earningTypes.value!!.first { type -> type.id == it.typeId }.title
                         null -> {
-                            fromTitle.text = resources.getString(R.string.from)
-                            kindOrToTitle.text = resources.getString(R.string.to)
-                            commentInfo.visibility = View.GONE
-                            commentTitle.visibility = View.GONE
+                            operationInfoFragmentAccountTitle.text = resources.getString(R.string.from)
+                            operationInfoFragmentKindTitle.text = resources.getString(R.string.to)
+                            operationInfoFragmentCommentaryLayout.visibility = View.GONE
+                            operationInfoFragmentCommentaryTitle.visibility = View.GONE
                             budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
                         }
                     }
-                commentInfo.text = it.commentary
+                operationInfoFragmentCommentary.text = it.commentary
             }
         }
     }
@@ -171,13 +224,13 @@ class OperationInfoFragment : Fragment() {
     //endregion
     //region Methods
     private fun appear() {
-        binding.scrollView2.startAnimation(appear)
+        binding.operationInfoFragmentScrollView.startAnimation(appear)
         binding.operationInfoFragmentHeaderLayout.startAnimation(appear)
     }
 
     private fun updateOperation() {
         val isExpense = budgetDataApi.chosenHistoryItem.value!!.isExpense
-        var intent: Intent
+        val intent: Intent
         if (isExpense == null) {
             intent = Intent(activity, BudgetExchangeActivity::class.java)
             intent.putExtra("exchangeSum", budgetDataApi.chosenHistoryItem.value!!.sum)

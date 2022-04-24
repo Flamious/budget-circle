@@ -15,7 +15,8 @@ class BarChartSetter {
             titles: Array<String>,
             values: Array<Double>,
             colors: ArrayList<Int>,
-            chart: BarChart
+            chart: BarChart,
+            textColor: Int
         ) {
             val barEntries: ArrayList<BarEntry> = ArrayList()
             val xAxisLabel: ArrayList<String> = ArrayList()
@@ -26,7 +27,7 @@ class BarChartSetter {
             }
             val barDataSet = BarDataSet(barEntries, "")
             barDataSet.colors = colors
-
+            barDataSet.valueTextColor = textColor
             val barData = BarData(barDataSet)
             chart.data = barData
 
@@ -52,14 +53,18 @@ class BarChartSetter {
             values: Array<Double>,
             colors: ArrayList<Int>,
             chart: BarChart,
+            textColor: Int,
             noEntries: Boolean = false
         ) {
-            applyData(titles, values, colors, chart)
+            applyData(titles, values, colors, chart, textColor)
 
             chart.setTouchEnabled(!noEntries)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.highlightValues(null)
+            chart.axisLeft.textColor = textColor
+            chart.axisRight.textColor = textColor
+            chart.xAxis.textColor = textColor
             chart.invalidate()
             chart.animateXY(1000, 1000)
         }

@@ -13,7 +13,9 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityOperationFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
+import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.settings.SumInputFilter
+import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class OperationFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityOperationFormBinding
@@ -53,103 +55,133 @@ class OperationFormActivity : AppCompatActivity() {
     //region Setting
     private fun setTheme() {
         isExpense = intent.extras?.getBoolean("isExpense", false)!!
-        val mainColor = if (isExpense) R.color.red_main else R.color.blue_main
-        val secondaryColor = if (isExpense) R.color.red_secondary else R.color.blue_secondary
 
-        if(isExpense) {
-            binding.operationFormTitle.text = resources.getText(R.string.new_expense)
-            binding.operationFormAddButton.text = resources.getText(R.string.add_exp)
-        } else {
-            binding.operationFormTitle.text = resources.getText(R.string.new_earning)
-            binding.operationFormAddButton.text = resources.getText(R.string.add_earn)
+        val textColor: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
+        binding.apply {
+            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                textColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.text_primary
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.text_secondary
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.light_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    if (isExpense) R.color.red_main else R.color.blue_main
+                )
+            } else {
+                textColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.darker_grey
+                )
+            }
+            if (isExpense) {
+                binding.operationFormActivityTitle.text = resources.getText(R.string.new_expense)
+                binding.operationFormActivityAddButton.text = resources.getText(R.string.add_exp)
+            } else {
+                binding.operationFormActivityTitle.text = resources.getText(R.string.new_earning)
+                binding.operationFormActivityAddButton.text = resources.getText(R.string.add_earn)
+            }
+
+            operationFormActivityHeaderLayout.setBackgroundColor(mainColor)
+            operationFormActivityAddButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
+            operationFormActivityBackButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
+            operationFormActivityLayout.setBackgroundColor(backgroundColor)
+            operationFormActivityBudgetTypeButton.setTextColor(textColor)
+            operationFormActivityTypeButton.setTextColor(textColor)
+            operationFormActivityBudgetTypeTitle.setTextColor(textSecondary)
+            operationFormActivityKindTitle.setTextColor(textSecondary)
+
+            setFieldColor(binding.operationFormActivityTitleField, mainColor, textColor, textSecondary)
+            setFieldColor(binding.operationFormActivitySumField, mainColor, textColor, textSecondary)
+            setFieldColor(binding.operationFormActivityCommentaryField, mainColor, textColor, textSecondary)
         }
-
-        binding.operationFormBackButton.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this,
-                mainColor
-            )
-        )
-        binding.newOperationFragmentHeaderLayout.setBackgroundColor(ContextCompat.getColor(
-            this,
-            mainColor
-        ))
-
-        binding.operationFormAddButton.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this,
-                mainColor
-            )
-        )
-
-        setFieldColor(binding.operationTitleField, mainColor, secondaryColor)
-        setFieldColor(binding.operationSumField, mainColor, secondaryColor)
-        setFieldColor(binding.operationCommentaryField, mainColor, secondaryColor)
     }
 
-    private fun setFieldColor(textView: TextView, mainColor: Int, secondaryColor: Int) {
-        textView.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(
-                this,
-                mainColor
-            )
-        )
-        textView.highlightColor =
-            ContextCompat.getColor(this, mainColor)
-        textView.setLinkTextColor(
-            ContextCompat.getColor(
-                this,
-                secondaryColor
-            )
-        )
+    private fun setFieldColor(editText: TextView, mainColor: Int, textColor: Int, textSecondary: Int) {
+        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
+        editText.highlightColor = mainColor
+        editText.setLinkTextColor(mainColor)
+        editText.setTextColor(textColor)
+        editText.setHintTextColor(textSecondary)
     }
 
     private fun setButtons() {
-        binding.operationFragmentBudgetTypeButton.setOnClickListener {
+        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            if (isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+        } else {
+            R.style.darkEdgeEffect
+        }
+
+        binding.operationFormActivityBudgetTypeButton.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.account),
                 budgetTypes,
-                binding.operationFragmentBudgetTypeButton,
+                binding.operationFormActivityBudgetTypeButton,
                 chosenBudgetType,
-                if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+                effectColor
             )
         }
-        binding.operationFragmentTypeButton.setOnClickListener {
+        binding.operationFormActivityTypeButton.setOnClickListener {
             Dialogs().chooseOne(
                 this,
                 resources.getString(R.string.kind),
                 types,
-                binding.operationFragmentTypeButton,
+                binding.operationFormActivityTypeButton,
                 chosenType,
-                if(isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
+                effectColor
             )
         }
-        binding.operationFormAddButton.setOnClickListener {
+        binding.operationFormActivityAddButton.setOnClickListener {
             add()
         }
-        binding.operationFormBackButton.setOnClickListener {
+        binding.operationFormActivityBackButton.setOnClickListener {
             exit()
         }
     }
 
     private fun setEditPage() {
-        if(isExpense) {
-            binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.edit_exp)
-            binding.operationFormAddButton.text = resources.getText(R.string.edit_exp)
+        if (isExpense) {
+            binding.operationFormActivityTitle.text = resources.getText(R.string.edit_exp)
+            binding.operationFormActivityAddButton.text = resources.getText(R.string.edit_exp)
 
         } else {
-            binding.operationFormBudgetTypeTitle.text = resources.getText(R.string.edit_earn)
-            binding.operationFormAddButton.text = resources.getText(R.string.edit_earn)
+            binding.operationFormActivityTitle.text = resources.getText(R.string.edit_earn)
+            binding.operationFormActivityAddButton.text = resources.getText(R.string.edit_earn)
         }
 
-        binding.operationSumField.setText(intent.extras?.getDouble("sum")!!.toString())
-        binding.operationTitleField.setText(intent.extras?.getString("title")!!)
-        binding.operationCommentaryField.setText(intent.extras?.getString("commentary")!!)
+        binding.operationFormActivitySumField.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.operationFormActivityTitleField.setText(intent.extras?.getString("title")!!)
+        binding.operationFormActivityCommentaryField.setText(intent.extras?.getString("commentary")!!)
         chosenType.value = intent.extras?.getInt("typeIndex")!!
         chosenBudgetType.value = intent.extras?.getInt("budgetTypeIndex")!!
-        binding.operationFragmentTypeButton.text = types[chosenType.value]
-        binding.operationFragmentBudgetTypeButton.text = budgetTypes[chosenBudgetType.value]
+        binding.operationFormActivityTypeButton.text = types[chosenType.value]
+        binding.operationFormActivityBudgetTypeButton.text = budgetTypes[chosenBudgetType.value]
     }
 
     private fun setInitialValues() {
@@ -157,31 +189,32 @@ class OperationFormActivity : AppCompatActivity() {
         budgetTypes = intent.extras?.getStringArray("budgetTypes")!!
         types = intent.extras?.getStringArray("types")!!
         if (!isEdit) {
-            binding.operationFragmentBudgetTypeButton.text = budgetTypes[0]
-            binding.operationFragmentTypeButton.text = types[0]
+            binding.operationFormActivityBudgetTypeButton.text = budgetTypes[0]
+            binding.operationFormActivityTypeButton.text = types[0]
 
-            if(isExpense) budgetTypesSums =
+            if (isExpense) budgetTypesSums =
                 (intent.extras?.getSerializable("budgetTypesSums")!! as Array<*>).filterIsInstance<Double>()
                     .toTypedArray()
         } else {
             setEditPage()
         }
 
-        binding.operationSumField.filters = arrayOf<InputFilter>(SumInputFilter())
+        binding.operationFormActivitySumField.filters = arrayOf<InputFilter>(SumInputFilter())
 
     }
+
     //endregion
     //region Methods
     private fun appear() {
-        binding.operationFormScrollView.startAnimation(appear)
-        binding.operationFormAddButton.startAnimation(appear)
-        binding.newOperationFragmentHeaderLayout.startAnimation(appear)
+        binding.operationFormActivityScrollView.startAnimation(appear)
+        binding.operationFormActivityAddButton.startAnimation(appear)
+        binding.operationFormActivityHeaderLayout.startAnimation(appear)
     }
 
     private fun checkFields(): Boolean {
-        val sum = binding.operationSumField.text.toString().toDoubleOrNull()
+        val sum = binding.operationFormActivitySumField.text.toString().toDoubleOrNull()
         var isValid = true
-        binding.operationSumField.apply {
+        binding.operationFormActivitySumField.apply {
             error = null
             when {
                 sum == null -> {
@@ -204,7 +237,7 @@ class OperationFormActivity : AppCompatActivity() {
             }
         }
 
-        binding.operationTitleField.apply {
+        binding.operationFormActivityTitleField.apply {
             error = null
             if (text.isNullOrBlank()) {
                 error = resources.getString(R.string.empty_field)
@@ -218,11 +251,14 @@ class OperationFormActivity : AppCompatActivity() {
     private fun add() {
         if (checkFields()) {
             val intent = Intent()
-            intent.putExtra("sum", binding.operationSumField.text.toString().toDouble())
+            intent.putExtra("sum", binding.operationFormActivitySumField.text.toString().toDouble())
             intent.putExtra("typeIndex", chosenType.value)
-            intent.putExtra("title", binding.operationTitleField.text.toString())
+            intent.putExtra("title", binding.operationFormActivityTitleField.text.toString())
             intent.putExtra("budgetTypeIndex", chosenBudgetType.value)
-            intent.putExtra("commentary", binding.operationCommentaryField.text.toString())
+            intent.putExtra(
+                "commentary",
+                binding.operationFormActivityCommentaryField.text.toString()
+            )
             setResult(RESULT_OK, intent)
             finish()
         }

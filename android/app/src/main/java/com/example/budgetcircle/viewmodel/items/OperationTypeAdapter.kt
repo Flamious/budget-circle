@@ -1,6 +1,7 @@
 package com.example.budgetcircle.viewmodel.items
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,13 @@ import com.example.budgetcircle.databinding.OperationTypeItemBinding
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.viewmodel.models.OperationType
 
-class OperationTypeAdapter : RecyclerView.Adapter<OperationTypeAdapter.ItemHolder>() {
+class OperationTypeAdapter(
+    val textPrimary: Int,
+    val textSecondary: Int,
+    val backgroundColor: Int,
+    val borderColor: Int,
+    val buttonColor: Int?
+) : RecyclerView.Adapter<OperationTypeAdapter.ItemHolder>() {
     private var itemList = ArrayList<OperationType>()
     var onEditClick: ((item: OperationType) -> Unit)? = null
     var onDeleteClick: ((item: OperationType) -> Unit)? = null
@@ -19,16 +26,28 @@ class OperationTypeAdapter : RecyclerView.Adapter<OperationTypeAdapter.ItemHolde
         private val binding = OperationTypeItemBinding.bind(view)
 
         fun bind(item: OperationType) = binding.apply {
-            operationypeSum.text = DoubleFormatter.formatString(item.sum)
-            opTypeTitle.text = item.title
-            operationTypeDeleteButton.isEnabled = item.isDeletable
-            operationTypeEditButton.isEnabled = item.isDeletable
-            operationTypeEditButton.setOnClickListener {
+            operationTypeItemSum.text = DoubleFormatter.formatString(item.sum)
+            operationTypeItemTitle.text = item.title
+            operationTypeItemDeleteButton.visibility = if (item.isDeletable) View.VISIBLE else View.GONE
+            operationTypeItemEditButton.visibility = if (item.isDeletable) View.VISIBLE else View.GONE
+            operationTypeItemEditButton.setOnClickListener {
                 onEditClick?.invoke(item)
             }
-            operationTypeDeleteButton.setOnClickListener {
+            operationTypeItemDeleteButton.setOnClickListener {
                 onDeleteClick?.invoke(item)
             }
+
+            operationTypeItemDeleteButton.backgroundTintList =
+                ColorStateList.valueOf(backgroundColor)
+            operationTypeItemEditButton.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            operationTypeItemLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            if (buttonColor != null) {
+                operationTypeItemEditButton.imageTintList = ColorStateList.valueOf(buttonColor)
+                operationTypeItemDeleteButton.imageTintList = ColorStateList.valueOf(buttonColor)
+            }
+            operationTypeItemSum.setTextColor(textSecondary)
+            operationTypeItemTitle.setTextColor(textPrimary)
+            operationTypeItemBorderLine.backgroundTintList = ColorStateList.valueOf(borderColor)
         }
     }
 

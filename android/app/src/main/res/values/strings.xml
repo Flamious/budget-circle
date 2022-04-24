@@ -37,13 +37,7 @@
     <string name="accept">Accept</string>
 
     <!-- Settings -->
-    <string name="language">Language</string>
-    <string name="mode">Theme</string>
-    <string name="other">Other</string>
-    <string name="system_language">Use system language</string>
-    <string name="system_theme">Use system theme</string>
-    <string name="always_show_rep_op">Always show repetitive operations</string>
-    <string name="currency">Currency</string>
+    <string name="theme">theme</string>>
 
     <!-- History -->
     <string name="date">Date:</string>
@@ -123,7 +117,14 @@
     <string name="add_expense_type">Add expense type</string>
     <string name="edit_earning_type">Edit earning type</string>
     <string name="edit_expense_type">Edit expense type</string>
+    <string name="other">Other</string>
 
-    <!-- Api -->
+    <!-- Mode -->
+    <string name="day_mode">day</string>
+    <string name="night_mode">night</string>
+
+    <!-- Settings -->
     <string name="url">url</string>
+    <string name="settings">settings</string>
+    <string name="mode">mode</string>
 </resources>
