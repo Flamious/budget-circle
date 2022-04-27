@@ -1,19 +1,12 @@
 package com.example.budgetcircle
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.example.budgetcircle.databinding.ActivityAuthBinding
-import com.example.budgetcircle.fragments.auth.LoginFragment
 import android.content.SharedPreferences
-import android.content.res.Configuration
-import com.example.budgetcircle.fragments.BudgetFragment
-import com.example.budgetcircle.fragments.UserFragment
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.example.budgetcircle.databinding.ActivityAuthBinding
 import com.example.budgetcircle.fragments.auth.LoginLoadingFragment
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
 
 
 class AuthActivity : AppCompatActivity() {
@@ -52,13 +45,9 @@ class AuthActivity : AppCompatActivity() {
 
     private fun getMode() {
         val prefs = getSharedPreferences(resources.getString(R.string.settings), MODE_PRIVATE)
-        mode = prefs.getInt(resources.getString(R.string.mode), UserFragment.DAY);
+        val mode = prefs.getInt(resources.getString(R.string.mode), Settings.DAY)
 
-        BudgetDataApi.mode.postValue(mode)
-    }
-
-    companion object {
-        var mode: Int = 0
+        Settings.mode = mode
     }
     //endregion
 }

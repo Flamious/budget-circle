@@ -22,9 +22,10 @@ import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
-import com.example.budgetcircle.settings.BarChartSetter
+import com.example.budgetcircle.settings.charts.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
-import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.settings.charts.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -125,7 +126,7 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setTheme() {
-        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+        if (Settings.isNight()) {
             binding.apply {
                 val textColor = ContextCompat.getColor(
                     this@BudgetFragment.requireContext(),
@@ -194,7 +195,7 @@ class BudgetFragment : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
         else
             resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
@@ -206,7 +207,7 @@ class BudgetFragment : Fragment() {
                 binding.budgetFragmentBarChart,
                 ContextCompat.getColor(
                     this.requireContext(),
-                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
                 )
             )
         else
@@ -217,7 +218,7 @@ class BudgetFragment : Fragment() {
                 binding.budgetFragmentBarChart,
                 ContextCompat.getColor(
                     this.requireContext(),
-                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
                 ),
                 true
             )
@@ -231,14 +232,14 @@ class BudgetFragment : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
         else
             resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
 
         val holeColor = ContextCompat.getColor(
             this.requireContext(),
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.light_grey else R.color.dark_grey
+            if (Settings.isDay()) R.color.light_grey else R.color.dark_grey
         )
         if (sum > 0)
             PieChartSetter.setChart(

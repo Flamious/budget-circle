@@ -3,7 +3,6 @@ package com.example.budgetcircle.fragments
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
@@ -18,10 +18,8 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentUserBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.PasswordChangeActivity
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
-import android.content.SharedPreferences
-
-
 
 
 class UserFragment : Fragment() {
@@ -40,9 +38,8 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserBinding.inflate(inflater)
-        setObservations()
         setButtons()
-        applyDayNight(BudgetDataApi.mode.value!!)
+        applyDayNight()
         return binding.root
     }
 
@@ -52,26 +49,11 @@ class UserFragment : Fragment() {
     }
 
     //region Setting
-    private fun setObservations() {
-        BudgetDataApi.mode.observe(this.viewLifecycleOwner) {
-            applyDayNight(it)
-
-            val prefs = activity?.getSharedPreferences(resources.getString(R.string.settings),
-                AppCompatActivity.MODE_PRIVATE
-            )
-            val editor = prefs!!.edit()
-            editor.putInt(resources.getString(R.string.mode), it)
-            editor.apply()
-
-            setButtons()
-        }
-    }
-
     private fun setButtons() {
         val background: Int
         val buttonColor: Int
 
-        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+        if (Settings.mode == Settings.NIGHT) {
             background = R.style.darkEdgeEffect
             buttonColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
         } else {
@@ -158,47 +140,53 @@ class UserFragment : Fragment() {
         val intent = Intent(activity, PasswordChangeActivity::class.java)
         intent.putExtra(
             "token",
-            MainActivity.Token
+            Settings.token
         )
 
         startActivity(intent)
     }
 
     private fun changeMode() {
-        BudgetDataApi.mode.postValue(
-            if (BudgetDataApi.mode.value!! == DAY) {
-                NIGHT
-            } else {
-                DAY
-            }
+        Settings.changeMode()
+        (activity as MainActivity).applyDayNight()
+        applyDayNight()
+        setButtons()
+
+        val prefs = activity?.getSharedPreferences(
+            resources.getString(R.string.settings),
+            AppCompatActivity.MODE_PRIVATE
         )
+        val editor = prefs!!.edit()
+        editor.putInt(resources.getString(R.string.mode), Settings.mode)
+        editor.apply()
     }
 
-    private fun applyDayNight(mode: Int) {
-        val textColor: Int
+    private fun applyDayNight() {
+        val textPrimary: Int
         val backgroundColor: Int
-        val headerBackgroundColor: Int
+        val mainColor: Int
         val textSecondary1: Int
         val textSecondary2: Int
 
         binding.apply {
-            if (mode == DAY) {
-                textColor = ContextCompat.getColor(
+            if (Settings.isDay()) {
+                textPrimary = ContextCompat.getColor(
                     this@UserFragment.requireContext(),
                     R.color.text_secondary
                 )
-                headerBackgroundColor =
+                mainColor =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.purple_main)
                 backgroundColor =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.light_grey)
                 textSecondary1 =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.blue_main)
-                textSecondary2 = ContextCompat.getColor(this@UserFragment.requireContext(), R.color.red_main)
+                textSecondary2 =
+                    ContextCompat.getColor(this@UserFragment.requireContext(), R.color.red_main)
                 userFragmentModeButton.setImageResource(R.drawable.ic_dark_mode)
             } else {
-                headerBackgroundColor =
+                mainColor =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.darker_grey)
-                textColor =
+                textPrimary =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.grey)
                 backgroundColor =
                     ContextCompat.getColor(this@UserFragment.requireContext(), R.color.dark_grey)
@@ -207,16 +195,17 @@ class UserFragment : Fragment() {
                         this@UserFragment.requireContext(),
                         R.color.light_grey
                     )
-                textSecondary2 = ContextCompat.getColor(
-                    this@UserFragment.requireContext(),
-                    R.color.light_grey
-                )
+                textSecondary2 =
+                    ContextCompat.getColor(
+                        this@UserFragment.requireContext(),
+                        R.color.light_grey
+                    )
                 userFragmentModeButton.setImageResource(R.drawable.ic_day_mode)
             }
 
-            userFragmentOperationsTitle.setTextColor(textColor)
-            userFragmentOtherTitle.setTextColor(textColor)
-            userFragmentPasswordTitle.setTextColor(textColor)
+            userFragmentOperationsTitle.setTextColor(textPrimary)
+            userFragmentOtherTitle.setTextColor(textPrimary)
+            userFragmentPasswordTitle.setTextColor(textPrimary)
 
             userFragmentChangePasswordActivityButton.setTextColor(textSecondary1)
             userFragmentDeleteAllOperationsButton.setTextColor(textSecondary1)
@@ -224,14 +213,9 @@ class UserFragment : Fragment() {
             userFragmentLogoutButton.setTextColor(textSecondary2)
 
             userFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
-            userFragmentHeaderLayout.backgroundTintList = ColorStateList.valueOf(headerBackgroundColor)
-            userFragmentModeButton.backgroundTintList = ColorStateList.valueOf(headerBackgroundColor)
+            userFragmentHeaderLayout.backgroundTintList = ColorStateList.valueOf(mainColor)
+            userFragmentModeButton.backgroundTintList = ColorStateList.valueOf(mainColor)
         }
     }
     //endregion
-
-    companion object {
-        const val DAY = 0
-        const val NIGHT = 1
-    }
 }

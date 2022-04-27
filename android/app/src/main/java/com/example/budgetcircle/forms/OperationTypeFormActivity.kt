@@ -2,7 +2,6 @@ package com.example.budgetcircle.forms
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.Animation
@@ -10,8 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityOperationTypeFormBinding
-import com.example.budgetcircle.fragments.UserFragment
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
 
 
 class OperationTypeFormActivity : AppCompatActivity() {
@@ -47,7 +45,7 @@ class OperationTypeFormActivity : AppCompatActivity() {
     //region Setting
     private fun setButtons() {
         binding.operationTypeFormActivityAddButton.setOnClickListener {
-            add()
+            accept()
         }
         binding.operationTypeFormActivityBackButton.setOnClickListener {
             exit()
@@ -62,25 +60,28 @@ class OperationTypeFormActivity : AppCompatActivity() {
 
         if (isEdit) {
             if (isExpense) {
-                binding.operationTypeFormActivityTitle.text = resources.getText(R.string.edit_expense_type)
+                binding.operationTypeFormActivityTitle.text =
+                    resources.getText(R.string.edit_expense_type)
             } else {
-                binding.operationTypeFormActivityTitle.text = resources.getText(R.string.edit_earning_type)
+                binding.operationTypeFormActivityTitle.text =
+                    resources.getText(R.string.edit_earning_type)
             }
-            binding.operationTypeFormActivityAddButton.text = binding.operationTypeFormActivityTitle.text
+            binding.operationTypeFormActivityAddButton.text =
+                binding.operationTypeFormActivityTitle.text
         }
     }
 
     private fun setTheme() {
         isExpense = intent.extras?.getBoolean("isExpense", false)!!
 
-        val textColor: Int
+        val textPrimary: Int
         val textSecondary: Int
         val backgroundColor: Int
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
-                textColor = ContextCompat.getColor(
+            if (Settings.isDay()) {
+                textPrimary = ContextCompat.getColor(
                     this@OperationTypeFormActivity,
                     R.color.text_primary
                 )
@@ -97,7 +98,7 @@ class OperationTypeFormActivity : AppCompatActivity() {
                     if (isExpense) R.color.red_main else R.color.blue_main
                 )
             } else {
-                textColor = ContextCompat.getColor(
+                textPrimary = ContextCompat.getColor(
                     this@OperationTypeFormActivity,
                     R.color.light_grey
                 )
@@ -120,17 +121,19 @@ class OperationTypeFormActivity : AppCompatActivity() {
                 resources.getText(if (isExpense) R.string.add_expense_type else R.string.add_earning_type)
 
             operationTypeFormActivityHeaderLayout.setBackgroundColor(mainColor)
-            operationTypeFormActivityAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
-            operationTypeFormActivityBackButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeFormActivityAddButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
+            operationTypeFormActivityBackButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
             operationTypeFormActivityLayout.setBackgroundColor(backgroundColor)
 
 
-            operationTypeFormActivityTitleEditText.backgroundTintList = ColorStateList.valueOf(mainColor)
-
-            operationTypeFormActivityTitleEditText.highlightColor = mainColor
-            operationTypeFormActivityTitleEditText.setLinkTextColor(mainColor)
-            operationTypeFormActivityTitleEditText.setTextColor(textColor)
-            operationTypeFormActivityTitleEditText.setHintTextColor(textSecondary)
+            Settings.setFieldColor(
+                mainColor,
+                textPrimary,
+                textSecondary,
+                operationTypeFormActivityTitleEditText
+            )
         }
     }
 
@@ -155,7 +158,7 @@ class OperationTypeFormActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun add() {
+    private fun accept() {
         if (checkFields()) {
             val intent = Intent()
             intent.putExtra("title", binding.operationTypeFormActivityTitleEditText.text.toString())

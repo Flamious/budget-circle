@@ -7,15 +7,13 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityOperationFormBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.SumInputFilter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class OperationFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityOperationFormBinding
@@ -56,14 +54,14 @@ class OperationFormActivity : AppCompatActivity() {
     private fun setTheme() {
         isExpense = intent.extras?.getBoolean("isExpense", false)!!
 
-        val textColor: Int
+        val textPrimary: Int
         val textSecondary: Int
         val backgroundColor: Int
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
-                textColor = ContextCompat.getColor(
+            if (Settings.isDay()) {
+                textPrimary = ContextCompat.getColor(
                     this@OperationFormActivity,
                     R.color.text_primary
                 )
@@ -80,7 +78,7 @@ class OperationFormActivity : AppCompatActivity() {
                     if (isExpense) R.color.red_main else R.color.blue_main
                 )
             } else {
-                textColor = ContextCompat.getColor(
+                textPrimary = ContextCompat.getColor(
                     this@OperationFormActivity,
                     R.color.light_grey
                 )
@@ -111,27 +109,24 @@ class OperationFormActivity : AppCompatActivity() {
             operationFormActivityBackButton.backgroundTintList =
                 ColorStateList.valueOf(mainColor)
             operationFormActivityLayout.setBackgroundColor(backgroundColor)
-            operationFormActivityBudgetTypeButton.setTextColor(textColor)
-            operationFormActivityTypeButton.setTextColor(textColor)
+            operationFormActivityBudgetTypeButton.setTextColor(textPrimary)
+            operationFormActivityTypeButton.setTextColor(textPrimary)
             operationFormActivityBudgetTypeTitle.setTextColor(textSecondary)
             operationFormActivityKindTitle.setTextColor(textSecondary)
 
-            setFieldColor(binding.operationFormActivityTitleField, mainColor, textColor, textSecondary)
-            setFieldColor(binding.operationFormActivitySumField, mainColor, textColor, textSecondary)
-            setFieldColor(binding.operationFormActivityCommentaryField, mainColor, textColor, textSecondary)
+            Settings.setFieldColor(
+                mainColor,
+                textPrimary,
+                textSecondary,
+                binding.operationFormActivityTitleField,
+                binding.operationFormActivitySumField,
+                binding.operationFormActivityCommentaryField
+            )
         }
     }
 
-    private fun setFieldColor(editText: TextView, mainColor: Int, textColor: Int, textSecondary: Int) {
-        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
-        editText.highlightColor = mainColor
-        editText.setLinkTextColor(mainColor)
-        editText.setTextColor(textColor)
-        editText.setHintTextColor(textSecondary)
-    }
-
     private fun setButtons() {
-        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        val effectColor: Int = if (Settings.isDay()) {
             if (isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
         } else {
             R.style.darkEdgeEffect
@@ -158,7 +153,7 @@ class OperationFormActivity : AppCompatActivity() {
             )
         }
         binding.operationFormActivityAddButton.setOnClickListener {
-            add()
+            accept()
         }
         binding.operationFormActivityBackButton.setOnClickListener {
             exit()
@@ -202,8 +197,8 @@ class OperationFormActivity : AppCompatActivity() {
         binding.operationFormActivitySumField.filters = arrayOf<InputFilter>(SumInputFilter())
 
     }
-
     //endregion
+
     //region Methods
     private fun appear() {
         binding.operationFormActivityScrollView.startAnimation(appear)
@@ -248,7 +243,7 @@ class OperationFormActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun add() {
+    private fun accept() {
         if (checkFields()) {
             val intent = Intent()
             intent.putExtra("sum", binding.operationFormActivitySumField.text.toString().toDouble())

@@ -1,22 +1,20 @@
 package com.example.budgetcircle.fragments.history
 
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationListSettingsBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
-import com.example.budgetcircle.viewmodel.models.BudgetType
 
 
 class OperationListSettingsFragment : Fragment() {
@@ -43,18 +41,10 @@ class OperationListSettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOperationListSettingsBinding.inflate(inflater)
+        setValues()
         setButtons()
         setObservation()
         setTheme()
-
-        previousDate = budgetDataApi.operationListDate.value!!
-        previousDateString = budgetDataApi.operationListDateString.value!!
-        previousOrder = budgetDataApi.operationListStartWith.value!!
-        previousBudgetType = budgetDataApi.operationListChosenBudgetType.value!!
-        previousBudgetTypeString = budgetDataApi.operationListChosenBudgetTypeString.value!!
-        previousType = budgetDataApi.operationListChosenType.value!!
-        previousTypeString = budgetDataApi.operationListChosenTypeString.value!!
-        previousOperationTypeString = budgetDataApi.operationType.value!!
         return binding.root
     }
 
@@ -64,8 +54,19 @@ class OperationListSettingsFragment : Fragment() {
     }
 
     //region Setting
+    private fun setValues() {
+        previousDate = budgetDataApi.operationListDate.value!!
+        previousDateString = budgetDataApi.operationListDateString.value!!
+        previousOrder = budgetDataApi.operationListStartWith.value!!
+        previousBudgetType = budgetDataApi.operationListChosenBudgetType.value!!
+        previousBudgetTypeString = budgetDataApi.operationListChosenBudgetTypeString.value!!
+        previousType = budgetDataApi.operationListChosenType.value!!
+        previousTypeString = budgetDataApi.operationListChosenTypeString.value!!
+        previousOperationTypeString = budgetDataApi.operationType.value!!
+    }
+
     private fun setButtons() {
-        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        val effectColor: Int = if (Settings.isDay()) {
             R.style.orangeEdgeEffect
         } else {
             R.style.darkEdgeEffect
@@ -203,7 +204,7 @@ class OperationListSettingsFragment : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 textPrimary = ContextCompat.getColor(
                     this@OperationListSettingsFragment.requireContext(),
                     R.color.light_grey
@@ -266,7 +267,7 @@ class OperationListSettingsFragment : Fragment() {
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this.requireContext(),
-                            if(BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                            if(Settings.isDay()) R.color.text_primary else R.color.light_grey
                         )
                     )
                 )

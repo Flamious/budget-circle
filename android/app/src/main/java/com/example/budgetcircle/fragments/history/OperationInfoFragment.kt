@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationInfoBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.OperationFormActivity
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.Operation
@@ -83,7 +83,7 @@ class OperationInfoFragment : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 textPrimary = ContextCompat.getColor(
                     this@OperationInfoFragment.requireContext(),
                     R.color.light_grey

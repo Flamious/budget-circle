@@ -10,8 +10,6 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.BudgetTypeItemBinding
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import com.example.budgetcircle.settings.DoubleFormatter
 
 

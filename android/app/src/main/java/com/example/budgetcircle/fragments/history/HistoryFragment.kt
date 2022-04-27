@@ -2,18 +2,18 @@ package com.example.budgetcircle.fragments.history
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
@@ -63,7 +63,7 @@ class HistoryFragment : Fragment() {
         val backgroundColor: Int
         val borderColor: Int
 
-        if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        if (Settings.isDay()) {
             textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
             textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
             backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
@@ -95,7 +95,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setTheme() {
-        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+        if (Settings.isNight()) {
             binding.apply {
                 val textPrimary = ContextCompat.getColor(
                     this@HistoryFragment.requireContext(),
@@ -179,7 +179,7 @@ class HistoryFragment : Fragment() {
                             it[index].isExpense,
                             ContextCompat.getColor(
                                 this.requireContext(),
-                                if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+                                if (Settings.isDay())
                                     when (it[index].isExpense) {
                                         true -> R.color.red_main
                                         false -> R.color.blue_main

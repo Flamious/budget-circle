@@ -12,9 +12,8 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetExchangeBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.dialogs.Index
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.SumInputFilter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class BudgetExchangeActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetExchangeBinding
@@ -52,8 +51,8 @@ class BudgetExchangeActivity : AppCompatActivity() {
     //region Setting
     private fun setTheme() {
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
-                val textColor = ContextCompat.getColor(
+            if (Settings.isNight()) {
+                val textPrimary = ContextCompat.getColor(
                     this@BudgetExchangeActivity,
                     R.color.light_grey
                 )
@@ -70,7 +69,6 @@ class BudgetExchangeActivity : AppCompatActivity() {
                     R.color.darker_grey
                 )
 
-
                 budgetExchangeActivityListHeaderLayout.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
                 budgetExchangeActivityAddButton.backgroundTintList =
@@ -78,31 +76,25 @@ class BudgetExchangeActivity : AppCompatActivity() {
                 budgetExchangeActivityBackButton.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
                 budgetExchangeActivityLayout.setBackgroundColor(backgroundColor)
-                budgetExchangeActivityListFrom.setTextColor(textColor)
-                budgetExchangeActivityListTo.setTextColor(textColor)
+                budgetExchangeActivityListFrom.setTextColor(textPrimary)
+                budgetExchangeActivityListTo.setTextColor(textPrimary)
                 budgetExchangeActivityTitleFrom.setTextColor(textSecondary)
                 budgetExchangeActivityTitleTo.setTextColor(textSecondary)
 
-                budgetExchangeActivityBudgetSum.backgroundTintList =
-                    ColorStateList.valueOf(mainColor)
-                budgetExchangeActivityBudgetSum.highlightColor = mainColor
-                budgetExchangeActivityBudgetSum.setLinkTextColor(mainColor)
-                budgetExchangeActivityBudgetSum.setTextColor(textColor)
-                budgetExchangeActivityBudgetSum.setHintTextColor(textSecondary)
+                Settings.setFieldColor(mainColor, textPrimary, textSecondary, budgetExchangeActivityBudgetSum)
             }
         }
     }
 
     private fun setButtons() {
-
-        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        val effectColor: Int = if (Settings.mode == Settings.DAY) {
             R.style.greenEdgeEffect
         } else {
             R.style.darkEdgeEffect
         }
 
         binding.budgetExchangeActivityAddButton.setOnClickListener {
-            add()
+            accept()
         }
         binding.budgetExchangeActivityBackButton.setOnClickListener {
             exit()
@@ -189,7 +181,7 @@ class BudgetExchangeActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun add() {
+    private fun accept() {
         if (checkFields()) {
             val intent = Intent()
             if(isEdit) {

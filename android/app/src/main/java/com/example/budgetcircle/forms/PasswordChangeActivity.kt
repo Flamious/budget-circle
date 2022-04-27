@@ -1,21 +1,17 @@
 package com.example.budgetcircle.forms
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityPasswordChangeBinding
-import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.ErrorResponse
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -25,7 +21,7 @@ import retrofit2.Response
 class PasswordChangeActivity : AppCompatActivity() {
     lateinit var binding: ActivityPasswordChangeBinding
     lateinit var token: String
-    lateinit var service: UserApi
+    private lateinit var service: UserApi
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -51,19 +47,19 @@ class PasswordChangeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finish()
+        exit()
     }
 
     //region Setting
     private fun setTheme() {
-        val textColor: Int
+        val textPrimary: Int
         val textSecondary: Int
         val backgroundColor: Int
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
-                textColor = ContextCompat.getColor(
+            if (Settings.isNight()) {
+                textPrimary = ContextCompat.getColor(
                     this@PasswordChangeActivity,
                     R.color.light_grey
                 )
@@ -80,7 +76,6 @@ class PasswordChangeActivity : AppCompatActivity() {
                     R.color.darker_grey
                 )
 
-
                 changePasswordActivityHeaderLayout.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
                 changePasswordActivityAcceptButton.backgroundTintList =
@@ -93,45 +88,22 @@ class PasswordChangeActivity : AppCompatActivity() {
                 changePasswordActivityNewPasswordTitle.setTextColor(textSecondary)
                 changePasswordActivityConfirmationPasswordTitle.setTextColor(textSecondary)
 
-                setFieldColor(
+                Settings.setFieldColor(
+                    mainColor,
+                    textPrimary,
+                    textSecondary,
                     binding.changePasswordActivityOldPasswordField,
-                    mainColor,
-                    textColor,
-                    textSecondary
-                )
-                setFieldColor(
                     binding.changePasswordActivityNewPasswordField,
-                    mainColor,
-                    textColor,
-                    textSecondary
-                )
-                setFieldColor(
-                    binding.changePasswordActivityConfirmationPasswordField,
-                    mainColor,
-                    textColor,
-                    textSecondary
+                    binding.changePasswordActivityConfirmationPasswordField
                 )
             }
         }
     }
 
-    private fun setFieldColor(
-        editText: TextView,
-        mainColor: Int,
-        textColor: Int,
-        textSecondary: Int
-    ) {
-        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
-        editText.highlightColor = mainColor
-        editText.setLinkTextColor(mainColor)
-        editText.setTextColor(textColor)
-        editText.setHintTextColor(textSecondary)
-    }
-
     private fun setButtons() {
         binding.changePasswordActivityAcceptButton.setOnClickListener {
             if (checkFields()) {
-                changePassword()
+                accept()
             }
         }
         binding.changePasswordActivityBackButton.setOnClickListener {
@@ -180,7 +152,7 @@ class PasswordChangeActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun changePassword() {
+    private fun accept() {
         service.changePassword(
             token,
             binding.changePasswordActivityOldPasswordField.text.toString(),
@@ -208,9 +180,8 @@ class PasswordChangeActivity : AppCompatActivity() {
         })
     }
 
-    private fun print(message: String?) {
-        if (message != null)
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    private fun exit() {
+        finish()
     }
     //endregion
 }

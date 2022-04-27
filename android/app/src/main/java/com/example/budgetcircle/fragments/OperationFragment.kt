@@ -20,9 +20,10 @@ import com.example.budgetcircle.databinding.FragmentOperationBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.OperationFormActivity
 import com.example.budgetcircle.lists.OperationTypeListFragment
-import com.example.budgetcircle.settings.BarChartSetter
+import com.example.budgetcircle.settings.charts.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
-import com.example.budgetcircle.settings.PieChartSetter
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.settings.charts.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
@@ -85,7 +86,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            if (Settings.isDay()) {
                 textColor = ContextCompat.getColor(
                     this@OperationFragment.requireContext(),
                     R.color.text_primary
@@ -156,7 +157,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
                 .toCollection(ArrayList())
         else
@@ -170,7 +171,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 binding.operationFragmentBarChart,
                 ContextCompat.getColor(
                     this.requireContext(),
-                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
                 )
             )
         else
@@ -181,7 +182,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 binding.operationFragmentBarChart,
                 ContextCompat.getColor(
                     this.requireContext(),
-                    if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
                 ),
                 true
             )
@@ -195,7 +196,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(if (isExpense) R.array.expense_colors else R.array.earning_colors)
                 .toCollection(ArrayList())
         else
@@ -203,7 +204,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
 
         val holeColor = ContextCompat.getColor(
             this.requireContext(),
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.light_grey else R.color.dark_grey
+            if (Settings.isDay()) R.color.light_grey else R.color.dark_grey
         )
 
         if (sum > 0)
@@ -368,7 +369,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
     }
 
     private fun choosePeriod() {
-        val effectColor: Int = if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        val effectColor: Int = if (Settings.isDay()) {
             if (isExpense) R.style.redEdgeEffect else R.style.blueEdgeEffect
         } else {
             R.style.darkEdgeEffect

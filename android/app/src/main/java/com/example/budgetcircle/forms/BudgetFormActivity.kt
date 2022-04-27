@@ -7,13 +7,11 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.ActivityBudgetFormBinding
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.SumInputFilter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class BudgetFormActivity : AppCompatActivity() {
     lateinit var binding: ActivityBudgetFormBinding
@@ -46,14 +44,14 @@ class BudgetFormActivity : AppCompatActivity() {
 
     //region Setting
     private fun setTheme() {
-        val textColor: Int
+        val textPrimary: Int
         val textSecondary: Int
         val backgroundColor: Int
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
-                textColor = ContextCompat.getColor(
+            if (Settings.isNight()) {
+                textPrimary = ContextCompat.getColor(
                     this@BudgetFormActivity,
                     R.color.light_grey
                 )
@@ -79,38 +77,20 @@ class BudgetFormActivity : AppCompatActivity() {
                     ColorStateList.valueOf(mainColor)
                 accountFormActivityLayout.setBackgroundColor(backgroundColor)
 
-                setFieldColor(
+                Settings.setFieldColor(
+                    mainColor,
+                    textPrimary,
+                    textSecondary,
                     binding.accountFormActivityBudgetSum,
-                    mainColor,
-                    textColor,
-                    textSecondary
-                )
-                setFieldColor(
-                    binding.accountFormActivityName,
-                    mainColor,
-                    textColor,
-                    textSecondary
+                    binding.accountFormActivityName
                 )
             }
         }
     }
 
-    private fun setFieldColor(
-        editText: TextView,
-        mainColor: Int,
-        textColor: Int,
-        textSecondary: Int
-    ) {
-        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
-        editText.highlightColor = mainColor
-        editText.setLinkTextColor(mainColor)
-        editText.setTextColor(textColor)
-        editText.setHintTextColor(textSecondary)
-    }
-
     private fun setButtons() {
         binding.accountFormActivityAddButton.setOnClickListener {
-            add()
+            accept()
         }
         binding.accountFormActivityBackButton.setOnClickListener {
             exit()
@@ -134,8 +114,8 @@ class BudgetFormActivity : AppCompatActivity() {
             }
         }
     }
-
     //endregion
+
     //region Methods
     private fun appear() {
         binding.accountFormActivityHeaderLayout.startAnimation(appear)
@@ -164,7 +144,7 @@ class BudgetFormActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun add() {
+    private fun accept() {
         if (checkFields()) {
             val intent = Intent()
             intent.putExtra("type", if (isEdit) "editAccount" else "newAccount")

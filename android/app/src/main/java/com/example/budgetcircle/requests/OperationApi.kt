@@ -1,7 +1,6 @@
 package com.example.budgetcircle.requests
 
 import com.example.budgetcircle.viewmodel.models.ChartOperation
-import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
 import retrofit2.Call
 import retrofit2.http.*

@@ -1,10 +1,11 @@
-package com.example.budgetcircle.settings
+package com.example.budgetcircle.settings.charts
 
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import android.widget.TextView
+import com.example.budgetcircle.settings.DoubleFormatter
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener

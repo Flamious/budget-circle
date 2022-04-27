@@ -3,13 +3,13 @@ package com.example.budgetcircle
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
 import com.example.budgetcircle.fragments.history.HistoryFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 
 class MainActivity : AppCompatActivity() {
@@ -18,12 +18,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Token = "Bearer ${intent.extras?.getString("token")!!}"
+        Settings.token = "Bearer ${intent.extras?.getString("token")!!}"
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setObservations()
         initiateViewModel()
         setNavMenu()
+        applyDayNight()
     }
 
     override fun onBackPressed() {
@@ -41,12 +41,6 @@ class MainActivity : AppCompatActivity() {
         budgetDataApi.operationChartChosenBudgetTypeString.postValue(resources.getString(R.string.all))
         budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
         budgetDataApi.chartOperationPeriod.postValue(resources.getString(R.string.week))
-    }
-
-    private fun setObservations() {
-        BudgetDataApi.mode.observe(this) {
-            applyDayNight(it)
-        }
     }
 
     private fun setNavMenu() {
@@ -92,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         val navColor = ColorStateList.valueOf(
             ContextCompat.getColor(
                 this,
-                if (BudgetDataApi.mode.value!! == UserFragment.DAY) color else R.color.grey
+                if (Settings.isDay()) color else R.color.grey
             )
         )
         val colorSecondary =
@@ -111,9 +105,9 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun applyDayNight(mode: Int) {
+    fun applyDayNight() {
         val backgroundNavColor: Int
-        if (mode == UserFragment.DAY) {
+        if (Settings.isDay()) {
             backgroundNavColor = ContextCompat.getColor(
                 this@MainActivity,
                 R.color.white
@@ -132,9 +126,5 @@ class MainActivity : AppCompatActivity() {
 
         binding.navigationMenu.backgroundTintList = ColorStateList.valueOf(backgroundNavColor)
     }
-//endregion
-
-    companion object {
-        var Token: String = ""
-    }
+    //endregion
 }

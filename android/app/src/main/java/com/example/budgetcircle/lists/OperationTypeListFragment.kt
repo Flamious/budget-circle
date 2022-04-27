@@ -3,7 +3,6 @@ package com.example.budgetcircle.lists
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,7 +22,7 @@ import com.example.budgetcircle.databinding.FragmentOperationTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.OperationTypeFormActivity
 import com.example.budgetcircle.fragments.OperationFragment
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.OperationTypeAdapter
 import com.example.budgetcircle.viewmodel.models.OperationType
@@ -78,7 +77,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
         val borderColor: Int
         val buttonColor: Int?
 
-        if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        if (Settings.isDay()) {
            textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
             textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
             backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
@@ -105,7 +104,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+            if (Settings.isDay()) {
                 backgroundColor = ContextCompat.getColor(
                     this@OperationTypeListFragment.requireContext(),
                     R.color.light_grey
@@ -160,7 +159,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
             val background: Int
             val buttonColor:Int
             if (isExpense) {
-                if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                if (Settings.isDay()) {
                     background = R.style.redEdgeEffect
                     buttonColor = ContextCompat.getColor(this.requireContext(), R.color.red_main)
                 } else {
@@ -169,7 +168,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
                 }
 
             } else {
-                if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+                if (Settings.isDay()) {
                     background = R.style.blueEdgeEffect
                     buttonColor = ContextCompat.getColor(this.requireContext(), R.color.blue_main)
                 } else {

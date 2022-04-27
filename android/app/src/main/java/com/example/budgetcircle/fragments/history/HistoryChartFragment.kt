@@ -1,7 +1,6 @@
 package com.example.budgetcircle.fragments.history
 
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,12 +13,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryChartBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.fragments.UserFragment
-import com.example.budgetcircle.settings.BarChartSetter
-import com.example.budgetcircle.settings.DoubleFormatter
-import com.example.budgetcircle.settings.MultipleBarChartSetter
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.settings.charts.MultipleBarChartSetter
 import com.example.budgetcircle.viewmodel.BudgetDataApi
-import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.example.budgetcircle.viewmodel.models.ChartOperation
 
 class HistoryChartFragment : Fragment() {
@@ -62,7 +58,7 @@ class HistoryChartFragment : Fragment() {
         val values3 = Array(operations.size) { index -> operations[index].exchanges }
         val titles = Array(operations.size) { index -> operations[index].title }
 
-        val colors = if (BudgetDataApi.mode.value!! == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(R.array.history_chart_colors).toCollection(ArrayList())
         else
             resources.getIntArray(R.array.history_chart_colors_dark).toCollection(ArrayList())
@@ -76,14 +72,14 @@ class HistoryChartFragment : Fragment() {
             binding.historyChartFragmentBarChart,
             ContextCompat.getColor(
                 this.requireContext(),
-                if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.color.text_primary else R.color.light_grey
+                if (Settings.isDay()) R.color.text_primary else R.color.light_grey
             ),
             xToBottom = false,
         )
     }
 
     private fun setTheme() {
-        if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+        if (Settings.isNight()) {
             binding.apply {
                 val textPrimary = ContextCompat.getColor(
                     this@HistoryChartFragment.requireContext(),
@@ -170,7 +166,7 @@ class HistoryChartFragment : Fragment() {
                 typesId,
                 budgetDataApi.operationChartChosenBudgetTypeString,
                 budgetDataApi.operationChartChosenBudgetType,
-                if (BudgetDataApi.mode.value!! == UserFragment.DAY) R.style.orangeEdgeEffect else R.style.darkEdgeEffect
+                if (Settings.isDay()) R.style.orangeEdgeEffect else R.style.darkEdgeEffect
             )
         }
     }

@@ -1,10 +1,7 @@
-package com.example.budgetcircle.settings
+package com.example.budgetcircle.settings.charts
 
-import android.widget.TextView
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 import com.github.mikephil.charting.components.XAxis

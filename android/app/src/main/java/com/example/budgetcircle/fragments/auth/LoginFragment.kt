@@ -4,36 +4,31 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentLoginBinding
-import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.requests.models.ErrorResponse
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.*
 
 class LoginFragment : Fragment() {
     lateinit var binding: FragmentLoginBinding
-    lateinit var service: UserApi
+    private lateinit var service: UserApi
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -55,7 +50,7 @@ class LoginFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        setAnimation()
+        appear()
     }
 
     //region Setting
@@ -66,7 +61,7 @@ class LoginFragment : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (AuthActivity.mode == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 textPrimary = ContextCompat.getColor(
                     this@LoginFragment.requireContext(),
                     R.color.light_grey
@@ -95,33 +90,15 @@ class LoginFragment : Fragment() {
                 loginFragmentPasswordTitle.setTextColor(textSecondary)
                 loginFragmentSignUpButton.setTextColor(textPrimary)
 
-                setFieldColor(
+                Settings.setFieldColor(
+                    mainColor,
+                    textPrimary,
+                    textSecondary,
                     binding.loginFragmentEmailField,
-                    mainColor,
-                    textPrimary,
-                    textSecondary
-                )
-                setFieldColor(
-                    binding.loginFragmentPasswordField,
-                    mainColor,
-                    textPrimary,
-                    textSecondary
+                    binding.loginFragmentPasswordField
                 )
             }
         }
-    }
-
-    private fun setFieldColor(
-        editText: TextView,
-        mainColor: Int,
-        textColor: Int,
-        textSecondary: Int
-    ) {
-        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
-        editText.highlightColor = mainColor
-        editText.setLinkTextColor(mainColor)
-        editText.setTextColor(textColor)
-        editText.setHintTextColor(textSecondary)
     }
 
     private fun setButtons() {
@@ -141,15 +118,15 @@ class LoginFragment : Fragment() {
         val url = resources.getString(R.string.url)
         service = Client.getClient(url).create(UserApi::class.java)
     }
+    //endregion
 
-    private fun setAnimation() {
+    //region Methods
+    private fun appear() {
         binding.loginFragmentHeaderLayout.startAnimation(appear)
         binding.loginFragmentAdmitButton.startAnimation(appear)
         binding.loginFragmentScrollView.startAnimation(appear)
     }
-    //endregion
 
-    //region Methods
     private fun checkFields(): Boolean {
         var isValid = true
         binding.loginFragmentEmailField.apply {
@@ -206,7 +183,7 @@ class LoginFragment : Fragment() {
             binding.loginFragmentPasswordField.text.toString()
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
-                print(t.message)
+                Settings.print(this@LoginFragment.requireContext(), t.message)
                 stopLoading()
             }
 
@@ -225,16 +202,11 @@ class LoginFragment : Fragment() {
                     val errorMessage =
                         errorResponse?.error
 
-                    print(errorMessage)
+                    Settings.print(this@LoginFragment.requireContext(), errorMessage)
                     stopLoading()
                 }
             }
         })
-    }
-
-    private fun print(message: String?) {
-        if (message != null)
-            Toast.makeText(this.requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun saveToken(token: String) {

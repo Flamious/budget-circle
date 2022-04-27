@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.EdgeEffect
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +22,7 @@ import com.example.budgetcircle.databinding.FragmentBudgetTypeListBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
-import com.example.budgetcircle.fragments.UserFragment
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.BudgetDataApi
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.models.BudgetType
@@ -72,7 +72,7 @@ class BudgetTypeListFragment : Fragment() {
     //region Setting
     private fun setTheme() {
         binding.apply {
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 val backgroundColor = ContextCompat.getColor(
                     this@BudgetTypeListFragment.requireContext(),
                     R.color.dark_grey
@@ -115,7 +115,7 @@ class BudgetTypeListFragment : Fragment() {
         val borderColor: Int
         val buttonColor: Int?
 
-        if (BudgetDataApi.mode.value!! == UserFragment.DAY) {
+        if (Settings.isDay()) {
             textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
             textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
             backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
@@ -149,7 +149,7 @@ class BudgetTypeListFragment : Fragment() {
             val background: Int
             val buttonColor: Int
 
-            if (BudgetDataApi.mode.value!! == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 background = R.style.darkEdgeEffect
                 buttonColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
             } else {

@@ -5,15 +5,11 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.HistoryItemBinding
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.example.budgetcircle.viewmodel.models.OperationType
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 data class HistoryItem(

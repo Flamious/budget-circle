@@ -10,18 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentSignUpBinding
-import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.requests.models.ErrorResponse
+import com.example.budgetcircle.settings.Settings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
@@ -65,7 +62,7 @@ class SignUpFragment : Fragment() {
         val mainColor: Int
 
         binding.apply {
-            if (AuthActivity.mode == UserFragment.NIGHT) {
+            if (Settings.isNight()) {
                 textPrimary = ContextCompat.getColor(
                     this@SignUpFragment.requireContext(),
                     R.color.light_grey
@@ -95,39 +92,16 @@ class SignUpFragment : Fragment() {
                 signUpFragmentConfirmPasswordTitle.setTextColor(textSecondary)
                 signUpFragmentLoginButton.setTextColor(textPrimary)
 
-                setFieldColor(
+                Settings.setFieldColor(
+                    mainColor,
+                    textPrimary,
+                    textSecondary,
                     binding.signUpFragmentEmailField,
-                    mainColor,
-                    textPrimary,
-                    textSecondary
-                )
-                setFieldColor(
                     binding.signUpFragmentPasswordField,
-                    mainColor,
-                    textPrimary,
-                    textSecondary
-                )
-                setFieldColor(
-                    binding.signUpFragmentConfirmPasswordField,
-                    mainColor,
-                    textPrimary,
-                    textSecondary
+                    binding.signUpFragmentConfirmPasswordField
                 )
             }
         }
-    }
-
-    private fun setFieldColor(
-        editText: TextView,
-        mainColor: Int,
-        textColor: Int,
-        textSecondary: Int
-    ) {
-        editText.backgroundTintList = ColorStateList.valueOf(mainColor)
-        editText.highlightColor = mainColor
-        editText.setLinkTextColor(mainColor)
-        editText.setTextColor(textColor)
-        editText.setHintTextColor(textSecondary)
     }
 
     private fun setButtons() {
@@ -227,7 +201,7 @@ class SignUpFragment : Fragment() {
             binding.signUpFragmentConfirmPasswordField.text.toString()
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
-                print(t.message)
+                Settings.print(this@SignUpFragment.requireContext(), t.message)
                 stopLoading()
             }
 
@@ -246,16 +220,11 @@ class SignUpFragment : Fragment() {
                     val errorMessage =
                         errorResponse?.error ?: resources.getString(R.string.wrongLoginOrPassword)
 
-                    print(errorMessage)
+                    Settings.print(this@SignUpFragment.requireContext(), errorMessage)
                     stopLoading()
                 }
             }
         })
-    }
-
-    private fun print(message: String?) {
-        if (message != null)
-            Toast.makeText(this.requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun saveToken(token: String) {

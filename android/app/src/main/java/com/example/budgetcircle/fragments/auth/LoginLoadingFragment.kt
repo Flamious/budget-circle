@@ -2,27 +2,23 @@ package com.example.budgetcircle.fragments.auth
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.budgetcircle.AuthActivity
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentLoginLoadingBinding
-import com.example.budgetcircle.fragments.UserFragment
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.AuthResponse
-import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.settings.charts.PieChartSetter
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,8 +29,8 @@ import kotlin.random.Random
 
 class LoginLoadingFragment : Fragment() {
     lateinit var binding: FragmentLoginLoadingBinding
-    lateinit var service: UserApi
-    private var loading: Long = 1500;
+    private lateinit var service: UserApi
+    private var loading: Long = 1500
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -66,9 +62,9 @@ class LoginLoadingFragment : Fragment() {
     }
 
     private fun setTheme() {
-        if (AuthActivity.mode == UserFragment.NIGHT) {
+        if (Settings.isNight()) {
             binding.apply {
-                val textColor = ContextCompat.getColor(
+                val textPrimary = ContextCompat.getColor(
                     this@LoginLoadingFragment.requireContext(),
                     R.color.light_grey
                 )
@@ -78,7 +74,7 @@ class LoginLoadingFragment : Fragment() {
                 )
 
                 loadingFragmentLayout.setBackgroundColor(backgroundColor) //= ColorStateList.valueOf(backgroundColor)
-                loadingFragmentTitle.setTextColor(textColor)
+                loadingFragmentTitle.setTextColor(textPrimary)
             }
         }
     }
@@ -89,14 +85,14 @@ class LoginLoadingFragment : Fragment() {
         val size = 4
         val values = Array(size) { Random.nextDouble(10.0, 50.0) }
         val titles = Array(size) { resources.getString(R.string.app_name) }
-        val colors = if (AuthActivity.mode == UserFragment.DAY)
+        val colors = if (Settings.isDay())
             resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
         else
             resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
 
         val holeColor = ContextCompat.getColor(
             this.requireContext(),
-            if (AuthActivity.mode == UserFragment.DAY) R.color.white else R.color.dark_grey
+            if (Settings.isDay()) R.color.white else R.color.dark_grey
         )
 
         PieChartSetter.setChart(

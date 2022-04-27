@@ -1,4 +1,4 @@
-package com.example.budgetcircle.settings
+package com.example.budgetcircle.settings.charts
 
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis

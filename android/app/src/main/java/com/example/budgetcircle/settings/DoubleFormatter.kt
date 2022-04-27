@@ -1,6 +1,5 @@
 package com.example.budgetcircle.settings
 
-import java.lang.Exception
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 

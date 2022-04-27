@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.requests.BudgetTypeApi
 import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.OperationApi
 import com.example.budgetcircle.requests.OperationTypeApi
 import com.example.budgetcircle.requests.models.OperationListResponse
+import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.*
 import com.google.gson.Gson
@@ -22,12 +22,6 @@ import retrofit2.Response
 
 
 class BudgetDataApi(application: Application) : AndroidViewModel(application) {
-    companion object {
-        val mode: MutableLiveData<Int> = MutableLiveData<Int>().apply {
-            value = 0
-        }
-    }
-
     private val budgetTypeApiService: BudgetTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(BudgetTypeApi::class.java)
@@ -112,7 +106,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     private fun getBudgetTypes() = viewModelScope.launch(Dispatchers.IO) {
         budgetTypeApiService.getBudgetTypes(
-            MainActivity.Token
+            Settings.token
         ).enqueue(object : Callback<List<BudgetType>> {
             override fun onFailure(call: Call<List<BudgetType>>, t: Throwable) {
             }
@@ -130,7 +124,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun addBudgetType(type: BudgetType) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypeApiService.addBudgetType(
-            MainActivity.Token,
+            Settings.token,
             type.title,
             type.sum
         ).enqueue(object : Callback<Any> {
@@ -151,7 +145,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun editBudgetType(id: Int, type: BudgetType, loadList: Boolean = true) =
         viewModelScope.launch(Dispatchers.IO) {
             budgetTypeApiService.editBudgetType(
-                MainActivity.Token,
+                Settings.token,
                 id,
                 type.title,
                 type.sum
@@ -172,7 +166,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun deleteBudgetType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         budgetTypeApiService.deleteBudgetType(
-            MainActivity.Token,
+            Settings.token,
             id
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -225,7 +219,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun getOperations() = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.getOperations(
-            MainActivity.Token,
+            Settings.token,
             page.value!!,
             operationListDate.value!!,
             operationType.value!!,
@@ -261,7 +255,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
             if (operation.isExpense == false) addSum(operation.budgetTypeId, operation.sum)
 
             operationApiService.addOperation(
-                MainActivity.Token,
+                Settings.token,
                 operation.title,
                 operation.sum,
                 operation.typeId,
@@ -404,7 +398,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         }
         viewModelScope.launch(Dispatchers.IO) {
             operationApiService.editOperation(
-                MainActivity.Token,
+                Settings.token,
                 oldOperation.id,
                 newOperation.title,
                 newOperation.sum,
@@ -460,7 +454,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
         }
         viewModelScope.launch(Dispatchers.IO) {
             operationApiService.deleteOperation(
-                MainActivity.Token,
+                Settings.token,
                 operation.id
             ).enqueue(object : Callback<Any> {
                 override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -490,7 +484,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun deleteAllOperations() = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.deleteAllOperations(
-            MainActivity.Token
+            Settings.token
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
             }
@@ -512,7 +506,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun getEarningSums(period: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             operationApiService.getOperationSums(
-                MainActivity.Token,
+                Settings.token,
                 false,
                 period
             ).enqueue(object : Callback<List<OperationSum>> {
@@ -533,7 +527,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun getExpenseSums(period: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             operationApiService.getOperationSums(
-                MainActivity.Token,
+                Settings.token,
                 true,
                 period
             ).enqueue(object : Callback<List<OperationSum>> {
@@ -554,7 +548,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun getEarningTypes() =
         viewModelScope.launch(Dispatchers.IO) {
             operationTypeApiService.getEarningTypes(
-                MainActivity.Token
+                Settings.token
             ).enqueue(object : Callback<List<OperationType>> {
                 override fun onFailure(call: Call<List<OperationType>>, t: Throwable) {
                 }
@@ -573,7 +567,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
     fun getExpenseTypes() =
         viewModelScope.launch(Dispatchers.IO) {
             operationTypeApiService.getExpenseTypes(
-                MainActivity.Token
+                Settings.token
             ).enqueue(object : Callback<List<OperationType>> {
                 override fun onFailure(call: Call<List<OperationType>>, t: Throwable) {
                 }
@@ -591,7 +585,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun addEarningType(title: String) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.addEarningType(
-            MainActivity.Token,
+            Settings.token,
             title
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -610,7 +604,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun addExpenseType(title: String) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.addExpenseType(
-            MainActivity.Token,
+            Settings.token,
             title
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -629,7 +623,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun editEarningType(id: Int, title: String) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.editEarningType(
-            MainActivity.Token,
+            Settings.token,
             id,
             title
         ).enqueue(object : Callback<Void> {
@@ -649,7 +643,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun editExpenseType(id: Int, title: String) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.editExpenseType(
-            MainActivity.Token,
+            Settings.token,
             id,
             title
         ).enqueue(object : Callback<Void> {
@@ -669,7 +663,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun deleteEarningType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.deleteEarningType(
-            MainActivity.Token,
+            Settings.token,
             id
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -689,7 +683,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun deleteExpenseType(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         operationTypeApiService.deleteExpenseType(
-            MainActivity.Token,
+            Settings.token,
             id
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
@@ -709,7 +703,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun clearBudgetTypes() = viewModelScope.launch(Dispatchers.IO)  {
         budgetTypeApiService.clearBudgetTypes(
-            MainActivity.Token
+            Settings.token
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
             }
@@ -727,7 +721,7 @@ class BudgetDataApi(application: Application) : AndroidViewModel(application) {
 
     fun getChartOperations()  = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.getChartOperation(
-            MainActivity.Token,
+            Settings.token,
             chartOperationPeriod.value!!,
             if (operationChartChosenBudgetType.value!! == 0) null else operationChartChosenBudgetType.value!!,
         ).enqueue(object : Callback<List<ChartOperation>> {
