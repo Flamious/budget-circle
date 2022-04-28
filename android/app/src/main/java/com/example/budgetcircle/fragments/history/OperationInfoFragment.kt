@@ -21,14 +21,14 @@ import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.OperationFormActivity
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import com.example.budgetcircle.viewmodel.models.Operation
 
 class OperationInfoFragment : Fragment() {
     lateinit var binding: FragmentOperationInfoBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -135,17 +135,17 @@ class OperationInfoFragment : Fragment() {
                 }
                 operationInfoFragmentSum.setTextColor(it.color)
                 operationInfoFragmentAccount.text =
-                    budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
+                    budgetCircleData.budgetTypes.value!!.first { type -> type.id == it.budgetTypeId }.title
                 operationInfoFragmentKind.text =
                     when (it.isExpense) {
-                        true -> budgetDataApi.expenseTypes.value!!.first { type -> type.id == it.typeId }.title
-                        false -> budgetDataApi.earningTypes.value!!.first { type -> type.id == it.typeId }.title
+                        true -> budgetCircleData.expenseTypes.value!!.first { type -> type.id == it.typeId }.title
+                        false -> budgetCircleData.earningTypes.value!!.first { type -> type.id == it.typeId }.title
                         null -> {
                             operationInfoFragmentAccountTitle.text = resources.getString(R.string.from)
                             operationInfoFragmentKindTitle.text = resources.getString(R.string.to)
                             operationInfoFragmentCommentaryLayout.visibility = View.GONE
                             operationInfoFragmentCommentaryTitle.visibility = View.GONE
-                            budgetDataApi.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
+                            budgetCircleData.budgetTypes.value!!.first { type -> type.id == it.typeId }.title
                         }
                     }
                 operationInfoFragmentCommentary.text = it.commentary
@@ -162,21 +162,21 @@ class OperationInfoFragment : Fragment() {
                     val operationTitle: String
                     val operationCommentary: String
                     val operationSum = result.data?.getDoubleExtra("sum", 0.0)!!
-                    val typeId = when (budgetDataApi.chosenHistoryItem.value!!.isExpense) {
-                        true -> budgetDataApi.expenseTypes.value!![operationTypeIndex].id
-                        false -> budgetDataApi.earningTypes.value!![operationTypeIndex].id
-                        else -> budgetDataApi.budgetTypes.value!![operationTypeIndex].id
+                    val typeId = when (budgetCircleData.chosenHistoryItem.value!!.isExpense) {
+                        true -> budgetCircleData.expenseTypes.value!![operationTypeIndex].id
+                        false -> budgetCircleData.earningTypes.value!![operationTypeIndex].id
+                        else -> budgetCircleData.budgetTypes.value!![operationTypeIndex].id
                     }
-                    if (budgetDataApi.chosenHistoryItem.value!!.isExpense == null) {
-                        operationTitle = budgetDataApi.chosenHistoryItem.value!!.title
-                        operationCommentary = budgetDataApi.chosenHistoryItem.value!!.commentary
+                    if (budgetCircleData.chosenHistoryItem.value!!.isExpense == null) {
+                        operationTitle = budgetCircleData.chosenHistoryItem.value!!.title
+                        operationCommentary = budgetCircleData.chosenHistoryItem.value!!.commentary
                     } else {
                         operationTitle = result.data?.getStringExtra("title")!!
                         operationCommentary = result.data?.getStringExtra("commentary")!!
                     }
-                    val budgetTypeId = budgetDataApi.budgetTypes.value!![budgetTypeIndex].id
-                    val isEdited = budgetDataApi.editOperation(
-                        budgetDataApi.chosenHistoryItem.value!!, Operation(
+                    val budgetTypeId = budgetCircleData.budgetTypes.value!![budgetTypeIndex].id
+                    val isEdited = budgetCircleData.editOperation(
+                        budgetCircleData.chosenHistoryItem.value!!, Operation(
                             -1,
                             operationTitle,
                             operationSum,
@@ -184,7 +184,7 @@ class OperationInfoFragment : Fragment() {
                             typeId,
                             budgetTypeId,
                             operationCommentary,
-                            budgetDataApi.chosenHistoryItem.value!!.isExpense
+                            budgetCircleData.chosenHistoryItem.value!!.isExpense
                         )
                     )
                     if (!isEdited) {
@@ -194,7 +194,7 @@ class OperationInfoFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        budgetDataApi.chosenHistoryItem.apply {
+                        budgetCircleData.chosenHistoryItem.apply {
                             postValue(
                                 HistoryItem(
                                     this.value!!.id,
@@ -216,7 +216,7 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.chosenHistoryItem.observe(this.viewLifecycleOwner, {
+        budgetCircleData.chosenHistoryItem.observe(this.viewLifecycleOwner, {
             setFieldsValues(it)
         })
     }
@@ -229,17 +229,17 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun updateOperation() {
-        val isExpense = budgetDataApi.chosenHistoryItem.value!!.isExpense
+        val isExpense = budgetCircleData.chosenHistoryItem.value!!.isExpense
         val intent: Intent
         if (isExpense == null) {
             intent = Intent(activity, BudgetExchangeActivity::class.java)
-            intent.putExtra("exchangeSum", budgetDataApi.chosenHistoryItem.value!!.sum)
+            intent.putExtra("exchangeSum", budgetCircleData.chosenHistoryItem.value!!.sum)
             intent.putExtra(
                 "fromIndex",
-                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
+                budgetCircleData.budgetTypes.value!!.indexOfFirst { it.id == budgetCircleData.chosenHistoryItem.value!!.budgetTypeId })
             intent.putExtra(
                 "toIndex",
-                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+                budgetCircleData.budgetTypes.value!!.indexOfFirst { it.id == budgetCircleData.chosenHistoryItem.value!!.typeId })
         } else {
             intent = Intent(activity, OperationFormActivity::class.java)
             intent.putExtra("isExpense", isExpense)
@@ -247,37 +247,37 @@ class OperationInfoFragment : Fragment() {
             if (isExpense) {
                 intent.putExtra(
                     "types",
-                    Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
+                    Array(budgetCircleData.expenseTypes.value!!.size) { index -> budgetCircleData.expenseTypes.value!![index].title })
                 intent.putExtra(
                     "typeIndex",
-                    budgetDataApi.expenseTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+                    budgetCircleData.expenseTypes.value!!.indexOfFirst { it.id == budgetCircleData.chosenHistoryItem.value!!.typeId })
             } else {
                 intent.putExtra(
                     "types",
-                    Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
+                    Array(budgetCircleData.earningTypes.value!!.size) { index -> budgetCircleData.earningTypes.value!![index].title })
                 intent.putExtra(
                     "typeIndex",
-                    budgetDataApi.earningTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.typeId })
+                    budgetCircleData.earningTypes.value!!.indexOfFirst { it.id == budgetCircleData.chosenHistoryItem.value!!.typeId })
             }
 
-            intent.putExtra("sum", budgetDataApi.chosenHistoryItem.value!!.sum)
+            intent.putExtra("sum", budgetCircleData.chosenHistoryItem.value!!.sum)
             intent.putExtra(
                 "budgetTypeIndex",
-                budgetDataApi.budgetTypes.value!!.indexOfFirst { it.id == budgetDataApi.chosenHistoryItem.value!!.budgetTypeId })
-            intent.putExtra("title", budgetDataApi.chosenHistoryItem.value!!.title)
-            intent.putExtra("commentary", budgetDataApi.chosenHistoryItem.value!!.commentary)
+                budgetCircleData.budgetTypes.value!!.indexOfFirst { it.id == budgetCircleData.chosenHistoryItem.value!!.budgetTypeId })
+            intent.putExtra("title", budgetCircleData.chosenHistoryItem.value!!.title)
+            intent.putExtra("commentary", budgetCircleData.chosenHistoryItem.value!!.commentary)
         }
 
         intent.putExtra("isEdit", true)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].title })
         launcher?.launch(intent)
     }
 
     private fun deleteOperation() {
-        val isDeleted = budgetDataApi.chosenHistoryItem.value.let {
-            budgetDataApi.deleteOperation(it!!)
+        val isDeleted = budgetCircleData.chosenHistoryItem.value.let {
+            budgetCircleData.deleteOperation(it!!)
         }
         if (!isDeleted) {
             Toast.makeText(
@@ -286,7 +286,7 @@ class OperationInfoFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         } else {
-            budgetDataApi.chosenHistoryItemIndex.let {
+            budgetCircleData.chosenHistoryItemIndex.let {
                 if (it.value == 0 || it.value == null) it.postValue(null)
                 else it.postValue(it.value!! - 1)
                 Toast.makeText(
@@ -300,7 +300,7 @@ class OperationInfoFragment : Fragment() {
     }
 
     private fun exit() {
-        budgetDataApi.chosenHistoryItem.postValue(null)
+        budgetCircleData.chosenHistoryItem.postValue(null)
         activity
             ?.supportFragmentManager
             ?.beginTransaction()

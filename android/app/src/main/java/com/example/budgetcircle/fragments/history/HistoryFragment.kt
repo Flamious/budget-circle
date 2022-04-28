@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentHistoryBinding
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.items.HistoryAdapter
 import com.example.budgetcircle.viewmodel.items.HistoryItem
 import java.util.*
@@ -23,7 +23,7 @@ class HistoryFragment : Fragment() {
     lateinit var binding: FragmentHistoryBinding
     private lateinit var adapter: HistoryAdapter
 
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -76,9 +76,9 @@ class HistoryFragment : Fragment() {
         }
 
         adapter = HistoryAdapter(
-            budgetDataApi.budgetTypes.value!!.toTypedArray(),
-            budgetDataApi.earningTypes.value!!.toTypedArray(),
-            budgetDataApi.expenseTypes.value!!.toTypedArray(),
+            budgetCircleData.budgetTypes.value!!.toTypedArray(),
+            budgetCircleData.earningTypes.value!!.toTypedArray(),
+            budgetCircleData.expenseTypes.value!!.toTypedArray(),
             textPrimary,
             textSecondary,
             backgroundColor,
@@ -88,8 +88,8 @@ class HistoryFragment : Fragment() {
         binding.apply {
             historyFragmentList.layoutManager = GridLayoutManager(this@HistoryFragment.context, 1)
             historyFragmentList.adapter = adapter
-            if (budgetDataApi.chosenHistoryItemIndex.value != null) {
-                budgetDataApi.chosenHistoryItemIndex.postValue(null)
+            if (budgetCircleData.chosenHistoryItemIndex.value != null) {
+                budgetCircleData.chosenHistoryItemIndex.postValue(null)
             }
         }
     }
@@ -135,13 +135,13 @@ class HistoryFragment : Fragment() {
 
     private fun setButtons() {
         adapter.onItemClick = { item, index ->
-            budgetDataApi.chosenHistoryItem.value = item
-            budgetDataApi.chosenHistoryItemIndex.value = index
+            budgetCircleData.chosenHistoryItem.value = item
+            budgetCircleData.chosenHistoryItemIndex.value = index
             openInfo()
         }
 
         binding.historyFragmentNextPageButton.setOnClickListener {
-            budgetDataApi.page.postValue(budgetDataApi.page.value!! + 1)
+            budgetCircleData.page.postValue(budgetCircleData.page.value!! + 1)
         }
 
         binding.historyFragmentFilterListButton.setOnClickListener {
@@ -149,7 +149,7 @@ class HistoryFragment : Fragment() {
         }
 
         binding.historyFragmentPreviousPageButton.setOnClickListener {
-            budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
+            budgetCircleData.page.postValue(budgetCircleData.page.value!! - 1)
         }
 
         binding.historyFragmentOpenChartButton.setOnClickListener {
@@ -158,11 +158,11 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.operations.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operations.observe(this.viewLifecycleOwner, {
             if (it != null) {
                 if (it.count() == 0) {
-                    if (budgetDataApi.page.value!! > 1) {
-                        budgetDataApi.page.postValue(budgetDataApi.page.value!! - 1)
+                    if (budgetCircleData.page.value!! > 1) {
+                        budgetCircleData.page.postValue(budgetCircleData.page.value!! - 1)
                     } else {
                         stopLoading(true)
                     }
@@ -202,15 +202,15 @@ class HistoryFragment : Fragment() {
             }
         })
 
-        budgetDataApi.isLastPage.observe(this.viewLifecycleOwner, {
+        budgetCircleData.isLastPage.observe(this.viewLifecycleOwner, {
             binding.historyFragmentNextPageButton.isEnabled = !it
         })
 
-        budgetDataApi.page.observe(this.viewLifecycleOwner, {
+        budgetCircleData.page.observe(this.viewLifecycleOwner, {
             startLoading()
             binding.historyFragmentPreviousPageButton.isEnabled = it != 1
             binding.historyFragmentPageNumberTextView.text = it.toString()
-            budgetDataApi.getOperations()
+            budgetCircleData.getOperations()
         })
     }
 
@@ -273,9 +273,9 @@ class HistoryFragment : Fragment() {
         binding.historyFragmentProgressBar.visibility = View.GONE
         binding.historyFragmentPageLayout.visibility = View.VISIBLE
 
-        binding.historyFragmentPreviousPageButton.isEnabled = budgetDataApi.page.value!! > 1
+        binding.historyFragmentPreviousPageButton.isEnabled = budgetCircleData.page.value!! > 1
         binding.historyFragmentFilterListButton.isEnabled = true
-        binding.historyFragmentNextPageButton.isEnabled = !budgetDataApi.isLastPage.value!!
+        binding.historyFragmentNextPageButton.isEnabled = !budgetCircleData.isLastPage.value!!
     }
     //endregion
 }

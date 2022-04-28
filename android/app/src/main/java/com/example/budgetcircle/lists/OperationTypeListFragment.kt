@@ -23,7 +23,7 @@ import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.OperationTypeFormActivity
 import com.example.budgetcircle.fragments.OperationFragment
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.items.OperationTypeAdapter
 import com.example.budgetcircle.viewmodel.models.OperationType
 
@@ -32,7 +32,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     lateinit var binding: FragmentOperationTypeListBinding
     private lateinit var adapter: OperationTypeAdapter
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
 
     private var itemUnderDeletion: OperationType? = null
     private var lastTypeId: Int = -1
@@ -199,14 +199,14 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
                     val isEdit = result.data?.getBooleanExtra("isEdit", false)!!
                     val title = result.data?.getStringExtra("title")!!
                     if (!isEdit) {
-                        if (isExpense) budgetDataApi.addExpenseType(title)
-                        else budgetDataApi.addEarningType(title)
+                        if (isExpense) budgetCircleData.addExpenseType(title)
+                        else budgetCircleData.addEarningType(title)
                     } else {
-                        if (isExpense) budgetDataApi.editExpenseType(
+                        if (isExpense) budgetCircleData.editExpenseType(
                             lastTypeId,
                             title
                         )
-                        else budgetDataApi.editEarningType(lastTypeId, title)
+                        else budgetCircleData.editEarningType(lastTypeId, title)
                     }
                 }
             }
@@ -215,13 +215,13 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
 
     private fun setObservation() {
         if (isExpense)
-            budgetDataApi.expenseTypes.observe(this.viewLifecycleOwner, {
+            budgetCircleData.expenseTypes.observe(this.viewLifecycleOwner, {
                 stopLoading()
                 adapter.setList(it)
                 createList()
             })
         else
-            budgetDataApi.earningTypes.observe(this.viewLifecycleOwner, {
+            budgetCircleData.earningTypes.observe(this.viewLifecycleOwner, {
                 stopLoading()
                 adapter.setList(it)
                 createList()
@@ -252,8 +252,8 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     private fun deleteOperationType() {
         itemUnderDeletion?.let {
             startLoading()
-            if (isExpense) budgetDataApi.deleteExpenseType(it.id)
-            else budgetDataApi.deleteEarningType(it.id)
+            if (isExpense) budgetCircleData.deleteExpenseType(it.id)
+            else budgetCircleData.deleteEarningType(it.id)
         }
         itemUnderDeletion = null
     }

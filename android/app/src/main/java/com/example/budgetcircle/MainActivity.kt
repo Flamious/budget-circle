@@ -10,11 +10,11 @@ import com.example.budgetcircle.databinding.ActivityMainBinding
 import com.example.budgetcircle.fragments.*
 import com.example.budgetcircle.fragments.history.HistoryFragment
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    private val budgetDataApi: BudgetDataApi by viewModels()
+    private val budgetCircleData: BudgetCircleData by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +32,15 @@ class MainActivity : AppCompatActivity() {
 
     //region Setting
     private fun initiateViewModel() {
-        budgetDataApi.expensesDateString.postValue(resources.getString(R.string.week))
-        budgetDataApi.earningsDateString.postValue(resources.getString(R.string.week))
-        budgetDataApi.operationListDateString.postValue(resources.getString(R.string.week))
-        budgetDataApi.operationType.postValue(resources.getString(R.string.all))
-        budgetDataApi.operationListStartWith.postValue(resources.getString(R.string.start_with_new))
-        budgetDataApi.operationListChosenBudgetTypeString.postValue(resources.getString(R.string.all))
-        budgetDataApi.operationChartChosenBudgetTypeString.postValue(resources.getString(R.string.all))
-        budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
-        budgetDataApi.chartOperationPeriod.postValue(resources.getString(R.string.week))
+        budgetCircleData.expensesDateString.postValue(resources.getString(R.string.week))
+        budgetCircleData.earningsDateString.postValue(resources.getString(R.string.week))
+        budgetCircleData.operationListDateString.postValue(resources.getString(R.string.week))
+        budgetCircleData.operationType.postValue(resources.getString(R.string.all))
+        budgetCircleData.operationListStartWith.postValue(resources.getString(R.string.start_with_new))
+        budgetCircleData.operationListChosenBudgetTypeString.postValue(resources.getString(R.string.all))
+        budgetCircleData.operationChartChosenBudgetTypeString.postValue(resources.getString(R.string.all))
+        budgetCircleData.operationListChosenTypeString.postValue(resources.getString(R.string.all))
+        budgetCircleData.chartOperationPeriod.postValue(resources.getString(R.string.week))
     }
 
     private fun setNavMenu() {

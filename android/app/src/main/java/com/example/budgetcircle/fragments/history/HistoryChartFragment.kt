@@ -15,7 +15,7 @@ import com.example.budgetcircle.databinding.FragmentHistoryChartBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.charts.MultipleBarChartSetter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.models.ChartOperation
 
 class HistoryChartFragment : Fragment() {
@@ -23,7 +23,7 @@ class HistoryChartFragment : Fragment() {
     private lateinit var periods: Array<String>
     private var periodIndex: Int = 0
 
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -38,7 +38,7 @@ class HistoryChartFragment : Fragment() {
     ): View {
         binding = FragmentHistoryChartBinding.inflate(inflater)
         periods = resources.getStringArray(R.array.chartPeriodsString)
-        periodIndex = periods.indexOf(budgetDataApi.chartOperationPeriod.value!!)
+        periodIndex = periods.indexOf(budgetCircleData.chartOperationPeriod.value!!)
 
         setButtons()
         setTheme()
@@ -124,7 +124,7 @@ class HistoryChartFragment : Fragment() {
             setOnClickListener {
                 if (periodIndex > 0) {
                     periodIndex--
-                    budgetDataApi.chartOperationPeriod.postValue(periods[periodIndex])
+                    budgetCircleData.chartOperationPeriod.postValue(periods[periodIndex])
                 }
 
                 visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
@@ -139,7 +139,7 @@ class HistoryChartFragment : Fragment() {
             setOnClickListener {
                 if (periodIndex < periods.size - 1) {
                     periodIndex++
-                    budgetDataApi.chartOperationPeriod.postValue(periods[periodIndex])
+                    budgetCircleData.chartOperationPeriod.postValue(periods[periodIndex])
                 }
 
                 binding.historyChartFragmentPreviousPeriodButton.visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
@@ -149,14 +149,14 @@ class HistoryChartFragment : Fragment() {
 
         binding.historyChartFragmentChooseBudgetTypeButton.setOnClickListener {
             val types =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].title else resources.getString(
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].title else resources.getString(
                         R.string.all
                     )
                 }
             val typesId =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].id else 0
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].id else 0
                 }
 
             Dialogs().chooseOne(
@@ -164,25 +164,25 @@ class HistoryChartFragment : Fragment() {
                 resources.getString(R.string.budgetTypes),
                 types,
                 typesId,
-                budgetDataApi.operationChartChosenBudgetTypeString,
-                budgetDataApi.operationChartChosenBudgetType,
+                budgetCircleData.operationChartChosenBudgetTypeString,
+                budgetCircleData.operationChartChosenBudgetType,
                 if (Settings.isDay()) R.style.orangeEdgeEffect else R.style.darkEdgeEffect
             )
         }
     }
 
     private fun setObservation() {
-        budgetDataApi.chartOperationPeriod.observe(this.viewLifecycleOwner) {
+        budgetCircleData.chartOperationPeriod.observe(this.viewLifecycleOwner) {
             binding.historyChartFragmentPeriod.text = it
 
-            budgetDataApi.getChartOperations()
+            budgetCircleData.getChartOperations()
         }
 
-        budgetDataApi.operationChartChosenBudgetType.observe(this.viewLifecycleOwner) {
-            budgetDataApi.getChartOperations()
+        budgetCircleData.operationChartChosenBudgetType.observe(this.viewLifecycleOwner) {
+            budgetCircleData.getChartOperations()
         }
 
-        budgetDataApi.chartOperations.observe(this.viewLifecycleOwner) {
+        budgetCircleData.chartOperations.observe(this.viewLifecycleOwner) {
             if (it != null)
                 setBarChart(it)
         }

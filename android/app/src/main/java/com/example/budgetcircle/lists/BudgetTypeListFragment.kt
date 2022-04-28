@@ -23,7 +23,7 @@ import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.fragments.BudgetFragment
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.items.BudgetTypeAdapter
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import java.util.*
@@ -33,7 +33,7 @@ class BudgetTypeListFragment : Fragment() {
     lateinit var binding: FragmentBudgetTypeListBinding
     private lateinit var adapter: BudgetTypeAdapter
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
     private var itemUnderDeletion: BudgetType? = null
     private var lastTypeId: Int = -1
 
@@ -178,7 +178,7 @@ class BudgetTypeListFragment : Fragment() {
                     startLoading()
                     val name = result.data?.getStringExtra("newAccountName")!!
                     val sum = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
-                    budgetDataApi.editBudgetType(
+                    budgetCircleData.editBudgetType(
                         lastTypeId,
                         BudgetType(
                             -1,
@@ -193,7 +193,7 @@ class BudgetTypeListFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
+        budgetCircleData.budgetTypes.observe(this.viewLifecycleOwner, {
             stopLoading()
             adapter.setList(it)
             createList()
@@ -223,7 +223,7 @@ class BudgetTypeListFragment : Fragment() {
     private fun deleteBudgetType() {
         itemUnderDeletion?.let {
             startLoading()
-            budgetDataApi.deleteBudgetType(it.id)
+            budgetCircleData.deleteBudgetType(it.id)
         }
         itemUnderDeletion = null
     }

@@ -21,7 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class BudgetDataApi(application: Application) : AndroidViewModel(application) {
+class BudgetCircleData(application: Application) : AndroidViewModel(application) {
     private val budgetTypeApiService: BudgetTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(BudgetTypeApi::class.java)

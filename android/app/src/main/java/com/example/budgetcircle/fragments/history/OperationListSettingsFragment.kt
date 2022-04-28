@@ -14,12 +14,12 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationListSettingsBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 
 
 class OperationListSettingsFragment : Fragment() {
     lateinit var binding: FragmentOperationListSettingsBinding
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
     private var previousDate: Int = 0
     private var previousDateString: String = ""
     private var previousOrder = ""
@@ -55,14 +55,14 @@ class OperationListSettingsFragment : Fragment() {
 
     //region Setting
     private fun setValues() {
-        previousDate = budgetDataApi.operationListDate.value!!
-        previousDateString = budgetDataApi.operationListDateString.value!!
-        previousOrder = budgetDataApi.operationListStartWith.value!!
-        previousBudgetType = budgetDataApi.operationListChosenBudgetType.value!!
-        previousBudgetTypeString = budgetDataApi.operationListChosenBudgetTypeString.value!!
-        previousType = budgetDataApi.operationListChosenType.value!!
-        previousTypeString = budgetDataApi.operationListChosenTypeString.value!!
-        previousOperationTypeString = budgetDataApi.operationType.value!!
+        previousDate = budgetCircleData.operationListDate.value!!
+        previousDateString = budgetCircleData.operationListDateString.value!!
+        previousOrder = budgetCircleData.operationListStartWith.value!!
+        previousBudgetType = budgetCircleData.operationListChosenBudgetType.value!!
+        previousBudgetTypeString = budgetCircleData.operationListChosenBudgetTypeString.value!!
+        previousType = budgetCircleData.operationListChosenType.value!!
+        previousTypeString = budgetCircleData.operationListChosenTypeString.value!!
+        previousOperationTypeString = budgetCircleData.operationType.value!!
     }
 
     private fun setButtons() {
@@ -78,8 +78,8 @@ class OperationListSettingsFragment : Fragment() {
                 resources.getString(R.string.choosingPeriod),
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                budgetDataApi.operationListDateString,
-                budgetDataApi.operationListDate,
+                budgetCircleData.operationListDateString,
+                budgetCircleData.operationListDate,
                 effectColor
             )
         }
@@ -89,7 +89,7 @@ class OperationListSettingsFragment : Fragment() {
                 this.requireContext(),
                 resources.getString(R.string.operations),
                 resources.getStringArray(R.array.operationTypes),
-                budgetDataApi.operationType,
+                budgetCircleData.operationType,
                 effectColor
             )
         }
@@ -99,21 +99,21 @@ class OperationListSettingsFragment : Fragment() {
                 this.requireContext(),
                 resources.getString(R.string.start_with),
                 resources.getStringArray(R.array.startWith),
-                budgetDataApi.operationListStartWith,
+                budgetCircleData.operationListStartWith,
                 effectColor
             )
         }
 
         binding.operationListSettingsFragmentSelectBudgetTypeButton.setOnClickListener {
             val types =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].title else resources.getString(
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].title else resources.getString(
                         R.string.all
                     )
                 }
             val typesId =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].id else 0
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].id else 0
                 }
 
             Dialogs().chooseOne(
@@ -121,57 +121,57 @@ class OperationListSettingsFragment : Fragment() {
                 resources.getString(R.string.budgetTypes),
                 types,
                 typesId,
-                budgetDataApi.operationListChosenBudgetTypeString,
-                budgetDataApi.operationListChosenBudgetType,
+                budgetCircleData.operationListChosenBudgetTypeString,
+                budgetCircleData.operationListChosenBudgetType,
                 effectColor
             )
         }
 
         binding.operationListSettingsFragmentSelectTypeButton.setOnClickListener {
             var types: Array<String> = arrayOf()
-            when (budgetDataApi.operationType.value!!) {
+            when (budgetCircleData.operationType.value!!) {
                 resources.getString(R.string.exchange_type) -> {
-                    types = Array((budgetDataApi.budgetTypes.value!!.size + 1)) { index ->
+                    types = Array((budgetCircleData.budgetTypes.value!!.size + 1)) { index ->
                         if (index == 0) resources.getString(R.string.all)
-                        else budgetDataApi.budgetTypes.value!![index - 1].title
+                        else budgetCircleData.budgetTypes.value!![index - 1].title
                     }
 
                 }
                 resources.getString(R.string.exp_type) -> {
-                    types = Array((budgetDataApi.expenseTypes.value!!.size + 1)) { index ->
+                    types = Array((budgetCircleData.expenseTypes.value!!.size + 1)) { index ->
                         if (index == 0) resources.getString(R.string.all)
-                        else budgetDataApi.expenseTypes.value!![index - 1].title
+                        else budgetCircleData.expenseTypes.value!![index - 1].title
                     }
 
                 }
                 resources.getString(R.string.earn_type) ->  {
-                    types = Array((budgetDataApi.earningTypes.value!!.size + 1)) { index ->
+                    types = Array((budgetCircleData.earningTypes.value!!.size + 1)) { index ->
                         if (index == 0) resources.getString(R.string.all)
-                        else budgetDataApi.earningTypes.value!![index - 1].title
+                        else budgetCircleData.earningTypes.value!![index - 1].title
                     }
 
                 }
             }
             var typesId: Array<Int> = arrayOf()
-            when (budgetDataApi.operationType.value!!) {
+            when (budgetCircleData.operationType.value!!) {
                 resources.getString(R.string.exchange_type) -> {
-                    typesId = Array((budgetDataApi.budgetTypes.value!!.size + 1)) { index ->
+                    typesId = Array((budgetCircleData.budgetTypes.value!!.size + 1)) { index ->
                         if (index == 0) 0
-                        else budgetDataApi.budgetTypes.value!![index - 1].id
+                        else budgetCircleData.budgetTypes.value!![index - 1].id
                     }
 
                 }
                 resources.getString(R.string.exp_type) -> {
-                    typesId = Array((budgetDataApi.expenseTypes.value!!.size + 1)) { index ->
+                    typesId = Array((budgetCircleData.expenseTypes.value!!.size + 1)) { index ->
                         if (index == 0) 0
-                        else budgetDataApi.expenseTypes.value!![index - 1].id
+                        else budgetCircleData.expenseTypes.value!![index - 1].id
                     }
 
                 }
                 resources.getString(R.string.earn_type) ->  {
-                    typesId = Array((budgetDataApi.earningTypes.value!!.size + 1)) { index ->
+                    typesId = Array((budgetCircleData.earningTypes.value!!.size + 1)) { index ->
                         if (index == 0) 0
-                        else budgetDataApi.earningTypes.value!![index - 1].id
+                        else budgetCircleData.earningTypes.value!![index - 1].id
                     }
 
                 }
@@ -179,11 +179,11 @@ class OperationListSettingsFragment : Fragment() {
 
             Dialogs().chooseOne(
                 this.requireContext(),
-                budgetDataApi.operationType.value!!,
+                budgetCircleData.operationType.value!!,
                 types,
                 typesId,
-                budgetDataApi.operationListChosenTypeString,
-                budgetDataApi.operationListChosenType,
+                budgetCircleData.operationListChosenTypeString,
+                budgetCircleData.operationListChosenType,
                 effectColor
             )
         }
@@ -246,11 +246,11 @@ class OperationListSettingsFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.operationListDateString.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operationListDateString.observe(this.viewLifecycleOwner, {
             binding.operationListSettingsFragmentSelectPeriodButton.text = it
         })
 
-        budgetDataApi.operationType.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operationType.observe(this.viewLifecycleOwner, {
             if (it == resources.getString(R.string.all)) {
                 binding.operationListSettingsFragmentSelectTypeButton.isClickable = false
                 binding.operationListSettingsFragmentSelectTypeButton.setTextColor(
@@ -282,23 +282,23 @@ class OperationListSettingsFragment : Fragment() {
             binding.operationListSettingsFragmentSelectOperationTypeButton.apply {
                 if (text.toString() == "" || text.toString() == it) {
                     binding.operationListSettingsFragmentSelectTypeButton.text =
-                        budgetDataApi.operationListChosenTypeString.value!!
+                        budgetCircleData.operationListChosenTypeString.value!!
                 } else {
-                    budgetDataApi.operationListChosenType.postValue(0)
-                    budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
+                    budgetCircleData.operationListChosenType.postValue(0)
+                    budgetCircleData.operationListChosenTypeString.postValue(resources.getString(R.string.all))
                 }
             }
 
             binding.operationListSettingsFragmentSelectOperationTypeButton.text = it
 
         })
-        budgetDataApi.operationListChosenBudgetTypeString.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operationListChosenBudgetTypeString.observe(this.viewLifecycleOwner, {
             binding.operationListSettingsFragmentSelectBudgetTypeButton.text = it
         })
-        budgetDataApi.operationListChosenTypeString.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operationListChosenTypeString.observe(this.viewLifecycleOwner, {
             binding.operationListSettingsFragmentSelectTypeButton.text = it
         })
-        budgetDataApi.operationListStartWith.observe(this.viewLifecycleOwner, {
+        budgetCircleData.operationListStartWith.observe(this.viewLifecycleOwner, {
             binding.operationListSettingsFragmentSelectOrderButton.text = it
         })
     }
@@ -320,19 +320,19 @@ class OperationListSettingsFragment : Fragment() {
     }
 
     private fun apply() {
-        budgetDataApi.page.postValue(1)
+        budgetCircleData.page.postValue(1)
         openHistory()
     }
 
     private fun cancel() {
-        budgetDataApi.operationListDate.postValue(previousDate)
-        budgetDataApi.operationListDateString.postValue(previousDateString)
-        budgetDataApi.operationListStartWith.postValue(previousOrder)
-        budgetDataApi.operationListChosenBudgetType.postValue(previousBudgetType)
-        budgetDataApi.operationListChosenBudgetTypeString.postValue(previousBudgetTypeString)
-        budgetDataApi.operationListChosenType.postValue(previousType)
-        budgetDataApi.operationListChosenTypeString.postValue(previousTypeString)
-        budgetDataApi.operationType.postValue(previousOperationTypeString)
+        budgetCircleData.operationListDate.postValue(previousDate)
+        budgetCircleData.operationListDateString.postValue(previousDateString)
+        budgetCircleData.operationListStartWith.postValue(previousOrder)
+        budgetCircleData.operationListChosenBudgetType.postValue(previousBudgetType)
+        budgetCircleData.operationListChosenBudgetTypeString.postValue(previousBudgetTypeString)
+        budgetCircleData.operationListChosenType.postValue(previousType)
+        budgetCircleData.operationListChosenTypeString.postValue(previousTypeString)
+        budgetCircleData.operationType.postValue(previousOperationTypeString)
         openHistory()
     }
     //endregion

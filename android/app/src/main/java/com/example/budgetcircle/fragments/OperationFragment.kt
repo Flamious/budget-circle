@@ -24,14 +24,14 @@ import com.example.budgetcircle.settings.charts.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.charts.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
 
 class OperationFragment(val isExpense: Boolean) : Fragment() {
     lateinit var binding: FragmentOperationBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
     private var isPieChart = true
 
     private val appear: Animation by lazy {
@@ -244,14 +244,14 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                     val typeIndex = result.data?.getIntExtra("typeIndex", 0)!!
                     val title = result.data?.getStringExtra("title")!!
                     val commentary = result.data?.getStringExtra("commentary")!!
-                    budgetDataApi.addOperation(
+                    budgetCircleData.addOperation(
                         Operation(
                             -1,
                             title,
                             result.data?.getDoubleExtra("sum", 0.0)!!,
                             "",
-                            if (isExpense) budgetDataApi.expenseTypes.value!![typeIndex].id else budgetDataApi.earningTypes.value!![typeIndex].id,
-                            budgetDataApi.budgetTypes.value!![budgetTypeIndex].id,
+                            if (isExpense) budgetCircleData.expenseTypes.value!![typeIndex].id else budgetCircleData.earningTypes.value!![typeIndex].id,
+                            budgetCircleData.budgetTypes.value!![budgetTypeIndex].id,
                             commentary,
                             isExpense
                         )
@@ -262,13 +262,13 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
 
     private fun setObservation() {
         if (isExpense) {
-            budgetDataApi.expensesDateString.observe(this.viewLifecycleOwner, {
+            budgetCircleData.expensesDateString.observe(this.viewLifecycleOwner, {
                 binding.operationFragmentPeriodText.text = it
             })
-            budgetDataApi.expensesDate.observe(this.viewLifecycleOwner, {
-                budgetDataApi.getExpenseSums(it)
+            budgetCircleData.expensesDate.observe(this.viewLifecycleOwner, {
+                budgetCircleData.getExpenseSums(it)
             })
-            budgetDataApi.expenseSums.observe(this.viewLifecycleOwner, {
+            budgetCircleData.expenseSums.observe(this.viewLifecycleOwner, {
                 if (it != null) {
                     if (isPieChart)
                         setPieChart(it)
@@ -277,13 +277,13 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 }
             })
         } else {
-            budgetDataApi.earningsDateString.observe(this.viewLifecycleOwner, {
+            budgetCircleData.earningsDateString.observe(this.viewLifecycleOwner, {
                 binding.operationFragmentPeriodText.text = it
             })
-            budgetDataApi.earningsDate.observe(this.viewLifecycleOwner, {
-                budgetDataApi.getEarningSums(it)
+            budgetCircleData.earningsDate.observe(this.viewLifecycleOwner, {
+                budgetCircleData.getEarningSums(it)
             })
-            budgetDataApi.earningSums.observe(this.viewLifecycleOwner, {
+            budgetCircleData.earningSums.observe(this.viewLifecycleOwner, {
                 if (it != null) {
                     if (isPieChart)
                         setPieChart(it)
@@ -304,14 +304,14 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                 operationFragmentInfoLayout.visibility = View.INVISIBLE
 
                 operationFragmentChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
-                setBarChart(if (isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+                setBarChart(if (isExpense) budgetCircleData.expenseSums.value!! else budgetCircleData.earningSums.value!!)
             } else {
                 operationFragmentBarChart.visibility = View.INVISIBLE
                 operationFragmentPieChart.visibility = View.VISIBLE
                 operationFragmentInfoLayout.visibility = View.VISIBLE
 
                 operationFragmentChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
-                setPieChart(if (isExpense) budgetDataApi.expenseSums.value!! else budgetDataApi.earningSums.value!!)
+                setPieChart(if (isExpense) budgetCircleData.expenseSums.value!! else budgetCircleData.earningSums.value!!)
             }
             isPieChart = !isPieChart
         }
@@ -344,18 +344,18 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
         intent.putExtra("isExpense", isExpense)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].title })
         if (isExpense) {
             intent.putExtra(
                 "types",
-                Array(budgetDataApi.expenseTypes.value!!.size) { index -> budgetDataApi.expenseTypes.value!![index].title })
+                Array(budgetCircleData.expenseTypes.value!!.size) { index -> budgetCircleData.expenseTypes.value!![index].title })
             intent.putExtra(
                 "budgetTypesSums",
-                Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].sum })
+                Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].sum })
         } else {
             intent.putExtra(
                 "types",
-                Array(budgetDataApi.earningTypes.value!!.size) { index -> budgetDataApi.earningTypes.value!![index].title })
+                Array(budgetCircleData.earningTypes.value!!.size) { index -> budgetCircleData.earningTypes.value!![index].title })
         }
         launcher?.launch(intent)
     }
@@ -380,8 +380,8 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             resources.getString(R.string.choosingPeriod),
             resources.getStringArray(R.array.periodsString),
             resources.getIntArray(R.array.periodsInt).toTypedArray(),
-            if (isExpense) budgetDataApi.expensesDateString else budgetDataApi.earningsDateString,
-            if (isExpense) budgetDataApi.expensesDate else budgetDataApi.earningsDate,
+            if (isExpense) budgetCircleData.expensesDateString else budgetCircleData.earningsDateString,
+            if (isExpense) budgetCircleData.expensesDate else budgetCircleData.earningsDate,
             effectColor
         )
     }

@@ -19,12 +19,12 @@ import com.example.budgetcircle.databinding.FragmentUserBinding
 import com.example.budgetcircle.dialogs.Dialogs
 import com.example.budgetcircle.forms.PasswordChangeActivity
 import com.example.budgetcircle.settings.Settings
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 
 
 class UserFragment : Fragment() {
     lateinit var binding: FragmentUserBinding
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
 
     private val appear: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -129,11 +129,11 @@ class UserFragment : Fragment() {
     }
 
     private fun deleteAllOperations() {
-        budgetDataApi.deleteAllOperations()
+        budgetCircleData.deleteAllOperations()
     }
 
     private fun clearBudgetTypes() {
-        budgetDataApi.clearBudgetTypes()
+        budgetCircleData.clearBudgetTypes()
     }
 
     private fun openChangePasswordActivity() {

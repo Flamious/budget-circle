@@ -26,7 +26,7 @@ import com.example.budgetcircle.settings.charts.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
 import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.settings.charts.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.collections.ArrayList
@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
     private var isPieChart = true
 
     //region Animations
@@ -278,7 +278,7 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetDataApi.addBudgetType(
+                            budgetCircleData.addBudgetType(
                                 BudgetType(
                                     -1,
                                     name,
@@ -292,9 +292,9 @@ class BudgetFragment : Fragment() {
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetDataApi.makeExchange(
-                                budgetDataApi.budgetTypes.value!![from],
-                                budgetDataApi.budgetTypes.value!![to],
+                            budgetCircleData.makeExchange(
+                                budgetCircleData.budgetTypes.value!![from],
+                                budgetCircleData.budgetTypes.value!![to],
                                 sum
                             )
                         }
@@ -312,7 +312,7 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
+        budgetCircleData.budgetTypes.observe(this.viewLifecycleOwner, {
             if (it != null) {
                 if (isPieChart)
                     setPieChart(it)
@@ -334,14 +334,14 @@ class BudgetFragment : Fragment() {
                 budgetFragmentInfoLayout.visibility = View.INVISIBLE
                 budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
 
-                setBarChart(budgetDataApi.budgetTypes.value!!)
+                setBarChart(budgetCircleData.budgetTypes.value!!)
             } else {
                 budgetFragmentBarChart.visibility = View.INVISIBLE
                 budgetFragmentPieChart.visibility = View.VISIBLE
                 budgetFragmentInfoLayout.visibility = View.VISIBLE
                 budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
 
-                setPieChart(budgetDataApi.budgetTypes.value!!)
+                setPieChart(budgetCircleData.budgetTypes.value!!)
             }
             isPieChart = !isPieChart
         }
@@ -381,10 +381,10 @@ class BudgetFragment : Fragment() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].title })
         intent.putExtra(
             "budgetTypesSums",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].sum })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].sum })
         launcher?.launch(intent)
     }
 
