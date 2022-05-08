@@ -1,78 +1,119 @@
 package com.example.budgetcircle.fragments.history
 
-import android.opengl.Visibility
+import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentOperationListSettingsBinding
 import com.example.budgetcircle.dialogs.Dialogs
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 
 
 class OperationListSettingsFragment : Fragment() {
     lateinit var binding: FragmentOperationListSettingsBinding
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
     private var previousDate: Int = 0
     private var previousDateString: String = ""
+    private var previousOrder = ""
+    private var previousBudgetType = 0
+    private var previousBudgetTypeString = ""
+    private var previousType = 0
+    private var previousTypeString = ""
+    private var previousOperationTypeString = ""
+
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.requireContext(),
+            R.anim.appear_short_anim
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOperationListSettingsBinding.inflate(inflater)
+        setValues()
         setButtons()
         setObservation()
-
-        previousDate = budgetDataApi.operationListDate.value!!
-        previousDateString = budgetDataApi.operationListDateString.value!!
+        setTheme()
         return binding.root
     }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
+
     //region Setting
+    private fun setValues() {
+        previousDate = budgetCircleData.operationListDate.value!!
+        previousDateString = budgetCircleData.operationListDateString.value!!
+        previousOrder = budgetCircleData.operationListStartWith.value!!
+        previousBudgetType = budgetCircleData.operationListChosenBudgetType.value!!
+        previousBudgetTypeString = budgetCircleData.operationListChosenBudgetTypeString.value!!
+        previousType = budgetCircleData.operationListChosenType.value!!
+        previousTypeString = budgetCircleData.operationListChosenTypeString.value!!
+        previousOperationTypeString = budgetCircleData.operationType.value!!
+    }
 
     private fun setButtons() {
-        binding.selectPeriod.setOnClickListener {
+        val effectColor: Int = if (Settings.isDay()) {
+            R.style.orangeEdgeEffect
+        } else {
+            R.style.darkEdgeEffect
+        }
+
+        binding.operationListSettingsFragmentSelectPeriodButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.choosingPeriod),
                 resources.getStringArray(R.array.periodsString),
                 resources.getIntArray(R.array.periodsInt).toTypedArray(),
-                budgetDataApi.operationListDateString,
-                budgetDataApi.operationListDate
+                budgetCircleData.operationListDateString,
+                budgetCircleData.operationListDate,
+                effectColor
             )
         }
 
-        binding.selectOperationType.setOnClickListener {
+        binding.operationListSettingsFragmentSelectOperationTypeButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.operations),
                 resources.getStringArray(R.array.operationTypes),
-                budgetDataApi.operationType
+                budgetCircleData.operationType,
+                effectColor
             )
         }
 
-        binding.selectOrder.setOnClickListener {
+        binding.operationListSettingsFragmentSelectOrderButton.setOnClickListener {
             Dialogs().chooseOne(
                 this.requireContext(),
                 resources.getString(R.string.start_with),
                 resources.getStringArray(R.array.startWith),
-                budgetDataApi.operationListStartWith
+                budgetCircleData.operationListStartWith,
+                effectColor
             )
         }
 
-        binding.selectBudgetType.setOnClickListener {
+        binding.operationListSettingsFragmentSelectBudgetTypeButton.setOnClickListener {
             val types =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].title else resources.getString(
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].title else resources.getString(
                         R.string.all
                     )
                 }
             val typesId =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0) budgetDataApi.budgetTypes.value!![index - 1].id else 0
+                Array(budgetCircleData.budgetTypes.value!!.size + 1) { index ->
+                    if (index > 0) budgetCircleData.budgetTypes.value!![index - 1].id else 0
                 }
 
             Dialogs().chooseOne(
@@ -80,97 +121,219 @@ class OperationListSettingsFragment : Fragment() {
                 resources.getString(R.string.budgetTypes),
                 types,
                 typesId,
-                budgetDataApi.operationListChosenBudgetTypeString,
-                budgetDataApi.operationListChosenBudgetType
+                budgetCircleData.operationListChosenBudgetTypeString,
+                budgetCircleData.operationListChosenBudgetType,
+                effectColor
             )
         }
 
-        binding.selectType.setOnClickListener {
-            val types =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0)
-                        when (budgetDataApi.operationType.value!!) {
-                            resources.getString(R.string.exchange_type) -> budgetDataApi.budgetTypes.value!![index - 1].title
-                            resources.getString(R.string.exp_type) -> budgetDataApi.expenseTypes.value!![index - 1].title
-                            resources.getString(R.string.earn_type) -> budgetDataApi.earningTypes.value!![index - 1].title
-                            else -> resources.getString(R.string.exchange_type)
-                        } else resources.getString(
-                        R.string.all
-                    )
-                }
-            val typesId =
-                Array(budgetDataApi.budgetTypes.value!!.size + 1) { index ->
-                    if (index > 0)
-                        when (budgetDataApi.operationType.value!!) {
-                            resources.getString(R.string.exchange_type) -> budgetDataApi.budgetTypes.value!![index - 1].id
-                            resources.getString(R.string.exp_type) -> budgetDataApi.expenseTypes.value!![index - 1].id
-                            resources.getString(R.string.earn_type) -> budgetDataApi.earningTypes.value!![index - 1].id
-                            else -> 0
-                        } else 0
+        binding.operationListSettingsFragmentSelectTypeButton.setOnClickListener {
+            var types: Array<String> = arrayOf()
+            when (budgetCircleData.operationType.value!!) {
+                resources.getString(R.string.exchange_type) -> {
+                    types = Array((budgetCircleData.budgetTypes.value!!.size + 1)) { index ->
+                        if (index == 0) resources.getString(R.string.all)
+                        else budgetCircleData.budgetTypes.value!![index - 1].title
+                    }
 
                 }
+                resources.getString(R.string.exp_type) -> {
+                    types = Array((budgetCircleData.expenseTypes.value!!.size + 1)) { index ->
+                        if (index == 0) resources.getString(R.string.all)
+                        else budgetCircleData.expenseTypes.value!![index - 1].title
+                    }
+
+                }
+                resources.getString(R.string.earn_type) ->  {
+                    types = Array((budgetCircleData.earningTypes.value!!.size + 1)) { index ->
+                        if (index == 0) resources.getString(R.string.all)
+                        else budgetCircleData.earningTypes.value!![index - 1].title
+                    }
+
+                }
+            }
+            var typesId: Array<Int> = arrayOf()
+            when (budgetCircleData.operationType.value!!) {
+                resources.getString(R.string.exchange_type) -> {
+                    typesId = Array((budgetCircleData.budgetTypes.value!!.size + 1)) { index ->
+                        if (index == 0) 0
+                        else budgetCircleData.budgetTypes.value!![index - 1].id
+                    }
+
+                }
+                resources.getString(R.string.exp_type) -> {
+                    typesId = Array((budgetCircleData.expenseTypes.value!!.size + 1)) { index ->
+                        if (index == 0) 0
+                        else budgetCircleData.expenseTypes.value!![index - 1].id
+                    }
+
+                }
+                resources.getString(R.string.earn_type) ->  {
+                    typesId = Array((budgetCircleData.earningTypes.value!!.size + 1)) { index ->
+                        if (index == 0) 0
+                        else budgetCircleData.earningTypes.value!![index - 1].id
+                    }
+
+                }
+            }
 
             Dialogs().chooseOne(
                 this.requireContext(),
-                resources.getString(R.string.budgetTypes),
+                budgetCircleData.operationType.value!!,
                 types,
                 typesId,
-                budgetDataApi.operationListChosenTypeString,
-                budgetDataApi.operationListChosenType
+                budgetCircleData.operationListChosenTypeString,
+                budgetCircleData.operationListChosenType,
+                effectColor
             )
         }
 
-        binding.filterButton.setOnClickListener {
-            budgetDataApi.page.postValue(1)
-            openHistory()
+        binding.operationListSettingsFragmentFilterButton.setOnClickListener {
+            apply()
         }
 
-        binding.stopFilterButton.setOnClickListener {
-            budgetDataApi.operationListDate.postValue(previousDate)
-            budgetDataApi.operationListDateString.postValue(previousDateString)
-            openHistory()
+        binding.operationListSettingsFragmentBackButton.setOnClickListener {
+            cancel()
+        }
+    }
+
+    private fun setTheme() {
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
+        binding.apply {
+            if (Settings.isNight()) {
+                textPrimary = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@OperationListSettingsFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                operationListSettingsFragmentBackButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationListSettingsFragmentFilterButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                operationListSettingsFragmentHeaderLayout.setBackgroundColor(mainColor)
+                operationListSettingsFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+
+                operationListSettingsFragmentPeriodTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentBudgetTypeTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentOrderTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentOperationTypeTitle.setTextColor(textSecondary)
+                operationListSettingsFragmentTypeTitle.setTextColor(textSecondary)
+
+                operationListSettingsFragmentSelectPeriodButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectBudgetTypeButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectOrderButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectOperationTypeButton.setTextColor(textPrimary)
+                operationListSettingsFragmentSelectTypeButton.setTextColor(textPrimary)
+            }
         }
     }
 
     private fun setObservation() {
-        budgetDataApi.operationListDateString.observe(this.viewLifecycleOwner, {
-            binding.selectPeriod.text = it
+        budgetCircleData.operationListDateString.observe(this.viewLifecycleOwner, {
+            binding.operationListSettingsFragmentSelectPeriodButton.text = it
         })
-        budgetDataApi.operationType.observe(this.viewLifecycleOwner, {
-            binding.typeLayout.visibility =
-                if (it == resources.getString(R.string.all)) View.GONE else View.VISIBLE
-            binding.selectOperationType.apply {
+
+        budgetCircleData.operationType.observe(this.viewLifecycleOwner, {
+            if (it == resources.getString(R.string.all)) {
+                binding.operationListSettingsFragmentSelectTypeButton.isClickable = false
+                binding.operationListSettingsFragmentSelectTypeButton.setTextColor(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this.requireContext(),
+                            R.color.grey
+                        )
+                    )
+                )
+            } else {
+                binding.operationListSettingsFragmentSelectTypeButton.isClickable = true
+                binding.operationListSettingsFragmentSelectTypeButton.setTextColor(
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this.requireContext(),
+                            if(Settings.isDay()) R.color.text_primary else R.color.light_grey
+                        )
+                    )
+                )
+            }
+
+            if (it == resources.getString(R.string.exchange_type)) {
+                binding.operationListSettingsFragmentTitle.text = resources.getString(R.string.to)
+            } else {
+                binding.operationListSettingsFragmentTitle.text = resources.getString(R.string.type)
+            }
+
+            binding.operationListSettingsFragmentSelectOperationTypeButton.apply {
                 if (text.toString() == "" || text.toString() == it) {
-                    binding.selectType.text =
-                        budgetDataApi.operationListChosenTypeString.value!!
+                    binding.operationListSettingsFragmentSelectTypeButton.text =
+                        budgetCircleData.operationListChosenTypeString.value!!
                 } else {
-                    budgetDataApi.operationListChosenType.postValue(0)
-                    budgetDataApi.operationListChosenTypeString.postValue(resources.getString(R.string.all))
+                    budgetCircleData.operationListChosenType.postValue(0)
+                    budgetCircleData.operationListChosenTypeString.postValue(resources.getString(R.string.all))
                 }
             }
 
-            binding.selectOperationType.text = it
+            binding.operationListSettingsFragmentSelectOperationTypeButton.text = it
 
         })
-        budgetDataApi.operationListChosenBudgetTypeString.observe(this.viewLifecycleOwner, {
-            binding.selectBudgetType.text = it
+        budgetCircleData.operationListChosenBudgetTypeString.observe(this.viewLifecycleOwner, {
+            binding.operationListSettingsFragmentSelectBudgetTypeButton.text = it
         })
-        budgetDataApi.operationListChosenTypeString.observe(this.viewLifecycleOwner, {
-            binding.selectType.text = it
+        budgetCircleData.operationListChosenTypeString.observe(this.viewLifecycleOwner, {
+            binding.operationListSettingsFragmentSelectTypeButton.text = it
         })
-        budgetDataApi.operationListStartWith.observe(this.viewLifecycleOwner, {
-            binding.selectOrder.text = it
+        budgetCircleData.operationListStartWith.observe(this.viewLifecycleOwner, {
+            binding.operationListSettingsFragmentSelectOrderButton.text = it
         })
     }
     //endregion
 
     //region Methods
+    private fun appear() {
+        binding.operationListSettingsFragmentScrollView.startAnimation(appear)
+        binding.operationListSettingsFragmentFilterButton.startAnimation(appear)
+        binding.operationListSettingsFragmentHeaderLayout.startAnimation(appear)
+    }
+
     private fun openHistory() {
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragmentPanel, HistoryFragment())
             ?.commit()
+    }
+
+    private fun apply() {
+        budgetCircleData.page.postValue(1)
+        openHistory()
+    }
+
+    private fun cancel() {
+        budgetCircleData.operationListDate.postValue(previousDate)
+        budgetCircleData.operationListDateString.postValue(previousDateString)
+        budgetCircleData.operationListStartWith.postValue(previousOrder)
+        budgetCircleData.operationListChosenBudgetType.postValue(previousBudgetType)
+        budgetCircleData.operationListChosenBudgetTypeString.postValue(previousBudgetTypeString)
+        budgetCircleData.operationListChosenType.postValue(previousType)
+        budgetCircleData.operationListChosenTypeString.postValue(previousTypeString)
+        budgetCircleData.operationType.postValue(previousOperationTypeString)
+        openHistory()
     }
     //endregion
 }

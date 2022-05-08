@@ -7,132 +7,134 @@
     tools:context=".fragments.BudgetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/budgetFragmentLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/light_grey">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/budgetFragmentChartLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="-16dp"
-            app:layout_constraintBottom_toTopOf="@+id/listButton"
+            app:layout_constraintBottom_toTopOf="@+id/budgetFragmentListButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/repetitiveOperationsSwitch">
+            app:layout_constraintTop_toBottomOf="@+id/budgetFragmentHeaderLayout">
 
 
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/budgetPieChart"
+                android:id="@+id/budgetFragmentPieChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="0dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></com.github.mikephil.charting.charts.PieChart>
 
-            </com.github.mikephil.charting.charts.PieChart>
-
-            <TextView
-                android:id="@+id/sumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/budgetFragmentBarChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="24dp"
-                android:textColor="@color/text_primary"
-                android:textSize="34sp"
-                android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/kindText"
-                android:layout_width="wrap_content"
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/budgetFragmentInfoLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_secondary"
-                android:textSize="24sp"
+                android:layout_marginTop="34sp"
+                app:layout_constraintBottom_toBottomOf="@+id/budgetFragmentPieChart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sumText" />
+                app:layout_constraintTop_toTopOf="@+id/budgetFragmentPieChart">
+
+                <TextView
+                    android:id="@+id/budgetFragmentSumText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:textSize="34sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/budgetFragmentKindText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="24sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/budgetFragmentSumText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/Title"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/budgetFragmentHeaderLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/budget_fragment"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/green_main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/repetitiveOperationsSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/show_repetitive_operations_switch"
-            android:textColor="@color/text_secondary"
-            android:theme="@style/GreenSwitch"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Title" />
+            <TextView
+                android:id="@+id/budgetFragmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text="@string/budget_fragment"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/budgetFragmentChangeChartButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/budgetFragmentChangeChartButton" />
+
+            <ImageButton
+                android:id="@+id/budgetFragmentChangeChartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/green_main"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_bar_chart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/hiddenButtonsLayout"
+            android:id="@+id/budgetFragmentHiddenButtonsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/listButton"
-            app:layout_constraintEnd_toEndOf="@+id/listButton"
-            app:layout_constraintStart_toStartOf="@+id/listButton">
+            app:layout_constraintBottom_toTopOf="@+id/budgetFragmentListButton"
+            app:layout_constraintEnd_toEndOf="@+id/budgetFragmentListButton"
+            app:layout_constraintStart_toStartOf="@+id/budgetFragmentListButton">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/stocksListButton"
+                android:id="@+id/budgetFragmentTypeListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green_secondary"
-                android:clickable="true"
-                android:contentDescription="@string/stocks"
-                android:focusable="true"
-                android:src="@drawable/ic_stocks"
-                app:backgroundTint="@color/green_main"
-                app:borderWidth="2dp"
-                app:elevation="3dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:tint="@color/white" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/repetitiveOpListButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
-                android:clickable="true"
-                android:contentDescription="@string/repOps"
-                android:focusable="true"
-                android:src="@drawable/ic_history"
-                app:backgroundTint="@color/green_main"
-                app:borderWidth="2dp"
-                app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/stocksListButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/stocksListButton"
-                app:tint="@color/white" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/typeListButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
                 android:clickable="true"
                 android:contentDescription="@string/accList"
                 android:focusable="true"
@@ -140,17 +142,16 @@
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/repetitiveOpListButton"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/repetitiveOpListButton"
+                app:layout_constraintStart_toStartOf="parent"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addAccountButton"
+                android:id="@+id/budgetFragmentAddAccountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/green_secondary"
                 android:clickable="true"
                 android:contentDescription="@string/add_account"
                 android:focusable="true"
@@ -158,14 +159,14 @@
                 app:backgroundTint="@color/green_main"
                 app:borderWidth="2dp"
                 app:elevation="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/typeListButton"
+                app:layout_constraintBottom_toTopOf="@+id/budgetFragmentTypeListButton"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/typeListButton"
+                app:layout_constraintStart_toStartOf="@+id/budgetFragmentTypeListButton"
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/exchangeButton"
+            android:id="@+id/budgetFragmentExchangeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -180,7 +181,7 @@
             app:tint="@color/white" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/listButton"
+            android:id="@+id/budgetFragmentListButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operationFormActivityLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forms.OperationFormActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/operationFormActivityHeaderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/operationFormActivityBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@string/new_exchange"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <TextView
+            android:id="@+id/operationFormActivityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/operationFormActivityBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/operationFormActivityBackButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/operationFormActivityScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:theme="@style/greyEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/operationFormActivityAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operationFormActivityHeaderLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/operationFormActivityCommentaryField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:autofillHints="commentary"
+                    android:backgroundTint="@color/black"
+                    android:ems="10"
+                    android:hint="@string/comment"
+                    android:inputType="textMultiLine"
+                    android:textColorHighlight="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColorLink="@color/text_secondary"
+                    android:textCursorDrawable="@color/text_secondary"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/operationFormActivitySumField"
+                    app:layout_constraintStart_toStartOf="@+id/operationFormActivitySumField"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFormActivityTypeButton" />
+
+                <EditText
+                    android:id="@+id/operationFormActivitySumField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="sum"
+                    android:backgroundTint="@color/black"
+                    android:ems="10"
+                    android:hint="@string/sum"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/text_secondary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textColorLink="@color/text_secondary"
+                    android:textCursorDrawable="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintEnd_toEndOf="@+id/operationFormActivityTitleField"
+                    app:layout_constraintStart_toStartOf="@+id/operationFormActivityTitleField"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFormActivityTitleField" />
+
+                <EditText
+                    android:id="@+id/operationFormActivityTitleField"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:autofillHints="title"
+                    android:backgroundTint="@color/black"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:textColorHighlight="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/grey"
+                    android:textCursorDrawable="@color/grey"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/operationFormActivityBudgetTypeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationFormActivityBudgetTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationFormActivitySumField"
+                    app:layout_constraintTop_toTopOf="@+id/operationFormActivityBudgetTypeButton" />
+
+                <Button
+                    android:id="@+id/operationFormActivityBudgetTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFormActivitySumField" />
+
+                <TextView
+                    android:id="@+id/operationFormActivityKindTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kind"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/operationFormActivityTypeButton"
+                    app:layout_constraintStart_toStartOf="@+id/operationFormActivityBudgetTypeTitle"
+                    app:layout_constraintTop_toTopOf="@+id/operationFormActivityTypeButton" />
+
+                <Button
+                    android:id="@+id/operationFormActivityTypeButton"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_vertical|end"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/operationFormActivityBudgetTypeButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/operationFormActivityAddButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
+        android:backgroundTint="@color/blue_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

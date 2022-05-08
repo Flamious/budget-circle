@@ -2,70 +2,80 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operationTypeFormActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".forms.OperationTypeFormActivity">
 
-    <Button
-        android:id="@+id/opTypeAddButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/operationTypeFormActivityHeaderLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/operationTypeFormActivityBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@string/new_exchange"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <TextView
+            android:id="@+id/operationTypeFormActivityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/operationTypeFormActivityBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/operationTypeFormActivityBackButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/operationTypeFormActivityAddButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
         android:backgroundTint="@color/blue_main"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="@string/add_earn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/opTypeBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:scaleX="1"
-        android:scaleY="1"
-        app:layout_constraintBottom_toBottomOf="@+id/opTypeTitle2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/opTypeTitle2"
-        app:srcCompat="@drawable/ic_back" />
-
-    <TextView
-        android:id="@+id/opTypeTitle2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/new_earning"
-        android:textColor="@color/text_primary"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/opTypeAddButton"
+        android:theme="@style/greyEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/operationTypeFormActivityAddButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opTypeBackButton">
+        app:layout_constraintTop_toBottomOf="@+id/operationTypeFormActivityHeaderLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/opTitle"
+                    android:id="@+id/operationTypeFormActivityTitleEditText"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="32dp"
@@ -76,10 +86,10 @@
                     android:ems="10"
                     android:hint="@string/title"
                     android:inputType="text"
-                    android:textColorHighlight="@color/text_secondary"
-                    android:textColorHint="@color/text_secondary"
-                    android:textColorLink="@color/text_secondary"
-                    android:textCursorDrawable="@color/text_secondary"
+                    android:textColorHighlight="@color/grey"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/grey"
+                    android:textCursorDrawable="@color/grey"
                     android:textSize="20sp"
                     android:theme="@style/grayControlCursor"
                     app:layout_constraintEnd_toEndOf="parent"

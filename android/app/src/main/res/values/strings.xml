@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Budget Circle</string>
 
+    <!-- Loading-->
+    <string name="please_wait">Please, wait…</string>
+
     <!-- Fragments' titles -->
     <string name="budget_fragment">Budget</string>
     <string name="expenses_fragment">Expenses</string>
@@ -8,6 +11,7 @@
     <string name="earning_types_fragment">Earning types</string>
     <string name="expense_types_fragment">Expense types</string>
     <string name="history_fragment">History</string>
+    <string name="history_chart_fragment">History chart</string>
     <string name="settings_fragment">Settings</string>
 
     <!-- Text on fragments -->
@@ -33,13 +37,7 @@
     <string name="accept">Accept</string>
 
     <!-- Settings -->
-    <string name="language">Language</string>
-    <string name="mode">Theme</string>
-    <string name="other">Other</string>
-    <string name="system_language">Use system language</string>
-    <string name="system_theme">Use system theme</string>
-    <string name="always_show_rep_op">Always show repetitive operations</string>
-    <string name="currency">Currency</string>
+    <string name="theme">theme</string>>
 
     <!-- History -->
     <string name="date">Date:</string>
@@ -79,6 +77,7 @@
     <string name="to">To</string>
     <string name="title">Title</string>
     <string name="empty_field">Field cannot be empty</string>
+    <string name="email_format_string">String should have email format</string>
     <string name="zero_sum">Sum must be greater than 0</string>
     <string name="insufficient_funds">Insufficient funds on the account</string>
 
@@ -96,8 +95,10 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="login">Login</string>
-    <string name="signup">Sign up</string>
+    <string name="login">Budget Circle / Login</string>
+    <string name="login_short">Login</string>
+    <string name="signup">Budget Circle / Sign up</string>
+    <string name="signup_short">Sign up</string>
     <string name="wrongLoginOrPassword">Wrong Login or Password</string>
     <string name="token">token</string>
 
@@ -114,7 +115,16 @@
     <!-- Operation Types-->
     <string name="add_earning_type">Add earning type</string>
     <string name="add_expense_type">Add expense type</string>
+    <string name="edit_earning_type">Edit earning type</string>
+    <string name="edit_expense_type">Edit expense type</string>
+    <string name="other">Other</string>
 
-    <!-- Api -->
+    <!-- Mode -->
+    <string name="day_mode">day</string>
+    <string name="night_mode">night</string>
+
+    <!-- Settings -->
     <string name="url">url</string>
+    <string name="settings">settings</string>
+    <string name="mode">mode</string>
 </resources>

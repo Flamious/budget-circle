@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budgetTypeItemLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/budgetTypeItemDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/delete"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetTypeItemEditButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/budgetTypeItemEditButton"
+        app:srcCompat="@drawable/ic_delete"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/budgetTypeItemEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/edit_account"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/budgetTypeItemSum"
+        app:layout_constraintEnd_toStartOf="@+id/budgetTypeItemDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/budgetTypeItemTypeTitle"
+        app:srcCompat="@drawable/ic_edit"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
-        android:id="@+id/typeTitle"
+        android:id="@+id/budgetTypeItemTypeTitle"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/text_primary"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/budgetTypeDeleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/delete"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/budgetTypeEditButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/budgetTypeEditButton"
-        app:srcCompat="@drawable/ic_delete" />
-
-    <ImageButton
-        android:id="@+id/budgetTypeEditButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/edit"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/budgetTypeDeleteButton"
-        app:layout_constraintTop_toTopOf="@+id/typeTitle"
-        app:srcCompat="@drawable/ic_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/budgetTypeItemBorder" />
 
     <TextView
-        android:id="@+id/budgetTypeSum"
+        android:id="@+id/budgetTypeItemSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:textColor="@color/green_main"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/typeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/budgetTypeItemTypeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/budgetTypeItemTypeTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btLine"
+        android:id="@+id/budgetTypeItemBorder"
         android:layout_width="0dp"
-        android:layout_height="1px"
-        android:layout_marginTop="8dp"
-        android:background="@color/text_secondary"
-        android:backgroundTint="@color/text_secondary"
-        app:layout_constraintEnd_toEndOf="@+id/budgetTypeDeleteButton"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/budgetTypeSum"
-        app:layout_constraintTop_toBottomOf="@+id/budgetTypeSum" />
+        android:layout_height="3dp"
+        android:background="@color/light_grey"
+        android:backgroundTint="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

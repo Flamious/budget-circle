@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetCircle">
         <activity
+            android:name=".forms.OperationFormActivity"
+            android:exported="true" />
+        <activity
             android:name=".forms.OperationTypeFormActivity"
             android:exported="true" />
         <activity
@@ -19,6 +22,7 @@
             android:exported="true" />
         <activity
             android:name=".AuthActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,12 +35,6 @@
             android:exported="true" />
         <activity
             android:name=".forms.BudgetFormActivity"
-            android:exported="true" />
-        <activity
-            android:name=".forms.EarningsFormActivity"
-            android:exported="true" />
-        <activity
-            android:name=".forms.ExpensesFormActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

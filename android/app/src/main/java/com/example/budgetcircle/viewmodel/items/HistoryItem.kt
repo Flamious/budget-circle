@@ -1,6 +1,7 @@
 package com.example.budgetcircle.viewmodel.items
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,6 @@ import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.HistoryItemBinding
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.example.budgetcircle.viewmodel.models.OperationType
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 data class HistoryItem(
@@ -22,13 +21,17 @@ data class HistoryItem(
     val budgetTypeId: Int,
     val commentary: String,
     val isExpense: Boolean?,
-    val color: Int,
+    val color: Int
 )
 
 class HistoryAdapter(
     var budgetTypes: Array<BudgetType>,
     var earningsTypes: Array<OperationType>,
-    var expensesTypes: Array<OperationType>
+    var expensesTypes: Array<OperationType>,
+    val textPrimary: Int,
+    val textSecondary: Int,
+    val backgroundColor: Int,
+    val borderColor: Int
 ) : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
     var onItemClick: ((item: HistoryItem, index: Int) -> Unit)? = null
@@ -36,25 +39,33 @@ class HistoryAdapter(
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HistoryItemBinding.bind(view)
         fun bind(item: HistoryItem, to: String) = binding.apply {
-            itemTitle.text = item.sum.toString()
-            opColor.setBackgroundColor(item.color)
-            operationTitle.text = item.title
-            itemType.text =
+            historyItemSum.text = item.sum.toString()
+            historyItemColor.setBackgroundColor(item.color)
+            historyItemTitle.text = item.title
+            historyItemType.text =
                 when (item.isExpense) {
                     true -> expensesTypes.first { it.id == item.typeId }.title
                     false -> earningsTypes.first { it.id == item.typeId }.title
                     else -> {
-                        typeTitle.text = to
+                        historyItemTypeTitle.text = to
                         budgetTypes.first { it.id == item.typeId }.title
                     }
                 }
-            accountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
-                /*if (item.isExpense == true) expensesTypes.first { it.id == item.typeId }.title
-                else earningsTypes.first { it.id == item.typeId }.title*/
-            itemDate.text = item.date
-            itemLayout.setOnClickListener {
+            historyItemAccountType.text = budgetTypes.first { it.id == item.budgetTypeId }.title
+            historyItemDate.text = item.date
+            historyItemLayout.setOnClickListener {
                 onItemClick?.invoke(item, itemList.indexOfFirst { op -> op.id == item.id })
             }
+
+            historyItemLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+            historyItemTitle.setTextColor(textPrimary)
+            historyItemSum.setTextColor(textPrimary)
+            historyItemTypeTitle.setTextColor(textSecondary)
+            historyItemAccountTitle.setTextColor(textSecondary)
+            historyItemType.setTextColor(textSecondary)
+            historyItemAccountType.setTextColor(textSecondary)
+            historyItemDate.setTextColor(textSecondary)
+            historyItemBorder.backgroundTintList = ColorStateList.valueOf(borderColor)
         }
     }
 

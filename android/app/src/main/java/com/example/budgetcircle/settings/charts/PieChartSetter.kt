@@ -1,10 +1,11 @@
-package com.example.budgetcircle.settings
+package com.example.budgetcircle.settings.charts
 
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import android.widget.TextView
+import com.example.budgetcircle.settings.DoubleFormatter
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -46,6 +47,7 @@ class PieChartSetter {
             chart: PieChart,
             sumTextView: TextView,
             labelTextView: TextView,
+            holeColor: Int,
             isFull: Boolean = false,
             noEntries: Boolean = false
         ) {
@@ -55,9 +57,10 @@ class PieChartSetter {
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.holeRadius = if (!isFull) holeRadius else 0f
+            chart.setHoleColor(holeColor)
             chart.setDrawEntryLabels(false)
             chart.setTransparentCircleAlpha(0)
-            sumTextView.text = sum.toString()
+            sumTextView.text = DoubleFormatter.formatString(sum)
             labelTextView.text = label
             chart.highlightValues(null)
             chart.setOnChartValueSelectedListener(
@@ -69,7 +72,7 @@ class PieChartSetter {
                 )
             )
             chart.invalidate()
-
+            chart.animateXY(1000, 1000)
         }
 
         private class ChartListener(
@@ -80,12 +83,12 @@ class PieChartSetter {
         ) : OnChartValueSelectedListener {
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                sumTextView.text = e?.y.toString()
+                sumTextView.text = DoubleFormatter.formatString(e?.y!!.toDouble())
                 labelTextView.text = (e as PieEntry).label
             }
 
             override fun onNothingSelected() {
-                sumTextView.text = sum.toString()
+                sumTextView.text = DoubleFormatter.formatString(sum)
                 labelTextView.text = label
             }
 

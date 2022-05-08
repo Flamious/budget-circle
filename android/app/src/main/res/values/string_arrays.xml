@@ -1,27 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Budget -->
-    <string-array name="budget_titles">
-        <item name="stocks">Stocks</item>
-        <item name="bank">Bank</item>
-        <item name="cash">Cash</item>
-    </string-array>
-
-    <!-- Settings -->
-    <string-array name="language">
-        <item name="en">English</item>
-        <item name="ru">Russian</item>
-    </string-array>
-    <string-array name="themes">
-        <item name="dark">Dark</item>
-        <item name="light">Light</item>
-    </string-array>
-    <string-array name="currencies">
-        <item name="ruble">₽</item>
-        <item name="dollar">$</item>
-        <item name="euro">€</item>
-    </string-array>
-
     <!-- Periods -->
     <string-array name="periodsString">
         <item>@string/all_time</item>
@@ -31,6 +9,13 @@
         <item>@string/year</item>
     </string-array>
 
+    <string-array name="chartPeriodsString">
+        <item>@string/week</item>
+        <item>@string/month</item>
+        <item>@string/year</item>
+        <item>@string/all_time</item>
+    </string-array>
+
     <!-- Operation List -->
     <string-array name="operationTypes">
         <item>@string/all</item>
@@ -38,6 +23,7 @@
         <item>@string/exp_type</item>
         <item>@string/earn_type</item>
     </string-array>
+
     <string-array name="startWith">
         <item>@string/start_with_new</item>
         <item>@string/start_with_old</item>

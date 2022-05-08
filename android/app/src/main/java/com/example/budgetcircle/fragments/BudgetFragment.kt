@@ -2,6 +2,7 @@ package com.example.budgetcircle.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -21,9 +22,11 @@ import com.example.budgetcircle.databinding.FragmentBudgetBinding
 import com.example.budgetcircle.forms.BudgetExchangeActivity
 import com.example.budgetcircle.forms.BudgetFormActivity
 import com.example.budgetcircle.lists.BudgetTypeListFragment
+import com.example.budgetcircle.settings.charts.BarChartSetter
 import com.example.budgetcircle.settings.DoubleFormatter
-import com.example.budgetcircle.settings.PieChartSetter
-import com.example.budgetcircle.viewmodel.BudgetDataApi
+import com.example.budgetcircle.settings.Settings
+import com.example.budgetcircle.settings.charts.PieChartSetter
+import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.models.BudgetType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.collections.ArrayList
@@ -32,7 +35,8 @@ import kotlin.collections.ArrayList
 class BudgetFragment : Fragment() {
     lateinit var binding: FragmentBudgetBinding
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private val budgetDataApi: BudgetDataApi by activityViewModels()
+    private val budgetCircleData: BudgetCircleData by activityViewModels()
+    private var isPieChart = true
 
     //region Animations
     private val rotateOpen: Animation by lazy {
@@ -71,6 +75,13 @@ class BudgetFragment : Fragment() {
             R.anim.to_left_anim
         )
     }
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
+
     private var isClicked = false
     //endregion
 
@@ -80,6 +91,7 @@ class BudgetFragment : Fragment() {
     ): View {
         binding = FragmentBudgetBinding.inflate(inflater)
         setButtons()
+        setTheme()
         setObservation()
         setLauncher()
         return binding.root
@@ -89,6 +101,12 @@ class BudgetFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         changeOrientation()
     }
+
+    override fun onStart() {
+        super.onStart()
+        appear()
+    }
+
     //region Setting
     private fun setAnimation(
         isClicked: Boolean,
@@ -107,23 +125,69 @@ class BudgetFragment : Fragment() {
         listButton.startAnimation(if (isClicked) rotateClose else rotateOpen)
     }
 
-    private fun setButtons() {
-        binding.addAccountButton.setOnClickListener {
-            addAccount()
-            showHiddenButtons()
-        }
-        binding.listButton.setOnClickListener {
-            showHiddenButtons()
-        }
-        binding.exchangeButton.setOnClickListener {
-            addExchange()
-        }
-        binding.typeListButton.setOnClickListener {
-            openBudgetTypeList()
+    private fun setTheme() {
+        if (Settings.isNight()) {
+            binding.apply {
+                val textColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.light_grey
+                )
+                val textSecondary = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.grey
+                )
+                val backgroundColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                val mainColor = ContextCompat.getColor(
+                    this@BudgetFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+                budgetFragmentChangeChartButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentExchangeButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentTypeListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+                budgetFragmentAddAccountButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                budgetFragmentHeaderLayout.setBackgroundColor(mainColor)
+                budgetFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    budgetFragmentKindText.setTextColor(textColor)
+                    budgetFragmentSumTitleTextView?.setTextColor(textSecondary)
+                    budgetFragmentAccountTitleTextView?.setTextColor(textSecondary)
+                } else {
+                    budgetFragmentKindText.setTextColor(textSecondary)
+                }
+
+                budgetFragmentSumText.setTextColor(textColor)
+            }
         }
     }
 
-    private fun setChart(budgetTypes: List<BudgetType>) {
+    private fun setButtons() {
+        binding.budgetFragmentAddAccountButton.setOnClickListener {
+            addAccount()
+            showHiddenButtons()
+        }
+        binding.budgetFragmentListButton.setOnClickListener {
+            showHiddenButtons()
+        }
+        binding.budgetFragmentExchangeButton.setOnClickListener {
+            addExchange()
+            if (isClicked) showHiddenButtons()
+        }
+        binding.budgetFragmentTypeListButton.setOnClickListener {
+            openBudgetTypeList()
+        }
+        binding.budgetFragmentChangeChartButton.setOnClickListener {
+            changeChart()
+        }
+    }
+
+    private fun setBarChart(budgetTypes: List<BudgetType>) {
         val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
         val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
         var sum = 0.0
@@ -131,7 +195,52 @@ class BudgetFragment : Fragment() {
             sum += n
         }
         sum = DoubleFormatter.format(sum)
-        val colors = resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        val colors = if (Settings.isDay())
+            resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+        if (sum > 0)
+            BarChartSetter.setChart(
+                titles,
+                values,
+                colors,
+                binding.budgetFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
+                )
+            )
+        else
+            BarChartSetter.setChart(
+                arrayOf(resources.getString(R.string.no_entries)),
+                arrayOf(0.0),
+                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
+                binding.budgetFragmentBarChart,
+                ContextCompat.getColor(
+                    this.requireContext(),
+                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
+                ),
+                true
+            )
+    }
+
+    private fun setPieChart(budgetTypes: List<BudgetType>) {
+        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
+        var sum = 0.0
+        for (n in values) {
+            sum += n
+        }
+        sum = DoubleFormatter.format(sum)
+        val colors = if (Settings.isDay())
+            resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
+        else
+            resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
+
+        val holeColor = ContextCompat.getColor(
+            this.requireContext(),
+            if (Settings.isDay()) R.color.light_grey else R.color.dark_grey
+        )
         if (sum > 0)
             PieChartSetter.setChart(
                 titles,
@@ -139,9 +248,10 @@ class BudgetFragment : Fragment() {
                 colors,
                 sum,
                 resources.getString(R.string.total),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
+                binding.budgetFragmentPieChart,
+                binding.budgetFragmentSumText,
+                binding.budgetFragmentKindText,
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             )
         else
@@ -151,9 +261,10 @@ class BudgetFragment : Fragment() {
                 arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
                 sum,
                 resources.getString(R.string.no_entries),
-                binding.budgetPieChart,
-                binding.sumText,
-                binding.kindText,
+                binding.budgetFragmentPieChart,
+                binding.budgetFragmentSumText,
+                binding.budgetFragmentKindText,
+                holeColor,
                 resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
                 true
             )
@@ -167,7 +278,7 @@ class BudgetFragment : Fragment() {
                         "newAccount" -> {
                             val sum: Double = result.data?.getDoubleExtra("newAccountBudget", 0.0)!!
                             val name: String = result.data?.getStringExtra("newAccountName")!!
-                            budgetDataApi.addBudgetType(
+                            budgetCircleData.addBudgetType(
                                 BudgetType(
                                     -1,
                                     name,
@@ -181,9 +292,9 @@ class BudgetFragment : Fragment() {
                             val from: Int = result.data?.getIntExtra("fromIndex", 0)!!
                             val to: Int = result.data?.getIntExtra("toIndex", 0)!!
 
-                            budgetDataApi.makeExchange(
-                                budgetDataApi.budgetTypes.value!![from],
-                                budgetDataApi.budgetTypes.value!![to],
+                            budgetCircleData.makeExchange(
+                                budgetCircleData.budgetTypes.value!![from],
+                                budgetCircleData.budgetTypes.value!![to],
                                 sum
                             )
                         }
@@ -201,24 +312,61 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setObservation() {
-        budgetDataApi.budgetTypes.observe(this.viewLifecycleOwner, {
-            if(it != null) {
-                setChart(it)
+        budgetCircleData.budgetTypes.observe(this.viewLifecycleOwner, {
+            if (it != null) {
+                if (isPieChart)
+                    setPieChart(it)
+                else
+                    setBarChart(it)
+                binding.budgetFragmentExchangeButton.visibility =
+                    if (it.count() > 1) View.VISIBLE else View.GONE
             }
         })
     }
+
     //endregion
     //region Methods
+    private fun changeChart() {
+        binding.apply {
+            if (isPieChart) {
+                budgetFragmentPieChart.visibility = View.INVISIBLE
+                budgetFragmentBarChart.visibility = View.VISIBLE
+                budgetFragmentInfoLayout.visibility = View.INVISIBLE
+                budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_pie_chart)
+
+                setBarChart(budgetCircleData.budgetTypes.value!!)
+            } else {
+                budgetFragmentBarChart.visibility = View.INVISIBLE
+                budgetFragmentPieChart.visibility = View.VISIBLE
+                budgetFragmentInfoLayout.visibility = View.VISIBLE
+                budgetFragmentChangeChartButton.setImageResource(R.drawable.ic_bar_chart)
+
+                setPieChart(budgetCircleData.budgetTypes.value!!)
+            }
+            isPieChart = !isPieChart
+        }
+    }
+
+    private fun appear() {
+        binding.apply {
+            budgetFragmentHeaderLayout.startAnimation(appear)
+            budgetFragmentSumText.startAnimation(appear)
+            budgetFragmentKindText.startAnimation(appear)
+            budgetFragmentExchangeButton.startAnimation(appear)
+            budgetFragmentListButton.startAnimation(appear)
+            budgetFragmentSumTitleTextView?.startAnimation(appear)
+            budgetFragmentAccountTitleTextView?.startAnimation(appear)
+        }
+    }
+
     private fun showHiddenButtons() {
         binding.apply {
             setAnimation(
                 isClicked,
-                listButton,
-                hiddenButtonsLayout,
-                addAccountButton,
-                typeListButton,
-                repetitiveOpListButton,
-                stocksListButton
+                budgetFragmentListButton,
+                budgetFragmentHiddenButtonsLayout,
+                budgetFragmentAddAccountButton,
+                budgetFragmentTypeListButton
             )
         }
         isClicked = !isClicked
@@ -233,10 +381,10 @@ class BudgetFragment : Fragment() {
         val intent = Intent(activity, BudgetExchangeActivity::class.java)
         intent.putExtra(
             "budgetTypes",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].title })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].title })
         intent.putExtra(
             "budgetTypesSums",
-            Array(budgetDataApi.budgetTypes.value!!.size) { index -> budgetDataApi.budgetTypes.value!![index].sum })
+            Array(budgetCircleData.budgetTypes.value!!.size) { index -> budgetCircleData.budgetTypes.value!![index].sum })
         launcher?.launch(intent)
     }
 

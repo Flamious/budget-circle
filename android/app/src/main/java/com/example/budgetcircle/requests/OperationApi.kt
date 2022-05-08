@@ -1,6 +1,6 @@
 package com.example.budgetcircle.requests
 
-import com.example.budgetcircle.viewmodel.models.Operation
+import com.example.budgetcircle.viewmodel.models.ChartOperation
 import com.example.budgetcircle.viewmodel.models.OperationSum
 import retrofit2.Call
 import retrofit2.http.*
@@ -35,6 +35,13 @@ interface OperationApi {
         @Query("IsExpense") isExpense: Boolean,
         @Query("Period") Period: Int
     ): Call<List<OperationSum>>
+
+    @GET("/operation/chart")
+    fun getChartOperation(
+        @Header("Authorization") token: String,
+        @Query("Period") period: String,
+        @Query("BudgetTypeId") budgetTypeId: Int?
+    ): Call<List<ChartOperation>>
 
     @GET("/operation")
     fun getOperations(

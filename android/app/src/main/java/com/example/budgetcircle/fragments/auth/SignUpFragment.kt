@@ -2,12 +2,15 @@ package com.example.budgetcircle.fragments.auth
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import com.example.budgetcircle.MainActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentSignUpBinding
@@ -15,6 +18,7 @@ import com.example.budgetcircle.requests.Client
 import com.example.budgetcircle.requests.UserApi
 import com.example.budgetcircle.requests.models.AuthResponse
 import com.example.budgetcircle.requests.models.ErrorResponse
+import com.example.budgetcircle.settings.Settings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +29,14 @@ import retrofit2.Response
 
 class SignUpFragment : Fragment() {
     lateinit var binding: FragmentSignUpBinding
-    lateinit var service: UserApi
+    private lateinit var service: UserApi
+
+    private val appear: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this.context,
+            R.anim.appear_short_anim
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,18 +45,77 @@ class SignUpFragment : Fragment() {
         binding = FragmentSignUpBinding.inflate(inflater)
         setButtons()
         setService()
+        setTheme()
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        setAnimation()
+    }
+
     //region Setting
+    private fun setTheme() {
+        val textPrimary: Int
+        val textSecondary: Int
+        val backgroundColor: Int
+        val mainColor: Int
+
+        binding.apply {
+            if (Settings.isNight()) {
+                textPrimary = ContextCompat.getColor(
+                    this@SignUpFragment.requireContext(),
+                    R.color.light_grey
+                )
+                textSecondary = ContextCompat.getColor(
+                    this@SignUpFragment.requireContext(),
+                    R.color.grey
+                )
+                backgroundColor = ContextCompat.getColor(
+                    this@SignUpFragment.requireContext(),
+                    R.color.dark_grey
+                )
+                mainColor = ContextCompat.getColor(
+                    this@SignUpFragment.requireContext(),
+                    R.color.darker_grey
+                )
+
+
+                signUpFragmentHeaderLayout.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                signUpFragmentAdmitButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
+                signUpFragmentLayout.setBackgroundColor(backgroundColor)
+
+                signUpFragmentEmailTitle.setTextColor(textSecondary)
+                signUpFragmentPasswordTitle.setTextColor(textSecondary)
+                signUpFragmentConfirmPasswordTitle.setTextColor(textSecondary)
+                signUpFragmentLoginButton.setTextColor(textPrimary)
+
+                Settings.setFieldColor(
+                    mainColor,
+                    textPrimary,
+                    textSecondary,
+                    binding.signUpFragmentEmailField,
+                    binding.signUpFragmentPasswordField,
+                    binding.signUpFragmentConfirmPasswordField
+                )
+            }
+        }
+    }
+
     private fun setButtons() {
-        binding.loginButton.setOnClickListener {
+        binding.signUpFragmentLoginButton.setOnClickListener {
             openLogin()
         }
 
-        binding.signUpAdmitButton.setOnClickListener {
-            GlobalScope.launch {
-                sendRequest()
+        binding.signUpFragmentAdmitButton.setOnClickListener {
+            if (checkFields()) {
+
+                startLoading()
+                GlobalScope.launch {
+                    sendRequest()
+                }
             }
         }
     }
@@ -54,10 +124,69 @@ class SignUpFragment : Fragment() {
         val url = resources.getString(R.string.url)
         service = Client.getClient(url).create(UserApi::class.java)
     }
+
+    private fun setAnimation() {
+        binding.signUpFragmentHeaderLayout.startAnimation(appear)
+        binding.signUpFragmentAdmitButton.startAnimation(appear)
+        binding.signUpFragmentScrollView.startAnimation(appear)
+    }
     //endregion
 
     //region Methods
+    private fun checkFields(): Boolean {
+        var isValid = true
+        binding.signUpFragmentEmailField.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+                error = resources.getString(R.string.email_format_string)
+                isValid = false
+            }
+        }
+
+        binding.signUpFragmentPasswordField.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        binding.signUpFragmentConfirmPasswordField.apply {
+            error = null
+            if (text.isNullOrBlank()) {
+                error = resources.getString(R.string.empty_field)
+                isValid = false
+            }
+        }
+
+        return isValid
+    }
+
+    private fun startLoading() {
+        binding.signUpFragmentLoadingLayout.visibility = View.VISIBLE
+
+        binding.signUpFragmentEmailField.isEnabled = false
+        binding.signUpFragmentPasswordField.isEnabled = false
+        binding.signUpFragmentConfirmPasswordField.isEnabled = false
+        binding.signUpFragmentAdmitButton.isEnabled = false
+        binding.signUpFragmentLoginButton.isClickable = false
+    }
+
+    private fun stopLoading() {
+        binding.signUpFragmentLoadingLayout.visibility = View.GONE
+
+        binding.signUpFragmentEmailField.isEnabled = true
+        binding.signUpFragmentPasswordField.isEnabled = true
+        binding.signUpFragmentConfirmPasswordField.isEnabled = true
+        binding.signUpFragmentAdmitButton.isEnabled = true
+        binding.signUpFragmentLoginButton.isClickable = true
+    }
+
     private fun openLogin() {
+        binding.signUpFragmentLayout.clearAnimation()
         activity
             ?.supportFragmentManager
             ?.beginTransaction()
@@ -67,12 +196,13 @@ class SignUpFragment : Fragment() {
 
     private fun sendRequest() {
         service.signUp(
-            binding.emailSignUpText.text.toString(),
-            binding.passwordSignUpText.text.toString(),
-            binding.confirmPasswordSignUpText.text.toString()
+            binding.signUpFragmentEmailField.text.toString(),
+            binding.signUpFragmentPasswordField.text.toString(),
+            binding.signUpFragmentConfirmPasswordField.text.toString()
         ).enqueue(object : Callback<Any> {
             override fun onFailure(call: Call<Any>, t: Throwable) {
-                print(t.message)
+                Settings.print(this@SignUpFragment.requireContext(), t.message)
+                stopLoading()
             }
 
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
@@ -90,15 +220,11 @@ class SignUpFragment : Fragment() {
                     val errorMessage =
                         errorResponse?.error ?: resources.getString(R.string.wrongLoginOrPassword)
 
-                    print(errorMessage)
+                    Settings.print(this@SignUpFragment.requireContext(), errorMessage)
+                    stopLoading()
                 }
             }
         })
-    }
-
-    private fun print(message: String?) {
-        if (message != null)
-            Toast.makeText(this.requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun saveToken(token: String) {
@@ -113,7 +239,8 @@ class SignUpFragment : Fragment() {
         val intent = Intent(activity, MainActivity::class.java)
         intent.putExtra(
             "token",
-            token)
+            token
+        )
 
         startActivity(intent)
     }

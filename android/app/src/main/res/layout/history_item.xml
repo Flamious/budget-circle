@@ -1,127 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/itemLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/historyItemLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <TextView
-        android:id="@+id/operationTitle"
+        android:id="@+id/historyItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/text_primary"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/opColor"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemBorder" />
 
     <TextView
-        android:id="@+id/itemTitle"
+        android:id="@+id/historyItemSum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:textColor="@color/text_primary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/historyItemTitle" />
 
     <TextView
-        android:id="@+id/itemDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemTitle" />
-
-    <TextView
-        android:id="@+id/itemType"
+        android:id="@+id/historyItemDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_secondary"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/accountType"
-        app:layout_constraintTop_toBottomOf="@+id/operationTitle" />
+        app:layout_constraintBottom_toBottomOf="@+id/historyItemAccountTitle"
+        app:layout_constraintEnd_toEndOf="@+id/historyItemSum"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemTypeTitle" />
 
     <TextView
-        android:id="@+id/accountType"
+        android:id="@+id/historyItemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/historyItemAccountType"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemTitle" />
+
+    <TextView
+        android:id="@+id/historyItemAccountType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textColor="@color/text_secondary"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/accountTitle"
-        app:layout_constraintStart_toEndOf="@+id/accountTitle"
-        app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
-
-    <ImageView
-        android:id="@+id/imageRepetitive"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:contentDescription="@string/is_repetitive"
-        app:layout_constraintEnd_toStartOf="@+id/itemTitle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_history" />
+        app:layout_constraintBottom_toBottomOf="@+id/historyItemAccountTitle"
+        app:layout_constraintStart_toEndOf="@+id/historyItemAccountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemTypeTitle" />
 
     <TextView
-        android:id="@+id/typeTitle"
+        android:id="@+id/historyItemTypeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/kind"
         android:textColor="@color/text_secondary"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/operationTitle"
-        app:layout_constraintTop_toBottomOf="@+id/operationTitle" />
+        app:layout_constraintStart_toStartOf="@+id/historyItemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemTitle" />
 
     <TextView
-        android:id="@+id/accountTitle"
+        android:id="@+id/historyItemAccountTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/from"
         android:textColor="@color/text_secondary"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/typeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/typeTitle" />
-
-    <TextView
-        android:id="@+id/dateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:text="@string/date"
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/itemDate"
-        app:layout_constraintTop_toBottomOf="@+id/itemTitle" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/historyItemTypeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/historyItemTypeTitle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/historyItemBorder"
         android:layout_width="0dp"
-        android:layout_height="1px"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:background="@color/text_secondary"
-        android:backgroundTint="@color/text_secondary"
+        android:layout_height="3dp"
+        android:background="@color/light_grey"
+        android:backgroundTint="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTitle">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/opColor"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/historyItemColor"
+        android:layout_width="6dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/historyItemBorder">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

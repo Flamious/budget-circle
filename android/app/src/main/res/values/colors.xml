@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Default colors -->
-    <color name="purple_200">#BB86FC</color>
-    <color name="purple_500">#6200EE</color>
-    <color name="purple_700">#3700B3</color>
-    <color name="teal_200">#03DAC5</color>
-    <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#8E8C8C</color>
+    <color name="light_grey">#E6E2E2</color>
+
+    <color name="dark_grey">#2E2D2D</color>
+    <color name="darker_grey">#201F1F</color>
 
     <!-- Additional colors -->
     <color name="no_money_op">#D0CDCD</color>
@@ -32,4 +32,7 @@
 
     <!-- History colors -->
     <color name="orange_main">#CC670E</color>
+
+    <!-- Elements colors -->
+    <color name="button_inside">#FFFFFF</color>
 </resources>

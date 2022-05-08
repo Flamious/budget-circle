@@ -1,16 +1,12 @@
 package com.example.budgetcircle
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.example.budgetcircle.databinding.ActivityAuthBinding
-import com.example.budgetcircle.fragments.auth.LoginFragment
 import android.content.SharedPreferences
-
-
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.example.budgetcircle.databinding.ActivityAuthBinding
+import com.example.budgetcircle.fragments.auth.LoginLoadingFragment
+import com.example.budgetcircle.settings.Settings
 
 
 class AuthActivity : AppCompatActivity() {
@@ -20,15 +16,14 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getMode()
         checkLogout()
-        openLogin()
+        openLoading()
     }
 
-    //region Setting
-    private fun openLogin() {
-        openFragment(LoginFragment())
+    override fun onBackPressed() {
+
     }
-    //endregion
 
     //region Methods
     private fun checkLogout() {
@@ -41,11 +36,18 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun openFragment(fragment: Fragment) {
+    private fun openLoading() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.authLayout, fragment)
+            .replace(R.id.authLayout, LoginLoadingFragment())
             .commit()
+    }
+
+    private fun getMode() {
+        val prefs = getSharedPreferences(resources.getString(R.string.settings), MODE_PRIVATE)
+        val mode = prefs.getInt(resources.getString(R.string.mode), Settings.DAY)
+
+        Settings.mode = mode
     }
     //endregion
 }
