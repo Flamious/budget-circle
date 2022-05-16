@@ -13,6 +13,8 @@
 
         IRepository<Operation> Operations { get; }
 
+        IRepository<ScheduledOperation> ScheduledOperations { get; }
+
         IRepository<User> Users { get; }
 
         Task Save();

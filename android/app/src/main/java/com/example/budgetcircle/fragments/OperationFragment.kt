@@ -27,6 +27,7 @@ import com.example.budgetcircle.settings.charts.PieChartSetter
 import com.example.budgetcircle.viewmodel.BudgetCircleData
 import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
+import com.example.budgetcircle.viewmodel.models.ScheduledOperation
 
 class OperationFragment(val isExpense: Boolean) : Fragment() {
     lateinit var binding: FragmentOperationBinding
@@ -125,10 +126,13 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             operationFragmentTitle.text =
                 resources.getText(if (isExpense) R.string.expenses_fragment else R.string.earnings_fragment)
 
-            operationFragmentChangeChartButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentChangeChartButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
             operationFragmentHeaderLayout.setBackgroundColor(mainColor)
-            operationFragmentChangePeriodButton.backgroundTintList = ColorStateList.valueOf(mainColor)
-            operationFragmentChangePeriodButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationFragmentChangePeriodButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
+            operationFragmentChangePeriodButton.backgroundTintList =
+                ColorStateList.valueOf(mainColor)
             operationFragmentAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
             operationFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
             operationFragmentListButton.backgroundTintList = ColorStateList.valueOf(mainColor)
@@ -244,18 +248,34 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
                     val typeIndex = result.data?.getIntExtra("typeIndex", 0)!!
                     val title = result.data?.getStringExtra("title")!!
                     val commentary = result.data?.getStringExtra("commentary")!!
-                    budgetCircleData.addOperation(
-                        Operation(
-                            -1,
-                            title,
-                            result.data?.getDoubleExtra("sum", 0.0)!!,
-                            "",
-                            if (isExpense) budgetCircleData.expenseTypes.value!![typeIndex].id else budgetCircleData.earningTypes.value!![typeIndex].id,
-                            budgetCircleData.budgetTypes.value!![budgetTypeIndex].id,
-                            commentary,
-                            isExpense
+
+                    val isScheduled = result.data?.getBooleanExtra("isScheduled", false)!!
+                    if (isScheduled) {
+                        budgetCircleData.addScheduledOperation(
+                            ScheduledOperation(
+                                -1,
+                                title,
+                                result.data?.getDoubleExtra("sum", 0.0)!!,
+                                if (isExpense) budgetCircleData.expenseTypes.value!![typeIndex].id else budgetCircleData.earningTypes.value!![typeIndex].id,
+                                budgetCircleData.budgetTypes.value!![budgetTypeIndex].id,
+                                commentary,
+                                isExpense
+                            )
                         )
-                    )
+                    } else {
+                        budgetCircleData.addOperation(
+                            Operation(
+                                -1,
+                                title,
+                                result.data?.getDoubleExtra("sum", 0.0)!!,
+                                "",
+                                if (isExpense) budgetCircleData.expenseTypes.value!![typeIndex].id else budgetCircleData.earningTypes.value!![typeIndex].id,
+                                budgetCircleData.budgetTypes.value!![budgetTypeIndex].id,
+                                commentary,
+                                isExpense
+                            )
+                        )
+                    }
                 }
             }
     }

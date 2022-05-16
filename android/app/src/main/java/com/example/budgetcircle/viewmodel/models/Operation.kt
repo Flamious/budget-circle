@@ -8,7 +8,8 @@ data class Operation(
     var typeId: Int,
     var budgetTypeId: Int,
     var commentary: String,
-    var isExpense: Boolean?
+    var isExpense: Boolean?,
+    var isScheduled: Boolean = false
 )
 
 data class OperationSum(val sum: Double, val type: String)

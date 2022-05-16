@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/operationTypeListFragmentLayout"
+    android:id="@+id/scheduledOperationListFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
-    tools:context=".lists.OperationTypeListFragment">
+    tools:context=".lists.SccheduledOperationListFragment" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/operationTypeListFragmentHeaderLayout"
+        android:id="@+id/scheduledOperationListFragmentHeaderLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/operationTypeListFragmentBackButton"
+            android:id="@+id/scheduledOperationListFragmentBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -32,20 +31,31 @@
             tools:ignore="DuplicateSpeakableTextCheck" />
 
         <TextView
-            android:id="@+id/operationTypeListFragmentTitle"
+            android:id="@+id/scheduledOperationListFragmentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/operationTypeListFragmentBackButton"
+            app:layout_constraintBottom_toBottomOf="@+id/scheduledOperationListFragmentBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/operationTypeListFragmentBackButton" />
+            app:layout_constraintTop_toTopOf="@+id/scheduledOperationListFragmentBackButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ProgressBar
+        android:id="@+id/scheduledOperationListFragmentProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduledOperationListFragmentList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scheduledOperationListFragmentList" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/operationTypeListFragmentList"
+        android:id="@+id/scheduledOperationListFragmentList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/light_grey"
@@ -54,42 +64,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationTypeListFragmentHeaderLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationListFragmentHeaderLayout" >
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/operationTypeListFragmentAddButton"
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/scheduledOperationListFragmentNoEntriesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/blue_main"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/operationTypeListFragmentOpenScheduledOperarationsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:src="@drawable/ic_history"
-        app:backgroundTint="@color/blue_main"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white" />
-
-    <ProgressBar
-        android:id="@+id/operationTypeListFragmentProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:text="@string/no_entries"
+        android:textColor="@color/text_secondary"
+        android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/operationTypeListFragmentList"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/operationTypeListFragmentList" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationListFragmentHeaderLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

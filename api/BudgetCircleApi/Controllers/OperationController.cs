@@ -14,9 +14,9 @@
     [Route("[controller]")]
     public class OperationController : ControllerBase
     {
-        private readonly IOperationsServices _operationsServices;
+        private readonly IOperationsService _operationsServices;
 
-        public OperationController(IOperationsServices operationsServices)
+        public OperationController(IOperationsService operationsServices)
         {
             _operationsServices = operationsServices;
         }

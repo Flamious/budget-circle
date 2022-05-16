@@ -2,21 +2,19 @@
 {
     using BudgetCircleApi.DAL.Entities;
 
-    public class OperationShort
+    public class ScheduledOperationShort
     {
-        public OperationShort() { }
+        public ScheduledOperationShort() { }
 
-        public OperationShort(Operation operation)
+        public ScheduledOperationShort(ScheduledOperation operation)
         {
             Id = operation.Id;
             Title = operation.Title;
             Sum = operation.Sum;
-            Date = operation.Date.ToString("dd.MM.yyyy");
             TypeId = operation.TypeId;
             BudgetTypeId = operation.BudgetTypeId;
             Commentary = operation.Commentary;
             IsExpense = operation.IsExpense;
-            IsScheduled = operation.IsScheduled;
         }
 
         public int Id { get; set; }
@@ -25,23 +23,12 @@
 
         public double Sum { get; set; }
 
-        public string Date { get; set; }
-
         public int TypeId { get; set; }
 
         public int BudgetTypeId { get; set; }
 
         public string Commentary { get; set; }
 
-        public bool? IsExpense { get; set; }
-
-        public bool IsScheduled { get; set; }
-    }
-
-    public class OperationModelSum
-    {
-        public string Type { get; set; }
-
-        public double Sum { get; set; }
+        public bool IsExpense { get; set; }
     }
 }

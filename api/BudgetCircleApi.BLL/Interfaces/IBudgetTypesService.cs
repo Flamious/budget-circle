@@ -15,6 +15,8 @@
 
         Task UpdateBudgetType(string userId, int id, string name, double sum);
 
+        Task AddBudgetTypeSum(string userId, int id, double sum);
+
         Task RemoveBudgetType(string userId, int id);
 
         Task ClearBudgetTypeSums(string userId);

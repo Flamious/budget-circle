@@ -5,10 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.budgetcircle.R
-import com.example.budgetcircle.requests.BudgetTypeApi
-import com.example.budgetcircle.requests.Client
-import com.example.budgetcircle.requests.OperationApi
-import com.example.budgetcircle.requests.OperationTypeApi
+import com.example.budgetcircle.requests.*
 import com.example.budgetcircle.requests.models.OperationListResponse
 import com.example.budgetcircle.settings.Settings
 import com.example.budgetcircle.viewmodel.items.HistoryItem
@@ -31,6 +28,9 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
     private val operationTypeApiService: OperationTypeApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(OperationTypeApi::class.java)
+    private val scheduledOperationApiService: ScheduledOperationApi =
+        Client.getClient(getApplication<Application>().resources.getString(R.string.url))
+            .create(ScheduledOperationApi::class.java)
 
     val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
         value = null
@@ -95,6 +95,10 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
     val chartOperationPeriod: MutableLiveData<String> = MutableLiveData<String>()
     var chartOperations: MutableLiveData<List<ChartOperation>> =
         MutableLiveData<List<ChartOperation>>().apply {
+            value = null
+        }
+    var scheduledOperationList: MutableLiveData<List<ScheduledOperation>> =
+        MutableLiveData<List<ScheduledOperation>>().apply {
             value = null
         }
 
@@ -471,7 +475,7 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
                             getExpenseSums(expensesDate.value!!)
                             getExpenseTypes()
                         }
-                        if (operation.isExpense == false){
+                        if (operation.isExpense == false) {
                             getEarningSums(earningsDate.value!!)
                             getEarningTypes()
                         }
@@ -596,7 +600,7 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
                 response: Response<Any>
             ) {
                 if (response.isSuccessful) {
-                   getEarningTypes()
+                    getEarningTypes()
                 }
             }
         })
@@ -701,7 +705,7 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
         })
     }
 
-    fun clearBudgetTypes() = viewModelScope.launch(Dispatchers.IO)  {
+    fun clearBudgetTypes() = viewModelScope.launch(Dispatchers.IO) {
         budgetTypeApiService.clearBudgetTypes(
             Settings.token
         ).enqueue(object : Callback<Any> {
@@ -719,7 +723,7 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
         })
     }
 
-    fun getChartOperations()  = viewModelScope.launch(Dispatchers.IO) {
+    fun getChartOperations() = viewModelScope.launch(Dispatchers.IO) {
         operationApiService.getChartOperation(
             Settings.token,
             chartOperationPeriod.value!!,
@@ -737,5 +741,106 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
                 }
             }
         })
+    }
+
+    fun getScheduledOperations(isExpense: Boolean) =
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduledOperationApiService.getOperations(
+                Settings.token,
+                isExpense
+            ).enqueue(object : Callback<List<ScheduledOperation>> {
+                override fun onFailure(call: Call<List<ScheduledOperation>>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<List<ScheduledOperation>>,
+                    response: Response<List<ScheduledOperation>>
+                ) {
+                    if (response.isSuccessful) {
+                        scheduledOperationList.value = response.body()!!.toList()
+                    }
+                }
+            })
+        }
+
+    fun addScheduledOperation(operation: ScheduledOperation) =
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduledOperationApiService.addScheduledOperation(
+                Settings.token,
+                operation.title,
+                operation.sum,
+                operation.typeId,
+                operation.budgetTypeId,
+                operation.commentary,
+                operation.isExpense
+            ).enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Any>,
+                    response: Response<Any>
+                ) {
+                    if (response.isSuccessful) {
+                        getBudgetTypes()
+                        getOperations()
+                        if (!operation.isExpense) {
+                            getEarningSums(earningsDate.value!!)
+                            getEarningTypes()
+                        }
+                        if (operation.isExpense) {
+                            getExpenseSums(expensesDate.value!!)
+                            getExpenseTypes()
+                        }
+                    }
+                }
+            })
+        }
+
+    fun editScheduledOperation(id: Int, newOperation: ScheduledOperation) = viewModelScope.launch(Dispatchers.IO) {
+        scheduledOperationApiService.editOperation(
+            Settings.token,
+            id,
+            newOperation.title,
+            newOperation.sum,
+            newOperation.typeId,
+            newOperation.budgetTypeId,
+            newOperation.commentary,
+            newOperation.isExpense
+        ).enqueue(object : Callback<Void> {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Void>,
+                response: Response<Void>
+            ) {
+                if (response.isSuccessful) {
+                    getScheduledOperations(newOperation.isExpense)
+                }
+            }
+        })
+    }
+
+    fun deleteScheduledOperation(operationId: Int, isExpense: Boolean): Boolean {
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduledOperationApiService.deleteOperation(
+                Settings.token,
+                operationId
+            ).enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Any>,
+                    response: Response<Any>
+                ) {
+                    if (response.isSuccessful) {
+                        getScheduledOperations(isExpense)
+                    }
+                }
+            })
+        }
+        return true
     }
 }

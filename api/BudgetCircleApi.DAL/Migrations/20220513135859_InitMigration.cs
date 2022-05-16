@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BudgetCircleApi.DAL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -189,6 +189,7 @@ namespace BudgetCircleApi.DAL.Migrations
                     BudgetTypeId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     Commentary = table.Column<string>(nullable: true),
+                    IsScheduled = table.Column<bool>(nullable: false),
                     IsExpense = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
@@ -208,6 +209,45 @@ namespace BudgetCircleApi.DAL.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Operation_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduledOperation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: false),
+                    Sum = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Period = table.Column<int>(nullable: false),
+                    TypeId = table.Column<int>(nullable: false),
+                    BudgetTypeId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Commentary = table.Column<string>(nullable: true),
+                    IsExpense = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduledOperation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ScheduledOperation_Type_BudgetTypeId",
+                        column: x => x.BudgetTypeId,
+                        principalTable: "Type",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduledOperation_Type_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "Type",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ScheduledOperation_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -269,6 +309,21 @@ namespace BudgetCircleApi.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ScheduledOperation_BudgetTypeId",
+                table: "ScheduledOperation",
+                column: "BudgetTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledOperation_TypeId",
+                table: "ScheduledOperation",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduledOperation_UserId",
+                table: "ScheduledOperation",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Type_UserId",
                 table: "Type",
                 column: "UserId");
@@ -293,6 +348,9 @@ namespace BudgetCircleApi.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Operation");
+
+            migrationBuilder.DropTable(
+                name: "ScheduledOperation");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

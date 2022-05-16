@@ -1,6 +1,5 @@
 ﻿namespace BudgetCircleApi.DAL.Entities
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using BudgetCircleApi.DAL.Entities.Interfaces;
 

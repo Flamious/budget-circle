@@ -12,9 +12,9 @@
     [Route("[controller]")]
     public class TypeController : Controller
     {
-        private readonly IOperationTypesServices _operationTypesServices;
+        private readonly IOperationTypesService _operationTypesServices;
 
-        public TypeController(IOperationTypesServices operationTypesServices)
+        public TypeController(IOperationTypesService operationTypesServices)
         {
             _operationTypesServices = operationTypesServices;
         }

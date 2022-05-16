@@ -62,17 +62,20 @@ class HistoryFragment : Fragment() {
         val textSecondary: Int
         val backgroundColor: Int
         val borderColor: Int
+        val buttonColor: Int?
 
         if (Settings.isDay()) {
             textPrimary = ContextCompat.getColor(this.requireContext(), R.color.text_primary)
             textSecondary = ContextCompat.getColor(this.requireContext(), R.color.text_secondary)
             backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.white)
             borderColor = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
+            buttonColor = null
         } else {
             textPrimary = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
             textSecondary = ContextCompat.getColor(this.requireContext(), R.color.grey)
             backgroundColor = ContextCompat.getColor(this.requireContext(), R.color.darker_grey)
             borderColor = ContextCompat.getColor(this.requireContext(), R.color.dark_grey)
+            buttonColor = ContextCompat.getColor(this.requireContext(), R.color.light_grey)
         }
 
         adapter = HistoryAdapter(
@@ -82,7 +85,8 @@ class HistoryFragment : Fragment() {
             textPrimary,
             textSecondary,
             backgroundColor,
-            borderColor
+            borderColor,
+            buttonColor
         )
 
         binding.apply {
@@ -110,6 +114,7 @@ class HistoryFragment : Fragment() {
                     R.color.darker_grey
                 )
 
+                historyFragmentNoEntriesTextView.setTextColor(textPrimary)
                 historyFragmentHeaderLayout.setBackgroundColor(mainColor)
                 historyFragmentFilterListButton.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
@@ -177,6 +182,7 @@ class HistoryFragment : Fragment() {
                             it[index].budgetTypeId,
                             it[index].commentary,
                             it[index].isExpense,
+                            it[index].isScheduled,
                             ContextCompat.getColor(
                                 this.requireContext(),
                                 if (Settings.isDay())
