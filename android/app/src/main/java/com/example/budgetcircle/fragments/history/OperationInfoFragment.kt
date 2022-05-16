@@ -205,6 +205,7 @@ class OperationInfoFragment : Fragment() {
                                     budgetTypeId,
                                     operationCommentary,
                                     this.value!!.isExpense,
+                                    this.value!!.isScheduled,
                                     this.value!!.color,
                                 )
                             )

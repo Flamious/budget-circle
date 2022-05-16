@@ -139,6 +139,7 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
             operationTypeListFragmentHeaderLayout.setBackgroundColor(mainColor)
             operationTypeListFragmentBackButton.backgroundTintList = ColorStateList.valueOf(mainColor)
             operationTypeListFragmentAddButton.backgroundTintList = ColorStateList.valueOf(mainColor)
+            operationTypeListFragmentOpenScheduledOperarationsButton.backgroundTintList = ColorStateList.valueOf(mainColor)
             operationTypeListFragmentLayout.backgroundTintList = ColorStateList.valueOf(backgroundColor)
             operationTypeListFragmentProgressBar.indeterminateTintList =
                 ColorStateList.valueOf(mainColor)
@@ -146,6 +147,9 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
     }
 
     private fun setButtons() {
+        binding.operationTypeListFragmentOpenScheduledOperarationsButton.setOnClickListener {
+            openScheduledOperationsFragment()
+        }
         binding.operationTypeListFragmentBackButton.setOnClickListener {
             exit()
         }
@@ -236,6 +240,8 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
 
     private fun appear() {
         binding.operationTypeListFragmentHeaderLayout.startAnimation(appear)
+        binding.operationTypeListFragmentOpenScheduledOperarationsButton.startAnimation(appear)
+        binding.operationTypeListFragmentAddButton.startAnimation(appear)
 
         createList()
     }
@@ -263,6 +269,18 @@ class OperationTypeListFragment(val isExpense: Boolean) : Fragment() {
         intent.putExtra("isExpense", isExpense)
 
         launcher?.launch(intent)
+    }
+
+    private fun openScheduledOperationsFragment() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(
+                R.id.fragmentPanel,
+                ScheduledOperationListFragment(isExpense)
+            )
+            ?.disallowAddToBackStack()
+            ?.commit()
     }
 
     private fun exit() {

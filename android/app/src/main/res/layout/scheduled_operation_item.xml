@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scheduledOperationItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/scheduledOperationItemEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduledOperationItemDeleteButton"
+        app:layout_constraintEnd_toStartOf="@+id/scheduledOperationItemDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/scheduledOperationItemDeleteButton"
+        app:srcCompat="@drawable/ic_edit"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/scheduledOperationItemDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationItemBorder"
+        app:srcCompat="@drawable/ic_delete"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/scheduledOperationItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationItemBorder" />
+
+    <TextView
+        android:id="@+id/scheduledOperationItemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduledOperationItemTypeTitle"
+        app:layout_constraintStart_toStartOf="@+id/scheduledOperationItemAccountType"
+        app:layout_constraintTop_toTopOf="@+id/scheduledOperationItemTypeTitle" />
+
+    <TextView
+        android:id="@+id/scheduledOperationItemAccountType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scheduledOperationItemAccountTitle"
+        app:layout_constraintStart_toEndOf="@+id/scheduledOperationItemAccountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationItemTypeTitle" />
+
+    <TextView
+        android:id="@+id/scheduledOperationItemTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/kind"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/scheduledOperationItemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationItemTitle" />
+
+    <TextView
+        android:id="@+id/scheduledOperationItemAccountTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/from"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/scheduledOperationItemTypeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/scheduledOperationItemTypeTitle" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/scheduledOperationItemBorder"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/light_grey"
+        android:backgroundTint="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

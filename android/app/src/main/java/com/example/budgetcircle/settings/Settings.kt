@@ -1,10 +1,14 @@
 package com.example.budgetcircle.settings
 
+import android.R
 import android.content.Context
 import android.content.res.ColorStateList
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.graphics.drawable.DrawableCompat
+
 
 class Settings {
     companion object {
@@ -40,6 +44,33 @@ class Settings {
         fun setTextColor(color: Int, vararg views: TextView) {
             for (view in views) {
                 view.setTextColor(color)
+            }
+        }
+
+        fun setSwitchColor(
+            circleColor: Int,
+            uncheckedColor: Int,
+            checkedColor: Int,
+            vararg views: SwitchCompat
+        ) {
+            for (switch in views) {
+                DrawableCompat.setTintList(
+                    switch.thumbDrawable, ColorStateList(
+                        arrayOf(intArrayOf(R.attr.state_checked), intArrayOf()), intArrayOf(
+                            circleColor,
+                            circleColor
+                        )
+                    )
+                )
+
+                DrawableCompat.setTintList(
+                    switch.trackDrawable, ColorStateList(
+                        arrayOf(intArrayOf(R.attr.state_checked), intArrayOf()), intArrayOf(
+                            checkedColor,
+                            uncheckedColor
+                        )
+                    )
+                )
             }
         }
 

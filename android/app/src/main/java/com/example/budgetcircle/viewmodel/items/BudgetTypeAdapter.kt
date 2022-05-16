@@ -12,7 +12,6 @@ import com.example.budgetcircle.viewmodel.models.BudgetType
 import kotlin.collections.ArrayList
 import com.example.budgetcircle.settings.DoubleFormatter
 
-
 class BudgetTypeAdapter(
     val textPrimary: Int,
     val textSecondary: Int,

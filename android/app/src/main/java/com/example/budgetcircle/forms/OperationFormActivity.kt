@@ -59,6 +59,10 @@ class OperationFormActivity : AppCompatActivity() {
         val backgroundColor: Int
         val mainColor: Int
 
+        val switchCircleColor: Int
+        val switchUncheckedColor: Int
+        val switchCheckedColor: Int
+
         binding.apply {
             if (Settings.isDay()) {
                 textPrimary = ContextCompat.getColor(
@@ -77,6 +81,15 @@ class OperationFormActivity : AppCompatActivity() {
                     this@OperationFormActivity,
                     if (isExpense) R.color.red_main else R.color.blue_main
                 )
+                switchCircleColor = mainColor
+                switchUncheckedColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.grey
+                )
+                switchCheckedColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    if (isExpense) R.color.red_secondary else R.color.blue_secondary
+                )
             } else {
                 textPrimary = ContextCompat.getColor(
                     this@OperationFormActivity,
@@ -93,6 +106,18 @@ class OperationFormActivity : AppCompatActivity() {
                 mainColor = ContextCompat.getColor(
                     this@OperationFormActivity,
                     R.color.darker_grey
+                )
+                switchCircleColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.white
+                )
+                switchUncheckedColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.darker_grey
+                )
+                switchCheckedColor = ContextCompat.getColor(
+                    this@OperationFormActivity,
+                    R.color.grey
                 )
             }
             if (isExpense) {
@@ -121,6 +146,13 @@ class OperationFormActivity : AppCompatActivity() {
                 binding.operationFormActivityTitleField,
                 binding.operationFormActivitySumField,
                 binding.operationFormActivityCommentaryField
+            )
+
+            Settings.setSwitchColor(
+                switchCircleColor,
+                switchUncheckedColor,
+                switchCheckedColor,
+                binding.operationFormActivityIsScheduledSwitch
             )
         }
     }
@@ -170,7 +202,15 @@ class OperationFormActivity : AppCompatActivity() {
             binding.operationFormActivityAddButton.text = resources.getText(R.string.edit_earn)
         }
 
+        intent.extras?.getBoolean("isScheduled", false).let {
+            if (it != null) {
+                binding.operationFormActivityIsScheduledSwitch.isClickable = !it
+                binding.operationFormActivityIsScheduledSwitch.isChecked = it
+            }
+        }
         binding.operationFormActivitySumField.setText(intent.extras?.getDouble("sum")!!.toString())
+        binding.operationFormActivitySumField.setText(intent.extras?.getDouble("sum")!!.toString())
+
         binding.operationFormActivityTitleField.setText(intent.extras?.getString("title")!!)
         binding.operationFormActivityCommentaryField.setText(intent.extras?.getString("commentary")!!)
         chosenType.value = intent.extras?.getInt("typeIndex")!!
@@ -253,6 +293,10 @@ class OperationFormActivity : AppCompatActivity() {
             intent.putExtra(
                 "commentary",
                 binding.operationFormActivityCommentaryField.text.toString()
+            )
+            intent.putExtra(
+                "isScheduled",
+                binding.operationFormActivityIsScheduledSwitch.isChecked
             )
             setResult(RESULT_OK, intent)
             finish()

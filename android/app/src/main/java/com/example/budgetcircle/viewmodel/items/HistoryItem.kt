@@ -21,6 +21,7 @@ data class HistoryItem(
     val budgetTypeId: Int,
     val commentary: String,
     val isExpense: Boolean?,
+    val isScheduled: Boolean,
     val color: Int
 )
 
@@ -31,7 +32,8 @@ class HistoryAdapter(
     val textPrimary: Int,
     val textSecondary: Int,
     val backgroundColor: Int,
-    val borderColor: Int
+    val borderColor: Int,
+    val buttonColor: Int?
 ) : RecyclerView.Adapter<HistoryAdapter.ItemHolder>() {
     private var itemList = ArrayList<HistoryItem>()
     var onItemClick: ((item: HistoryItem, index: Int) -> Unit)? = null
@@ -66,6 +68,12 @@ class HistoryAdapter(
             historyItemAccountType.setTextColor(textSecondary)
             historyItemDate.setTextColor(textSecondary)
             historyItemBorder.backgroundTintList = ColorStateList.valueOf(borderColor)
+
+            historyItemScheduledImage.visibility = if (item.isScheduled) View.VISIBLE else View.GONE
+            if (buttonColor != null) {
+                historyItemScheduledImage.imageTintList = ColorStateList.valueOf(buttonColor)
+            }
+
         }
     }
 

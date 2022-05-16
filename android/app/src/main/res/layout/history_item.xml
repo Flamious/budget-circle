@@ -102,4 +102,14 @@
         app:layout_constraintTop_toBottomOf="@+id/historyItemBorder">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/historyItemScheduledImage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/historyItemDate"
+        app:layout_constraintEnd_toStartOf="@+id/historyItemDate"
+        app:layout_constraintTop_toTopOf="@+id/historyItemDate"
+        app:srcCompat="@drawable/ic_history" />
 </androidx.constraintlayout.widget.ConstraintLayout>
