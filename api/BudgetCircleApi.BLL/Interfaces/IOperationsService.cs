@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IOperationsServices
+    public interface IOperationsService
     {
         MessageResponse GetOperations(string userId, OperationRequest request);
 

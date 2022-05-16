@@ -94,6 +94,20 @@
             await _context.Save();
         }
 
+        public async Task AddBudgetTypeSum(string userId, int id, double sum)
+        {
+            var entity = await _context.BudgetTypes.Get(id);
+            if (entity.UserId != userId)
+            {
+                return;
+            }
+
+            entity.Sum += sum;
+
+            await _context.BudgetTypes.Update(entity);
+            await _context.Save();
+        }
+
         public async Task UpdateBudgetType(string userId, int id, string name, double sum)
         {
             var entity = await _context.BudgetTypes.Get(id);

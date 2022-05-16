@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Operation
+    public class ScheduledOperation
     {
         public int Id { get; set; }
 
@@ -11,8 +11,6 @@
 
         [Column(TypeName = "decimal(18,2)")]
         public double Sum { get; set; }
-
-        public DateTime Date { get; set; }
 
         public int TypeId { get; set; }
 
@@ -22,9 +20,7 @@
 
         public string Commentary { get; set; }
 
-        public bool IsScheduled { get; set; }
-
-        public bool? IsExpense { get; set; }
+        public bool IsExpense { get; set; }
 
         public virtual Interfaces.Type Type { get; set; }
 

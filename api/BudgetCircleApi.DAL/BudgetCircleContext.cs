@@ -13,6 +13,8 @@
 
         public virtual DbSet<Operation> Operation { get; set; }
 
+        public virtual DbSet<ScheduledOperation> ScheduledOperation { get; set; }
+
         public virtual DbSet<BudgetType> BudgetType { get; set; }
 
         public virtual DbSet<ExpenseType> ExpenseType { get; set; }
@@ -44,6 +46,24 @@
                 entity
                 .HasOne(e => e.Type)
                 .WithMany(e => e.Operations)
+                .HasForeignKey(e => e.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<ScheduledOperation>(entity =>
+            {
+                entity.Property(e => e.Title).IsRequired();
+                entity.Property(e => e.Sum).IsRequired();
+
+                entity
+                .HasOne(e => e.User)
+                .WithMany(e => e.ScheduledOperations)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                .HasOne(e => e.Type)
+                .WithMany(e => e.ScheduledOperations)
                 .HasForeignKey(e => e.TypeId)
                 .OnDelete(DeleteBehavior.Restrict);
             });

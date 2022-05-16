@@ -13,12 +13,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    class OperationsServices : IOperationsServices
+    class OperationsService : IOperationsService
     {
         private const int EntitiesPerPage = 10;
         private readonly IDbRepository _context;
 
-        public OperationsServices(IDbRepository repository)
+        public OperationsService(IDbRepository repository)
         {
             _context = repository;
         }
@@ -37,7 +37,8 @@
                     IsExpense = model.IsExpense,
                     TypeId = model.TypeId,
                     UserId = userId,
-                };
+                    IsScheduled = model.IsScheduled
+            };
                 await _context.Operations.Create(operation);
                 await _context.Save();
 
@@ -225,6 +226,7 @@
             entity.IsExpense = model.IsExpense;
             entity.TypeId = model.TypeId;
             entity.UserId = userId;
+            entity.IsScheduled = model.IsScheduled;
 
             await _context.Operations.Update(entity);
             await _context.Save();

@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IOperationTypesServices
+    public interface IOperationTypesService
     {
         Task AddDefaultExpenseTypes();
 

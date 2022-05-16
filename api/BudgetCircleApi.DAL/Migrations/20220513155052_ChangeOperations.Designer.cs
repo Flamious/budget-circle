@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetCircleApi.DAL.Migrations
 {
     [DbContext(typeof(BudgetCircleContext))]
-    [Migration("20220408155850_Initial")]
-    partial class Initial
+    [Migration("20220513155052_ChangeOperations")]
+    partial class ChangeOperations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,9 @@ namespace BudgetCircleApi.DAL.Migrations
                     b.Property<bool?>("IsExpense")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsScheduled")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");
 
@@ -86,6 +89,46 @@ namespace BudgetCircleApi.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Operation");
+                });
+
+            modelBuilder.Entity("BudgetCircleApi.DAL.Entities.ScheduledOperation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BudgetTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Commentary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsExpense")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetTypeId");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ScheduledOperation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -344,6 +387,26 @@ namespace BudgetCircleApi.DAL.Migrations
 
                     b.HasOne("BudgetCircleApi.DAL.Entities.User", "User")
                         .WithMany("Operations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("BudgetCircleApi.DAL.Entities.ScheduledOperation", b =>
+                {
+                    b.HasOne("BudgetCircleApi.DAL.Entities.BudgetType", "BudgetType")
+                        .WithMany()
+                        .HasForeignKey("BudgetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgetCircleApi.DAL.Entities.Interfaces.Type", "Type")
+                        .WithMany("ScheduledOperations")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BudgetCircleApi.DAL.Entities.User", "User")
+                        .WithMany("ScheduledOperations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

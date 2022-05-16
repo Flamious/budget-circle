@@ -17,6 +17,7 @@
         private IRepository<EarningType> earningType;
         private IRepository<ExpenseType> expenseType;
         private IRepository<Operation> operation;
+        private IRepository<ScheduledOperation> scheduledOperation;
         private IRepository<User> user;
 
         public IRepository<BudgetType> BudgetTypes
@@ -55,6 +56,19 @@
                 }
 
                 return expenseType;
+            }
+        }
+
+        public IRepository<ScheduledOperation> ScheduledOperations
+        {
+            get
+            {
+                if (scheduledOperation == null)
+                {
+                    scheduledOperation = new ScheduledOperationRepository(_context);
+                }
+
+                return scheduledOperation;
             }
         }
 

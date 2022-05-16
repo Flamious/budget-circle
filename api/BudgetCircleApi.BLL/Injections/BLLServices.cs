@@ -12,9 +12,10 @@
             services.AddScoped(typeof(IJWTGenerator), typeof(JWTGenerator));
             services.AddScoped(typeof(IAuthorizationService), typeof(AuthorizationService));
             services.AddScoped(typeof(IAdminServices), typeof(AdminServices));
-            services.AddScoped(typeof(IOperationTypesServices), typeof(OperationTypesServices));
+            services.AddScoped(typeof(IOperationTypesService), typeof(OperationTypesService));
             services.AddScoped(typeof(IBudgetTypesService), typeof(BudgetTypesService));
-            services.AddScoped(typeof(IOperationsServices), typeof(OperationsServices));
+            services.AddScoped(typeof(IOperationsService), typeof(OperationsService));
+            services.AddScoped(typeof(IScheduledOperationsService), typeof(ScheduledOperationsService));
 
             return services;
         }

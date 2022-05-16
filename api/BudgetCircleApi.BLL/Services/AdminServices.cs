@@ -7,11 +7,11 @@
 
     class AdminServices : IAdminServices
     {
-        private readonly IOperationTypesServices _operationTypesServices;
+        private readonly IOperationTypesService _operationTypesServices;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public AdminServices(
-            IOperationTypesServices operationTypesServices, 
+            IOperationTypesService operationTypesServices, 
             RoleManager<IdentityRole> roleManager)
         {
             _operationTypesServices = operationTypesServices;

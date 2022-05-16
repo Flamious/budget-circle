@@ -4,14 +4,16 @@ using BudgetCircleApi.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BudgetCircleApi.DAL.Migrations
 {
     [DbContext(typeof(BudgetCircleContext))]
-    partial class BudgetCircleContextModelSnapshot : ModelSnapshot
+    [Migration("20220513135859_InitMigration")]
+    partial class InitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +104,14 @@ namespace BudgetCircleApi.DAL.Migrations
                     b.Property<string>("Commentary")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsExpense")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");

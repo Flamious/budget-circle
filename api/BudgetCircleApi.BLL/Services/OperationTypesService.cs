@@ -10,11 +10,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    class OperationTypesServices : IOperationTypesServices
+    class OperationTypesService : IOperationTypesService
     {
         private readonly IDbRepository _context;
 
-        public OperationTypesServices(IDbRepository repository)
+        public OperationTypesService(IDbRepository repository)
         {
             _context = repository;
         }
