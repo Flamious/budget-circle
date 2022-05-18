@@ -21,7 +21,7 @@
     <!-- Dark mode -->
     <array name="dark_colors">
         <item name="dark_first">@color/grey</item>
-        <item name="dark_second">@color/light_grey</item>
+        <item name="dark_second">@color/grey_2</item>
     </array>
 
     <!-- History chart-->

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BudgetCircle"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".forms.PlannedBudgetActivity"
+            android:exported="true" />
+        <activity
             android:name=".forms.OperationFormActivity"
             android:exported="true" />
         <activity

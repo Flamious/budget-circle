@@ -97,6 +97,8 @@ class HistoryChartFragment : Fragment() {
                 historyChartFragmentHeaderLayout.setBackgroundColor(mainColor)
                 historyChartFragmentChooseBudgetTypeButton.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
+               historyChartFragmentChoosePlannedBudgetButton.backgroundTintList =
+                    ColorStateList.valueOf(mainColor)
                 historyChartFragmentBackButton.backgroundTintList =
                     ColorStateList.valueOf(mainColor)
                 historyChartFragmentNextPeriodButton.backgroundTintList =
@@ -117,6 +119,9 @@ class HistoryChartFragment : Fragment() {
     private fun setButtons() {
         binding.historyChartFragmentBackButton.setOnClickListener {
             exit()
+        }
+        binding.historyChartFragmentChoosePlannedBudgetButton.setOnClickListener {
+            openPlannedBudget()
         }
         binding.historyChartFragmentPreviousPeriodButton.apply {
             visibility = if (periodIndex > 0) View.VISIBLE else View.INVISIBLE
@@ -193,6 +198,14 @@ class HistoryChartFragment : Fragment() {
     private fun appear() {
         binding.historyChartFragmentHeaderLayout.startAnimation(appear)
         binding.historyChartFragmentPeriodLayout.startAnimation(appear)
+    }
+
+    private fun openPlannedBudget() {
+        activity
+            ?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragmentPanel, PlannedBudgetFragment())
+            ?.commit()
     }
 
     private fun exit() {

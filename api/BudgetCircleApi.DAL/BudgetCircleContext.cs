@@ -21,6 +21,8 @@
 
         public virtual DbSet<EarningType> EarningType { get; set; }
 
+        public virtual DbSet<PlannedBudget> PlannedBudget { get; set; }
+
         public virtual DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

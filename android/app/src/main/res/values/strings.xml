@@ -126,7 +126,16 @@
     <string name="night_mode">night</string>
 
     <!-- Settings -->
-    <string name="url">url</string>
+    <string name="url">http:\\192.168.0.107:63179</string>
     <string name="settings">settings</string>
     <string name="mode">mode</string>
+
+    <!-- Planned Budget -->
+    <string name="planned_budget_fragment">Planning</string>
+    <string name="current">Current</string>
+    <string name="planned">Planned</string>
+    <string name="planned_earnings">Planned earnings</string>
+    <string name="planned_expenses">Planned expenses</string>
+    <string name="accounts">Accounts</string>
+    <string name="make_plan">Plan</string>
 </resources>
