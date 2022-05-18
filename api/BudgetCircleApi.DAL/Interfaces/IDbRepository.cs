@@ -15,6 +15,8 @@
 
         IRepository<ScheduledOperation> ScheduledOperations { get; }
 
+        IRepository<PlannedBudget> PlannedBudgets { get; }
+
         IRepository<User> Users { get; }
 
         Task Save();

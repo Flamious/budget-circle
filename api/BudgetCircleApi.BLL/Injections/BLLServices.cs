@@ -16,6 +16,7 @@
             services.AddScoped(typeof(IBudgetTypesService), typeof(BudgetTypesService));
             services.AddScoped(typeof(IOperationsService), typeof(OperationsService));
             services.AddScoped(typeof(IScheduledOperationsService), typeof(ScheduledOperationsService));
+            services.AddScoped(typeof(IPlannedBudgetService), typeof(PlannedBudgetService));
 
             return services;
         }

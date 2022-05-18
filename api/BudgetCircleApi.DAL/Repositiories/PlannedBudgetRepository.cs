@@ -5,42 +5,42 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class UserRepositiory : IRepository<User>
+    class PlannedBudgetRepository : IRepository<PlannedBudget>
     {
         private readonly BudgetCircleContext _context;
 
-        public UserRepositiory(BudgetCircleContext context)
+        public PlannedBudgetRepository(BudgetCircleContext context)
         {
             _context = context;
         }
 
-        public async Task Create(User item)
+        public async Task Create(PlannedBudget item)
         {
-            await _context.User.AddAsync(item);
+            await _context.PlannedBudget.AddAsync(item);
         }
 
         public void Delete(int id)
         {
-            var item = _context.User.Find(id);
+            var item = _context.PlannedBudget.Find(id);
             if (item != null)
             {
                 _context.Remove(item);
             }
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<PlannedBudget> GetAll()
         {
-            return _context.User;
+            return _context.PlannedBudget;
         }
 
-        public async Task<User> Get(int id)
+        public async Task<PlannedBudget> Get(int id)
         {
-            return await _context.User.FindAsync(id);
+            return await _context.PlannedBudget.FindAsync(id);
         }
 
-        public async Task Update(User item)
+        public async Task Update(PlannedBudget item)
         {
-            var entity = await _context.User.FindAsync(item.Id);
+            var entity = await _context.PlannedBudget.FindAsync(item.Id);
             if (entity == null)
             {
                 return;
