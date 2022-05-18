@@ -31,7 +31,13 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
     private val scheduledOperationApiService: ScheduledOperationApi =
         Client.getClient(getApplication<Application>().resources.getString(R.string.url))
             .create(ScheduledOperationApi::class.java)
+    private val plannedBudgetApiService: PlannedBudgetApi =
+        Client.getClient(getApplication<Application>().resources.getString(R.string.url))
+            .create(PlannedBudgetApi::class.java)
 
+    val plannedBudget: MutableLiveData<PlannedBudget> = MutableLiveData<PlannedBudget>().apply {
+        value = null
+    }
     val chosenHistoryItem: MutableLiveData<HistoryItem?> = MutableLiveData<HistoryItem?>().apply {
         value = null
     }
@@ -797,30 +803,31 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
             })
         }
 
-    fun editScheduledOperation(id: Int, newOperation: ScheduledOperation) = viewModelScope.launch(Dispatchers.IO) {
-        scheduledOperationApiService.editOperation(
-            Settings.token,
-            id,
-            newOperation.title,
-            newOperation.sum,
-            newOperation.typeId,
-            newOperation.budgetTypeId,
-            newOperation.commentary,
-            newOperation.isExpense
-        ).enqueue(object : Callback<Void> {
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-            }
-
-            override fun onResponse(
-                call: Call<Void>,
-                response: Response<Void>
-            ) {
-                if (response.isSuccessful) {
-                    getScheduledOperations(newOperation.isExpense)
+    fun editScheduledOperation(id: Int, newOperation: ScheduledOperation) =
+        viewModelScope.launch(Dispatchers.IO) {
+            scheduledOperationApiService.editOperation(
+                Settings.token,
+                id,
+                newOperation.title,
+                newOperation.sum,
+                newOperation.typeId,
+                newOperation.budgetTypeId,
+                newOperation.commentary,
+                newOperation.isExpense
+            ).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
                 }
-            }
-        })
-    }
+
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    if (response.isSuccessful) {
+                        getScheduledOperations(newOperation.isExpense)
+                    }
+                }
+            })
+        }
 
     fun deleteScheduledOperation(operationId: Int, isExpense: Boolean): Boolean {
         viewModelScope.launch(Dispatchers.IO) {
@@ -843,4 +850,90 @@ class BudgetCircleData(application: Application) : AndroidViewModel(application)
         }
         return true
     }
+
+    fun getPlannedBudget(month: Int, year: Int) = viewModelScope.launch(Dispatchers.IO) {
+        plannedBudgetApiService.getPlannedBudget(
+            Settings.token,
+            month,
+            year
+        ).enqueue(object : Callback<PlannedBudget> {
+            override fun onFailure(call: Call<PlannedBudget>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<PlannedBudget>,
+                response: Response<PlannedBudget>
+            ) {
+                if (response.isSuccessful) {
+                    plannedBudget.value = response.body()!!
+                }
+            }
+        })
+    }
+
+    fun addPlannedBudget(budget: PlannedBudgetModel) = viewModelScope.launch(Dispatchers.IO) {
+        plannedBudgetApiService.addPlannedBudget(
+            Settings.token,
+            budget.month,
+            budget.year,
+            budget.earnings,
+            budget.expenses
+        ).enqueue(object : Callback<Any> {
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<Any>,
+                response: Response<Any>
+            ) {
+                if (response.isSuccessful) {
+                    getPlannedBudget(budget.month, budget.year)
+                }
+            }
+        })
+    }
+
+    fun editPlannedBudget(id: Int, budget: PlannedBudgetModel) =
+        viewModelScope.launch(Dispatchers.IO) {
+            plannedBudgetApiService.editPlannedBudget(
+                Settings.token,
+                id,
+                budget.month,
+                budget.year,
+                budget.earnings,
+                budget.expenses
+            ).enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    if (response.isSuccessful) {
+                        getPlannedBudget(budget.month, budget.year)
+                    }
+                }
+            })
+        }
+
+    fun deletePlannedBudget(id: Int, month: Int, year: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            plannedBudgetApiService.deletePlannedBudget(
+                Settings.token,
+                id
+            ).enqueue(object : Callback<Any> {
+                override fun onFailure(call: Call<Any>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<Any>,
+                    response: Response<Any>
+                ) {
+                    if (response.isSuccessful) {
+                        getPlannedBudget(month, year)
+                    }
+                }
+            })
+        }
 }

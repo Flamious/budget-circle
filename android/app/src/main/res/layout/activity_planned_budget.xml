@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plannedBudgetFormLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".forms.PlannedBudgetActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/plannedBudgetFormActivityHeaderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/orange_main"
+        android:backgroundTint="@color/orange_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/plannedBudgetFormActivityBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/orange_main"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/plannedBudgetFormActivityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/plannedBudgetFormActivityBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/plannedBudgetFormActivityBackButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/plannedBudgetFormActivityScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:theme="@style/greyEdgeEffect"
+        app:layout_constraintBottom_toTopOf="@+id/plannedBudgetFormActivityAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plannedBudgetFormActivityHeaderLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/plannedBudgetFormActivityPlannedExpenses"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:autofillHints="sum"
+                    android:backgroundTint="@color/orange_main"
+                    android:ems="10"
+                    android:hint="@string/planned_expenses"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/orange_main"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/orange_main"
+                    android:textCursorDrawable="@color/grey"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/plannedBudgetFormActivityPlannedEarnings"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/plannedBudgetFormActivityPlannedEarnings"
+                    app:layout_constraintTop_toBottomOf="@+id/plannedBudgetFormActivityPlannedEarnings"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <EditText
+                    android:id="@+id/plannedBudgetFormActivityPlannedEarnings"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:autofillHints="accountName"
+                    android:backgroundTint="@color/orange_main"
+                    android:ems="10"
+                    android:hint="@string/planned_earnings"
+                    android:inputType="number|numberDecimal"
+                    android:textColorHighlight="@color/orange_main"
+                    android:textColorHint="@color/grey"
+                    android:textColorLink="@color/orange_main"
+                    android:textCursorDrawable="@color/grey"
+                    android:textSize="20sp"
+                    android:theme="@style/grayControlCursor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/plannedBudgetFormActivityAddButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-32dp"
+        android:layout_marginEnd="-32dp"
+        android:backgroundTint="@color/orange_main"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/accept"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

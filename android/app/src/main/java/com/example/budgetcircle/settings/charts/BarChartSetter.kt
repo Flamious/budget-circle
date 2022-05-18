@@ -63,7 +63,6 @@ class BarChartSetter {
             chart.axisRight.textColor = textColor
             chart.xAxis.textColor = textColor
             chart.invalidate()
-            chart.animateXY(1000, 1000)
         }
     }
 }
