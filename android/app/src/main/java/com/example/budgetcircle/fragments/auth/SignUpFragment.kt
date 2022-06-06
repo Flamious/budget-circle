@@ -212,7 +212,10 @@ class SignUpFragment : Fragment() {
                         gson.fromJson(gson.toJson(response.body()), AuthResponse::class.java).token
 
                     saveToken(token)
-                    startApp(token)
+
+                    val login = binding.signUpFragmentEmailField.text.toString()
+                    saveLogin(login)
+                    startApp(token, login)
                 } else {
                     val errorBody = response.errorBody() ?: return
                     val type = object : TypeToken<ErrorResponse>() {}.type
@@ -235,11 +238,23 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    private fun startApp(token: String) {
+    private fun saveLogin(login: String) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString(getString(R.string.login_save), login)
+            apply()
+        }
+    }
+
+    private fun startApp(token: String, login: String) {
         val intent = Intent(activity, MainActivity::class.java)
         intent.putExtra(
             "token",
             token
+        )
+        intent.putExtra(
+            "login",
+            login
         )
 
         startActivity(intent)

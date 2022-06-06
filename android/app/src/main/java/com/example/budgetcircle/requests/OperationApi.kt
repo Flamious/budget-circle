@@ -1,6 +1,8 @@
 package com.example.budgetcircle.requests
 
+import com.example.budgetcircle.requests.models.ManyOperationsBody
 import com.example.budgetcircle.viewmodel.models.ChartOperation
+import com.example.budgetcircle.viewmodel.models.Operation
 import com.example.budgetcircle.viewmodel.models.OperationSum
 import retrofit2.Call
 import retrofit2.http.*
@@ -16,6 +18,12 @@ interface OperationApi {
         @Query("Commentary") commentary: String,
         @Query("IsExpense") isExpense: Boolean?
     ): Call<Any>
+
+    @PUT("/operation/add_many")
+    fun addManyOperations(
+        @Header("Authorization") token: String,
+        @Body body: ManyOperationsBody
+    ): Call<Void>
 
     @POST("/operation/{id}")
     fun editOperation(

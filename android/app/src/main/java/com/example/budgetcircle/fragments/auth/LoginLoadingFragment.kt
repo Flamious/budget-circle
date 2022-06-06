@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.budgetcircle.MainActivity
+import com.example.budgetcircle.NoInternetActivity
 import com.example.budgetcircle.R
 import com.example.budgetcircle.databinding.FragmentLoginLoadingBinding
 import com.example.budgetcircle.requests.Client
@@ -137,6 +138,13 @@ class LoginLoadingFragment : Fragment() {
             token
         )
 
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val login = sharedPref!!.getString(getString(R.string.login_save), null)
+
+        intent.putExtra(
+            "login",
+            login
+        )
         startActivity(intent)
     }
 
@@ -145,7 +153,11 @@ class LoginLoadingFragment : Fragment() {
         val token = sharedPref!!.getString(getString(R.string.token), null)
 
         if (token != null) {
-            refreshToken(token)
+            if(Settings.isInternetAvailable(this@LoginLoadingFragment.requireContext())) {
+                refreshToken(token)
+            } else {
+                openNoInternetActivity()
+            }
         } else {
             openLogin()
         }
@@ -171,6 +183,20 @@ class LoginLoadingFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun openNoInternetActivity() {
+        Thread.sleep(loading)
+        val intent = Intent(activity, NoInternetActivity::class.java)
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val login = sharedPref!!.getString(getString(R.string.login_save), null)
+        intent.putExtra(
+            "login",
+            login
+        )
+
+        startActivity(intent)
     }
     //endregion
 }

@@ -188,18 +188,22 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setBarChart(budgetTypes: List<BudgetType>) {
-        val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
-        val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
-        var sum = 0.0
+        val filteredBudgetTypes = budgetTypes.sortedBy { x->x.sum }
+
+        val values = Array(budgetTypes.size) { index -> filteredBudgetTypes[index].sum }
+        val titles = Array(budgetTypes.size) { index -> filteredBudgetTypes[index].title }
+        var hasSum = false
         for (n in values) {
-            sum += n
+            if (n != 0.0) {
+                hasSum = true
+                break
+            }
         }
-        sum = DoubleFormatter.format(sum)
         val colors = if (Settings.isDay())
             resources.getIntArray(R.array.budget_colors).toCollection(ArrayList())
         else
             resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
-        if (sum > 0)
+        if (hasSum)
             BarChartSetter.setChart(
                 titles,
                 values,
@@ -225,6 +229,14 @@ class BudgetFragment : Fragment() {
     }
 
     private fun setPieChart(budgetTypes: List<BudgetType>) {
+        if(budgetTypes.find { x-> x.sum < 0 } != null) {
+            changeChart()
+            binding.budgetFragmentChangeChartButton.visibility = View.INVISIBLE
+            return
+        } else {
+            binding.budgetFragmentChangeChartButton.visibility = View.VISIBLE
+        }
+
         val values = Array(budgetTypes.size) { index -> budgetTypes[index].sum }
         val titles = Array(budgetTypes.size) { index -> budgetTypes[index].title }
         var sum = 0.0

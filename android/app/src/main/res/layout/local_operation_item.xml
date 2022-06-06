@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/localOperationItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/localOperationItemColor"
+        android:layout_width="6dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemBorder">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/localOperationItemEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/localOperationItemDeleteButton"
+        app:layout_constraintEnd_toStartOf="@+id/localOperationItemDeleteButton"
+        app:layout_constraintTop_toTopOf="@+id/localOperationItemDeleteButton"
+        app:srcCompat="@drawable/ic_edit"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <ImageButton
+        android:id="@+id/localOperationItemDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/new_exchange"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemBorder"
+        app:srcCompat="@drawable/ic_delete"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/localOperationItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemBorder" />
+
+    <TextView
+        android:id="@+id/localOperationItemType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/localOperationItemTypeTitle"
+        app:layout_constraintStart_toStartOf="@+id/localOperationItemAccountType"
+        app:layout_constraintTop_toTopOf="@+id/localOperationItemTypeTitle" />
+
+    <TextView
+        android:id="@+id/localOperationItemAccountType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/localOperationItemAccountTitle"
+        app:layout_constraintStart_toEndOf="@+id/localOperationItemAccountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemTypeTitle" />
+
+    <TextView
+        android:id="@+id/localOperationItemTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/kind"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/localOperationItemTitle"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemTitle" />
+
+    <TextView
+        android:id="@+id/localOperationItemAccountTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/from"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/localOperationItemTypeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/localOperationItemTypeTitle" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/localOperationItemBorder"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/light_grey"
+        android:backgroundTint="@color/light_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,6 +33,7 @@
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_earnings_form.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_expenses_form.xml" value="0.25" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_no_internet.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_operation_form.xml" value="0.25" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_operation_list_settings.xml" value="0.38697916666666665" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/activity_operation_type.xml" value="0.215625" />
@@ -66,6 +67,7 @@
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/history_item.xml" value="0.75" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/list_preference_layout.xml" value="0.38333333333333336" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/list_preferences_layout.xml" value="0.38697916666666665" />
+        <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/local_operation_item.xml" value="1.0" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/operation_type_item.xml" value="0.33" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/operation_type_part_item.xml" value="0.6971569839307787" />
         <entry key="..\:/Study/budget-circle/android/app/src/main/res/layout/scheduled_operation_item.xml" value="0.75" />

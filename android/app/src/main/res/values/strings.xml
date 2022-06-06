@@ -103,6 +103,7 @@
     <string name="signup_short">Sign up</string>
     <string name="wrongLoginOrPassword">Wrong Login or Password</string>
     <string name="token">token</string>
+    <string name="login_save">login</string>
 
     <!-- User -->
     <string name="change_password">Change password</string>
@@ -120,15 +121,17 @@
     <string name="edit_earning_type">Edit earning type</string>
     <string name="edit_expense_type">Edit expense type</string>
     <string name="other">Other</string>
+    <string name="exchange">Exchange</string>
 
     <!-- Mode -->
     <string name="day_mode">day</string>
     <string name="night_mode">night</string>
 
     <!-- Settings -->
-    <string name="url">http:\\192.168.0.107:63179</string>
+    <string name="url">url</string>
     <string name="settings">settings</string>
     <string name="mode">mode</string>
+    <string name="offline">Offline mode</string>
 
     <!-- Planned Budget -->
     <string name="planned_budget_fragment">Planning</string>

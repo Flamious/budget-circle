@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
@@ -53,6 +54,10 @@ class OperationFormActivity : AppCompatActivity() {
     //region Setting
     private fun setTheme() {
         isExpense = intent.extras?.getBoolean("isExpense", false)!!
+
+        if(intent.getBooleanExtra("isLocal", false)) {
+            binding.operationFormActivityIsScheduledSwitch.visibility = View.GONE
+        }
 
         val textPrimary: Int
         val textSecondary: Int
@@ -148,6 +153,7 @@ class OperationFormActivity : AppCompatActivity() {
                 binding.operationFormActivityCommentaryField
             )
 
+            binding.operationFormActivityIsScheduledSwitch.setTextColor(textPrimary)
             Settings.setSwitchColor(
                 switchCircleColor,
                 switchUncheckedColor,
@@ -193,6 +199,8 @@ class OperationFormActivity : AppCompatActivity() {
     }
 
     private fun setEditPage() {
+        binding.operationFormActivityIsScheduledSwitch.visibility = View.GONE
+
         if (isExpense) {
             binding.operationFormActivityTitle.text = resources.getText(R.string.edit_exp)
             binding.operationFormActivityAddButton.text = resources.getText(R.string.edit_exp)
@@ -259,15 +267,6 @@ class OperationFormActivity : AppCompatActivity() {
                 sum <= 0.0 -> {
                     error = resources.getString(R.string.zero_sum)
                     isValid = false
-                }
-                else -> {
-                    if (!isEdit && isExpense) {
-                        if (sum > budgetTypesSums[chosenBudgetType.value]) {
-                            error =
-                                "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetType.value]})"
-                            isValid = false
-                        }
-                    }
                 }
             }
         }

@@ -73,7 +73,6 @@ class HistoryAdapter(
             if (buttonColor != null) {
                 historyItemScheduledImage.imageTintList = ColorStateList.valueOf(buttonColor)
             }
-
         }
     }
 

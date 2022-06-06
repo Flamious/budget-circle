@@ -70,7 +70,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             openTypeList()
         }
         binding.operationFragmentAddButton.setOnClickListener {
-            addEarning()
+            addOperation()
         }
         binding.operationFragmentChangeChartButton.setOnClickListener {
             changeChart()
@@ -359,7 +359,7 @@ class OperationFragment(val isExpense: Boolean) : Fragment() {
             ?.commit()
     }
 
-    private fun addEarning() {
+    private fun addOperation() {
         val intent = Intent(activity, OperationFormActivity::class.java)
         intent.putExtra("isExpense", isExpense)
         intent.putExtra(

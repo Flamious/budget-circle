@@ -168,13 +168,6 @@ class BudgetExchangeActivity : AppCompatActivity() {
                     error = resources.getString(R.string.zero_sum)
                     isValid = false
                 }
-                else -> if (!isEdit) {
-                    if (sum > budgetTypesSums[chosenBudgetTypeFrom.value]) {
-                        error =
-                            "${resources.getString(R.string.insufficient_funds)} (${budgetTypesSums[chosenBudgetTypeFrom.value]})"
-                        isValid = false
-                    }
-                }
             }
         }
 

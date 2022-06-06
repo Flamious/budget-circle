@@ -135,7 +135,7 @@ class PlannedBudgetFragment : Fragment() {
             textSecondary,
             backgroundColor,
             borderColor,
-            accountColor,expenseColor
+            accountColor, expenseColor
         )
 
         binding.apply {
@@ -226,39 +226,22 @@ class PlannedBudgetFragment : Fragment() {
         val values = arrayOf(current, planned)
         val titles =
             arrayOf(resources.getString(R.string.current), resources.getString(R.string.planned))
-        var sum = 0.0
-        for (n in values) {
-            sum += n
-        }
-        sum = DoubleFormatter.format(sum)
         val colors = if (Settings.isDay())
             resources.getIntArray(resColors)
                 .toCollection(ArrayList())
         else
             resources.getIntArray(R.array.dark_colors).toCollection(ArrayList())
-        if (sum > 0)
-            BarChartSetter.setChart(
-                titles,
-                values,
-                colors,
-                chart,
-                ContextCompat.getColor(
-                    this.requireContext(),
-                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
-                )
+
+        BarChartSetter.setChart(
+            titles,
+            values,
+            colors,
+            chart,
+            ContextCompat.getColor(
+                this.requireContext(),
+                if (Settings.isDay()) R.color.text_primary else R.color.light_grey
             )
-        else
-            BarChartSetter.setChart(
-                arrayOf(resources.getString(R.string.no_entries)),
-                arrayOf(0.0),
-                arrayListOf(ContextCompat.getColor(this.requireContext(), R.color.no_money_op)),
-                chart,
-                ContextCompat.getColor(
-                    this.requireContext(),
-                    if (Settings.isDay()) R.color.text_primary else R.color.light_grey
-                ),
-                true
-            )
+        )
     }
 
     private fun setButtons() {
@@ -352,9 +335,24 @@ class PlannedBudgetFragment : Fragment() {
                         expensesAdapter.setList(it.expenses)
                         accountsAdapter.setList(it.accounts)
 
-                        setBarChart(it.currentEarnings, it.plannedEarnings, R.array.earning_colors, plannedBudgetFragmentEarningsBarChart)
-                        setBarChart(it.currentExpenses, it.plannedExpenses, R.array.expense_colors, plannedBudgetFragmentExpensesBarChart)
-                        setBarChart(it.currentBudget, it.plannedBudget, R.array.budget_colors, plannedBudgetFragmentAccountsBarChart)
+                        setBarChart(
+                            it.currentEarnings,
+                            it.plannedEarnings,
+                            R.array.earning_colors,
+                            plannedBudgetFragmentEarningsBarChart
+                        )
+                        setBarChart(
+                            it.currentExpenses,
+                            it.plannedExpenses,
+                            R.array.expense_colors,
+                            plannedBudgetFragmentExpensesBarChart
+                        )
+                        setBarChart(
+                            it.currentBudget,
+                            it.plannedBudget,
+                            R.array.budget_colors,
+                            plannedBudgetFragmentAccountsBarChart
+                        )
 
                         entityId = it.id
                         plannedEarnings = it.plannedEarnings
