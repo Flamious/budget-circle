@@ -13,10 +13,12 @@
     class OperationTypesService : IOperationTypesService
     {
         private readonly IDbRepository _context;
+        private readonly IOperationsService _operationsService;
 
-        public OperationTypesService(IDbRepository repository)
+        public OperationTypesService(IDbRepository repository, IOperationsService operationsService)
         {
             _context = repository;
+            _operationsService = operationsService;
         }
 
         public async Task<MessageResponse> AddEarningType(string userId, string name)
@@ -136,7 +138,7 @@
             var operations = _context.Operations.GetAll().Where(item => item.UserId == userId && item.TypeId == id && item.IsExpense == false).ToList();
             foreach(var operation in operations)
             {
-                _context.Operations.Delete(operation.Id);
+                await _operationsService.RemoveOperation(userId, operation.Id);
             }
 
             _context.EarningTypes.Delete(id);
@@ -154,7 +156,7 @@
             var operations = _context.Operations.GetAll().Where(item => item.UserId == userId && item.TypeId == id && item.IsExpense == true).ToList();
             foreach (var operation in operations)
             {
-                _context.Operations.Delete(operation.Id);
+                await _operationsService.RemoveOperation(userId, operation.Id);
             }
 
             _context.ExpenseTypes.Delete(id);

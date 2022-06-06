@@ -17,10 +17,20 @@
     {
         private const int EntitiesPerPage = 10;
         private readonly IDbRepository _context;
+        private readonly IBudgetTypesService _budgetTypesService;
 
-        public OperationsService(IDbRepository repository)
+        public OperationsService(IDbRepository repository, IBudgetTypesService budgetTypesService)
         {
             _context = repository;
+            _budgetTypesService = budgetTypesService;
+        }
+
+        public async Task AddManyOperation(string userId, List<OperationModel> models)
+        {
+            foreach(var model in models)
+            {
+                await AddOperation(userId, model);
+            }
         }
 
         public async Task<MessageResponse> AddOperation(string userId, OperationModel model)
@@ -38,8 +48,24 @@
                     TypeId = model.TypeId,
                     UserId = userId,
                     IsScheduled = model.IsScheduled
-            };
+                };
+
                 await _context.Operations.Create(operation);
+                switch (operation.IsExpense)
+                {
+                    case true:
+                        await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, -operation.Sum);
+                        break;
+
+                    case false:
+                        await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, operation.Sum);
+                        break;
+
+                    default:
+                        await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, -operation.Sum);
+                        await _budgetTypesService.AddBudgetTypeSum(userId, operation.TypeId, operation.Sum);
+                        break;
+                }
                 await _context.Save();
 
                 return new MessageResponse("Operation was added");
@@ -57,7 +83,7 @@
                 .GetAll()
                 .Where(t => t.UserId == userId);
 
-            if(request.BudgetTypeId != null)
+            if (request.BudgetTypeId != null)
             {
                 _request = _request.Where(item => item.BudgetTypeId == request.BudgetTypeId);
             }
@@ -98,8 +124,8 @@
                     var calendar = DateTimeFormatInfo.CurrentInfo.Calendar;
                     var currentWeekStart = currentDate.Date.AddDays(-1 * (int)calendar.GetDayOfWeek(currentDate));
                     _request = _request.Where(item => item.Date.Date.AddDays(-1 * (int)calendar.GetDayOfWeek(item.Date)) == currentWeekStart);
-                    
-                    for(int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++)
+
+                    for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++)
                     {
                         result.Add(new ChartOperation()
                         {
@@ -201,10 +227,26 @@
 
         public async Task RemoveOperation(string userId, int id)
         {
-            var entity = await _context.Operations.Get(id);
-            if (entity.UserId != userId)
+            var operation = await _context.Operations.Get(id);
+            if (operation.UserId != userId)
             {
                 return;
+            }
+
+            switch (operation.IsExpense)
+            {
+                case true:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, operation.Sum);
+                    break;
+
+                case false:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, -operation.Sum);
+                    break;
+
+                default:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, operation.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.TypeId, -operation.Sum);
+                    break;
             }
 
             _context.Operations.Delete(id);
@@ -213,22 +255,42 @@
 
         public async Task UpdateOperation(string userId, int id, OperationModel model)
         {
-            var entity = await _context.Operations.Get(id);
-            if (entity.UserId != userId)
+            var operation = await _context.Operations.Get(id);
+            if (operation.UserId != userId)
             {
                 return;
             }
 
-            entity.Title = model.Title;
-            entity.BudgetTypeId = model.BudgetTypeId;
-            entity.Commentary = model.Commentary ?? "";
-            entity.Sum = model.Sum;
-            entity.IsExpense = model.IsExpense;
-            entity.TypeId = model.TypeId;
-            entity.UserId = userId;
-            entity.IsScheduled = model.IsScheduled;
+            switch (operation.IsExpense)
+            {
+                case true:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, operation.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, model.BudgetTypeId, -model.Sum);
+                    break;
 
-            await _context.Operations.Update(entity);
+                case false:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, -operation.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, model.BudgetTypeId, model.Sum);
+                    break;
+
+                default:
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.BudgetTypeId, operation.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, model.BudgetTypeId, -model.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, operation.TypeId, -operation.Sum);
+                    await _budgetTypesService.AddBudgetTypeSum(userId, model.TypeId, model.Sum);
+                    break;
+            }
+
+            operation.Title = model.Title;
+            operation.BudgetTypeId = model.BudgetTypeId;
+            operation.Commentary = model.Commentary ?? "";
+            operation.Sum = model.Sum;
+            operation.IsExpense = model.IsExpense;
+            operation.TypeId = model.TypeId;
+            operation.UserId = userId;
+            operation.IsScheduled = model.IsScheduled;
+
+            await _context.Operations.Update(operation);
             await _context.Save();
         }
 

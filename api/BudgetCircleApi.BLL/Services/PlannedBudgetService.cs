@@ -85,8 +85,8 @@
                 var positiveSum = operations.Where(op => op.BudgetTypeId == type.Id && op.IsExpense == false).Sum(op => op.Sum);
                 var negativeSum = operations.Where(op => op.BudgetTypeId == type.Id && op.IsExpense == true).Sum(op => op.Sum);
                 var sum = positiveSum - negativeSum;
-                var percentage = sum / (plannedBudget.PlannedEarnings - plannedBudget.PlannedExpenses) * 100;
-                if(percentage < 0)
+                var percentage = plannedBudget.PlannedEarnings - plannedBudget.PlannedExpenses == 0 ? 100 : sum / (plannedBudget.PlannedEarnings - plannedBudget.PlannedExpenses) * 100;
+                if (percentage < 0)
                 {
                     percentage *= -1;
                 }

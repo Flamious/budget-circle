@@ -12,6 +12,8 @@
 
         Task<MessageResponse> AddOperation(string userId, OperationModel model);
 
+        Task AddManyOperation(string userId, List<OperationModel> models);
+
         Task UpdateOperation(string userId, int id, OperationModel model);
 
         Task RemoveOperation(string userId, int id);

@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -68,6 +69,29 @@
                 var result = await Task.Run(() => _operationsServices.GetOperationSum(userId, request));
 
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("add_many")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> AddOperation([FromBody] ManyOperationsBody body)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage)));
+            }
+
+            try
+            {
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await _operationsServices.AddManyOperation(userId, body.models);
+
+                return Ok();
             }
             catch (Exception e)
             {
